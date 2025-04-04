@@ -76,7 +76,8 @@ Les fichiers finaux indispensables au projet sont organisés dans les répertoir
 - **MCP Standard** : Pour interagir avec OpenRouter et les modèles d'IA
 - **MCP Notion** : Pour interagir avec vos bases de données Notion
 - **MCP Gateway** : Pour interagir avec vos bases de données SQL
-- **MCP Git Ingest** : Pour explorer et lire les dépôts GitHub
+- **MCP Git Ingest** : Pour explorer et lire les dépôts GitHub (amélioré avec support Python direct)
+- **MCP GDrive** : Pour interagir avec Google Drive
 
 ## Installation et configuration
 
@@ -90,7 +91,22 @@ Les fichiers finaux indispensables au projet sont organisés dans les répertoir
    .\scripts\setup\configure-mcp-git-ingest.ps1
    ```
 
-3. **Démarrage de n8n avec vérification des MCP** :
+3. **Configuration du MCP GDrive** :
+   ```powershell
+   .\scripts\setup\configure-gdrive-mcp.ps1
+   ```
+
+4. **Configuration de VS Code pour Augment** :
+   ```powershell
+   .\scripts\setup\update-vscode-settings.ps1
+   ```
+
+5. **Configuration de l'organisation automatique** :
+   ```powershell
+   .\scripts\setup\setup-auto-organization.ps1
+   ```
+
+6. **Démarrage de n8n avec vérification des MCP** :
    ```
    .\tools\start-n8n-mcp.cmd
    ```
@@ -118,6 +134,8 @@ Les fichiers finaux indispensables au projet sont organisés dans les répertoir
 - [Guide final MCP](docs/guides/GUIDE_FINAL_MCP.md) : Guide complet sur les MCP dans n8n
 - [Guide MCP Gateway](docs/guides/GUIDE_MCP_GATEWAY.md) : Guide spécifique pour le MCP Gateway
 - [Guide MCP Git Ingest](docs/guides/GUIDE_MCP_GIT_INGEST.md) : Guide spécifique pour le MCP Git Ingest
+- [Guide des nouvelles fonctionnalités](docs/guides/GUIDE_NOUVELLES_FONCTIONNALITES.md) : Présentation des nouvelles fonctionnalités et de l'organisation du dépôt
+- [Guide d'organisation automatique](docs/guides/GUIDE_ORGANISATION_AUTOMATIQUE.md) : Guide pour l'organisation automatique du dépôt
 
 ## Organisation automatique des fichiers
 
