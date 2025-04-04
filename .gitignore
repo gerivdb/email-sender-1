@@ -35,3 +35,6 @@ credentials/*.json
 
 # Cache
 .cache/
+
+# Sous-modules problématiques
+mcp-gdrive/
