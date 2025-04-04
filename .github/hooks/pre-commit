@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Pre-commit hook pour organiser automatiquement les fichiers
+
+# Exécuter le script d'organisation de la structure du dépôt
+powershell -File ./scripts/maintenance/repo/organize-repo-structure.ps1
+
+# Ajouter les fichiers déplacés au commit
+git add .
+
+# Continuer avec le commit
+exit 0
