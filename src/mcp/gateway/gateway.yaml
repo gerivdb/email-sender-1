@@ -1,0 +1,8 @@
+api:
+  name: Gateway API
+  description: API générée par Gateway
+  version: '1.0'
+database:
+  type: postgres
+  connection: "postgres://user:password@localhost:5432/database?sslmode=disable"
+  tables: []

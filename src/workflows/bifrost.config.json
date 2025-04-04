@@ -1,0 +1,6 @@
+{
+    "projectName": "EmailSender1",
+    "description": "Projet d'automatisation des réservations de concerts pour Gribitch avec intégration Notion et n8n",
+    "path": "/email-sender-1",
+    "port": 8009
+}

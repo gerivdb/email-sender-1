@@ -1,0 +1,94 @@
+api:
+  name: Gateway API pour N8N Email Sender
+  description: API générée par Gateway pour accéder aux données du projet N8N Email Sender
+  version: '1.0'
+database:
+  type: postgres
+  connection: "postgres://user:password@localhost:5432/database?sslmode=disable"
+  tables:
+    - name: customers
+      columns:
+        - name: id
+          type: integer
+          description: Identifiant unique du client
+        - name: name
+          type: string
+          description: Nom du client
+        - name: email
+          type: string
+          description: Adresse email du client
+      endpoints:
+        - http_method: GET
+          http_path: /customers
+          mcp_method: get_customers
+          summary: Récupère la liste des clients
+          description: Récupère la liste des clients avec pagination
+          query: "SELECT * FROM customers LIMIT :limit OFFSET :offset"
+          params:
+            - name: limit
+              type: integer
+              description: Nombre maximum de résultats à retourner
+              default: 10
+            - name: offset
+              type: integer
+              description: Nombre de résultats à ignorer
+              default: 0
+    - name: orders
+      columns:
+        - name: id
+          type: integer
+          description: Identifiant unique de la commande
+        - name: customer_id
+          type: integer
+          description: Identifiant du client
+        - name: amount
+          type: number
+          description: Montant de la commande
+        - name: date
+          type: string
+          description: Date de la commande
+      endpoints:
+        - http_method: GET
+          http_path: /orders
+          mcp_method: get_orders
+          summary: Récupère la liste des commandes
+          description: Récupère la liste des commandes avec pagination
+          query: "SELECT * FROM orders LIMIT :limit OFFSET :offset"
+          params:
+            - name: limit
+              type: integer
+              description: Nombre maximum de résultats à retourner
+              default: 10
+            - name: offset
+              type: integer
+              description: Nombre de résultats à ignorer
+              default: 0
+    - name: products
+      columns:
+        - name: id
+          type: integer
+          description: Identifiant unique du produit
+        - name: name
+          type: string
+          description: Nom du produit
+        - name: price
+          type: number
+          description: Prix du produit
+        - name: stock
+          type: integer
+          description: Quantité en stock
+      endpoints:
+        - http_method: GET
+          http_path: /products/search
+          mcp_method: search_products
+          summary: Recherche des produits par nom
+          description: Recherche des produits dont le nom contient la chaîne de recherche
+          query: "SELECT * FROM products WHERE name LIKE :name LIMIT :limit"
+          params:
+            - name: name
+              type: string
+              description: Nom du produit à rechercher
+            - name: limit
+              type: integer
+              description: Nombre maximum de résultats à retourner
+              default: 10
