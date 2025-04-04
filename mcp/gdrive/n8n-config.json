@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "gdrive": {
+      "command": "D:/DO/WEB/N8N tests/scripts json à tester/EMAIL SENDER 1/mcp-gdrive/gdrive-mcp.cmd",
+      "args": [],
+      "environments": {
+        "N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE": "true"
+      }
+    }
+  }
+}
