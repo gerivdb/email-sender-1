@@ -38,3 +38,11 @@ credentials/*.json
 
 # Sous-modules problématiques
 mcp-gdrive/
+
+# Fichiers de configuration personnels
+hide_warnings_settings.json
+new_settings.json
+terminal_settings.json
+
+# Tokens d'authentification
+mcp-servers/gcp-mcp/token.json
