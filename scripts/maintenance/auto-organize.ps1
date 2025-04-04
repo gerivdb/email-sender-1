@@ -6,8 +6,8 @@ Write-Host "=== Organisation automatique des fichiers ===" -ForegroundColor Cyan
 # Regles d'organisation automatique
 $autoOrganizeRules = @(
     # Format: [pattern, destination, description]
-    @("*.json", "src/workflows", "Workflows n8n"),
-    @("*.workflow.json", "src/workflows", "Workflows n8n"),
+    @("*.json", "all-workflows/original", "Workflows n8n"),
+    @("*.workflow.json", "all-workflows/original", "Workflows n8n"),
     @("mcp-*.cmd", "src/mcp/batch", "Fichiers batch MCP"),
     @("gateway.exe.cmd", "src/mcp/batch", "Fichier batch Gateway"),
     @("*.yaml", "src/mcp/config", "Fichiers config YAML"),
@@ -20,10 +20,13 @@ $autoOrganizeRules = @(
     @("check-*.ps1", "scripts/maintenance", "Scripts de verification"),
     @("organize-*.ps1", "scripts/maintenance", "Scripts d'organisation"),
     @("GUIDE_*.md", "docs/guides", "Guides d'utilisation"),
+    @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)"),
+    @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)"),
     @("*.log", "logs", "Fichiers de logs"),
     @("*.env", "config", "Fichiers d'environnement"),
     @("*.config", "config", "Fichiers de configuration"),
     @("start-*.cmd", "tools", "Scripts de demarrage"),
+    @("*.cmd", "cmd", "Fichiers de commande Windows (sauf standards GitHub)"),
     @("*.py", "src", "Scripts Python")
 )
 
@@ -51,13 +54,20 @@ function Move-FileAutomatically {
     $fileName = Split-Path $SourcePath -Leaf
     $destinationPath = Join-Path $DestinationFolder $fileName
 
-    # Ne pas deplacer README.md de la racine
-    if ($fileName -eq "README.md" -and (Split-Path $SourcePath -Parent) -eq $projectRoot) {
-        return
-    }
+    # Fichiers a conserver a la racine
+    $keepFiles = @(
+    "README.md",
+    ".gitignore",
+    "package.json",
+    "package-lock.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md"
+)
 
-    # Ne pas deplacer .gitignore de la racine
-    if ($fileName -eq ".gitignore" -and (Split-Path $SourcePath -Parent) -eq $projectRoot) {
+    # Ne pas deplacer les fichiers a conserver a la racine
+    if ($keepFiles -contains $fileName -and (Split-Path $SourcePath -Parent) -eq $projectRoot) {
         return
     }
 
@@ -160,4 +170,5 @@ Write-Host "1. Ouvrez le Planificateur de taches Windows"
 Write-Host "2. Creez une nouvelle tache qui execute:"
 Write-Host "   powershell -ExecutionPolicy Bypass -File `"$projectRoot\scripts\maintenance\auto-organize.ps1`""
 Write-Host "3. Definissez la frequence souhaitee (par exemple, quotidienne)"
+
 

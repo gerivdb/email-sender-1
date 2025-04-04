@@ -8,42 +8,37 @@ $filesToRemove = @(
     "mcp-standard.cmd",
     "mcp-notion.cmd",
     "gateway.exe.cmd",
-    
+
     # Fichiers de configuration
     "mcp-config.json",
     "mcp-config-fixed.json",
     "gateway.yaml",
-    
+
     # Fichiers de workflow
     "test-mcp-workflow-updated.json"
 )
 
 # Verifier que les fichiers existent dans le dossier mcp avant de les supprimer
 foreach ($file in $filesToRemove) {
-    $fileType = ""
     $targetFolder = ""
-    
+
     if ($file -like "*.cmd") {
-        $fileType = "batch"
         $targetFolder = "mcp\batch"
     } elseif ($file -like "*.json" -and $file -notlike "*workflow*.json") {
-        $fileType = "config"
         $targetFolder = "mcp\config"
     } elseif ($file -like "*workflow*.json") {
-        $fileType = "workflow"
         $targetFolder = "mcp\workflows"
     } elseif ($file -like "*.yaml") {
-        $fileType = "config"
         $targetFolder = "mcp\config"
     }
-    
+
     if (Test-Path ".\$targetFolder\$file") {
         Write-Host "Le fichier $file existe dans le dossier $targetFolder" -ForegroundColor Green
-        
+
         # Demander confirmation avant de supprimer
         Write-Host "Voulez-vous supprimer le fichier $file de la racine ? (O/N)" -ForegroundColor Yellow
         $confirmation = Read-Host
-        
+
         if ($confirmation -eq "O" -or $confirmation -eq "o") {
             if (Test-Path ".\$file") {
                 Remove-Item ".\$file"

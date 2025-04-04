@@ -13,7 +13,7 @@ Pour utiliser ce MCP dans N8N, vous devez configurer un nœud MCP avec les param
 
 1. Type de connexion : Command Line (STDIO)
 2. Commande : `cmd.exe`
-3. Arguments : `/c`, `D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1\mcp-servers\gcp-mcp\start-gcp-mcp.cmd`
+3. Arguments : `/c`, `D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\mcp-servers\gcp-mcp\start-gcp-mcp.cmd`
 4. Variables d'environnement : `N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true`
 
 ## Fonctionnalités disponibles

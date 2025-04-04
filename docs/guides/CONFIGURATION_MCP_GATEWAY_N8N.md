@@ -30,8 +30,8 @@ Remplissez les champs comme suit :
 
 - **Credential Name**: MCP Gateway
 - **Command**: Chemin complet vers gateway.exe.cmd
-  - Exemple: `D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1\gateway.exe.cmd`
-- **Arguments**: `start --config "D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1\gateway.yaml" mcp-stdio`
+  - Exemple: `D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\gateway.exe.cmd`
+- **Arguments**: `start --config "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\gateway.yaml" mcp-stdio`
   - Remplacez le chemin par le chemin complet vers votre fichier gateway.yaml
 - **Environments**: `N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true`
 

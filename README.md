@@ -131,52 +131,62 @@ Les fichiers finaux indispensables au projet sont organisés dans les répertoir
 
 ## Documentation
 
+### Guides d'utilisation
+
 - [Guide final MCP](docs/guides/GUIDE_FINAL_MCP.md) : Guide complet sur les MCP dans n8n
 - [Guide MCP Gateway](docs/guides/GUIDE_MCP_GATEWAY.md) : Guide spécifique pour le MCP Gateway
 - [Guide MCP Git Ingest](docs/guides/GUIDE_MCP_GIT_INGEST.md) : Guide spécifique pour le MCP Git Ingest
 - [Guide des nouvelles fonctionnalités](docs/guides/GUIDE_NOUVELLES_FONCTIONNALITES.md) : Présentation des nouvelles fonctionnalités et de l'organisation du dépôt
 - [Guide d'organisation automatique](docs/guides/GUIDE_ORGANISATION_AUTOMATIQUE.md) : Guide pour l'organisation automatique du dépôt
+- [Guide de gestion des caractères accentués](docs/guides/GUIDE_GESTION_CARACTERES_ACCENTES.md) : Guide pour résoudre les problèmes d'encodage des caractères accentués français dans n8n
+
+### Documentation de l'API n8n
+
+- [Documentation de l'API n8n](docs/api/N8N_API_DOCUMENTATION.md) : Documentation complète de l'API n8n avec les endpoints testés et leur statut
+- [Exemples d'utilisation de l'API n8n](docs/api/N8N_API_EXAMPLES.md) : Exemples concrets d'utilisation des endpoints fonctionnels
+
+### Journal de bord
+
+- [Journal de bord](JOURNAL_DE_BORD.md) : Journal documentant la progression, les problèmes rencontrés et les solutions mises en œuvre
 
 ## Organisation automatique des fichiers
 
 Le projet dispose de scripts d'automatisation pour maintenir une structure de répertoire claire et organisée :
 
-### Scripts d'organisation
+### Nouvelle organisation automatique
 
-- **scripts/organize-scripts.ps1** - Organise les scripts en sous-dossiers sémantiques
-  ```powershell
-  powershell -File .\scripts\organize-scripts.ps1
-  ```
+Un système complet d'organisation automatique des fichiers a été mis en place pour maintenir le dépôt propre et conforme aux standards GitHub :
 
-- **scripts/utils/automation/auto-organize-folders.ps1** - Organise les dossiers contenant trop de fichiers
-  ```powershell
-  powershell -File .\scripts\utils\automation\auto-organize-folders.ps1 -MaxFilesPerFolder 15
-  ```
+- **Surveillance en temps réel** : Détecte et organise automatiquement les nouveaux fichiers dès leur création
+- **Tâche planifiée quotidienne** : Nettoie et organise le dépôt chaque jour
+- **Hook Git pre-commit** : Organise les fichiers avant chaque commit
 
-- **scripts/utils/automation/manage-logs.ps1** - Gère les logs par unité de temps
-  ```powershell
-  powershell -File .\scripts\utils\automation\manage-logs.ps1 <LogName> [Category]
-  ```
-
-### Configuration de l'automatisation
-
-Pour configurer l'exécution automatique de ces scripts, utilisez :
+Pour configurer toutes ces méthodes d'organisation automatique, exécutez :
 
 ```powershell
-powershell -File .\scripts\utils\automation\setup-auto-organization.ps1
+.\scripts\maintenance\setup-all-auto-organize.ps1
 ```
 
-Ce script crée des tâches planifiées pour :
-- Organiser les scripts (hebdomadaire)
-- Organiser les dossiers (quotidienne)
-- Gérer les logs (quotidienne)
+Pour démarrer manuellement la surveillance en temps réel :
+
+```powershell
+.\start-file-watcher.cmd
+```
+
+### Scripts d'organisation disponibles
+
+- **scripts/maintenance/auto-organize.ps1** - Organisation interactive des fichiers
+- **scripts/maintenance/auto-organize-silent.ps1** - Organisation silencieuse (pour les tâches planifiées)
+- **scripts/maintenance/watch-and-organize.ps1** - Surveillance en temps réel des nouveaux fichiers
+- **scripts/maintenance/clean-root.ps1** - Nettoyage interactif des fichiers à la racine
+- **scripts/maintenance/organize-repo.ps1** - Réorganisation complète du dépôt
 
 ### Principes d'organisation
 
-- **Limitation du nombre de fichiers** : Maximum 15 fichiers par dossier
-- **Organisation sémantique** : Classement par type d'usage
-- **Logs par unité de temps** : Quotidien, hebdomadaire, mensuel
-- **Archivage automatique** : Compression des anciens logs
+- **Organisation automatique** : Les fichiers sont automatiquement placés dans les dossiers appropriés
+- **Règles de classement** : Basées sur les extensions et les préfixes des fichiers
+- **Fichiers essentiels préservés** : Les fichiers comme README.md et .gitignore restent à la racine
+- **Journalisation** : Toutes les actions d'organisation sont enregistrées dans des fichiers de log
 
 ## Utilisation des MCP
 
