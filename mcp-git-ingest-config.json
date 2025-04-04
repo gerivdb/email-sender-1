@@ -1,0 +1,9 @@
+{
+  "augment.mcpServers": [
+    {
+      "name": "MCP Git Ingest",
+      "type": "command",
+      "command": "D:\\DO\\WEB\\N8N tests\\scripts json à tester\\EMAIL SENDER 1\\scripts\\cmd\\augment\\augment-mcp-git-ingest.cmd"
+    }
+  ]
+}

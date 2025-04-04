@@ -4,5 +4,5 @@ cd /d "%~dp0"
 
 echo Démarrage du MCP Git Ingest...
 
-:: Utiliser la commande directe avec le dépôt GitHub
-npx -y --package=git+https://github.com/adhikasp/mcp-git-ingest mcp-git-ingest
+:: Utiliser le script Python pour lancer le MCP Git Ingest en mode STDIO
+python "..\..\..\scripts\python\run_mcp_git_ingest.py" --stdio
