@@ -146,6 +146,77 @@ Ce journal documente notre progression, les problèmes rencontrés et les soluti
 - Mettre en place des tests automatisés pour vérifier l'encodage des fichiers
 - Créer un guide de bonnes pratiques pour le développement de scripts PowerShell dans le contexte de n8n
 
+## 06/04/2025 - Gestion efficace des commits Git avec un grand nombre de fichiers
+
+### Actions réalisées
+- Commit et push de 136 changements en une seule opération
+- Réorganisation complète du projet avec correction des problèmes d'encodage
+- Ajout de scripts de maintenance et de documentation
+- Gestion des erreurs liées aux hooks Git
+
+### Enseignements sur la gestion des commits Git
+
+#### 1. Approche méthodique pour les commits volumineux
+- Une approche étape par étape (vérification, ajout, commit, push) est essentielle pour les commits volumineux
+- Un message de commit descriptif facilite la compréhension future de l'historique du projet
+- Git gère efficacement un grand nombre de changements simultanés (ajouts, modifications, suppressions, déplacements)
+
+#### 2. Problèmes courants et leurs résolutions
+
+##### Conflits avec les hooks Git
+- **Problème identifié** : Erreur d'accès au fichier pre-commit pendant le processus de commit
+  ```
+  Set-Content : Le processus ne peut pas accéder au fichier '.git/hooks/pre-commit', car il est en cours d'utilisation par un autre processus.
+  ```
+- **Cause** : Le script auto-organize-silent.ps1 tente de modifier le hook pre-commit pendant que Git l'utilise
+- **Solutions** :
+  - Exécuter les scripts d'organisation avant de lancer la commande de commit
+  - Modifier le script pour vérifier si le fichier est déjà en cours d'utilisation
+  - Implémenter un mécanisme de verrouillage pour éviter les accès concurrents
+
+##### Gestion des fins de ligne (LF/CRLF)
+- **Problème identifié** : Nombreux avertissements sur les fins de ligne lors du commit
+  ```
+  warning: in the working copy of 'file.md', LF will be replaced by CRLF the next time Git touches it
+  ```
+- **Cause** : Différence de gestion des fins de ligne entre les systèmes d'exploitation
+- **Solutions** :
+  - Configurer Git avec `git config --global core.autocrlf true` (pour Windows)
+  - Ajouter un fichier .gitattributes pour définir explicitement la gestion des fins de ligne
+  - Standardiser l'environnement de développement pour éviter les problèmes de compatibilité
+
+#### 3. Optimisations pour les futurs commits
+
+##### Automatisation du processus
+- Créer un script qui effectue toutes les étapes en une seule commande
+- Inclure des vérifications préalables pour éviter les conflits avec les hooks Git
+- Ajouter des mécanismes de validation pour s'assurer que les changements sont cohérents
+
+##### Commits atomiques vs. commits volumineux
+- Les commits atomiques (petits et ciblés) sont généralement préférables aux commits volumineux
+- Pour une réorganisation majeure, segmenter les changements par catégorie :
+  1. Modifications de structure de dossiers
+  2. Ajout de nouveaux fichiers
+  3. Modifications de fichiers existants
+  4. Suppressions de fichiers obsolètes
+- Cette approche facilite le suivi des changements et les éventuels rollbacks
+
+##### Vérification avant push
+- Utiliser `git diff --staged` pour vérifier les changements avant le commit
+- Implémenter des tests automatisés pour valider l'intégrité du projet après les changements
+- Créer une liste de contrôle pour s'assurer que tous les aspects importants sont vérifiés
+
+### Implications pour le projet n8n
+- La gestion efficace des commits Git est cruciale pour maintenir l'intégrité du projet
+- Les hooks Git peuvent être utilisés pour automatiser les tâches de maintenance, mais nécessitent une gestion soigneuse
+- La standardisation des fins de ligne et de l'encodage des fichiers est essentielle pour éviter les problèmes de compatibilité
+
+### Prochaines étapes
+- Créer un fichier .gitattributes pour standardiser la gestion des fins de ligne
+- Améliorer les scripts d'organisation pour éviter les conflits avec Git
+- Développer un workflow Git optimisé pour le projet n8n
+- Documenter les bonnes pratiques de commit pour l'équipe
+
 ## 05/04/2025 - Organisation automatique du dépôt et gestion des standards GitHub
 
 ### Actions réalisées
