@@ -1,0 +1,57 @@
+{
+  "journal": {
+    "entriesDir": "docs/journal_de_bord/entries",
+    "tagsDir": "docs/journal_de_bord/tags",
+    "indexFile": "docs/journal_de_bord/index.md",
+    "templates": {
+      "daily": {
+        "title": "Journal quotidien - ${date}",
+        "tags": ["journal-quotidien", "activités"],
+        "content": "# ${title}\n\n## Activités du jour\n- \n\n## Problèmes rencontrés\n- \n\n## Solutions mises en œuvre\n- \n\n## Enseignements\n- \n\n## Tâches pour demain\n- \n\n## Notes diverses\n- "
+      },
+      "weekly": {
+        "title": "Résumé hebdomadaire - Semaine du ${date}",
+        "tags": ["résumé-hebdomadaire", "bilan"],
+        "content": "# ${title}\n\n## Période couverte\n- Du ${weekStart} au ${weekEnd}\n\n## Résumé des activités\n- \n\n## Principales réalisations\n- \n\n## Problèmes rencontrés\n- \n\n## Solutions mises en œuvre\n- \n\n## Enseignements\n- \n\n## Objectifs pour la semaine à venir\n- \n\n## Références\n- "
+      },
+      "n8n": {
+        "title": "n8n Workflow: ${action} - ${workflowName}",
+        "tags": ["n8n", "workflow", "${action}"],
+        "content": "# ${title}\n\n## Détails du workflow\n- **Nom**: ${workflowName}\n- **ID**: ${workflowId}\n- **Action**: ${action}\n- **Date**: ${datetime}\n\n## Modifications\n${details}\n\n## Impact sur le système\n- \n\n## Tests effectués\n- \n\n## Résultats\n- "
+      },
+      "bug": {
+        "title": "Bug: ${bugTitle}",
+        "tags": ["bug", "erreur"],
+        "content": "# ${title}\n\n## Description du bug\n${bugDescription}\n\n## Étapes de reproduction\n1. \n2. \n3. \n\n## Comportement attendu\n- \n\n## Comportement observé\n- \n\n## Environnement\n- OS: Windows\n- Version n8n: \n- Navigateur: \n\n## Captures d'écran\n\n## Logs\n```\n\n```\n\n## Solution\n- "
+      },
+      "feature": {
+        "title": "Fonctionnalité: ${featureTitle}",
+        "tags": ["fonctionnalité", "amélioration"],
+        "content": "# ${title}\n\n## Description de la fonctionnalité\n${featureDescription}\n\n## Motivation\n- \n\n## Implémentation proposée\n- \n\n## Alternatives considérées\n- \n\n## Tests nécessaires\n- \n\n## Documentation nécessaire\n- "
+      }
+    },
+    "keybindings": {
+      "createDaily": "ctrl+alt+j d",
+      "createWeekly": "ctrl+alt+j w",
+      "createN8n": "ctrl+alt+j n",
+      "createBug": "ctrl+alt+j b",
+      "createFeature": "ctrl+alt+j f",
+      "search": "ctrl+alt+j s",
+      "rebuildIndex": "ctrl+alt+j r"
+    },
+    "statusBar": {
+      "enabled": true,
+      "text": "$(book) Journal",
+      "tooltip": "Journal de Bord RAG",
+      "command": "journal.showMenu"
+    },
+    "autoCommit": {
+      "enabled": true,
+      "message": "Journal: Mise à jour automatique du ${date}"
+    },
+    "autoTag": {
+      "enabled": true,
+      "extractFromContent": true
+    }
+  }
+}

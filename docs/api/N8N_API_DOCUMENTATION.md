@@ -81,13 +81,109 @@ Voici les resultats des tests effectues sur les differents endpoints de l'API n8
 | POST | /api/v1/workflows/1/deactivate | Desactive un workflow | âŒ Echoue | Le serveur distant a retourné une erreur : (404) Introuvable. |
 | POST | /api/v1/workflows/1/execute | Execute un workflow | âŒ Echoue | Le serveur distant a retourné une erreur : (404) Introuvable. |
 
+## Structure d'un workflow n8n
+
+Voici la structure complète d'un workflow n8n telle que retournée par l'API :
+
+```json
+{
+  "id": "2tUt1wbLX592XDdX",
+  "name": "Workflow 1",
+  "active": true,
+  "createdAt": "2025-04-05T00:06:48.443Z",
+  "updatedAt": "2025-04-05T00:06:48.443Z",
+  "nodes": [
+    {
+      "id": "0f5532f9-36ba-4bef-86c7-30d607400b15",
+      "name": "Jira",
+      "webhookId": "string",
+      "disabled": true,
+      "notesInFlow": true,
+      "notes": "string",
+      "type": "n8n-nodes-base.Jira",
+      "typeVersion": 1,
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "maxTries": 0,
+      "waitBetweenTries": 0,
+      "onError": "stopWorkflow",
+      "position": [
+        -100,
+        80
+      ],
+      "parameters": {
+        "additionalProperties": {}
+      },
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "35",
+          "name": "jiraApi"
+        }
+      },
+      "createdAt": "2025-04-05T00:06:48.443Z",
+      "updatedAt": "2025-04-05T00:06:48.443Z"
+    }
+  ],
+  "connections": {
+    "main": [
+      {
+        "node": "Jira",
+        "type": "main",
+        "index": 0
+      }
+    ]
+  },
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "errorWorkflow": "VzqKEW0ShTXA5vPj",
+    "timezone": "America/New_York",
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "lastId": 1
+  },
+  "tags": [
+    {
+      "id": "2tUt1wbLX592XDdX",
+      "name": "Production",
+      "createdAt": "2025-04-05T00:06:48.443Z",
+      "updatedAt": "2025-04-05T00:06:48.443Z"
+    }
+  ]
+}
+```
+
+### Propriétés principales d'un workflow
+
+- **id** : Identifiant unique du workflow
+- **name** : Nom du workflow
+- **active** : État d'activation du workflow (true/false)
+- **createdAt** : Date de création
+- **updatedAt** : Date de dernière mise à jour
+- **nodes** : Tableau des nœuds du workflow
+  - **id** : Identifiant unique du nœud
+  - **name** : Nom du nœud
+  - **type** : Type de nœud (ex: n8n-nodes-base.Jira)
+  - **position** : Position dans l'interface
+  - **parameters** : Paramètres spécifiques au nœud
+  - **credentials** : Identifiants utilisés par le nœud
+- **connections** : Définit comment les nœuds sont connectés entre eux
+- **settings** : Paramètres du workflow (timeout, sauvegarde des exécutions, etc.)
+- **staticData** : Données statiques persistantes entre les exécutions
+- **tags** : Tags associés au workflow
+
 ## Exemples d'utilisation
 
 Voici quelques exemples d'utilisation de l'API n8n avec PowerShell.
 
 ### Lister tous les workflows
 
-`powershell
+```powershell
 $n8nUrl = "http://localhost:5678"
 $apiToken = "votre-jeton-api"
 
@@ -98,12 +194,12 @@ $headers = @{
 $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows" -Method Get -Headers $headers
 
 # Afficher les workflows
-$response | Format-Table -Property id, name, active
-`
+$response.data | Format-Table -Property id, name, active
+```
 
-### Creer un nouveau workflow
+### Créer un nouveau workflow
 
-`powershell
+```powershell
 $n8nUrl = "http://localhost:5678"
 $apiToken = "votre-jeton-api"
 
@@ -116,20 +212,39 @@ $body = @{
     name = "Nouveau Workflow"
     nodes = @()
     connections = @{}
+    settings = @{
+        executionOrder = "v1"
+    }
 } | ConvertTo-Json -Depth 10
 
 $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows" -Method Post -Headers $headers -Body $body
 
 # Afficher le nouveau workflow
 $response | Format-Table -Property id, name
-`
+```
 
-### Executer un workflow
+### Supprimer un workflow
 
-`powershell
+```powershell
 $n8nUrl = "http://localhost:5678"
 $apiToken = "votre-jeton-api"
-$workflowId = "123" # Remplacez par l'ID de votre workflow
+$workflowId = "2tUt1wbLX592XDdX" # Remplacez par l'ID de votre workflow
+
+$headers = @{
+    "X-N8N-API-KEY" = $apiToken
+}
+
+Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows/$workflowId" -Method Delete -Headers $headers
+
+Write-Host "Workflow supprimé avec succès"
+```
+
+### Exécuter un workflow
+
+```powershell
+$n8nUrl = "http://localhost:5678"
+$apiToken = "votre-jeton-api"
+$workflowId = "2tUt1wbLX592XDdX" # Remplacez par l'ID de votre workflow
 
 $headers = @{
     "X-N8N-API-KEY" = $apiToken
@@ -138,9 +253,9 @@ $headers = @{
 
 $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows/$workflowId/execute" -Method Post -Headers $headers
 
-# Afficher le resultat de l'execution
+# Afficher le résultat de l'exécution
 $response | Format-Table -Property id, finished, status
-`
+```
 
 ## Remarques importantes
 

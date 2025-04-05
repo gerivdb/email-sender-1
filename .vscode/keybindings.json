@@ -1,0 +1,37 @@
+[
+  {
+    "key": "ctrl+alt+j d",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Journal: Entrée quotidienne"
+  },
+  {
+    "key": "ctrl+alt+j w",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Journal: Entrée hebdomadaire"
+  },
+  {
+    "key": "ctrl+alt+j n",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Journal: Nouvelle entrée"
+  },
+  {
+    "key": "ctrl+alt+j s",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Journal: Rechercher"
+  },
+  {
+    "key": "ctrl+alt+j r",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Journal: Reconstruire l'index"
+  },
+  {
+    "key": "ctrl+alt+j q",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Journal: Interroger le RAG"
+  },
+  {
+    "key": "ctrl+alt+j w",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Journal: Démarrer la surveillance"
+  }
+]

@@ -10,7 +10,7 @@ try {
     $headers = @{
         "X-N8N-API-KEY" = $apiToken
     }
-    $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows" -Method Get -Headers $headers
+    Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows" -Method Get -Headers $headers | Out-Null
     Write-Host " Connecté!" -ForegroundColor Green
 }
 catch {
@@ -26,23 +26,23 @@ try {
         "X-N8N-API-KEY" = $apiToken
     }
     $workflows = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows" -Method Get -Headers $headers
-    
+
     if ($workflows.Count -eq 0) {
         Write-Host "Aucun workflow trouvé dans n8n." -ForegroundColor Yellow
         exit
     }
-    
+
     Write-Host "Trouvé $($workflows.Count) workflows.`n"
-    
+
     # Supprimer tous les workflows sans demander de confirmation
     Write-Host "Suppression de tous les workflows existants..."
-    
+
     $successCount = 0
     foreach ($workflow in $workflows) {
         Write-Host "Suppression du workflow: $($workflow.name)" -NoNewline
-        
+
         try {
-            $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows/$($workflow.id)" -Method Delete -Headers $headers
+            Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows/$($workflow.id)" -Method Delete -Headers $headers | Out-Null
             Write-Host " - Succès!" -ForegroundColor Green
             $successCount++
         }
@@ -51,7 +51,7 @@ try {
             Write-Host "  Erreur: $($_.Exception.Message)" -ForegroundColor Red
         }
     }
-    
+
     Write-Host "`nSuppression terminée: $successCount/$($workflows.Count) workflows supprimés avec succès."
 }
 catch {
