@@ -200,7 +200,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "⚠️ CI/CD Pipeline Failed: ${{ github.repository }}"
+          subject: "⚠️ CI/CD Pipeline Failed: ${{ github.repository }} (${{ github.ref_name }})"
           body: |
             The CI/CD pipeline for ${{ github.repository }} has failed.
 
@@ -209,7 +209,7 @@ jobs:
             Commit message: ${{ github.event.head_commit.message }}
 
             See details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          to: gerivonderbitsh+dev@gmail.com
+          to: gerivonderbitsh+dev@gmail.com, gerivonderbitsh+alerts@gmail.com
           from: GitHub Actions
 
       - name: Send email notification on success
@@ -220,7 +220,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "✅ CI/CD Pipeline Succeeded: ${{ github.repository }}"
+          subject: "✅ CI/CD Pipeline Succeeded: ${{ github.repository }} (${{ github.ref_name }})"
           body: |
             The CI/CD pipeline for ${{ github.repository }} has succeeded.
 
@@ -229,7 +229,11 @@ jobs:
             Commit message: ${{ github.event.head_commit.message }}
 
             Environment: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Development' }}
+            Deployment time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+            Changes included in this deployment:
+            ${{ github.event.head_commit.message }}
 
             See details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          to: gerivonderbitsh+dev@gmail.com
+          to: gerivonderbitsh+dev@gmail.com, gerivonderbitsh+alerts@gmail.com
           from: GitHub Actions
