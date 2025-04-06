@@ -1,0 +1,14 @@
+# Ce workflow est désactivé car il contient des erreurs
+# Utilisez simple-ci.yml à la place
+
+name: CI/CD Pipeline (Disabled)
+
+on:
+  # Désactivé pour éviter les conflits
+  workflow_dispatch:
+
+jobs:
+  dummy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Ce workflow est désactivé"

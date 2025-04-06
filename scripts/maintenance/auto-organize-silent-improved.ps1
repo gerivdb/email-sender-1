@@ -220,20 +220,24 @@ if (Test-Path "$projectRoot\.git") {
 
 echo "Organisation automatique des fichiers avant commit..."
 
-# Utiliser une variable pour le chemin du script
-SCRIPT_PATH="$($projectRoot.Replace('\', '/'))/scripts/maintenance/auto-organize-silent-improved.ps1"
+# Obtenir le chemin du répertoire Git
+GIT_DIR=$(git rev-parse --git-dir)
+PROJECT_ROOT=$(git rev-parse --show-toplevel)
+
+# Définir le chemin relatif du script
+SCRIPT_PATH="\$PROJECT_ROOT/scripts/maintenance/auto-organize-silent-improved.ps1"
 
 # Vérifier si le script existe
-if [ -f "$SCRIPT_PATH" ]; then
+if [ -f "\$SCRIPT_PATH" ]; then
     # Exécuter le script amélioré qui gère les conflits de fichiers
-    powershell -ExecutionPolicy Bypass -File "$SCRIPT_PATH"
+    powershell -ExecutionPolicy Bypass -File "\$SCRIPT_PATH"
     SCRIPT_EXIT_CODE=\$?
 
     if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
         echo "Avertissement: Le script d'organisation a rencontré des problèmes, mais le commit continuera."
     fi
 else
-    echo "Avertissement: Script d'organisation non trouvé à $SCRIPT_PATH"
+    echo "Avertissement: Script d'organisation non trouvé à \$SCRIPT_PATH"
     echo "Le commit continuera sans organisation automatique."
 fi
 
@@ -285,13 +289,17 @@ exit 0
 
 echo "Vérification des changements avant push..."
 
-# Utiliser une variable pour le chemin du script
-SCRIPT_PATH="$($projectRoot.Replace('\', '/'))/scripts/utils/git/git-pre-push-check.ps1"
+# Obtenir le chemin du répertoire Git
+GIT_DIR=$(git rev-parse --git-dir)
+PROJECT_ROOT=$(git rev-parse --show-toplevel)
+
+# Définir le chemin relatif du script
+SCRIPT_PATH="\$PROJECT_ROOT/scripts/utils/git/git-pre-push-check.ps1"
 
 # Vérifier si le script existe
-if [ -f "$SCRIPT_PATH" ]; then
+if [ -f "\$SCRIPT_PATH" ]; then
     # Exécuter le script de vérification
-    powershell -ExecutionPolicy Bypass -File "$SCRIPT_PATH"
+    powershell -ExecutionPolicy Bypass -File "\$SCRIPT_PATH"
     SCRIPT_EXIT_CODE=\$?
 
     # Vérifier le code de sortie du script
@@ -300,7 +308,7 @@ if [ -f "$SCRIPT_PATH" ]; then
         exit 1
     fi
 else
-    echo "Avertissement: Script de vérification non trouvé à $SCRIPT_PATH"
+    echo "Avertissement: Script de vérification non trouvé à \$SCRIPT_PATH"
     echo "Le push continuera sans vérification."
 fi
 

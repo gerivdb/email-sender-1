@@ -106,41 +106,21 @@ if (-not $SkipPreCommit) {
         $CustomPreCommitScript
     }
 
+    # Utiliser le wrapper CMD pour le hook pre-commit
+    $preCommitWrapperPath = Join-Path $projectRoot "scripts\utils\git\hooks\pre-commit-wrapper.cmd"
+
+    if (-not (Test-Path $preCommitWrapperPath)) {
+        Write-ColorMessage "Wrapper pre-commit non trouvé : $preCommitWrapperPath" -ForegroundColor "Red"
+        if (-not $Force) {
+            exit 1
+        }
+    }
+
     # Créer un fichier temporaire pour le hook
     $tempHookPath = "$gitHooksDir\pre-commit.tmp"
 
-    $preCommitHookContent = @"
-#!/bin/sh
-# Pre-commit hook amélioré pour organiser automatiquement les fichiers
-
-echo "Organisation automatique des fichiers avant commit..."
-
-# Obtenir le chemin du répertoire Git
-GIT_DIR="$(git rev-parse --git-dir)"
-PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-
-# Définir le chemin relatif du script
-SCRIPT_PATH="\$PROJECT_ROOT/$($organizationScript.Replace('\', '/'))"
-
-# Vérifier si le script existe
-if [ -f "\$SCRIPT_PATH" ]; then
-    # Exécuter le script amélioré qui gère les conflits de fichiers
-    powershell -ExecutionPolicy Bypass -File "\$SCRIPT_PATH"
-    SCRIPT_EXIT_CODE=\$?
-
-    if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
-        echo "Avertissement: Le script d'organisation a rencontré des problèmes, mais le commit continuera."
-    fi
-else
-    echo "Avertissement: Script d'organisation non trouvé à \$SCRIPT_PATH"
-    echo "Le commit continuera sans organisation automatique."
-fi
-
-# Ajouter les fichiers déplacés au commit
-git add .
-
-exit 0
-"@
+    # Copier le contenu du wrapper
+    $preCommitHookContent = Get-Content $preCommitWrapperPath -Raw
 
     try {
         # Écrire d'abord dans un fichier temporaire
@@ -197,40 +177,21 @@ if (-not $SkipPrePush) {
         $CustomPrePushScript
     }
 
+    # Utiliser le wrapper CMD pour le hook pre-push
+    $prePushWrapperPath = Join-Path $projectRoot "scripts\utils\git\hooks\pre-push-wrapper.cmd"
+
+    if (-not (Test-Path $prePushWrapperPath)) {
+        Write-ColorMessage "Wrapper pre-push non trouvé : $prePushWrapperPath" -ForegroundColor "Red"
+        if (-not $Force) {
+            exit 1
+        }
+    }
+
     # Créer un fichier temporaire pour le hook
     $tempHookPath = "$gitHooksDir\pre-push.tmp"
 
-    $prePushHookContent = @"
-#!/bin/sh
-# Pre-push hook amélioré pour vérifier les changements avant push
-
-echo "Vérification des changements avant push..."
-
-# Obtenir le chemin du répertoire Git
-GIT_DIR="$(git rev-parse --git-dir)"
-PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-
-# Définir le chemin relatif du script
-SCRIPT_PATH="\$PROJECT_ROOT/$($verificationScript.Replace('\', '/'))"
-
-# Vérifier si le script existe
-if [ -f "\$SCRIPT_PATH" ]; then
-    # Exécuter le script de vérification
-    powershell -ExecutionPolicy Bypass -File "\$SCRIPT_PATH"
-    SCRIPT_EXIT_CODE=\$?
-
-    # Vérifier le code de sortie du script
-    if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
-        echo "Vérification échouée. Push annulé."
-        exit 1
-    fi
-else
-    echo "Avertissement: Script de vérification non trouvé à \$SCRIPT_PATH"
-    echo "Le push continuera sans vérification."
-fi
-
-exit 0
-"@
+    # Copier le contenu du wrapper
+    $prePushHookContent = Get-Content $prePushWrapperPath -Raw
 
     try {
         # Écrire d'abord dans un fichier temporaire
