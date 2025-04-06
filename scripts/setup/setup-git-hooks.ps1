@@ -4,16 +4,16 @@
 param (
     [Parameter(Mandatory = $false)]
     [switch]$Force,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$SkipPreCommit,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$SkipPrePush,
-    
+
     [Parameter(Mandatory = $false)]
     [string]$CustomPreCommitScript,
-    
+
     [Parameter(Mandatory = $false)]
     [string]$CustomPrePushScript
 )
@@ -28,7 +28,7 @@ function Write-ColorMessage {
         [string]$Message,
         [string]$ForegroundColor = "White"
     )
-    
+
     Write-Host $Message -ForegroundColor $ForegroundColor
 }
 
@@ -46,9 +46,9 @@ function Test-FileLock {
         [parameter(Mandatory = $true)]
         [string]$Path
     )
-    
+
     $locked = $false
-    
+
     if (Test-Path -Path $Path) {
         try {
             $fileStream = [System.IO.File]::Open($Path, 'Open', 'Write')
@@ -60,7 +60,7 @@ function Test-FileLock {
             $locked = $true
         }
     }
-    
+
     return $locked
 }
 
@@ -82,12 +82,12 @@ if (-not (Test-Path $gitHooksDir)) {
 # Configurer le hook pre-commit
 if (-not $SkipPreCommit) {
     Write-ColorMessage "`nConfiguration du hook pre-commit..." -ForegroundColor "Cyan"
-    
+
     $preCommitHookPath = "$gitHooksDir\pre-commit"
-    
+
     # Vérifier si le fichier pre-commit est verrouillé
     $isLocked = Test-FileLock -Path $preCommitHookPath
-    
+
     if ($isLocked) {
         Write-ColorMessage "Le fichier pre-commit hook est actuellement verrouillé ou utilisé par un autre processus" -ForegroundColor "Yellow"
         if (-not $Force) {
@@ -98,17 +98,17 @@ if (-not $SkipPreCommit) {
             Write-ColorMessage "Continuation forcée malgré le verrouillage" -ForegroundColor "Yellow"
         }
     }
-    
+
     # Déterminer le script à utiliser
     $organizationScript = if ([string]::IsNullOrEmpty($CustomPreCommitScript)) {
         "scripts/maintenance/auto-organize-silent-improved.ps1"
     } else {
         $CustomPreCommitScript
     }
-    
+
     # Créer un fichier temporaire pour le hook
     $tempHookPath = "$gitHooksDir\pre-commit.tmp"
-    
+
     $preCommitHookContent = @"
 #!/bin/sh
 # Pre-commit hook amélioré pour organiser automatiquement les fichiers
@@ -116,8 +116,8 @@ if (-not $SkipPreCommit) {
 echo "Organisation automatique des fichiers avant commit..."
 
 # Obtenir le chemin du répertoire Git
-GIT_DIR=$(git rev-parse --git-dir)
-PROJECT_ROOT=$(git rev-parse --show-toplevel)
+GIT_DIR="$(git rev-parse --git-dir)"
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Définir le chemin relatif du script
 SCRIPT_PATH="\$PROJECT_ROOT/$($organizationScript.Replace('\', '/'))"
@@ -127,7 +127,7 @@ if [ -f "\$SCRIPT_PATH" ]; then
     # Exécuter le script amélioré qui gère les conflits de fichiers
     powershell -ExecutionPolicy Bypass -File "\$SCRIPT_PATH"
     SCRIPT_EXIT_CODE=\$?
-    
+
     if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
         echo "Avertissement: Le script d'organisation a rencontré des problèmes, mais le commit continuera."
     fi
@@ -145,15 +145,15 @@ exit 0
     try {
         # Écrire d'abord dans un fichier temporaire
         Set-Content -Path $tempHookPath -Value $preCommitHookContent -NoNewline
-        
+
         # Puis renommer le fichier temporaire (opération atomique)
         if (Test-Path $preCommitHookPath) {
             Remove-Item -Path $preCommitHookPath -Force
         }
         Rename-Item -Path $tempHookPath -NewName (Split-Path $preCommitHookPath -Leaf)
-        
+
         Write-ColorMessage "Hook pre-commit configuré avec succès" -ForegroundColor "Green"
-        
+
         # Rendre le hook exécutable sous Unix
         if ($IsLinux -or $IsMacOS) {
             & chmod +x $preCommitHookPath
@@ -173,12 +173,12 @@ else {
 # Configurer le hook pre-push
 if (-not $SkipPrePush) {
     Write-ColorMessage "`nConfiguration du hook pre-push..." -ForegroundColor "Cyan"
-    
+
     $prePushHookPath = "$gitHooksDir\pre-push"
-    
+
     # Vérifier si le fichier pre-push est verrouillé
     $isLocked = Test-FileLock -Path $prePushHookPath
-    
+
     if ($isLocked) {
         Write-ColorMessage "Le fichier pre-push hook est actuellement verrouillé ou utilisé par un autre processus" -ForegroundColor "Yellow"
         if (-not $Force) {
@@ -189,17 +189,17 @@ if (-not $SkipPrePush) {
             Write-ColorMessage "Continuation forcée malgré le verrouillage" -ForegroundColor "Yellow"
         }
     }
-    
+
     # Déterminer le script à utiliser
     $verificationScript = if ([string]::IsNullOrEmpty($CustomPrePushScript)) {
         "scripts/utils/git/git-pre-push-check.ps1"
     } else {
         $CustomPrePushScript
     }
-    
+
     # Créer un fichier temporaire pour le hook
     $tempHookPath = "$gitHooksDir\pre-push.tmp"
-    
+
     $prePushHookContent = @"
 #!/bin/sh
 # Pre-push hook amélioré pour vérifier les changements avant push
@@ -207,8 +207,8 @@ if (-not $SkipPrePush) {
 echo "Vérification des changements avant push..."
 
 # Obtenir le chemin du répertoire Git
-GIT_DIR=$(git rev-parse --git-dir)
-PROJECT_ROOT=$(git rev-parse --show-toplevel)
+GIT_DIR="$(git rev-parse --git-dir)"
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Définir le chemin relatif du script
 SCRIPT_PATH="\$PROJECT_ROOT/$($verificationScript.Replace('\', '/'))"
@@ -218,7 +218,7 @@ if [ -f "\$SCRIPT_PATH" ]; then
     # Exécuter le script de vérification
     powershell -ExecutionPolicy Bypass -File "\$SCRIPT_PATH"
     SCRIPT_EXIT_CODE=\$?
-    
+
     # Vérifier le code de sortie du script
     if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
         echo "Vérification échouée. Push annulé."
@@ -235,15 +235,15 @@ exit 0
     try {
         # Écrire d'abord dans un fichier temporaire
         Set-Content -Path $tempHookPath -Value $prePushHookContent -NoNewline
-        
+
         # Puis renommer le fichier temporaire (opération atomique)
         if (Test-Path $prePushHookPath) {
             Remove-Item -Path $prePushHookPath -Force
         }
         Rename-Item -Path $tempHookPath -NewName (Split-Path $prePushHookPath -Leaf)
-        
+
         Write-ColorMessage "Hook pre-push configuré avec succès" -ForegroundColor "Green"
-        
+
         # Rendre le hook exécutable sous Unix
         if ($IsLinux -or $IsMacOS) {
             & chmod +x $prePushHookPath
