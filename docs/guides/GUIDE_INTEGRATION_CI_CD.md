@@ -8,8 +8,10 @@ Ce guide explique comment utiliser et personnaliser l'intégration CI/CD mise en
 2. [Configuration GitHub Actions](#configuration-github-actions)
 3. [Exécution locale des vérifications CI/CD](#exécution-locale-des-vérifications-cicd)
 4. [Personnalisation des vérifications](#personnalisation-des-vérifications)
-5. [Intégration avec les hooks Git](#intégration-avec-les-hooks-git)
-6. [Bonnes pratiques](#bonnes-pratiques)
+5. [Déploiement automatisé](#déploiement-automatisé)
+6. [Tests unitaires](#tests-unitaires)
+7. [Intégration avec les hooks Git](#intégration-avec-les-hooks-git)
+8. [Bonnes pratiques](#bonnes-pratiques)
 
 ## Introduction à l'intégration CI/CD
 
@@ -103,6 +105,92 @@ $sensitivePatterns = @(
 )
 ```
 
+## Déploiement automatisé
+
+Le projet inclut un script de déploiement automatisé qui permet de déployer le code vers différents environnements.
+
+### Environnements disponibles
+
+Le script de déploiement prend en charge les environnements suivants :
+
+- **Development** : Environnement de développement
+- **Staging** : Environnement de pré-production
+- **Production** : Environnement de production
+
+### Utilisation du script de déploiement
+
+Pour déployer le projet vers un environnement spécifique, utilisez le script `scripts/ci/deploy.ps1` :
+
+```powershell
+# Déployer vers l'environnement de développement
+.\scripts\ci\deploy.ps1 -Environment Development
+
+# Déployer vers l'environnement de production
+.\scripts\ci\deploy.ps1 -Environment Production
+
+# Déployer sans exécuter les tests
+.\scripts\ci\deploy.ps1 -Environment Staging -SkipTests
+
+# Afficher des informations détaillées pendant le déploiement
+.\scripts\ci\deploy.ps1 -Environment Development -Verbose
+```
+
+### Étapes du déploiement
+
+Le script de déploiement effectue les étapes suivantes :
+
+1. **Exécution des tests** : Exécute les tests unitaires pour vérifier que le code fonctionne correctement
+2. **Création du package** : Crée une archive contenant les fichiers nécessaires au déploiement
+3. **Déploiement** : Copie les fichiers vers le serveur cible
+4. **Vérification** : Vérifie que le déploiement a réussi
+
+### Personnalisation du déploiement
+
+Vous pouvez personnaliser le déploiement en modifiant le script `scripts/ci/deploy.ps1`. Par exemple, vous pouvez :
+
+- Ajouter de nouveaux environnements
+- Modifier les serveurs cibles
+- Ajouter des étapes de déploiement spécifiques
+- Configurer des notifications après le déploiement
+
+## Tests unitaires
+
+Le projet inclut des tests unitaires pour vérifier le bon fonctionnement du code. Les tests sont écrits en PowerShell (Pester) et Python (unittest).
+
+### Tests PowerShell
+
+Les tests PowerShell se trouvent dans le dossier `tests/powershell`. Pour exécuter ces tests, utilisez Pester :
+
+```powershell
+# Installer Pester si nécessaire
+Install-Module -Name Pester -Force -Scope CurrentUser
+
+# Exécuter tous les tests PowerShell
+Invoke-Pester -Path .\tests\powershell
+
+# Exécuter un test spécifique
+Invoke-Pester -Path .\tests\powershell\GitHooksTest.ps1
+```
+
+### Tests Python
+
+Les tests Python se trouvent dans le dossier `tests/python`. Pour exécuter ces tests, utilisez unittest ou pytest :
+
+```bash
+# Exécuter tous les tests Python avec unittest
+python -m unittest discover -s tests/python
+
+# Exécuter tous les tests Python avec pytest
+pytest tests/python
+
+# Exécuter un test spécifique
+python -m unittest tests.python.test_ci_integration
+```
+
+### Intégration des tests dans le pipeline CI/CD
+
+Les tests sont automatiquement exécutés dans le pipeline CI/CD. Si les tests échouent, le pipeline s'arrête et le déploiement n'est pas effectué.
+
 ## Intégration avec les hooks Git
 
 Les vérifications CI/CD sont également intégrées aux hooks Git locaux, ce qui permet de détecter les problèmes avant même de commiter ou de pousser les modifications.
@@ -124,20 +212,37 @@ Le hook pre-push exécute les vérifications suivantes :
 - Exécution des tests unitaires
 - Détection des informations sensibles
 
-### Configuration des hooks
+### Installation des hooks
 
-Pour configurer les hooks Git, utilisez le script `scripts/setup/setup-git-hooks.ps1` :
+Pour installer les hooks Git, utilisez le script `scripts/setup/install-git-hooks.ps1` :
 
 ```powershell
 # Installer tous les hooks
-.\scripts\setup\setup-git-hooks.ps1
+.\scripts\setup\install-git-hooks.ps1
+
+# Installer avec des liens symboliques (recommandé)
+.\scripts\setup\install-git-hooks.ps1 -UseSymlinks
 
 # Installer uniquement le hook pre-commit
-.\scripts\setup\setup-git-hooks.ps1 -SkipPrePush
+.\scripts\setup\install-git-hooks.ps1 -SkipPrePush
 
 # Installer uniquement le hook pre-push
-.\scripts\setup\setup-git-hooks.ps1 -SkipPreCommit
+.\scripts\setup\install-git-hooks.ps1 -SkipPreCommit
 ```
+
+### Résolution des problèmes avec les hooks
+
+Si vous rencontrez des problèmes avec les hooks Git, essayez les solutions suivantes :
+
+1. **Utiliser des liens symboliques** : L'option `-UseSymlinks` permet d'utiliser des liens symboliques au lieu de copies directes, ce qui peut résoudre certains problèmes de chemins.
+
+2. **Éviter les espaces dans les chemins** : Les espaces dans les chemins peuvent causer des problèmes avec les hooks Git. Essayez de déplacer le projet dans un répertoire sans espaces.
+
+3. **Utiliser l'option `--no-verify`** : Si les hooks bloquent un commit ou un push urgent, vous pouvez utiliser l'option `--no-verify` pour ignorer les hooks :
+   ```bash
+   git commit --no-verify -m "Commit urgent"
+   git push --no-verify
+   ```
 
 ## Bonnes pratiques
 
