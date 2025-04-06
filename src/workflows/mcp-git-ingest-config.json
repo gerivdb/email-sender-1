@@ -4,6 +4,11 @@
       "name": "MCP Git Ingest",
       "type": "command",
       "command": "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\cmd\\augment\\augment-mcp-git-ingest.cmd"
+    },
+    {
+      "name": "MCP GitHub",
+      "type": "command",
+      "command": "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\cmd\\augment\\augment-mcp-github.cmd"
     }
   ]
 }

@@ -30,5 +30,10 @@
   "bugs": {
     "url": "https://github.com/yourusername/email-sender-n8n/issues"
   },
-  "homepage": "https://github.com/yourusername/email-sender-n8n#readme"
+  "homepage": "https://github.com/yourusername/email-sender-n8n#readme",
+  "dependencies": {
+    "@magarcia/gitingest": "^1.1.0",
+    "@octokit/rest": "^21.1.1",
+    "libsodium-wrappers": "^0.7.15"
+  }
 }

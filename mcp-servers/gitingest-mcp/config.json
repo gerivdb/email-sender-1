@@ -1,0 +1,15 @@
+{
+  "port": 3000,
+  "outputDir": "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\mcp-servers\\gitingest-mcp\\output",
+  "cloneDir": "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\mcp-servers\\gitingest-mcp\\repos",
+  "maxFiles": 100,
+  "excludePatterns": [
+    "node_modules/**",
+    ".git/**",
+    "**/*.min.js",
+    "**/*.bundle.js",
+    "**/*.map",
+    "**/dist/**",
+    "**/build/**"
+  ]
+}
