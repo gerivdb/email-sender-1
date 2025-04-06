@@ -1,6 +1,6 @@
 # Projet Email Sender pour n8n
 
-Ce projet contient des workflows n8n et des outils pour automatiser l'envoi d'emails et la gestion des processus de booking pour le groupe Gribitch.
+Ce projet contient des workflows n8n et des outils pour automatiser l'envoi d'emails et la gestion des processus de booking pour le groupe Gribitch. Il inclut également un système complet d'intégration continue et de déploiement continu (CI/CD) avec notifications par email.
 
 ## Structure du projet
 
@@ -132,6 +132,15 @@ Les fichiers finaux indispensables au projet sont organisés dans les répertoir
 ## Intégration CI/CD et Déploiement
 
 Le projet dispose d'un système complet d'intégration continue et de déploiement continu (CI/CD) avec notifications par email :
+
+### Notifications par email
+
+Le système envoie automatiquement des notifications par email dans les cas suivants :
+
+- **Succès du pipeline CI/CD** : Notification envoyée lorsque le pipeline réussit
+- **Échec du pipeline CI/CD** : Notification envoyée lorsque le pipeline échoue
+- **Déploiement réussi** : Notification envoyée lorsqu'un déploiement est effectué avec succès
+- **Échec du déploiement** : Notification envoyée lorsqu'un déploiement échoue
 
 ### Workflows GitHub Actions
 
