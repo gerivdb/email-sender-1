@@ -1,0 +1,115 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Lint Code
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+      
+      - name: Install PowerShell modules
+        shell: pwsh
+        run: |
+          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+          Install-Module -Name Pester -Force -Scope CurrentUser
+      
+      - name: Run linting checks
+        shell: pwsh
+        run: |
+          ./scripts/ci/run-ci-checks.ps1 -SkipTests -SkipSecurity -Verbose
+  
+  test:
+    name: Run Tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+      
+      - name: Install PowerShell modules
+        shell: pwsh
+        run: |
+          Install-Module -Name Pester -Force -Scope CurrentUser
+      
+      - name: Run tests
+        shell: pwsh
+        run: |
+          ./scripts/ci/run-ci-checks.ps1 -SkipLint -SkipSecurity -Verbose
+  
+  security:
+    name: Security Scan
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Run security checks
+        shell: pwsh
+        run: |
+          ./scripts/ci/run-ci-checks.ps1 -SkipLint -SkipTests -Verbose
+  
+  build:
+    name: Build and Deploy
+    needs: [lint, test, security]
+    runs-on: windows-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up environment
+        shell: pwsh
+        run: |
+          # Créer les dossiers nécessaires
+          New-Item -ItemType Directory -Path ./dist -Force
+      
+      - name: Build project
+        shell: pwsh
+        run: |
+          # Exemple de script de build
+          # ./scripts/build.ps1
+          
+          # Pour l'instant, juste copier les fichiers importants
+          Copy-Item -Path ./scripts -Destination ./dist/scripts -Recurse
+          Copy-Item -Path ./src -Destination ./dist/src -Recurse
+          Copy-Item -Path ./docs -Destination ./dist/docs -Recurse
+      
+      - name: Deploy to development
+        if: github.ref == 'refs/heads/develop'
+        shell: pwsh
+        run: |
+          # Exemple de déploiement vers l'environnement de développement
+          # ./scripts/deploy.ps1 -Environment Development
+          
+          Write-Host "Déploiement vers l'environnement de développement"
+      
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        shell: pwsh
+        run: |
+          # Exemple de déploiement vers l'environnement de production
+          # ./scripts/deploy.ps1 -Environment Production
+          
+          Write-Host "Déploiement vers l'environnement de production"
