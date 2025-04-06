@@ -142,6 +142,17 @@ Le système envoie automatiquement des notifications par email dans les cas suiv
 - **Déploiement réussi** : Notification envoyée lorsqu'un déploiement est effectué avec succès
 - **Échec du déploiement** : Notification envoyée lorsqu'un déploiement échoue
 
+Les notifications sont configurées pour être envoyées à l'adresse email spécifiée dans les secrets GitHub (`EMAIL_USERNAME` et `EMAIL_PASSWORD`).
+
+#### Personnalisation des notifications
+
+Pour personnaliser les notifications par email :
+
+1. Modifiez le fichier `.github/workflows/ci.yml` pour changer le contenu des emails
+2. Ajoutez d'autres destinataires dans le paramètre `to` de l'action `dawidd6/action-send-mail`
+3. Personnalisez le sujet et le corps des emails selon vos besoins
+4. Configurez des notifications pour d'autres événements comme les pull requests ou les releases
+
 ### Workflows GitHub Actions
 
 - **Lint** : Vérification du style de code PowerShell et Python
