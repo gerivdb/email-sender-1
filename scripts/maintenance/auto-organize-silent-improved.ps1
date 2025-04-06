@@ -170,9 +170,9 @@ function Test-FileLock {
         [parameter(Mandatory = $true)]
         [string]$Path
     )
-    
+
     $locked = $false
-    
+
     if (Test-Path -Path $Path) {
         try {
             $fileStream = [System.IO.File]::Open($Path, 'Open', 'Write')
@@ -184,7 +184,7 @@ function Test-FileLock {
             $locked = $true
         }
     }
-    
+
     return $locked
 }
 
@@ -202,21 +202,40 @@ if (Test-Path "$projectRoot\.git") {
     }
 
     $preCommitHookPath = "$gitHooksDir\pre-commit"
-    
+
     # Vérifier si le fichier pre-commit est verrouillé
     $isLocked = Test-FileLock -Path $preCommitHookPath
-    
+
     if ($isLocked) {
         Write-Log "Le fichier pre-commit hook est actuellement verrouillé ou utilisé par un autre processus" -Level "WARNING"
         Write-Log "Le hook Git pre-commit n'a pas été mis à jour"
     }
     else {
+        # Créer un fichier temporaire pour le hook
+        $tempHookPath = "$gitHooksDir\pre-commit.tmp"
+
         $preCommitHookContent = @"
 #!/bin/sh
-# Pre-commit hook pour organiser automatiquement les fichiers
+# Pre-commit hook amélioré pour organiser automatiquement les fichiers
 
 echo "Organisation automatique des fichiers avant commit..."
-powershell -ExecutionPolicy Bypass -File "$projectRoot\scripts\maintenance\auto-organize-silent-improved.ps1"
+
+# Utiliser une variable pour le chemin du script
+SCRIPT_PATH="$($projectRoot.Replace('\', '/'))/scripts/maintenance/auto-organize-silent-improved.ps1"
+
+# Vérifier si le script existe
+if [ -f "$SCRIPT_PATH" ]; then
+    # Exécuter le script amélioré qui gère les conflits de fichiers
+    powershell -ExecutionPolicy Bypass -File "$SCRIPT_PATH"
+    SCRIPT_EXIT_CODE=\$?
+
+    if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
+        echo "Avertissement: Le script d'organisation a rencontré des problèmes, mais le commit continuera."
+    fi
+else
+    echo "Avertissement: Script d'organisation non trouvé à $SCRIPT_PATH"
+    echo "Le commit continuera sans organisation automatique."
+fi
 
 # Ajouter les fichiers déplacés au commit
 git add .
@@ -225,9 +244,17 @@ exit 0
 "@
 
         try {
-            Set-Content -Path $preCommitHookPath -Value $preCommitHookContent -NoNewline
+            # Écrire d'abord dans un fichier temporaire
+            Set-Content -Path $tempHookPath -Value $preCommitHookContent -NoNewline
+
+            # Puis renommer le fichier temporaire (opération atomique)
+            if (Test-Path $preCommitHookPath) {
+                Remove-Item -Path $preCommitHookPath -Force
+            }
+            Rename-Item -Path $tempHookPath -NewName (Split-Path $preCommitHookPath -Leaf)
+
             Write-Log "Hook Git pre-commit configuré pour l'organisation automatique"
-            
+
             # Rendre le hook exécutable sous Unix
             if ($IsLinux -or $IsMacOS) {
                 & chmod +x $preCommitHookPath
@@ -235,6 +262,70 @@ exit 0
         }
         catch {
             Write-Log "Erreur lors de la configuration du hook Git pre-commit : $_" -Level "ERROR"
+        }
+    }
+
+    # Configurer également le hook pre-push
+    $prePushHookPath = "$gitHooksDir\pre-push"
+
+    # Vérifier si le fichier pre-push est verrouillé
+    $isLocked = Test-FileLock -Path $prePushHookPath
+
+    if ($isLocked) {
+        Write-Log "Le fichier pre-push hook est actuellement verrouillé ou utilisé par un autre processus" -Level "WARNING"
+        Write-Log "Le hook Git pre-push n'a pas été mis à jour"
+    }
+    else {
+        # Créer un fichier temporaire pour le hook
+        $tempHookPath = "$gitHooksDir\pre-push.tmp"
+
+        $prePushHookContent = @"
+#!/bin/sh
+# Pre-push hook amélioré pour vérifier les changements avant push
+
+echo "Vérification des changements avant push..."
+
+# Utiliser une variable pour le chemin du script
+SCRIPT_PATH="$($projectRoot.Replace('\', '/'))/scripts/utils/git/git-pre-push-check.ps1"
+
+# Vérifier si le script existe
+if [ -f "$SCRIPT_PATH" ]; then
+    # Exécuter le script de vérification
+    powershell -ExecutionPolicy Bypass -File "$SCRIPT_PATH"
+    SCRIPT_EXIT_CODE=\$?
+
+    # Vérifier le code de sortie du script
+    if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
+        echo "Vérification échouée. Push annulé."
+        exit 1
+    fi
+else
+    echo "Avertissement: Script de vérification non trouvé à $SCRIPT_PATH"
+    echo "Le push continuera sans vérification."
+fi
+
+exit 0
+"@
+
+        try {
+            # Écrire d'abord dans un fichier temporaire
+            Set-Content -Path $tempHookPath -Value $prePushHookContent -NoNewline
+
+            # Puis renommer le fichier temporaire (opération atomique)
+            if (Test-Path $prePushHookPath) {
+                Remove-Item -Path $prePushHookPath -Force
+            }
+            Rename-Item -Path $tempHookPath -NewName (Split-Path $prePushHookPath -Leaf)
+
+            Write-Log "Hook Git pre-push configuré pour la vérification avant push"
+
+            # Rendre le hook exécutable sous Unix
+            if ($IsLinux -or $IsMacOS) {
+                & chmod +x $prePushHookPath
+            }
+        }
+        catch {
+            Write-Log "Erreur lors de la configuration du hook Git pre-push : $_" -Level "ERROR"
         }
     }
 }
