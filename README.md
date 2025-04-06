@@ -129,6 +129,50 @@ Les fichiers finaux indispensables au projet sont organisés dans les répertoir
   .\scripts\maintenance\cleanup-mcp-files.ps1
   ```
 
+## Intégration CI/CD et Déploiement
+
+Le projet dispose d'un système complet d'intégration continue et de déploiement continu (CI/CD) avec notifications par email :
+
+### Workflows GitHub Actions
+
+- **Lint** : Vérification du style de code PowerShell et Python
+- **Test** : Exécution des tests unitaires
+- **Security** : Vérification de sécurité pour détecter les informations sensibles
+- **Build** : Construction et déploiement du projet
+- **Notify** : Envoi de notifications par email sur le statut du pipeline
+
+### Scripts de déploiement
+
+```powershell
+# Déploiement de base (simulation)
+.\scripts\ci\deploy.ps1 -Environment Development
+
+# Déploiement réel avec SSH et notifications
+.\scripts\ci\deploy-real.ps1 -Environment Production -SendNotification
+```
+
+### Tests unitaires
+
+```powershell
+# Exécuter les tests PowerShell
+Invoke-Pester -Path .\tests\powershell
+
+# Exécuter les tests Python
+python -m unittest discover -s tests/python
+```
+
+### Vérifications locales
+
+```powershell
+# Exécuter toutes les vérifications CI/CD localement
+.\scripts\ci\run-ci-checks.ps1
+
+# Tester les hooks Git dans un environnement sans espaces
+.\scripts\setup\test-hooks-clean-env.ps1
+```
+
+Pour plus d'informations, consultez le [Guide d'intégration CI/CD](docs/guides/GUIDE_INTEGRATION_CI_CD.md).
+
 ## Documentation
 
 ### Guides d'utilisation
@@ -139,6 +183,7 @@ Les fichiers finaux indispensables au projet sont organisés dans les répertoir
 - [Guide des nouvelles fonctionnalités](docs/guides/GUIDE_NOUVELLES_FONCTIONNALITES.md) : Présentation des nouvelles fonctionnalités et de l'organisation du dépôt
 - [Guide d'organisation automatique](docs/guides/GUIDE_ORGANISATION_AUTOMATIQUE.md) : Guide pour l'organisation automatique du dépôt
 - [Guide de gestion des caractères accentués](docs/guides/GUIDE_GESTION_CARACTERES_ACCENTES.md) : Guide pour résoudre les problèmes d'encodage des caractères accentués français dans n8n
+- [Guide d'intégration CI/CD](docs/guides/GUIDE_INTEGRATION_CI_CD.md) : Guide pour l'intégration continue et le déploiement continu
 
 ### Documentation de l'API n8n
 
