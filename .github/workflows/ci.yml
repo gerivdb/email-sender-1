@@ -5,6 +5,9 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
+  schedule:
+    # Exécuter tous les jours à minuit
+    - cron: '0 0 * * *'
 
 jobs:
   lint:
@@ -12,65 +15,65 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flake8 pytest
-      
+
       - name: Install PowerShell modules
         shell: pwsh
         run: |
           Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
           Install-Module -Name Pester -Force -Scope CurrentUser
-      
+
       - name: Run linting checks
         shell: pwsh
         run: |
           ./scripts/ci/run-ci-checks.ps1 -SkipTests -SkipSecurity -Verbose
-  
+
   test:
     name: Run Tests
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pytest
-      
+
       - name: Install PowerShell modules
         shell: pwsh
         run: |
           Install-Module -Name Pester -Force -Scope CurrentUser
-      
+
       - name: Run tests
         shell: pwsh
         run: |
           ./scripts/ci/run-ci-checks.ps1 -SkipLint -SkipSecurity -Verbose
-  
+
   security:
     name: Security Scan
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Run security checks
         shell: pwsh
         run: |
           ./scripts/ci/run-ci-checks.ps1 -SkipLint -SkipTests -Verbose
-  
+
   build:
     name: Build and Deploy
     needs: [lint, test, security]
@@ -78,38 +81,95 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up environment
         shell: pwsh
         run: |
           # Créer les dossiers nécessaires
           New-Item -ItemType Directory -Path ./dist -Force
-      
+
       - name: Build project
         shell: pwsh
         run: |
-          # Exemple de script de build
-          # ./scripts/build.ps1
-          
-          # Pour l'instant, juste copier les fichiers importants
+          # Créer le package de déploiement
+          ./scripts/ci/deploy.ps1 -Environment ${{ github.ref == 'refs/heads/main' && 'Production' || 'Development' }} -SkipTests -Verbose
+
+          # Copier les fichiers importants
           Copy-Item -Path ./scripts -Destination ./dist/scripts -Recurse
           Copy-Item -Path ./src -Destination ./dist/src -Recurse
           Copy-Item -Path ./docs -Destination ./dist/docs -Recurse
-      
+
       - name: Deploy to development
         if: github.ref == 'refs/heads/develop'
         shell: pwsh
         run: |
-          # Exemple de déploiement vers l'environnement de développement
-          # ./scripts/deploy.ps1 -Environment Development
-          
-          Write-Host "Déploiement vers l'environnement de développement"
-      
+          # Déploiement vers l'environnement de développement
+          ./scripts/ci/deploy.ps1 -Environment Development -SkipTests
+
+          Write-Host "Déploiement vers l'environnement de développement terminé"
+
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
         shell: pwsh
         run: |
-          # Exemple de déploiement vers l'environnement de production
-          # ./scripts/deploy.ps1 -Environment Production
-          
-          Write-Host "Déploiement vers l'environnement de production"
+          # Déploiement vers l'environnement de production
+          ./scripts/ci/deploy.ps1 -Environment Production -SkipTests
+
+          Write-Host "Déploiement vers l'environnement de production terminé"
+
+  notify:
+    name: Send Notifications
+    needs: [lint, test, security, build]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check build result
+        id: check_result
+        run: |
+          if [[ ${{ contains(needs.*.result, 'failure') }} == true ]]; then
+            echo "status=failure" >> $GITHUB_OUTPUT
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send email notification on failure
+        if: steps.check_result.outputs.status == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "⚠️ CI/CD Pipeline Failed: ${{ github.repository }}"
+          body: |
+            The CI/CD pipeline for ${{ github.repository }} has failed.
+
+            Branch: ${{ github.ref }}
+            Commit: ${{ github.sha }}
+            Commit message: ${{ github.event.head_commit.message }}
+
+            See details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: gerivonderbitsh+dev@gmail.com
+          from: GitHub Actions
+
+      - name: Send email notification on success
+        if: steps.check_result.outputs.status == 'success' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "✅ CI/CD Pipeline Succeeded: ${{ github.repository }}"
+          body: |
+            The CI/CD pipeline for ${{ github.repository }} has succeeded.
+
+            Branch: ${{ github.ref }}
+            Commit: ${{ github.sha }}
+            Commit message: ${{ github.event.head_commit.message }}
+
+            Environment: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Development' }}
+
+            See details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: gerivonderbitsh+dev@gmail.com
+          from: GitHub Actions

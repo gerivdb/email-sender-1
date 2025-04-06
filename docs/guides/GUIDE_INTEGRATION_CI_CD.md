@@ -117,7 +117,14 @@ Le script de déploiement prend en charge les environnements suivants :
 - **Staging** : Environnement de pré-production
 - **Production** : Environnement de production
 
-### Utilisation du script de déploiement
+### Utilisation des scripts de déploiement
+
+Le projet propose deux scripts de déploiement :
+
+1. **deploy.ps1** : Script de déploiement de base (simulation)
+2. **deploy-real.ps1** : Script de déploiement réel avec SSH et notifications
+
+#### Script de déploiement de base
 
 Pour déployer le projet vers un environnement spécifique, utilisez le script `scripts/ci/deploy.ps1` :
 
@@ -133,6 +140,24 @@ Pour déployer le projet vers un environnement spécifique, utilisez le script `
 
 # Afficher des informations détaillées pendant le déploiement
 .\scripts\ci\deploy.ps1 -Environment Development -Verbose
+```
+
+#### Script de déploiement réel
+
+Pour un déploiement réel vers un serveur distant, utilisez le script `scripts/ci/deploy-real.ps1` :
+
+```powershell
+# Déployer vers l'environnement de développement
+.\scripts\ci\deploy-real.ps1 -Environment Development
+
+# Déployer vers l'environnement de production avec notifications
+.\scripts\ci\deploy-real.ps1 -Environment Production -SendNotification
+
+# Déployer sans exécuter les tests
+.\scripts\ci\deploy-real.ps1 -Environment Staging -SkipTests
+
+# Spécifier une adresse email pour les notifications
+.\scripts\ci\deploy-real.ps1 -Environment Production -SendNotification -NotificationEmail "admin@example.com"
 ```
 
 ### Étapes du déploiement
@@ -244,21 +269,88 @@ Si vous rencontrez des problèmes avec les hooks Git, essayez les solutions suiv
    git push --no-verify
    ```
 
+## Notifications
+
+Le projet inclut un système de notifications par email pour informer l'équipe des résultats des vérifications CI/CD et des déploiements.
+
+### Notifications dans GitHub Actions
+
+Le workflow GitHub Actions envoie des notifications par email dans les cas suivants :
+
+1. **Échec du pipeline CI/CD** : Un email est envoyé lorsque le pipeline échoue, avec des détails sur la branche, le commit et un lien vers les logs.
+
+2. **Succès du pipeline CI/CD** : Un email est envoyé lorsque le pipeline réussit pour les branches `main` et `develop`, avec des détails sur l'environnement de déploiement.
+
+### Notifications dans le script de déploiement réel
+
+Le script `deploy-real.ps1` peut envoyer des notifications par email dans les cas suivants :
+
+1. **Échec des tests** : Un email est envoyé lorsque les tests échouent avant le déploiement.
+
+2. **Échec du déploiement** : Un email est envoyé lorsque le déploiement échoue, avec des détails sur l'erreur.
+
+3. **Succès du déploiement** : Un email est envoyé lorsque le déploiement réussit, avec des détails sur la version déployée.
+
+### Configuration des notifications
+
+Pour configurer les notifications par email dans GitHub Actions, vous devez ajouter les secrets suivants dans les paramètres du dépôt :
+
+- `EMAIL_USERNAME` : Nom d'utilisateur pour le serveur SMTP
+- `EMAIL_PASSWORD` : Mot de passe pour le serveur SMTP
+
+Pour configurer les notifications par email dans le script de déploiement réel, utilisez les paramètres suivants :
+
+```powershell
+# Activer les notifications
+.\scripts\ci\deploy-real.ps1 -Environment Production -SendNotification
+
+# Spécifier une adresse email pour les notifications
+.\scripts\ci\deploy-real.ps1 -Environment Production -SendNotification -NotificationEmail "admin@example.com"
+```
+
+## Test des hooks Git dans un environnement propre
+
+Le projet inclut un script pour tester les hooks Git dans un environnement sans espaces dans les chemins. Ce script clone le dépôt dans un répertoire temporaire sans espaces et teste les hooks Git.
+
+### Utilisation du script de test
+
+Pour tester les hooks Git dans un environnement propre, utilisez le script `scripts/setup/test-hooks-clean-env.ps1` :
+
+```powershell
+# Tester les hooks Git dans un environnement propre
+.\scripts\setup\test-hooks-clean-env.ps1
+
+# Nettoyer le répertoire temporaire après les tests
+.\scripts\setup\test-hooks-clean-env.ps1 -CleanupAfter
+
+# Spécifier un répertoire temporaire personnalisé
+.\scripts\setup\test-hooks-clean-env.ps1 -TempDir "D:\Temp\n8n_test"
+
+# Afficher des informations détaillées pendant les tests
+.\scripts\setup\test-hooks-clean-env.ps1 -Verbose
+```
+
 ## Bonnes pratiques
 
 1. **Exécutez les vérifications localement avant de pousser** : Utilisez le script `scripts/ci/run-ci-checks.ps1` pour exécuter les mêmes vérifications que le pipeline CI/CD avant de pousser vos modifications.
 
 2. **Créez des tests unitaires** : Créez des tests unitaires pour chaque nouvelle fonctionnalité ou correction de bug. Les tests unitaires permettent de détecter les régressions et de documenter le comportement attendu du code.
 
-3. **Respectez les conventions de style** : Suivez les conventions de style de code pour PowerShell et Python. Cela rend le code plus lisible et facilite la collaboration.
+3. **Testez les hooks Git dans un environnement propre** : Utilisez le script `scripts/setup/test-hooks-clean-env.ps1` pour tester les hooks Git dans un environnement sans espaces dans les chemins.
 
-4. **Ne commettez pas d'informations sensibles** : N'incluez jamais de mots de passe, de clés API ou d'autres informations sensibles dans le code. Utilisez des variables d'environnement ou des fichiers de configuration externes.
+4. **Utilisez le déploiement réel pour les environnements de production** : Utilisez le script `scripts/ci/deploy-real.ps1` pour déployer vers les environnements de production, car il inclut des vérifications et des notifications plus avancées.
 
-5. **Utilisez des branches de fonctionnalité** : Créez une branche pour chaque nouvelle fonctionnalité ou correction de bug. Cela permet de travailler sur plusieurs fonctionnalités en parallèle sans interférence.
+5. **Configurez les notifications par email** : Configurez les notifications par email pour être informé des résultats des vérifications CI/CD et des déploiements.
 
-6. **Créez des pull requests** : Utilisez des pull requests pour faire réviser votre code avant de le fusionner dans les branches principales. Cela permet de détecter les problèmes avant qu'ils n'affectent les autres développeurs.
+6. **Respectez les conventions de style** : Suivez les conventions de style de code pour PowerShell et Python. Cela rend le code plus lisible et facilite la collaboration.
 
-7. **Documentez les changements** : Documentez les changements importants dans le journal de bord et les fichiers README appropriés. Cela aide les autres développeurs à comprendre les modifications et leur impact.
+7. **Ne commettez pas d'informations sensibles** : N'incluez jamais de mots de passe, de clés API ou d'autres informations sensibles dans le code. Utilisez des variables d'environnement ou des fichiers de configuration externes.
+
+8. **Utilisez des branches de fonctionnalité** : Créez une branche pour chaque nouvelle fonctionnalité ou correction de bug. Cela permet de travailler sur plusieurs fonctionnalités en parallèle sans interférence.
+
+9. **Créez des pull requests** : Utilisez des pull requests pour faire réviser votre code avant de le fusionner dans les branches principales. Cela permet de détecter les problèmes avant qu'ils n'affectent les autres développeurs.
+
+10. **Documentez les changements** : Documentez les changements importants dans le journal de bord et les fichiers README appropriés. Cela aide les autres développeurs à comprendre les modifications et leur impact.
 
 ## Conclusion
 
