@@ -1,0 +1,20 @@
+{
+  "memories": {
+    "sources": [
+      {
+        "type": "file",
+        "path": ".augment/memories/journal_memories.json",
+        "format": "json"
+      }
+    ],
+    "update_frequency": "daily"
+  },
+  "context_providers": [
+    {
+      "name": "journal_de_bord",
+      "type": "custom",
+      "command": "python scripts/python/journal/journal_rag_simple.py --query \"${query}\"",
+      "working_directory": "${workspace_root}"
+    }
+  ]
+}

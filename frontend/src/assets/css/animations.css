@@ -1,0 +1,416 @@
+/* Animations et transitions pour l'interface utilisateur */
+
+/* Fade transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Slide transitions */
+.slide-up-enter-active,
+.slide-up-leave-active,
+.slide-down-enter-active,
+.slide-down-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+.slide-left-enter-from,
+.slide-left-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+
+/* Scale transitions */
+.scale-enter-active,
+.scale-leave-active {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.scale-enter-from,
+.scale-leave-to {
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.bounce {
+  animation: bounce 1s ease infinite;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.pulse {
+  animation: pulse 2s ease infinite;
+}
+
+/* Spin animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Shimmer animation for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    rgba(255, 255, 255, 0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.hover-scale {
+  transition: transform 0.2s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Button animations */
+.btn-pulse {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-pulse::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.btn-pulse:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Page transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+/* Loading skeleton animation */
+.skeleton {
+  background: linear-gradient(90deg, 
+    #f0f0f0 25%, 
+    #e0e0e0 50%, 
+    #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* Staggered list animations */
+.staggered-list-item {
+  transition: all 0.3s;
+}
+
+.staggered-list-enter-active {
+  transition-delay: calc(0.05s * var(--i));
+}
+
+.staggered-list-leave-active {
+  transition-delay: calc(0.05s * var(--i));
+}
+
+.staggered-list-enter-from,
+.staggered-list-leave-to {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+/* Notification animations */
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.notification-enter-active {
+  animation: slideIn 0.3s ease forwards;
+}
+
+.notification-leave-active {
+  animation: slideOut 0.3s ease forwards;
+}
+
+/* Chart animations */
+.chart-bar {
+  transition: height 0.5s ease, width 0.5s ease, opacity 0.3s ease;
+}
+
+.chart-line {
+  transition: stroke-dashoffset 1s ease;
+}
+
+.chart-point {
+  transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.chart-point:hover {
+  transform: scale(1.5);
+}
+
+/* Tooltip animations */
+.tooltip {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tooltip-enter-from,
+.tooltip-leave-to {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+/* Filter animations */
+.filter-transition {
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.filter-enter-from,
+.filter-leave-to {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.filter-enter-to,
+.filter-leave-from {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tab transitions */
+.tab-content {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.tab-enter-from,
+.tab-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Accordion animations */
+.accordion-content {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.accordion-enter-from,
+.accordion-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+.accordion-enter-to,
+.accordion-leave-from {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+/* Floating label animations */
+.floating-label {
+  transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+.floating-label-active {
+  transform: translateY(-20px);
+  font-size: 0.75rem;
+  color: #3b82f6;
+}
+
+/* Progress bar animations */
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.progress-bar {
+  animation: progress 2s ease;
+}
+
+/* Scroll animations */
+.scroll-fade {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-fade.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Typing animation */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.typing {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 2s steps(40, end);
+}
+
+/* Gradient animation */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-animate {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+/* Shake animation for validation errors */
+@keyframes shake {
+  0%, 100% {transform: translateX(0);}
+  10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+  20%, 40%, 60%, 80% {transform: translateX(5px);}
+}
+
+.shake {
+  animation: shake 0.6s;
+}
+
+/* Fade in animation for images */
+.image-fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.image-fade-in.loaded {
+  opacity: 1;
+}

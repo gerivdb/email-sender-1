@@ -1,0 +1,41 @@
+{
+  "name": "journal-rag-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "chart.js": "^3.9.1",
+    "core-js": "^3.25.0",
+    "d3": "^7.6.1",
+    "d3-cloud": "^1.2.5",
+    "dompurify": "^3.2.5",
+    "lodash": "^4.17.21",
+    "marked": "^15.0.7",
+    "moment": "^2.29.4",
+    "tailwindcss": "^3.1.8",
+    "vue": "^3.2.37",
+    "vue-chartjs": "^4.1.1",
+    "vue-router": "^4.1.5",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-plugin-router": "~5.0.8",
+    "@vue/cli-plugin-vuex": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
+    "@vue/compiler-sfc": "^3.2.37",
+    "autoprefixer": "^10.4.8",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.7.1",
+    "postcss": "^8.4.16",
+    "sass": "^1.54.8",
+    "sass-loader": "^13.0.2"
+  }
+}

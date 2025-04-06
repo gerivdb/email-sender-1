@@ -1,0 +1,512 @@
+{
+  "0": {
+    "name": "Cluster 0: workflows, n8n, problèmes",
+    "entries": [
+      {
+        "title": "1. Gestion optimisée des workflows",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-gestion-optimis-e-des-workflows.md"
+      },
+      {
+        "title": "1. Gestionnaire de fichiers principal",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-gestionnaire-de-fichiers-principal.md"
+      },
+      {
+        "title": "1. Organisation automatisée du dépôt",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-organisation-automatis-e-du-d-p-t.md"
+      },
+      {
+        "title": "1. Structure complète d'un workflow",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-structure-compl-te-d-un-workflow.md"
+      },
+      {
+        "title": "2. Avantages pour le projet n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-avantages-pour-le-projet-n8n.md"
+      },
+      {
+        "title": "2. Problèmes courants et leurs résolutions",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-probl-mes-courants-et-leurs-r-solutions.md"
+      },
+      {
+        "title": "2. Scripts spécialisés",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-scripts-sp-cialis-s.md"
+      },
+      {
+        "title": "3. Analyse des workflows n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-3-analyse-des-workflows-n8n.md"
+      },
+      {
+        "title": "3. Correction des problèmes d'encodage",
+        "date": "2025-04-05",
+        "file": "2025-04-05-3-correction-des-probl-mes-d-encodage.md"
+      },
+      {
+        "title": "Implications pour le projet",
+        "date": "2025-04-05",
+        "file": "2025-04-05-implications-pour-le-projet.md"
+      },
+      {
+        "title": "Problème identifié",
+        "date": "2025-04-05",
+        "file": "2025-04-05-probl-me-identifi.md"
+      },
+      {
+        "title": "Problèmes identifiés et résolus",
+        "date": "2025-04-05",
+        "file": "2025-04-05-probl-mes-identifi-s-et-r-solus.md"
+      },
+      {
+        "title": "Scripts PowerShell",
+        "date": "2025-04-05",
+        "file": "2025-04-05-scripts-powershell.md"
+      },
+      {
+        "title": "Scripts Python",
+        "date": "2025-04-05",
+        "file": "2025-04-05-scripts-python.md"
+      },
+      {
+        "title": "Solutions développées",
+        "date": "2025-04-05",
+        "file": "2025-04-05-solutions-d-velopp-es.md"
+      },
+      {
+        "title": "Stratégies de débogage efficaces",
+        "date": "2025-04-05",
+        "file": "2025-04-05-strat-gies-de-d-bogage-efficaces.md"
+      }
+    ],
+    "top_terms": {
+      "workflows": 34,
+      "n8n": 16,
+      "problèmes": 15,
+      "caractères": 13,
+      "fichiers": 12,
+      "encodage": 12,
+      "correction": 9,
+      "accentués": 9,
+      "projet": 7,
+      "ps1": 7
+    },
+    "entry_count": 16
+  },
+  "1": {
+    "name": "Cluster 1: code, mcp, serveur",
+    "entries": [
+      {
+        "title": "3. Optimisations pour les futurs commits",
+        "date": "2025-04-05",
+        "file": "2025-04-05-3-optimisations-pour-les-futurs-commits.md"
+      },
+      {
+        "title": "Actions réalisées",
+        "date": "2025-04-05",
+        "file": "2025-04-05-actions-r-alis-es.md"
+      },
+      {
+        "title": "Capacités du serveur MCP Filesystem",
+        "date": "2025-04-05",
+        "file": "2025-04-05-capacit-s-du-serveur-mcp-filesystem.md"
+      },
+      {
+        "title": "Implications pour notre workflow",
+        "date": "2025-04-05",
+        "file": "2025-04-05-implications-pour-notre-workflow.md"
+      },
+      {
+        "title": "Mise en place du système RAG pour le journal de bord",
+        "date": "2025-04-05",
+        "file": "2025-04-05-mise-en-place-du-syst-me-rag-pour-le-journal-de-bord.md"
+      },
+      {
+        "title": "Prochaines étapes",
+        "date": "2025-04-05",
+        "file": "2025-04-05-prochaines-tapes.md"
+      },
+      {
+        "title": "Ressources créées",
+        "date": "2025-04-05",
+        "file": "2025-04-05-ressources-cr-es.md"
+      },
+      {
+        "title": "Amélioration du système de journal de bord RAG",
+        "date": "2025-04-05",
+        "file": "2025-04-05-06-11-am-lioration-du-syst-me-de-journal-de-bord-rag.md"
+      },
+      {
+        "title": "Journal quotidien - 2025-04-05",
+        "date": "2025-04-05",
+        "file": "2025-04-05-06-12-journal-quotidien.md"
+      }
+    ],
+    "top_terms": {
+      "code": 8,
+      "mcp": 7,
+      "serveur": 5,
+      "erreurs": 5,
+      "système": 4,
+      "optimisations": 3,
+      "actions": 3,
+      "capacités": 3,
+      "projet": 3,
+      "workflow": 3
+    },
+    "entry_count": 9
+  },
+  "2": {
+    "name": "Cluster 2: accentués, caractères, 2025",
+    "entries": [
+      {
+        "title": "04/04/2025 - Documentation de l'API n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-04-04-2025-documentation-de-l-api-n8n.md"
+      },
+      {
+        "title": "04/04/2025 - Enseignements du débogage des scripts PowerShell",
+        "date": "2025-04-05",
+        "file": "2025-04-05-04-04-2025-enseignements-du-d-bogage-des-scripts-powershell.md"
+      },
+      {
+        "title": "04/04/2025 - Organisation des outils de gestion des caractères accentués",
+        "date": "2025-04-05",
+        "file": "2025-04-05-04-04-2025-organisation-des-outils-de-gestion-des-caract-res-accentu-s.md"
+      },
+      {
+        "title": "04/04/2025 - Problèmes d'encodage des caractères accentués français",
+        "date": "2025-04-05",
+        "file": "2025-04-05-04-04-2025-probl-mes-d-encodage-des-caract-res-accentu-s-fran-ais.md"
+      },
+      {
+        "title": "05/04/2025 - Organisation automatique du dépôt et gestion des standards GitHub",
+        "date": "2025-04-05",
+        "file": "2025-04-05-05-04-2025-organisation-automatique-du-d-p-t-et-gestion-des-standards-github.md"
+      },
+      {
+        "title": "06/04/2025 - Gestion efficace des commits Git avec un grand nombre de fichiers",
+        "date": "2025-04-05",
+        "file": "2025-04-05-06-04-2025-gestion-efficace-des-commits-git-avec-un-grand-nombre-de-fichiers.md"
+      },
+      {
+        "title": "07/04/2025 - Installation de bibliothèques Python et création d'outils de gestion de fichiers",
+        "date": "2025-04-05",
+        "file": "2025-04-05-07-04-2025-installation-de-biblioth-ques-python-et-cr-ation-d-outils-de-gestion-de-fichiers.md"
+      },
+      {
+        "title": "07/04/2025 - Installation et exploration du Model Context Protocol (MCP) Server Filesystem",
+        "date": "2025-04-05",
+        "file": "2025-04-05-07-04-2025-installation-et-exploration-du-model-context-protocol-mcp-server-filesystem.md"
+      },
+      {
+        "title": "1. Gestion des caractères accentués",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-gestion-des-caract-res-accentu-s.md"
+      },
+      {
+        "title": "Fichiers corrigés",
+        "date": "2025-04-05",
+        "file": "2025-04-05-fichiers-corrig-s.md"
+      },
+      {
+        "title": "Résultats",
+        "date": "2025-04-05",
+        "file": "2025-04-05-r-sultats.md"
+      }
+    ],
+    "top_terms": {
+      "accentués": 10,
+      "caractères": 9,
+      "2025": 8,
+      "gestion": 5,
+      "fichiers": 4,
+      "workflows": 4,
+      "n8n": 3,
+      "non": 3,
+      "organisation": 2,
+      "outils": 2
+    },
+    "entry_count": 11
+  },
+  "3": {
+    "name": "Cluster 3: api, workflows, n8n",
+    "entries": [
+      {
+        "title": "06/04/2025 - Découverte et documentation du schéma complet de l'API n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-06-04-2025-d-couverte-et-documentation-du-sch-ma-complet-de-l-api-n8n.md"
+      },
+      {
+        "title": "2. Gestion des workflows via l'API",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-gestion-des-workflows-via-l-api.md"
+      },
+      {
+        "title": "3. Bonnes pratiques pour l'utilisation de l'API",
+        "date": "2025-04-05",
+        "file": "2025-04-05-3-bonnes-pratiques-pour-l-utilisation-de-l-api.md"
+      },
+      {
+        "title": "Avantages pour notre projet n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-avantages-pour-notre-projet-n8n.md"
+      },
+      {
+        "title": "Enseignements sur l'API n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-enseignements-sur-l-api-n8n.md"
+      },
+      {
+        "title": "Enseignements sur l'organisation des dépôts GitHub",
+        "date": "2025-04-05",
+        "file": "2025-04-05-enseignements-sur-l-organisation-des-d-p-ts-github.md"
+      },
+      {
+        "title": "Enseignements sur la gestion des commits Git",
+        "date": "2025-04-05",
+        "file": "2025-04-05-enseignements-sur-la-gestion-des-commits-git.md"
+      },
+      {
+        "title": "Limitations identifiées",
+        "date": "2025-04-05",
+        "file": "2025-04-05-limitations-identifi-es.md"
+      },
+      {
+        "title": "Résultats des tests",
+        "date": "2025-04-05",
+        "file": "2025-04-05-r-sultats-des-tests.md"
+      }
+    ],
+    "top_terms": {
+      "api": 13,
+      "workflows": 5,
+      "n8n": 4,
+      "tags": 4,
+      "get": 4,
+      "liste": 4,
+      "gestion": 3,
+      "enseignements": 3,
+      "importation": 3,
+      "tous": 3
+    },
+    "entry_count": 9
+  },
+  "4": {
+    "name": "Cluster 4: fichiers, système, notion",
+    "entries": [
+      {
+        "title": "Analyse sémantique avancée",
+        "date": "2025-04-01",
+        "file": "2025-04-01-16-45-analyse-semantique-avancee.md"
+      },
+      {
+        "title": "Intégration avec Notion",
+        "date": "2025-04-03",
+        "file": "2025-04-03-10-15-integration-avec-notion.md"
+      },
+      {
+        "title": "1. Approche méthodique pour les commits volumineux",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-approche-m-thodique-pour-les-commits-volumineux.md"
+      },
+      {
+        "title": "1. Bibliothèques principales",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-biblioth-ques-principales.md"
+      },
+      {
+        "title": "1. Opérations sur les fichiers",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-op-rations-sur-les-fichiers.md"
+      },
+      {
+        "title": "1. Qu'est-ce que MCP ?",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-qu-est-ce-que-mcp.md"
+      },
+      {
+        "title": "1. Standards GitHub et organisation optimale",
+        "date": "2025-04-05",
+        "file": "2025-04-05-1-standards-github-et-organisation-optimale.md"
+      },
+      {
+        "title": "2. Analyse et documentation du code",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-analyse-et-documentation-du-code.md"
+      },
+      {
+        "title": "2. Automatisation du rangement",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-automatisation-du-rangement.md"
+      },
+      {
+        "title": "2. Gestion des répertoires",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-gestion-des-r-pertoires.md"
+      },
+      {
+        "title": "2. Le serveur MCP Filesystem",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-le-serveur-mcp-filesystem.md"
+      },
+      {
+        "title": "2. Organisation intelligente des fichiers",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-organisation-intelligente-des-fichiers.md"
+      },
+      {
+        "title": "2. Utilisation efficace du contexte",
+        "date": "2025-04-05",
+        "file": "2025-04-05-2-utilisation-efficace-du-contexte.md"
+      },
+      {
+        "title": "3. Gestion des versions multiples",
+        "date": "2025-04-05",
+        "file": "2025-04-05-3-gestion-des-versions-multiples.md"
+      },
+      {
+        "title": "3. Intégration avec nos scripts Python",
+        "date": "2025-04-05",
+        "file": "2025-04-05-3-int-gration-avec-nos-scripts-python.md"
+      },
+      {
+        "title": "3. Recherche et métadonnées",
+        "date": "2025-04-05",
+        "file": "2025-04-05-3-recherche-et-m-tadonn-es.md"
+      },
+      {
+        "title": "4. Gestion des doublons",
+        "date": "2025-04-05",
+        "file": "2025-04-05-4-gestion-des-doublons.md"
+      },
+      {
+        "title": "4. Rôle du dossier .n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-4-r-le-du-dossier-n8n.md"
+      },
+      {
+        "title": "5. Avantages d'une structure standardisée",
+        "date": "2025-04-05",
+        "file": "2025-04-05-5-avantages-d-une-structure-standardis-e.md"
+      },
+      {
+        "title": "Automatisation du processus",
+        "date": "2025-04-05",
+        "file": "2025-04-05-automatisation-du-processus.md"
+      },
+      {
+        "title": "Bibliothèques utilisées et leur rôle dans le projet",
+        "date": "2025-04-05",
+        "file": "2025-04-05-biblioth-ques-utilis-es-et-leur-r-le-dans-le-projet.md"
+      },
+      {
+        "title": "Bonnes pratiques de codage PowerShell",
+        "date": "2025-04-05",
+        "file": "2025-04-05-bonnes-pratiques-de-codage-powershell.md"
+      },
+      {
+        "title": "Cas d'utilisation concrets",
+        "date": "2025-04-05",
+        "file": "2025-04-05-cas-d-utilisation-concrets.md"
+      },
+      {
+        "title": "Commits atomiques vs. commits volumineux",
+        "date": "2025-04-05",
+        "file": "2025-04-05-commits-atomiques-vs-commits-volumineux.md"
+      },
+      {
+        "title": "Conflits avec les hooks Git",
+        "date": "2025-04-05",
+        "file": "2025-04-05-conflits-avec-les-hooks-git.md"
+      },
+      {
+        "title": "Enseignements sur l'encodage et les caractères accentués",
+        "date": "2025-04-05",
+        "file": "2025-04-05-enseignements-sur-l-encodage-et-les-caract-res-accentu-s.md"
+      },
+      {
+        "title": "Fichiers créés",
+        "date": "2025-04-05",
+        "file": "2025-04-05-fichiers-cr-s.md"
+      },
+      {
+        "title": "Fichiers mis à jour",
+        "date": "2025-04-05",
+        "file": "2025-04-05-fichiers-mis-jour.md"
+      },
+      {
+        "title": "Fonctionnalités clés implémentées",
+        "date": "2025-04-05",
+        "file": "2025-04-05-fonctionnalit-s-cl-s-impl-ment-es.md"
+      },
+      {
+        "title": "Gestion des fins de ligne (LF/CRLF)",
+        "date": "2025-04-05",
+        "file": "2025-04-05-gestion-des-fins-de-ligne-lf-crlf.md"
+      },
+      {
+        "title": "Implications pour le projet n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-implications-pour-le-projet-n8n.md"
+      },
+      {
+        "title": "Journal de Bord - Projet n8n",
+        "date": "2025-04-05",
+        "file": "2025-04-05-journal-de-bord-projet-n8n.md"
+      },
+      {
+        "title": "Présentation du Model Context Protocol (MCP)",
+        "date": "2025-04-05",
+        "file": "2025-04-05-pr-sentation-du-model-context-protocol-mcp.md"
+      },
+      {
+        "title": "Répertoires",
+        "date": "2025-04-05",
+        "file": "2025-04-05-r-pertoires.md"
+      },
+      {
+        "title": "Scripts développés",
+        "date": "2025-04-05",
+        "file": "2025-04-05-scripts-d-velopp-s.md"
+      },
+      {
+        "title": "Vérification avant push",
+        "date": "2025-04-05",
+        "file": "2025-04-05-v-rification-avant-push.md"
+      },
+      {
+        "title": "Exemple d'entrée enrichie pour le journal de bord",
+        "date": "2025-04-05",
+        "file": "2025-04-05-06-15-exemple-d-entree-enrichie.md"
+      },
+      {
+        "title": "Implémentation du système RAG",
+        "date": "2025-04-05",
+        "file": "2025-04-05-14-30-implementation-du-systeme-rag.md"
+      },
+      {
+        "title": "Optimisation des processus de documentation et de développement",
+        "date": "2025-04-05",
+        "file": "2025-04-05-19-58-optimisation-des-processus-de-documentation-et-de-d-veloppement.md"
+      }
+    ],
+    "top_terms": {
+      "fichiers": 41,
+      "système": 28,
+      "notion": 24,
+      "documentation": 23,
+      "https": 21,
+      "workflows": 17,
+      "analyse": 16,
+      "tests": 15,
+      "gestion": 15,
+      "approche": 15
+    },
+    "entry_count": 39
+  }
+}

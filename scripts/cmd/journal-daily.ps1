@@ -6,25 +6,28 @@ param (
 
 $ScriptsDir = Join-Path $PSScriptRoot "..\python\journal"
 $Date = Get-Date -Format "yyyy-MM-dd"
+$Time = Get-Date -Format "HH-mm"
+$DateTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 $DayOfWeek = (Get-Date).DayOfWeek
 
 # Déterminer le type d'entrée (quotidienne ou hebdomadaire)
 if ($Weekly -and $DayOfWeek -eq "Monday") {
     $Title = "Résumé hebdomadaire - Semaine du $Date"
     $Tags = "résumé-hebdomadaire", "bilan"
-    
+
     # Calculer la date de début de la semaine précédente (lundi dernier)
     $LastWeekStart = (Get-Date).AddDays(-7)
     $LastWeekStartStr = $LastWeekStart.ToString("yyyy-MM-dd")
-    
+
     # Calculer la date de fin de la semaine précédente (dimanche dernier)
     $LastWeekEnd = (Get-Date).AddDays(-1)
     $LastWeekEndStr = $LastWeekEnd.ToString("yyyy-MM-dd")
-    
+
     # Contenu spécifique pour l'entrée hebdomadaire
     $Content = @"
 ---
 date: $Date
+heure: $Time
 title: $Title
 tags: [$($Tags -join ", ")]
 related: []
@@ -35,40 +38,43 @@ related: []
 ## Période couverte
 - Du $LastWeekStartStr au $LastWeekEndStr
 
-## Résumé des activités
-- 
+## Actions réalisées
+-
 
-## Principales réalisations
-- 
+## Résolution des erreurs, déductions tirées
+-
 
-## Problèmes rencontrés
-- 
+## Optimisations identifiées
+- Pour le système:
+- Pour le code:
+- Pour la gestion des erreurs:
+- Pour les workflows:
 
-## Solutions mises en œuvre
-- 
+## Enseignements techniques
+-
 
-## Enseignements
-- 
+## Impact sur le projet musical
+-
 
 ## Objectifs pour la semaine à venir
-- 
+-
 
-## Références
-- 
+## Références et ressources
+-
 "@
-    
+
     # Chemin du fichier
-    $FilePath = Join-Path (Join-Path (Join-Path (Get-Location) "docs") "journal_de_bord\entries") "$Date-resume-hebdomadaire.md"
-    
+    $FilePath = Join-Path (Join-Path (Join-Path (Get-Location) "docs") "journal_de_bord\entries") "$Date-$Time-resume-hebdomadaire.md"
+
     # Écriture du fichier
-    Set-Content -Path $FilePath -Value $Content -Encoding UTF8
-    
+    [System.IO.File]::WriteAllText($FilePath, $Content, [System.Text.Encoding]::UTF8)
+
     Write-Host "Entrée hebdomadaire créée: $FilePath"
-    
+
     # Mise à jour des index
     python "$ScriptsDir\journal_search_simple.py" --rebuild
     python "$ScriptsDir\journal_rag_simple.py" --rebuild --export
-    
+
     return
 }
 
@@ -80,6 +86,7 @@ $Tags = "journal-quotidien", "activités"
 $Content = @"
 ---
 date: $Date
+heure: $Time
 title: $Title
 tags: [$($Tags -join ", ")]
 related: []
@@ -87,27 +94,33 @@ related: []
 
 # $Title
 
-## Activités du jour
-- 
+## Actions réalisées
+-
 
-## Problèmes rencontrés
-- 
+## Résolution des erreurs, déductions tirées
+-
 
-## Solutions mises en œuvre
-- 
+## Optimisations identifiées
+- Pour le système:
+- Pour le code:
+- Pour la gestion des erreurs:
+- Pour les workflows:
 
-## Enseignements
-- 
+## Enseignements techniques
+-
+
+## Impact sur le projet musical
+-
 
 ## Tâches pour demain
-- 
+-
 
-## Notes diverses
-- 
+## Références et ressources
+-
 "@
 
 # Chemin du fichier
-$FilePath = Join-Path (Join-Path (Join-Path (Get-Location) "docs") "journal_de_bord\entries") "$Date-journal-quotidien.md"
+$FilePath = Join-Path (Join-Path (Join-Path (Get-Location) "docs") "journal_de_bord\entries") "$Date-$Time-journal-quotidien.md"
 
 # Vérifier si le fichier existe déjà
 if (Test-Path $FilePath) {
@@ -116,7 +129,7 @@ if (Test-Path $FilePath) {
 }
 
 # Écriture du fichier
-Set-Content -Path $FilePath -Value $Content -Encoding UTF8
+[System.IO.File]::WriteAllText($FilePath, $Content, [System.Text.Encoding]::UTF8)
 
 Write-Host "Entrée quotidienne créée: $FilePath"
 
