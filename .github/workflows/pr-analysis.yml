@@ -1,0 +1,183 @@
+name: Pull Request Analysis
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  analyze:
+    name: Analyze PR Changes
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Récupérer tout l'historique pour comparer les branches
+        
+      - name: Set up PowerShell
+        uses: actions/setup-powershell@v1
+        with:
+          powershell-version: '7.2'
+      
+      - name: Install PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            **/*.ps1
+            **/*.psm1
+            **/*.psd1
+      
+      - name: Analyze changed PowerShell files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        shell: pwsh
+        run: |
+          $changedFiles = '${{ steps.changed-files.outputs.all_changed_files }}'.Split(' ')
+          $results = @()
+          
+          foreach ($file in $changedFiles) {
+            if ($file -match '\.(ps1|psm1|psd1)$') {
+              Write-Host "Analyzing $file..."
+              $fileResults = Invoke-ScriptAnalyzer -Path $file -ExcludeRule PSAvoidUsingPlainTextForPassword,PSAvoidUsingConvertToSecureStringWithPlainText
+              $results += $fileResults
+            }
+          }
+          
+          $results | Format-Table -AutoSize
+          $results | ConvertTo-Json -Depth 5 | Out-File -FilePath pr-analysis-results.json
+          
+          # Générer un rapport Markdown pour le commentaire de PR
+          $reportMd = "## Analyse de code PowerShell`n`n"
+          
+          $errorCount = ($results | Where-Object { $_.Severity -eq 'Error' }).Count
+          $warningCount = ($results | Where-Object { $_.Severity -eq 'Warning' }).Count
+          $infoCount = ($results | Where-Object { $_.Severity -eq 'Information' }).Count
+          
+          $reportMd += "- :x: Erreurs: $errorCount`n"
+          $reportMd += "- :warning: Avertissements: $warningCount`n"
+          $reportMd += "- :information_source: Informations: $infoCount`n`n"
+          
+          if ($results.Count -gt 0) {
+            $reportMd += "### Détails`n`n"
+            $reportMd += "| Fichier | Ligne | Sévérité | Règle | Message |`n"
+            $reportMd += "| --- | --- | --- | --- | --- |`n"
+            
+            foreach ($result in $results) {
+              $severity = switch ($result.Severity) {
+                'Error' { ':x:' }
+                'Warning' { ':warning:' }
+                'Information' { ':information_source:' }
+                default { '' }
+              }
+              
+              $reportMd += "| $($result.ScriptPath) | $($result.Line) | $severity | $($result.RuleName) | $($result.Message) |`n"
+            }
+          } else {
+            $reportMd += "Aucun problème détecté. :tada:`n"
+          }
+          
+          $reportMd | Out-File -FilePath pr-analysis-report.md -Encoding utf8
+      
+      - name: Run Custom Error Analysis
+        if: steps.changed-files.outputs.any_changed == 'true'
+        shell: pwsh
+        run: |
+          # Charger les scripts d'analyse personnalisés
+          $scriptPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "ErrorManagement/AnalysisImprovements/EnhancedErrorPatterns.ps1"
+          if (Test-Path -Path $scriptPath) {
+            . $scriptPath
+            
+            $changedFiles = '${{ steps.changed-files.outputs.all_changed_files }}'.Split(' ')
+            $results = @()
+            
+            foreach ($file in $changedFiles) {
+              if ($file -match '\.(ps1|psm1|psd1)$') {
+                Write-Host "Analyzing $file with custom patterns..."
+                $fileResults = Find-ErrorPatterns -FilePath $file
+                $results += $fileResults
+              }
+            }
+            
+            # Ajouter les résultats personnalisés au rapport
+            $reportMd = Get-Content -Path pr-analysis-report.md -Raw
+            
+            if ($results.Count -gt 0) {
+              $reportMd += "`n## Analyse personnalisée`n`n"
+              
+              $errorCount = ($results | Where-Object { $_.Severity -eq 'Error' }).Count
+              $warningCount = ($results | Where-Object { $_.Severity -eq 'Warning' }).Count
+              $infoCount = ($results | Where-Object { $_.Severity -eq 'Info' }).Count
+              
+              $reportMd += "- :x: Erreurs: $errorCount`n"
+              $reportMd += "- :warning: Avertissements: $warningCount`n"
+              $reportMd += "- :information_source: Informations: $infoCount`n`n"
+              
+              $reportMd += "### Détails`n`n"
+              $reportMd += "| Fichier | Ligne | Sévérité | Catégorie | Description | Suggestion |`n"
+              $reportMd += "| --- | --- | --- | --- | --- | --- |`n"
+              
+              foreach ($result in $results) {
+                $severity = switch ($result.Severity) {
+                  'Error' { ':x:' }
+                  'Warning' { ':warning:' }
+                  'Info' { ':information_source:' }
+                  default { '' }
+                }
+                
+                $reportMd += "| $($result.FilePath) | $($result.LineNumber) | $severity | $($result.Category) | $($result.Description) | $($result.Suggestion) |`n"
+              }
+            }
+            
+            $reportMd | Out-File -FilePath pr-analysis-report.md -Encoding utf8
+          }
+      
+      - name: Upload Analysis Results
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: pr-analysis-results
+          path: |
+            pr-analysis-results.json
+            pr-analysis-report.md
+      
+      - name: Comment on PR
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const reportContent = fs.readFileSync('pr-analysis-report.md', 'utf8');
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => {
+              return comment.user.type === 'Bot' && comment.body.includes('Analyse de code PowerShell');
+            });
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: reportContent
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: reportContent
+              });
+            }

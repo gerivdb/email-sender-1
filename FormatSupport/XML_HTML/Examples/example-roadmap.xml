@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roadmap title="Exemple de Roadmap">
+  <overview>Ceci est un exemple de roadmap au format XML.</overview>
+  <section id="1" title="Section d'exemple">
+    <metadata>
+      <Complexite>Moyenne</Complexite>
+      <Temps_estime>2-3 jours</Temps_estime>
+      <Progression>30%</Progression>
+    </metadata>
+    <phase id="1" title="Analyse" completed="true">
+      <task title="Analyser les besoins" estimatedTime="1 jour" startDate="01/01/2023" completed="true">
+        <subtask title="Identifier les parties prenantes" completed="true" />
+        <subtask title="Recueillir les exigences" completed="true" />
+      </task>
+      <task title="Définir le périmètre" estimatedTime="1 jour" completed="true" />
+      <note>Cette phase est terminée et validée par le client.</note>
+    </phase>
+    <phase id="2" title="Conception" completed="false">
+      <task title="Concevoir l'architecture" estimatedTime="2 jours" startDate="03/01/2023" completed="true">
+        <subtask title="Définir les composants" completed="true" />
+        <subtask title="Créer les diagrammes" completed="false" />
+      </task>
+      <task title="Valider la conception" estimatedTime="1 jour" completed="false" />
+      <note>La conception est en cours de validation.</note>
+    </phase>
+    <phase id="3" title="Développement" completed="false">
+      <task title="Développer les composants" estimatedTime="5 jours" completed="false">
+        <subtask title="Composant A" completed="false" />
+        <subtask title="Composant B" completed="false" />
+      </task>
+      <task title="Tests unitaires" estimatedTime="2 jours" completed="false" />
+      <note>Le développement n'a pas encore commencé.</note>
+    </phase>
+  </section>
+  <section id="2" title="Déploiement">
+    <metadata>
+      <Complexite>Élevée</Complexite>
+      <Temps_estime>1-2 semaines</Temps_estime>
+      <Progression>0%</Progression>
+    </metadata>
+    <phase id="1" title="Préparation" completed="false">
+      <task title="Préparer l'environnement" estimatedTime="2 jours" completed="false">
+        <subtask title="Configurer les serveurs" completed="false" />
+        <subtask title="Installer les dépendances" completed="false" />
+      </task>
+      <note>La préparation du déploiement dépend de la phase de développement.</note>
+    </phase>
+    <phase id="2" title="Déploiement" completed="false">
+      <task title="Déployer en recette" estimatedTime="1 jour" completed="false" />
+      <task title="Déployer en production" estimatedTime="1 jour" completed="false" />
+      <note>Le déploiement sera effectué après validation en recette.</note>
+    </phase>
+  </section>
+</roadmap>

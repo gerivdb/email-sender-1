@@ -1,0 +1,5 @@
+Phase Analyse et conception terminée
+Tâche Analyser les besoins du projet dans la phase Analyse et conception terminée
+Sous-tâche Identifier les fonctionnalités essentielles dans la tâche Analyser les besoins du projet de la phase Analyse et conception terminée
+Tâche Concevoir l'architecture du système dans la phase Analyse et conception terminée
+Tâche Planifier l'implémentation dans la phase Analyse et conception terminée

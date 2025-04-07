@@ -1,0 +1,96 @@
+name: Error Analysis
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    - cron: '0 0 * * 1'  # Exécution hebdomadaire (lundi à minuit)
+  workflow_dispatch:  # Permet l'exécution manuelle
+
+jobs:
+  analyze:
+    name: Analyze Code
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Set up PowerShell
+        uses: actions/setup-powershell@v1
+        with:
+          powershell-version: '7.2'
+      
+      - name: Install PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+          
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path . -Recurse -ExcludeRule PSAvoidUsingPlainTextForPassword,PSAvoidUsingConvertToSecureStringWithPlainText
+          $results | Format-Table -AutoSize
+          $results | ConvertTo-Json -Depth 5 | Out-File -FilePath pssa-results.json
+          
+          # Vérifier s'il y a des erreurs graves
+          $errorCount = ($results | Where-Object { $_.Severity -eq 'Error' }).Count
+          Write-Host "Nombre d'erreurs détectées: $errorCount"
+          
+          if ($errorCount -gt 0) {
+            Write-Host "::warning::$errorCount erreurs détectées par PSScriptAnalyzer"
+          }
+        
+      - name: Run Custom Error Analysis
+        shell: pwsh
+        run: |
+          # Charger les scripts d'analyse personnalisés
+          $scriptPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "ErrorManagement/AnalysisImprovements/EnhancedErrorPatterns.ps1"
+          if (Test-Path -Path $scriptPath) {
+            . $scriptPath
+            
+            # Analyser le code
+            $results = Find-ErrorPatternsInDirectory -Path $env:GITHUB_WORKSPACE -Filter "*.ps1" -Recurse
+            
+            # Générer un rapport
+            $reportPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "error-analysis-report.html"
+            New-ErrorAnalysisReport -Results $results -OutputPath $reportPath -Format HTML
+            
+            # Afficher un résumé
+            $errorCount = ($results | Where-Object { $_.Severity -eq 'Error' }).Count
+            $warningCount = ($results | Where-Object { $_.Severity -eq 'Warning' }).Count
+            
+            Write-Host "Analyse personnalisée terminée:"
+            Write-Host "- Erreurs: $errorCount"
+            Write-Host "- Avertissements: $warningCount"
+            
+            if ($errorCount -gt 0) {
+              Write-Host "::warning::$errorCount erreurs détectées par l'analyse personnalisée"
+            }
+          } else {
+            Write-Host "::warning::Scripts d'analyse personnalisés non trouvés"
+          }
+      
+      - name: Upload Analysis Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: error-analysis-results
+          path: |
+            pssa-results.json
+            error-analysis-report.html
+          
+      - name: Check for Critical Errors
+        shell: pwsh
+        run: |
+          $results = Get-Content -Path pssa-results.json | ConvertFrom-Json
+          $criticalErrors = $results | Where-Object { $_.Severity -eq 'Error' -and $_.RuleName -in @('PSAvoidUsingInvokeExpression', 'PSAvoidUsingPositionalParameters', 'PSUseDeclaredVarsMoreThanAssignments') }
+          
+          if ($criticalErrors.Count -gt 0) {
+            Write-Host "::error::$($criticalErrors.Count) erreurs critiques détectées"
+            $criticalErrors | ForEach-Object {
+              Write-Host "::error file=$($_.ScriptPath),line=$($_.Line)::$($_.RuleName): $($_.Message)"
+            }
+            exit 1
+          }

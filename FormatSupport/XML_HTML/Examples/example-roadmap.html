@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemple de Roadmap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #16a085;
+            margin-top: 20px;
+        }
+        .metadata {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .metadata p {
+            margin: 5px 0;
+        }
+        .phase {
+            margin-bottom: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        .completed {
+            color: #27ae60;
+        }
+        .pending {
+            color: #e74c3c;
+        }
+        .task {
+            margin-left: 20px;
+        }
+        .subtask {
+            margin-left: 40px;
+        }
+        .note {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-left: 20px;
+            border-left: 2px solid #95a5a6;
+            padding-left: 10px;
+        }
+        .checkbox {
+            margin-right: 10px;
+        }
+        .checkbox.checked::before {
+            content: "✓";
+            color: #27ae60;
+        }
+        .checkbox.unchecked::before {
+            content: "□";
+            color: #e74c3c;
+        }
+        .metadata-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exemple de Roadmap</h1>
+    
+    <div class="overview">
+        <h2>Vue d'ensemble des taches par priorite et complexite</h2>
+        <p>Ceci est un exemple de roadmap au format HTML.</p>
+    </div>
+    
+    <div class="section">
+        <h2>1. Section d'exemple</h2>
+        
+        <div class="metadata">
+            <p><span class="metadata-label">Complexite:</span> Moyenne</p>
+            <p><span class="metadata-label">Temps estime:</span> 2-3 jours</p>
+            <p><span class="metadata-label">Progression:</span> 30%</p>
+        </div>
+        
+        <div class="phase">
+            <h3><span class="checkbox checked"></span>Phase 1: Analyse</h3>
+            
+            <div class="task">
+                <p><span class="checkbox checked"></span>Analyser les besoins (1 jour) - <em>01/01/2023</em></p>
+                
+                <div class="subtask">
+                    <p><span class="checkbox checked"></span>Identifier les parties prenantes</p>
+                </div>
+                
+                <div class="subtask">
+                    <p><span class="checkbox checked"></span>Recueillir les exigences</p>
+                </div>
+            </div>
+            
+            <div class="task">
+                <p><span class="checkbox checked"></span>Définir le périmètre (1 jour)</p>
+            </div>
+            
+            <div class="note">
+                <p>Cette phase est terminée et validée par le client.</p>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3><span class="checkbox unchecked"></span>Phase 2: Conception</h3>
+            
+            <div class="task">
+                <p><span class="checkbox checked"></span>Concevoir l'architecture (2 jours) - <em>03/01/2023</em></p>
+                
+                <div class="subtask">
+                    <p><span class="checkbox checked"></span>Définir les composants</p>
+                </div>
+                
+                <div class="subtask">
+                    <p><span class="checkbox unchecked"></span>Créer les diagrammes</p>
+                </div>
+            </div>
+            
+            <div class="task">
+                <p><span class="checkbox unchecked"></span>Valider la conception (1 jour)</p>
+            </div>
+            
+            <div class="note">
+                <p>La conception est en cours de validation.</p>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3><span class="checkbox unchecked"></span>Phase 3: Développement</h3>
+            
+            <div class="task">
+                <p><span class="checkbox unchecked"></span>Développer les composants (5 jours)</p>
+                
+                <div class="subtask">
+                    <p><span class="checkbox unchecked"></span>Composant A</p>
+                </div>
+                
+                <div class="subtask">
+                    <p><span class="checkbox unchecked"></span>Composant B</p>
+                </div>
+            </div>
+            
+            <div class="task">
+                <p><span class="checkbox unchecked"></span>Tests unitaires (2 jours)</p>
+            </div>
+            
+            <div class="note">
+                <p>Le développement n'a pas encore commencé.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>2. Déploiement</h2>
+        
+        <div class="metadata">
+            <p><span class="metadata-label">Complexite:</span> Élevée</p>
+            <p><span class="metadata-label">Temps estime:</span> 1-2 semaines</p>
+            <p><span class="metadata-label">Progression:</span> 0%</p>
+        </div>
+        
+        <div class="phase">
+            <h3><span class="checkbox unchecked"></span>Phase 1: Préparation</h3>
+            
+            <div class="task">
+                <p><span class="checkbox unchecked"></span>Préparer l'environnement (2 jours)</p>
+                
+                <div class="subtask">
+                    <p><span class="checkbox unchecked"></span>Configurer les serveurs</p>
+                </div>
+                
+                <div class="subtask">
+                    <p><span class="checkbox unchecked"></span>Installer les dépendances</p>
+                </div>
+            </div>
+            
+            <div class="note">
+                <p>La préparation du déploiement dépend de la phase de développement.</p>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3><span class="checkbox unchecked"></span>Phase 2: Déploiement</h3>
+            
+            <div class="task">
+                <p><span class="checkbox unchecked"></span>Déployer en recette (1 jour)</p>
+            </div>
+            
+            <div class="task">
+                <p><span class="checkbox unchecked"></span>Déployer en production (1 jour)</p>
+            </div>
+            
+            <div class="note">
+                <p>Le déploiement sera effectué après validation en recette.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
