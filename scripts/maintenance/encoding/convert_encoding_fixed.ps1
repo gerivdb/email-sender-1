@@ -1,4 +1,4 @@
-# Script PowerShell pour convertir l'encodage des fichiers Markdown
+﻿# Script PowerShell pour convertir l'encodage des fichiers Markdown
 # Ce script prend un fichier source, detecte son encodage et le convertit en UTF-8
 
 param (
@@ -20,28 +20,28 @@ try {
     $content = Get-Content -Path $SourceFile -Raw -Encoding Default
     
     # Corriger les caracteres mal encodes
-    $content = $content -replace "Ã©", "e"
-    $content = $content -replace "Ã¨", "e"
-    $content = $content -replace "Ã ", "a"
-    $content = $content -replace "Ã§", "c"
-    $content = $content -replace "Ãª", "e"
-    $content = $content -replace "Ã®", "i"
-    $content = $content -replace "Ã´", "o"
-    $content = $content -replace "Ã»", "u"
-    $content = $content -replace "Ã¹", "u"
-    $content = $content -replace "Ã¢", "a"
-    $content = $content -replace "Ã«", "e"
-    $content = $content -replace "Ã¯", "i"
-    $content = $content -replace "Ã¼", "u"
-    $content = $content -replace "Ã¶", "o"
-    $content = $content -replace "Ã±", "ñ"
-    $content = $content -replace "Ã‰", "É"
-    $content = $content -replace "Ã€", "À"
-    $content = $content -replace "Ã‡", "Ç"
-    $content = $content -replace "ÃŠ", "Ê"
+    $content = $content -replace "ÃƒÂ©", "e"
+    $content = $content -replace "ÃƒÂ¨", "e"
+    $content = $content -replace "Ãƒ ", "a"
+    $content = $content -replace "ÃƒÂ§", "c"
+    $content = $content -replace "ÃƒÂª", "e"
+    $content = $content -replace "ÃƒÂ®", "i"
+    $content = $content -replace "ÃƒÂ´", "o"
+    $content = $content -replace "ÃƒÂ»", "u"
+    $content = $content -replace "ÃƒÂ¹", "u"
+    $content = $content -replace "ÃƒÂ¢", "a"
+    $content = $content -replace "ÃƒÂ«", "e"
+    $content = $content -replace "ÃƒÂ¯", "i"
+    $content = $content -replace "ÃƒÂ¼", "u"
+    $content = $content -replace "ÃƒÂ¶", "o"
+    $content = $content -replace "ÃƒÂ±", "Ã±"
+    $content = $content -replace "Ãƒâ€°", "Ã‰"
+    $content = $content -replace "Ãƒâ‚¬", "Ã€"
+    $content = $content -replace "Ãƒâ€¡", "Ã‡"
+    $content = $content -replace "ÃƒÅ ", "ÃŠ"
     # Utiliser des apostrophes simples pour eviter les problemes avec les guillemets doubles
-    $content = $content -replace 'Ã"', 'Ô'
-    $content = $content -replace 'Ã›', 'Û'
+    $content = $content -replace 'Ãƒ"', 'Ã”'
+    $content = $content -replace 'Ãƒâ€º', 'Ã›'
     
     # Corriger les caracteres speciaux
     $content = $content -replace "\\\-", "-"
@@ -51,7 +51,7 @@ try {
     $content = $content -replace "\\\(", "("
     $content = $content -replace "\\\)", ")"
     
-    # Écrire le contenu dans le fichier de destination avec encodage UTF-8
+    # Ã‰crire le contenu dans le fichier de destination avec encodage UTF-8
     $content | Out-File -FilePath $DestinationFile -Encoding utf8
     
     Write-Output "Conversion reussie: $SourceFile -> $DestinationFile"

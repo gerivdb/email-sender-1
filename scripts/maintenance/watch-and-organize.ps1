@@ -1,7 +1,7 @@
-# Script pour surveiller en temps réel les nouveaux fichiers à la racine et les organiser automatiquement
-# Ce script utilise FileSystemWatcher pour détecter les nouveaux fichiers et les déplacer automatiquement
+﻿# Script pour surveiller en temps rÃ©el les nouveaux fichiers Ã  la racine et les organiser automatiquement
+# Ce script utilise FileSystemWatcher pour dÃ©tecter les nouveaux fichiers et les dÃ©placer automatiquement
 
-Write-Host "=== Surveillance en temps réel des nouveaux fichiers ===" -ForegroundColor Cyan
+Write-Host "=== Surveillance en temps rÃ©el des nouveaux fichiers ===" -ForegroundColor Cyan
 
 # Obtenir le chemin racine du projet
 $projectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
@@ -9,7 +9,7 @@ Set-Location $projectRoot
 
 Write-Host "Surveillance du dossier: $projectRoot" -ForegroundColor Yellow
 
-# Règles d'organisation automatique
+# RÃ¨gles d'organisation automatique
 $autoOrganizeRules = @(
     # Format: [pattern, destination, description]
     @("*.json", "all-workflows/original", "Workflows n8n"),
@@ -21,9 +21,9 @@ $autoOrganizeRules = @(
     @("*.ps1", "scripts", "Scripts PowerShell"),
     @("configure-*.ps1", "scripts/setup", "Scripts de configuration"),
     @("setup-*.ps1", "scripts/setup", "Scripts d'installation"),
-    @("update-*.ps1", "scripts/maintenance", "Scripts de mise à jour"),
+    @("update-*.ps1", "scripts/maintenance", "Scripts de mise Ã  jour"),
     @("cleanup-*.ps1", "scripts/maintenance", "Scripts de nettoyage"),
-    @("check-*.ps1", "scripts/maintenance", "Scripts de vérification"),
+    @("check-*.ps1", "scripts/maintenance", "Scripts de vÃ©rification"),
     @("organize-*.ps1", "scripts/maintenance", "Scripts d'organisation"),
     @("GUIDE_*.md", "docs/guides", "Guides d'utilisation"),
     @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)"),
@@ -31,13 +31,13 @@ $autoOrganizeRules = @(
     @("*.log", "logs", "Fichiers de logs"),
     @("*.env", "config", "Fichiers d'environnement"),
     @("*.config", "config", "Fichiers de configuration"),
-    @("start-*.cmd", "tools", "Scripts de démarrage"),
+    @("start-*.cmd", "tools", "Scripts de dÃ©marrage"),
     @("*.cmd", "cmd", "Fichiers de commande Windows (sauf standards GitHub)"),
     @("*.cmd", "cmd", "Fichiers de commande Windows (sauf standards GitHub)"),
     @("*.py", "src", "Scripts Python")
 )
 
-# Fichiers à conserver à la racine
+# Fichiers Ã  conserver Ã  la racine
 $keepFiles = @(
     "README.md",
     ".gitignore",
@@ -49,16 +49,16 @@ $keepFiles = @(
     "CODE_OF_CONDUCT.md"
 )
 
-# Vérifier si les dossiers existent, sinon les créer
+# VÃ©rifier si les dossiers existent, sinon les crÃ©er
 foreach ($rule in $autoOrganizeRules) {
     $destination = $rule[1]
     if (-not (Test-Path "$projectRoot\$destination")) {
         New-Item -ItemType Directory -Path "$projectRoot\$destination" -Force | Out-Null
-        Write-Host "Dossier $destination créé" -ForegroundColor Green
+        Write-Host "Dossier $destination crÃ©Ã©" -ForegroundColor Green
     }
 }
 
-# Fonction pour déplacer un fichier automatiquement
+# Fonction pour dÃ©placer un fichier automatiquement
 function Move-FileAutomatically {
     param (
         [string]$SourcePath,
@@ -69,38 +69,38 @@ function Move-FileAutomatically {
     $fileName = Split-Path $SourcePath -Leaf
     $destinationPath = Join-Path $DestinationFolder $fileName
 
-    # Ne pas déplacer les fichiers à conserver à la racine
+    # Ne pas dÃ©placer les fichiers Ã  conserver Ã  la racine
     if ($keepFiles -contains $fileName) {
-        Write-Host "  [IGNORE] $fileName conservé à la racine (fichier essentiel)" -ForegroundColor Blue
+        Write-Host "  [IGNORE] $fileName conservÃ© Ã  la racine (fichier essentiel)" -ForegroundColor Blue
         return
     }
 
-    # Ne pas déplacer les fichiers déjà dans le bon dossier
+    # Ne pas dÃ©placer les fichiers dÃ©jÃ  dans le bon dossier
     $sourceDir = Split-Path $SourcePath -Parent
     $expectedPath = Join-Path $projectRoot $DestinationFolder
     if ($sourceDir -eq $expectedPath) {
         return
     }
 
-    # Vérifier si le fichier existe déjà à destination
+    # VÃ©rifier si le fichier existe dÃ©jÃ  Ã  destination
     if (Test-Path $destinationPath) {
         # Comparer les dates de modification
         $sourceFile = Get-Item $SourcePath
         $destFile = Get-Item $destinationPath
 
         if ($sourceFile.LastWriteTime -gt $destFile.LastWriteTime) {
-            # Le fichier source est plus récent
+            # Le fichier source est plus rÃ©cent
             Move-Item -Path $SourcePath -Destination $destinationPath -Force
-            Write-Host "  [MAJ] $fileName déplacé vers $DestinationFolder (plus récent)" -ForegroundColor Blue
+            Write-Host "  [MAJ] $fileName dÃ©placÃ© vers $DestinationFolder (plus rÃ©cent)" -ForegroundColor Blue
         }
     } else {
-        # Le fichier n'existe pas à destination
+        # Le fichier n'existe pas Ã  destination
         Move-Item -Path $SourcePath -Destination $destinationPath
-        Write-Host "  [OK] $fileName déplacé vers $DestinationFolder" -ForegroundColor Green
+        Write-Host "  [OK] $fileName dÃ©placÃ© vers $DestinationFolder" -ForegroundColor Green
     }
 }
 
-# Fonction pour déterminer le dossier de destination d'un fichier
+# Fonction pour dÃ©terminer le dossier de destination d'un fichier
 function Get-FileDestination {
     param (
         [string]$FilePath
@@ -108,7 +108,7 @@ function Get-FileDestination {
 
     $fileName = Split-Path $FilePath -Leaf
 
-    # Ne pas déplacer les fichiers à conserver à la racine
+    # Ne pas dÃ©placer les fichiers Ã  conserver Ã  la racine
     if ($keepFiles -contains $fileName) {
         return $null
     }
@@ -122,11 +122,11 @@ function Get-FileDestination {
         }
     }
 
-    # Si aucune règle ne correspond, retourner null
+    # Si aucune rÃ¨gle ne correspond, retourner null
     return $null
 }
 
-# Fonction appelée lorsqu'un nouveau fichier est créé
+# Fonction appelÃ©e lorsqu'un nouveau fichier est crÃ©Ã©
 function OnCreated {
     param(
         [System.IO.FileSystemEventArgs]$event
@@ -135,61 +135,61 @@ function OnCreated {
     $filePath = $event.FullPath
     $fileName = Split-Path $filePath -Leaf
 
-    # Attendre que le fichier soit complètement écrit
+    # Attendre que le fichier soit complÃ¨tement Ã©crit
     Start-Sleep -Seconds 1
 
-    # Vérifier si le fichier existe toujours (il pourrait avoir été supprimé ou déplacé entre-temps)
+    # VÃ©rifier si le fichier existe toujours (il pourrait avoir Ã©tÃ© supprimÃ© ou dÃ©placÃ© entre-temps)
     if (-not (Test-Path $filePath)) {
         return
     }
 
-    # Vérifier si c'est un fichier (pas un dossier)
+    # VÃ©rifier si c'est un fichier (pas un dossier)
     if ((Get-Item $filePath) -is [System.IO.DirectoryInfo]) {
         return
     }
 
-    # Déterminer le dossier de destination
+    # DÃ©terminer le dossier de destination
     $destination = Get-FileDestination -FilePath $filePath
 
     if ($destination -ne $null) {
-        Write-Host "Nouveau fichier détecté: $fileName" -ForegroundColor Yellow
+        Write-Host "Nouveau fichier dÃ©tectÃ©: $fileName" -ForegroundColor Yellow
 
-        # Vérifier si le dossier de destination existe
+        # VÃ©rifier si le dossier de destination existe
         if (-not (Test-Path "$projectRoot\$destination")) {
             New-Item -ItemType Directory -Path "$projectRoot\$destination" -Force | Out-Null
-            Write-Host "Dossier $destination créé" -ForegroundColor Green
+            Write-Host "Dossier $destination crÃ©Ã©" -ForegroundColor Green
         }
 
-        # Déplacer le fichier
+        # DÃ©placer le fichier
         Move-FileAutomatically -SourcePath $filePath -DestinationFolder $destination -Description ""
     }
 }
 
-# Créer un FileSystemWatcher pour surveiller la racine du projet
+# CrÃ©er un FileSystemWatcher pour surveiller la racine du projet
 $watcher = New-Object System.IO.FileSystemWatcher
 $watcher.Path = $projectRoot
 $watcher.IncludeSubdirectories = $false
 $watcher.EnableRaisingEvents = $true
 
-# Définir les événements à surveiller
+# DÃ©finir les Ã©vÃ©nements Ã  surveiller
 $action = {
     OnCreated -event $Event
 }
 
-# Enregistrer l'événement pour la création de fichiers
+# Enregistrer l'Ã©vÃ©nement pour la crÃ©ation de fichiers
 $created = Register-ObjectEvent -InputObject $watcher -EventName Created -Action $action
 
-Write-Host "Surveillance en cours... Appuyez sur CTRL+C pour arrêter." -ForegroundColor Green
+Write-Host "Surveillance en cours... Appuyez sur CTRL+C pour arrÃªter." -ForegroundColor Green
 
 try {
-    # Garder le script en cours d'exécution
+    # Garder le script en cours d'exÃ©cution
     while ($true) {
         Start-Sleep -Seconds 1
     }
 } finally {
-    # Nettoyer les événements enregistrés lors de l'arrêt du script
+    # Nettoyer les Ã©vÃ©nements enregistrÃ©s lors de l'arrÃªt du script
     Unregister-Event -SourceIdentifier $created.Name
     $watcher.Dispose()
-    Write-Host "Surveillance arrêtée." -ForegroundColor Yellow
+    Write-Host "Surveillance arrÃªtÃ©e." -ForegroundColor Yellow
 }
 

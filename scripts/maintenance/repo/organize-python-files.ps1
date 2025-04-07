@@ -1,13 +1,13 @@
-# Script pour organiser les fichiers Python dans un dossier scripts
+﻿# Script pour organiser les fichiers Python dans un dossier scripts
 
 Write-Host "=== Organisation des fichiers Python ===" -ForegroundColor Cyan
 
 # Creer le dossier scripts s'il n'existe pas
 if (-not (Test-Path ".\scripts")) {
     New-Item -ItemType Directory -Path ".\scripts" | Out-Null
-    Write-Host "✅ Dossier scripts cree" -ForegroundColor Green
+    Write-Host "âœ… Dossier scripts cree" -ForegroundColor Green
 } else {
-    Write-Host "✅ Dossier scripts existe deja" -ForegroundColor Green
+    Write-Host "âœ… Dossier scripts existe deja" -ForegroundColor Green
 }
 
 # Trouver tous les fichiers Python a la racine
@@ -21,19 +21,19 @@ if ($pythonFiles.Count -eq 0) {
     foreach ($file in $pythonFiles) {
         # Verifier si le fichier existe deja dans le dossier scripts
         if (Test-Path ".\scripts\$($file.Name)") {
-            Write-Host "⚠️ Le fichier $($file.Name) existe deja dans le dossier scripts" -ForegroundColor Yellow
+            Write-Host "âš ï¸ Le fichier $($file.Name) existe deja dans le dossier scripts" -ForegroundColor Yellow
             Write-Host "Voulez-vous le remplacer ? (O/N)" -ForegroundColor Yellow
             $confirmation = Read-Host
             
             if ($confirmation -eq "O" -or $confirmation -eq "o") {
                 Move-Item -Path $file.FullName -Destination ".\scripts\$($file.Name)" -Force
-                Write-Host "✅ Fichier $($file.Name) deplace vers scripts (remplace)" -ForegroundColor Green
+                Write-Host "âœ… Fichier $($file.Name) deplace vers scripts (remplace)" -ForegroundColor Green
             } else {
                 Write-Host "Fichier $($file.Name) conserve a la racine" -ForegroundColor Yellow
             }
         } else {
             Move-Item -Path $file.FullName -Destination ".\scripts\$($file.Name)"
-            Write-Host "✅ Fichier $($file.Name) deplace vers scripts" -ForegroundColor Green
+            Write-Host "âœ… Fichier $($file.Name) deplace vers scripts" -ForegroundColor Green
         }
     }
 }
@@ -57,23 +57,23 @@ if ($otherPythonFiles.Count -eq 0) {
             
             # Verifier si le fichier existe deja dans le dossier scripts
             if (Test-Path ".\scripts\$($file.Name)") {
-                Write-Host "⚠️ Un fichier du meme nom existe deja dans scripts" -ForegroundColor Yellow
+                Write-Host "âš ï¸ Un fichier du meme nom existe deja dans scripts" -ForegroundColor Yellow
                 Write-Host "Voulez-vous le remplacer ? (O/N/R pour renommer)" -ForegroundColor Yellow
                 $fileConfirmation = Read-Host
                 
                 if ($fileConfirmation -eq "O" -or $fileConfirmation -eq "o") {
                     Move-Item -Path $file.FullName -Destination ".\scripts\$($file.Name)" -Force
-                    Write-Host "✅ Fichier deplace vers scripts (remplace)" -ForegroundColor Green
+                    Write-Host "âœ… Fichier deplace vers scripts (remplace)" -ForegroundColor Green
                 } elseif ($fileConfirmation -eq "R" -or $fileConfirmation -eq "r") {
                     $newName = "$($file.BaseName)_$($relativePath.Replace('\', '_'))$($file.Extension)"
                     Move-Item -Path $file.FullName -Destination ".\scripts\$newName"
-                    Write-Host "✅ Fichier deplace vers scripts (renomme en $newName)" -ForegroundColor Green
+                    Write-Host "âœ… Fichier deplace vers scripts (renomme en $newName)" -ForegroundColor Green
                 } else {
                     Write-Host "Fichier conserve a son emplacement actuel" -ForegroundColor Yellow
                 }
             } else {
                 Move-Item -Path $file.FullName -Destination ".\scripts\$($file.Name)"
-                Write-Host "✅ Fichier deplace vers scripts" -ForegroundColor Green
+                Write-Host "âœ… Fichier deplace vers scripts" -ForegroundColor Green
             }
         }
     } else {

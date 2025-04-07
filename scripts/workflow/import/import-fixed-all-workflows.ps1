@@ -1,4 +1,4 @@
-# Script pour importer les workflows corrigés dans n8n
+﻿# Script pour importer les workflows corrigÃ©s dans n8n
 
 # Configuration
 $n8nUrl = "http://localhost:5678"
@@ -22,7 +22,7 @@ function Import-Workflow {
         # Convertir le contenu JSON en objet PowerShell
         $workflowJson = $content | ConvertFrom-Json
         
-        # Préparer les données pour l'API
+        # PrÃ©parer les donnÃ©es pour l'API
         $apiData = @{
             name = $workflowJson.name
             nodes = $workflowJson.nodes
@@ -32,7 +32,7 @@ function Import-Workflow {
             }
         } | ConvertTo-Json -Depth 20
         
-        # Envoyer la requête à l'API n8n
+        # Envoyer la requÃªte Ã  l'API n8n
         $headers = @{
             "Content-Type" = "application/json"
             "X-N8N-API-KEY" = $token
@@ -46,7 +46,7 @@ function Import-Workflow {
         Write-Host " - Echec!" -ForegroundColor Red
         Write-Host "  Erreur: $($_.Exception.Message)" -ForegroundColor Red
         
-        # Afficher plus de détails sur l'erreur
+        # Afficher plus de dÃ©tails sur l'erreur
         if ($_.ErrorDetails.Message) {
             try {
                 $errorJson = $_.ErrorDetails.Message | ConvertFrom-Json
@@ -60,7 +60,7 @@ function Import-Workflow {
     }
 }
 
-# Vérifier la connexion à n8n
+# VÃ©rifier la connexion Ã  n8n
 Write-Host "Verification de la connexion a n8n ($n8nUrl)..." -NoNewline
 try {
     $headers = @{
@@ -75,7 +75,7 @@ catch {
     exit
 }
 
-# Importer tous les workflows du répertoire
+# Importer tous les workflows du rÃ©pertoire
 Write-Host "`nRecherche des workflows dans le repertoire '$workflowsDir'..."
 $workflowFiles = Get-ChildItem -Path $workflowsDir -Filter "*.json"
 

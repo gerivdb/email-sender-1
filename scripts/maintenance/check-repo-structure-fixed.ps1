@@ -1,4 +1,4 @@
-# Script pour verifier la structure du depot GitHub
+﻿# Script pour verifier la structure du depot GitHub
 # Ce script verifie que la structure du depot est conforme aux conventions GitHub
 
 Write-Host "Verification de la structure du depot GitHub..." -ForegroundColor Cyan

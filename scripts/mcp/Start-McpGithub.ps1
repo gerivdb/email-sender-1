@@ -1,11 +1,11 @@
-# Script pour démarrer le serveur MCP GitHub
-# Ce script permet d'accéder aux dépôts GitHub via le Model Context Protocol
+﻿# Script pour dÃ©marrer le serveur MCP GitHub
+# Ce script permet d'accÃ©der aux dÃ©pÃ´ts GitHub via le Model Context Protocol
 
-# Vérifier si le serveur MCP GitHub est installé
+# VÃ©rifier si le serveur MCP GitHub est installÃ©
 $mcpInstalled = Get-Command mcp-server-github -ErrorAction SilentlyContinue
 
 if ($null -eq $mcpInstalled) {
-    Write-Host "Le serveur MCP GitHub n'est pas installé." -ForegroundColor Yellow
+    Write-Host "Le serveur MCP GitHub n'est pas installÃ©." -ForegroundColor Yellow
     $installChoice = Read-Host "Voulez-vous l'installer maintenant ? (O/N)"
     
     if ($installChoice -eq "O" -or $installChoice -eq "o") {
@@ -13,35 +13,35 @@ if ($null -eq $mcpInstalled) {
         npm install -g @modelcontextprotocol/server-github
         
         if ($LASTEXITCODE -ne 0) {
-            Write-Host "Échec de l'installation. Veuillez installer manuellement avec :" -ForegroundColor Red
+            Write-Host "Ã‰chec de l'installation. Veuillez installer manuellement avec :" -ForegroundColor Red
             Write-Host "npm install -g @modelcontextprotocol/server-github" -ForegroundColor Red
             exit 1
         }
         
-        Write-Host "Installation réussie." -ForegroundColor Green
+        Write-Host "Installation rÃ©ussie." -ForegroundColor Green
     } else {
-        Write-Host "Installation annulée. Le script ne peut pas continuer sans MCP GitHub." -ForegroundColor Red
+        Write-Host "Installation annulÃ©e. Le script ne peut pas continuer sans MCP GitHub." -ForegroundColor Red
         exit 1
     }
 }
 
-# Vérifier si un token GitHub est fourni
+# VÃ©rifier si un token GitHub est fourni
 $githubToken = $env:GITHUB_TOKEN
 
 if ([string]::IsNullOrEmpty($githubToken)) {
-    # Vérifier si un fichier .env existe avec le token
+    # VÃ©rifier si un fichier .env existe avec le token
     if (Test-Path ".env") {
         $envContent = Get-Content ".env" -Raw
         $match = [regex]::Match($envContent, "GITHUB_TOKEN=([^\r\n]+)")
         if ($match.Success) {
             $githubToken = $match.Groups[1].Value
-            Write-Host "Token GitHub trouvé dans le fichier .env" -ForegroundColor Green
+            Write-Host "Token GitHub trouvÃ© dans le fichier .env" -ForegroundColor Green
         }
     }
     
-    # Si toujours pas de token, demander à l'utilisateur
+    # Si toujours pas de token, demander Ã  l'utilisateur
     if ([string]::IsNullOrEmpty($githubToken)) {
-        Write-Host "Aucun token GitHub trouvé dans les variables d'environnement ou le fichier .env" -ForegroundColor Yellow
+        Write-Host "Aucun token GitHub trouvÃ© dans les variables d'environnement ou le fichier .env" -ForegroundColor Yellow
         $githubToken = Read-Host "Veuillez entrer votre token GitHub (ou laissez vide pour utiliser l'authentification anonyme)"
     }
 }
@@ -49,19 +49,19 @@ if ([string]::IsNullOrEmpty($githubToken)) {
 # Configurer les variables d'environnement
 if (-not [string]::IsNullOrEmpty($githubToken)) {
     $env:GITHUB_TOKEN = $githubToken
-    Write-Host "Token GitHub configuré" -ForegroundColor Green
+    Write-Host "Token GitHub configurÃ©" -ForegroundColor Green
 } else {
     Write-Host "Aucun token GitHub fourni. Le serveur fonctionnera en mode anonyme avec des limites de taux plus strictes." -ForegroundColor Yellow
 }
 
 Write-Host ""
-Write-Host "Démarrage du serveur MCP GitHub..." -ForegroundColor Green
-Write-Host "Le serveur sera accessible pour Claude et d'autres modèles d'IA." -ForegroundColor Cyan
-Write-Host "Appuyez sur Ctrl+C pour arrêter le serveur." -ForegroundColor Yellow
+Write-Host "DÃ©marrage du serveur MCP GitHub..." -ForegroundColor Green
+Write-Host "Le serveur sera accessible pour Claude et d'autres modÃ¨les d'IA." -ForegroundColor Cyan
+Write-Host "Appuyez sur Ctrl+C pour arrÃªter le serveur." -ForegroundColor Yellow
 Write-Host ""
 
-# Exécuter la commande
+# ExÃ©cuter la commande
 mcp-server-github
 
 # Ce script ne devrait jamais atteindre cette ligne sauf en cas d'erreur
-Write-Host "Le serveur s'est arrêté de manière inattendue." -ForegroundColor Red
+Write-Host "Le serveur s'est arrÃªtÃ© de maniÃ¨re inattendue." -ForegroundColor Red

@@ -1,7 +1,7 @@
-# Script pour organiser les fichiers de documentation
-# Ce script organise les fichiers de documentation dans des sous-dossiers appropriés
+﻿# Script pour organiser les fichiers de documentation
+# Ce script organise les fichiers de documentation dans des sous-dossiers appropriÃ©s
 
-# Définition des règles de déplacement pour le dossier docs
+# DÃ©finition des rÃ¨gles de dÃ©placement pour le dossier docs
 $docsRules = @(
     # Guides
     @{
@@ -30,7 +30,7 @@ $docsRules = @(
     }
 )
 
-# Définition des règles de déplacement pour le dossier docs\plans
+# DÃ©finition des rÃ¨gles de dÃ©placement pour le dossier docs\plans
 $plansRules = @(
     # Implementation
     @{
@@ -52,14 +52,14 @@ $plansRules = @(
         Pattern = "PILIER_*.md"
         Destination = "docs\plans\piliers"
     },
-    # Versions restructurées
+    # Versions restructurÃ©es
     @{
         Pattern = "*-restructured.md"
         Destination = "docs\plans\versions"
     }
 )
 
-# Fonction pour déplacer les fichiers selon les règles
+# Fonction pour dÃ©placer les fichiers selon les rÃ¨gles
 function Move-FilesAccordingToRules {
     param (
         [string]$SourceFolder,
@@ -77,10 +77,10 @@ function Move-FilesAccordingToRules {
                 $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
                 
                 if (-not (Test-Path -Path $destinationFile)) {
-                    Write-Host "Déplacement de $($file.Name) vers $destination" -ForegroundColor Yellow
+                    Write-Host "DÃ©placement de $($file.Name) vers $destination" -ForegroundColor Yellow
                     Move-Item -Path $file.FullName -Destination $destination -Force
                 } else {
-                    Write-Host "Le fichier $($file.Name) existe déjà dans $destination" -ForegroundColor Red
+                    Write-Host "Le fichier $($file.Name) existe dÃ©jÃ  dans $destination" -ForegroundColor Red
                 }
             }
         }
@@ -89,31 +89,31 @@ function Move-FilesAccordingToRules {
 
 # Fonction pour organiser les fichiers dans les sous-dossiers de plans
 function Organize-PlansSubfolders {
-    # Déplacer les fichiers de "plan de départ" vers "implementation"
-    $files = Get-ChildItem -Path "docs\plans\plan de départ" -File
+    # DÃ©placer les fichiers de "plan de dÃ©part" vers "implementation"
+    $files = Get-ChildItem -Path "docs\plans\plan de dÃ©part" -File
     foreach ($file in $files) {
         $destination = "docs\plans\implementation"
         $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
         
         if (-not (Test-Path -Path $destinationFile)) {
-            Write-Host "Déplacement de $($file.Name) vers $destination" -ForegroundColor Yellow
+            Write-Host "DÃ©placement de $($file.Name) vers $destination" -ForegroundColor Yellow
             Move-Item -Path $file.FullName -Destination $destination -Force
         }
     }
     
-    # Déplacer les fichiers de "plan de transition" vers "transition"
+    # DÃ©placer les fichiers de "plan de transition" vers "transition"
     $files = Get-ChildItem -Path "docs\plans\plan de transition" -File
     foreach ($file in $files) {
         $destination = "docs\plans\transition"
         $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
         
         if (-not (Test-Path -Path $destinationFile)) {
-            Write-Host "Déplacement de $($file.Name) vers $destination" -ForegroundColor Yellow
+            Write-Host "DÃ©placement de $($file.Name) vers $destination" -ForegroundColor Yellow
             Move-Item -Path $file.FullName -Destination $destination -Force
         }
     }
     
-    # Déplacer les fichiers de "pour le futur" vers les dossiers appropriés
+    # DÃ©placer les fichiers de "pour le futur" vers les dossiers appropriÃ©s
     $files = Get-ChildItem -Path "docs\plans\pour le futur" -File
     foreach ($file in $files) {
         if ($file.Name -like "PILIER_*") {
@@ -129,12 +129,12 @@ function Organize-PlansSubfolders {
         $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
         
         if (-not (Test-Path -Path $destinationFile)) {
-            Write-Host "Déplacement de $($file.Name) vers $destination" -ForegroundColor Yellow
+            Write-Host "DÃ©placement de $($file.Name) vers $destination" -ForegroundColor Yellow
             Move-Item -Path $file.FullName -Destination $destination -Force
         }
     }
     
-    # Déplacer les fichiers restructurés vers le dossier versions
+    # DÃ©placer les fichiers restructurÃ©s vers le dossier versions
     $files = Get-ChildItem -Path "docs\plans" -Filter "*-restructured.md" -File -Recurse | 
              Where-Object { $_.DirectoryName -ne (Resolve-Path "docs\plans\versions").Path }
     
@@ -143,7 +143,7 @@ function Organize-PlansSubfolders {
         $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
         
         if (-not (Test-Path -Path $destinationFile)) {
-            Write-Host "Déplacement de $($file.Name) vers $destination" -ForegroundColor Yellow
+            Write-Host "DÃ©placement de $($file.Name) vers $destination" -ForegroundColor Yellow
             Move-Item -Path $file.FullName -Destination $destination -Force
         }
     }
@@ -164,8 +164,8 @@ function Remove-EmptyFolders {
     }
 }
 
-# Exécution principale
-Write-Host "Début de l'organisation des fichiers de documentation..." -ForegroundColor Cyan
+# ExÃ©cution principale
+Write-Host "DÃ©but de l'organisation des fichiers de documentation..." -ForegroundColor Cyan
 
 # Organiser les fichiers dans le dossier docs
 Move-FilesAccordingToRules -SourceFolder "docs" -Rules $docsRules
@@ -179,4 +179,4 @@ Organize-PlansSubfolders
 # Supprimer les dossiers vides
 Remove-EmptyFolders -RootFolder "docs"
 
-Write-Host "`nOrganisation des fichiers de documentation terminée avec succès!" -ForegroundColor Green
+Write-Host "`nOrganisation des fichiers de documentation terminÃ©e avec succÃ¨s!" -ForegroundColor Green

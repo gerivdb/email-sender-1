@@ -1,12 +1,12 @@
-# Script pour supprimer les workflows dupliqués dans n8n
-# Ce script identifie et supprime les workflows dupliqués en se basant sur leur nom
+﻿# Script pour supprimer les workflows dupliquÃ©s dans n8n
+# Ce script identifie et supprime les workflows dupliquÃ©s en se basant sur leur nom
 
 # Configuration
 $n8nUrl = "http://localhost:5678"
 $apiEndpoint = "$n8nUrl/api/v1/workflows"
 $authToken = $null
 
-# Demander le token d'authentification si nécessaire
+# Demander le token d'authentification si nÃ©cessaire
 if (-not $authToken) {
     $authToken = Read-Host "Entrez votre token d'authentification n8n"
     if ([string]::IsNullOrEmpty($authToken)) {
@@ -15,26 +15,26 @@ if (-not $authToken) {
     }
 }
 
-# Headers pour les requêtes API
+# Headers pour les requÃªtes API
 $headers = @{
     "X-N8N-API-KEY" = $authToken
     "Content-Type" = "application/json"
 }
 
-# Récupérer tous les workflows
+# RÃ©cupÃ©rer tous les workflows
 try {
-    Write-Host "Récupération des workflows depuis n8n..." -NoNewline
+    Write-Host "RÃ©cupÃ©ration des workflows depuis n8n..." -NoNewline
     $workflows = Invoke-RestMethod -Uri $apiEndpoint -Headers $headers -Method Get
     Write-Host " OK!" -ForegroundColor Green
-    Write-Host "Nombre de workflows trouvés: $($workflows.Count)"
+    Write-Host "Nombre de workflows trouvÃ©s: $($workflows.Count)"
 }
 catch {
-    Write-Host " Échec!" -ForegroundColor Red
-    Write-Host "Erreur lors de la récupération des workflows: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host " Ã‰chec!" -ForegroundColor Red
+    Write-Host "Erreur lors de la rÃ©cupÃ©ration des workflows: $($_.Exception.Message)" -ForegroundColor Red
     exit
 }
 
-# Identifier les workflows dupliqués
+# Identifier les workflows dupliquÃ©s
 $workflowNames = @{}
 $duplicates = @()
 
@@ -50,7 +50,7 @@ foreach ($workflow in $workflows) {
             UpdatedAt = $workflow.updatedAt
         }
 
-        Write-Host "Doublon trouvé: '$name' (ID: $($workflow.id))" -ForegroundColor Yellow
+        Write-Host "Doublon trouvÃ©: '$name' (ID: $($workflow.id))" -ForegroundColor Yellow
     }
     else {
         # Premier workflow avec ce nom
@@ -62,15 +62,15 @@ foreach ($workflow in $workflows) {
     }
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé:"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ©:"
 Write-Host "Total des workflows: $($workflows.Count)"
 Write-Host "Workflows uniques: $($workflowNames.Count)"
-Write-Host "Doublons identifiés: $($duplicates.Count)"
+Write-Host "Doublons identifiÃ©s: $($duplicates.Count)"
 
 # Demander confirmation pour supprimer les doublons
 if ($duplicates.Count -gt 0) {
-    $confirmation = Read-Host "`nVoulez-vous supprimer les $($duplicates.Count) workflows dupliqués? (O/N)"
+    $confirmation = Read-Host "`nVoulez-vous supprimer les $($duplicates.Count) workflows dupliquÃ©s? (O/N)"
 
     if ($confirmation -eq "O" -or $confirmation -eq "o") {
         $successCount = 0
@@ -85,17 +85,17 @@ if ($duplicates.Count -gt 0) {
                 $successCount++
             }
             catch {
-                Write-Host " Échec!" -ForegroundColor Red
+                Write-Host " Ã‰chec!" -ForegroundColor Red
                 Write-Host "  Erreur: $($_.Exception.Message)" -ForegroundColor Red
             }
         }
 
-        Write-Host "`nSuppression terminée: $successCount/$($duplicates.Count) workflows supprimés."
+        Write-Host "`nSuppression terminÃ©e: $successCount/$($duplicates.Count) workflows supprimÃ©s."
     }
     else {
-        Write-Host "Opération annulée. Aucun workflow n'a été supprimé."
+        Write-Host "OpÃ©ration annulÃ©e. Aucun workflow n'a Ã©tÃ© supprimÃ©."
     }
 }
 else {
-    Write-Host "`nAucun workflow dupliqué trouvé. Rien à supprimer."
+    Write-Host "`nAucun workflow dupliquÃ© trouvÃ©. Rien Ã  supprimer."
 }

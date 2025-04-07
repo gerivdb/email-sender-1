@@ -1,67 +1,67 @@
-# Script pour configurer le démarrage automatique de la surveillance des fichiers
-# Ce script crée une tâche planifiée qui démarre au démarrage de Windows
+﻿# Script pour configurer le dÃ©marrage automatique de la surveillance des fichiers
+# Ce script crÃ©e une tÃ¢che planifiÃ©e qui dÃ©marre au dÃ©marrage de Windows
 
-Write-Host "=== Configuration de la surveillance automatique au démarrage ===" -ForegroundColor Cyan
+Write-Host "=== Configuration de la surveillance automatique au dÃ©marrage ===" -ForegroundColor Cyan
 
 # Obtenir le chemin absolu du script watch-and-organize.ps1
 $scriptPath = (Resolve-Path ".\scripts\maintenance\watch-and-organize.ps1").Path
 
-# Nom de la tâche
+# Nom de la tÃ¢che
 $taskName = "N8N_AutoWatch"
 
-# Vérifier si la tâche existe déjà
+# VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
 $taskExists = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 
 if ($taskExists) {
-    Write-Host "La tâche $taskName existe déjà. Voulez-vous la remplacer ? (O/N)" -ForegroundColor Yellow
+    Write-Host "La tÃ¢che $taskName existe dÃ©jÃ . Voulez-vous la remplacer ? (O/N)" -ForegroundColor Yellow
     $confirmation = Read-Host
     
     if ($confirmation -ne "O" -and $confirmation -ne "o") {
-        Write-Host "Configuration annulée" -ForegroundColor Red
+        Write-Host "Configuration annulÃ©e" -ForegroundColor Red
         exit
     }
     
-    # Supprimer la tâche existante
+    # Supprimer la tÃ¢che existante
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
-    Write-Host "Tâche existante supprimée" -ForegroundColor Green
+    Write-Host "TÃ¢che existante supprimÃ©e" -ForegroundColor Green
 }
 
-# Créer l'action
+# CrÃ©er l'action
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`""
 
-# Créer le déclencheur (au démarrage)
+# CrÃ©er le dÃ©clencheur (au dÃ©marrage)
 $trigger = New-ScheduledTaskTrigger -AtStartup
 
-# Créer les paramètres
+# CrÃ©er les paramÃ¨tres
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries -RunOnlyIfNetworkAvailable
 
-# Créer la tâche
+# CrÃ©er la tÃ¢che
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -Description "Surveille et organise automatiquement les nouveaux fichiers du projet N8N Email Sender"
 
-Write-Host "Tâche planifiée $taskName créée avec succès" -ForegroundColor Green
-Write-Host "La surveillance démarrera automatiquement au démarrage de Windows" -ForegroundColor Green
+Write-Host "TÃ¢che planifiÃ©e $taskName crÃ©Ã©e avec succÃ¨s" -ForegroundColor Green
+Write-Host "La surveillance dÃ©marrera automatiquement au dÃ©marrage de Windows" -ForegroundColor Green
 
-# Créer un raccourci sur le bureau pour démarrer manuellement la surveillance
+# CrÃ©er un raccourci sur le bureau pour dÃ©marrer manuellement la surveillance
 $desktopPath = [Environment]::GetFolderPath("Desktop")
-$shortcutPath = "$desktopPath\Démarrer Surveillance N8N.lnk"
+$shortcutPath = "$desktopPath\DÃ©marrer Surveillance N8N.lnk"
 
 $WshShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($shortcutPath)
 $Shortcut.TargetPath = "powershell.exe"
 $Shortcut.Arguments = "-ExecutionPolicy Bypass -File `"$scriptPath`""
 $Shortcut.WorkingDirectory = Split-Path $scriptPath -Parent
-$Shortcut.Description = "Démarrer la surveillance des fichiers N8N"
+$Shortcut.Description = "DÃ©marrer la surveillance des fichiers N8N"
 $Shortcut.IconLocation = "powershell.exe,0"
 $Shortcut.Save()
 
-Write-Host "Raccourci créé sur le bureau: 'Démarrer Surveillance N8N'" -ForegroundColor Green
+Write-Host "Raccourci crÃ©Ã© sur le bureau: 'DÃ©marrer Surveillance N8N'" -ForegroundColor Green
 
-Write-Host "`nVoulez-vous démarrer la surveillance maintenant ? (O/N)" -ForegroundColor Yellow
+Write-Host "`nVoulez-vous dÃ©marrer la surveillance maintenant ? (O/N)" -ForegroundColor Yellow
 $startNow = Read-Host
 
 if ($startNow -eq "O" -or $startNow -eq "o") {
-    Write-Host "Démarrage de la surveillance..." -ForegroundColor Green
+    Write-Host "DÃ©marrage de la surveillance..." -ForegroundColor Green
     Start-Process powershell.exe -ArgumentList "-ExecutionPolicy Bypass -File `"$scriptPath`""
 }
 
-Write-Host "`n=== Configuration terminée ===" -ForegroundColor Cyan
+Write-Host "`n=== Configuration terminÃ©e ===" -ForegroundColor Cyan

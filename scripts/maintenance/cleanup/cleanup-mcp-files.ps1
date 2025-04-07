@@ -1,4 +1,4 @@
-# Script pour nettoyer les fichiers MCP obsoletes
+﻿# Script pour nettoyer les fichiers MCP obsoletes
 
 Write-Host "=== Nettoyage des fichiers MCP obsoletes ===" -ForegroundColor Cyan
 
@@ -47,15 +47,15 @@ foreach ($file in $filesToRemove) {
         if ($confirmation -eq "O" -or $confirmation -eq "o") {
             if (Test-Path ".\$file") {
                 Remove-Item ".\$file"
-                Write-Host "✅ Fichier $file supprime" -ForegroundColor Green
+                Write-Host "âœ… Fichier $file supprime" -ForegroundColor Green
             } else {
-                Write-Host "❌ Fichier $file non trouve a la racine" -ForegroundColor Red
+                Write-Host "âŒ Fichier $file non trouve a la racine" -ForegroundColor Red
             }
         } else {
             Write-Host "Fichier $file conserve" -ForegroundColor Yellow
         }
     } else {
-        Write-Host "❌ Fichier $file non trouve dans le dossier $targetFolder" -ForegroundColor Red
+        Write-Host "âŒ Fichier $file non trouve dans le dossier $targetFolder" -ForegroundColor Red
         Write-Host "Le fichier ne sera pas supprime de la racine" -ForegroundColor Yellow
     }
 }

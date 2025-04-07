@@ -1,4 +1,4 @@
-# Script pour verifier l'integrite de la structure du projet
+﻿# Script pour verifier l'integrite de la structure du projet
 
 Write-Host "=== Verification de l'integrite de la structure du projet ===" -ForegroundColor Cyan
 

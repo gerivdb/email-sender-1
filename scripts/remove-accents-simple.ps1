@@ -1,13 +1,13 @@
-# Script pour remplacer les caractères accentués par des caractères non accentués dans les fichiers JSON
+﻿# Script pour remplacer les caractÃ¨res accentuÃ©s par des caractÃ¨res non accentuÃ©s dans les fichiers JSON
 
-# Créer un répertoire pour les fichiers sans accents
+# CrÃ©er un rÃ©pertoire pour les fichiers sans accents
 $outputDir = "workflows-no-accents-reference"
 if (-not (Test-Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir | Out-Null
     Write-Host "Repertoire $outputDir cree."
 }
 
-# Traiter tous les fichiers JSON dans le répertoire de référence
+# Traiter tous les fichiers JSON dans le rÃ©pertoire de rÃ©fÃ©rence
 $workflowsDir = "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\workflows\re-import_pour_analyse"
 if (-not (Test-Path $workflowsDir)) {
     Write-Host "Le repertoire de reference n'existe pas: $workflowsDir" -ForegroundColor Red
@@ -24,24 +24,24 @@ foreach ($file in $workflowFiles) {
         # Lire le contenu du fichier
         $content = Get-Content -Path $file.FullName -Raw -Encoding UTF8
         
-        # Remplacer les caractères accentués par des caractères non accentués
-        $fixedContent = $content -replace 'à', 'a' -replace 'á', 'a' -replace 'â', 'a' -replace 'ä', 'a' -replace 'ã', 'a' -replace 'å', 'a'
-        $fixedContent = $fixedContent -replace 'ç', 'c'
-        $fixedContent = $fixedContent -replace 'è', 'e' -replace 'é', 'e' -replace 'ê', 'e' -replace 'ë', 'e'
-        $fixedContent = $fixedContent -replace 'ì', 'i' -replace 'í', 'i' -replace 'î', 'i' -replace 'ï', 'i'
-        $fixedContent = $fixedContent -replace 'ñ', 'n'
-        $fixedContent = $fixedContent -replace 'ò', 'o' -replace 'ó', 'o' -replace 'ô', 'o' -replace 'õ', 'o' -replace 'ö', 'o'
-        $fixedContent = $fixedContent -replace 'ù', 'u' -replace 'ú', 'u' -replace 'û', 'u' -replace 'ü', 'u'
-        $fixedContent = $fixedContent -replace 'ý', 'y' -replace 'ÿ', 'y'
+        # Remplacer les caractÃ¨res accentuÃ©s par des caractÃ¨res non accentuÃ©s
+        $fixedContent = $content -replace 'Ã ', 'a' -replace 'Ã¡', 'a' -replace 'Ã¢', 'a' -replace 'Ã¤', 'a' -replace 'Ã£', 'a' -replace 'Ã¥', 'a'
+        $fixedContent = $fixedContent -replace 'Ã§', 'c'
+        $fixedContent = $fixedContent -replace 'Ã¨', 'e' -replace 'Ã©', 'e' -replace 'Ãª', 'e' -replace 'Ã«', 'e'
+        $fixedContent = $fixedContent -replace 'Ã¬', 'i' -replace 'Ã­', 'i' -replace 'Ã®', 'i' -replace 'Ã¯', 'i'
+        $fixedContent = $fixedContent -replace 'Ã±', 'n'
+        $fixedContent = $fixedContent -replace 'Ã²', 'o' -replace 'Ã³', 'o' -replace 'Ã´', 'o' -replace 'Ãµ', 'o' -replace 'Ã¶', 'o'
+        $fixedContent = $fixedContent -replace 'Ã¹', 'u' -replace 'Ãº', 'u' -replace 'Ã»', 'u' -replace 'Ã¼', 'u'
+        $fixedContent = $fixedContent -replace 'Ã½', 'y' -replace 'Ã¿', 'y'
         
-        $fixedContent = $fixedContent -replace 'À', 'A' -replace 'Á', 'A' -replace 'Â', 'A' -replace 'Ä', 'A' -replace 'Ã', 'A' -replace 'Å', 'A'
-        $fixedContent = $fixedContent -replace 'Ç', 'C'
-        $fixedContent = $fixedContent -replace 'È', 'E' -replace 'É', 'E' -replace 'Ê', 'E' -replace 'Ë', 'E'
-        $fixedContent = $fixedContent -replace 'Ì', 'I' -replace 'Í', 'I' -replace 'Î', 'I' -replace 'Ï', 'I'
-        $fixedContent = $fixedContent -replace 'Ñ', 'N'
-        $fixedContent = $fixedContent -replace 'Ò', 'O' -replace 'Ó', 'O' -replace 'Ô', 'O' -replace 'Õ', 'O' -replace 'Ö', 'O'
-        $fixedContent = $fixedContent -replace 'Ù', 'U' -replace 'Ú', 'U' -replace 'Û', 'U' -replace 'Ü', 'U'
-        $fixedContent = $fixedContent -replace 'Ý', 'Y' -replace 'Ÿ', 'Y'
+        $fixedContent = $fixedContent -replace 'Ã€', 'A' -replace 'Ã', 'A' -replace 'Ã‚', 'A' -replace 'Ã„', 'A' -replace 'Ãƒ', 'A' -replace 'Ã…', 'A'
+        $fixedContent = $fixedContent -replace 'Ã‡', 'C'
+        $fixedContent = $fixedContent -replace 'Ãˆ', 'E' -replace 'Ã‰', 'E' -replace 'ÃŠ', 'E' -replace 'Ã‹', 'E'
+        $fixedContent = $fixedContent -replace 'ÃŒ', 'I' -replace 'Ã', 'I' -replace 'ÃŽ', 'I' -replace 'Ã', 'I'
+        $fixedContent = $fixedContent -replace 'Ã‘', 'N'
+        $fixedContent = $fixedContent -replace 'Ã’', 'O' -replace 'Ã“', 'O' -replace 'Ã”', 'O' -replace 'Ã•', 'O' -replace 'Ã–', 'O'
+        $fixedContent = $fixedContent -replace 'Ã™', 'U' -replace 'Ãš', 'U' -replace 'Ã›', 'U' -replace 'Ãœ', 'U'
+        $fixedContent = $fixedContent -replace 'Ã', 'Y' -replace 'Å¸', 'Y'
         
         # Sauvegarder le fichier sans accents
         $outputPath = Join-Path -Path $outputDir -ChildPath $file.Name

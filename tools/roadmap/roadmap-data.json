@@ -1,0 +1,221 @@
+{
+    "lastUpdated":  "2025-04-07T01:25:17",
+    "categories":  [
+                       {
+                           "id":  1,
+                           "name":  "Documentation et formation",
+                           "complexity":  "Faible à moyenne",
+                           "estimatedDays":  "2-5",
+                           "progress":  0,
+                           "tasks":  [
+                                         {
+                                             "id":  "1.1",
+                                             "description":  "Créer une documentation détaillée des problèmes rencontrés et des solutions",
+                                             "estimatedDays":  "2",
+                                             "completed":  true,
+                                             "startDate":  "2025-04-07T01:24:50",
+                                             "completionDate":  "2025-04-07T01:25:05",
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "1.2",
+                                             "description":  "Développer des tutoriels pas à pas pour les configurations complexes",
+                                             "estimatedDays":  "2",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "1.3",
+                                             "description":  "Mettre en place un système de partage des connaissances",
+                                             "estimatedDays":  "1",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  2,
+                           "name":  "Gestion améliorée des répertoires et des chemins",
+                           "complexity":  "Faible à moyenne",
+                           "estimatedDays":  "3-5",
+                           "progress":  0,
+                           "tasks":  [
+                                         {
+                                             "id":  "2.1",
+                                             "description":  "Implémenter un système de gestion des chemins relatifs",
+                                             "estimatedDays":  "1-2",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "2.2",
+                                             "description":  "Créer des utilitaires pour normaliser les chemins",
+                                             "estimatedDays":  "1-2",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "2.3",
+                                             "description":  "Développer des mécanismes de recherche de fichiers plus robustes",
+                                             "estimatedDays":  "1",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  3,
+                           "name":  "Amélioration de la compatibilité des terminaux",
+                           "complexity":  "Moyenne",
+                           "estimatedDays":  "4-7",
+                           "progress":  0,
+                           "tasks":  [
+                                         {
+                                             "id":  "3.1",
+                                             "description":  "Créer des scripts compatibles avec différents shells (PowerShell, Bash, etc.)",
+                                             "estimatedDays":  "2-3",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "3.2",
+                                             "description":  "Standardiser les commandes utilisées dans les scripts",
+                                             "estimatedDays":  "1-2",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "3.3",
+                                             "description":  "Développer une bibliothèque d\u0027utilitaires pour abstraire les différences entre shells",
+                                             "estimatedDays":  "1-2",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  4,
+                           "name":  "Standardisation des hooks Git",
+                           "complexity":  "Moyenne",
+                           "estimatedDays":  "5-8",
+                           "progress":  0,
+                           "tasks":  [
+                                         {
+                                             "id":  "4.1",
+                                             "description":  "Créer des hooks Git robustes qui gèrent correctement les erreurs",
+                                             "estimatedDays":  "2-3",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "4.2",
+                                             "description":  "Développer un système de vérification des hooks avant commit/push",
+                                             "estimatedDays":  "1-2",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "4.3",
+                                             "description":  "Implémenter un mécanisme de contournement sécurisé des hooks en cas de problème",
+                                             "estimatedDays":  "2-3",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  5,
+                           "name":  "Amélioration de l\u0027authentification",
+                           "complexity":  "Élevée",
+                           "estimatedDays":  "7-14",
+                           "progress":  0,
+                           "tasks":  [
+                                         {
+                                             "id":  "5.1",
+                                             "description":  "Créer un guide détaillé des différentes méthodes d\u0027authentification Google",
+                                             "estimatedDays":  "2-3",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "5.2",
+                                             "description":  "Développer des scripts d\u0027auto-configuration qui détectent et activent les API nécessaires",
+                                             "estimatedDays":  "3-5",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "5.3",
+                                             "description":  "Implémenter un système de gestion des tokens plus sécurisé et plus simple",
+                                             "estimatedDays":  "2-6",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  6,
+                           "name":  "Alternatives aux serveurs MCP traditionnels",
+                           "complexity":  "Très élevée",
+                           "estimatedDays":  "14-30",
+                           "progress":  0,
+                           "tasks":  [
+                                         {
+                                             "id":  "6.1",
+                                             "description":  "Explorer des alternatives comme Gitingest qui ne nécessitent pas de token",
+                                             "estimatedDays":  "3-5",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "6.2",
+                                             "description":  "Développer des serveurs MCP personnalisés adaptés aux besoins spécifiques",
+                                             "estimatedDays":  "7-15",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         },
+                                         {
+                                             "id":  "6.3",
+                                             "description":  "Créer un système de proxy pour les API qui ne nécessite pas de configuration manuelle",
+                                             "estimatedDays":  "4-10",
+                                             "completed":  false,
+                                             "startDate":  null,
+                                             "completionDate":  null,
+                                             "notes":  ""
+                                         }
+                                     ]
+                       }
+                   ]
+}

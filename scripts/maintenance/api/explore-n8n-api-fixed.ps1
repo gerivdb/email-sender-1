@@ -1,4 +1,4 @@
-# Script pour explorer l'API n8n et documenter les endpoints disponibles
+﻿# Script pour explorer l'API n8n et documenter les endpoints disponibles
 
 # Configuration
 $n8nUrl = "http://localhost:5678"
@@ -165,7 +165,7 @@ foreach ($category in $results.Keys) {
     
     foreach ($result in $results[$category]) {
         $endpoint = $endpoints | Where-Object { $_.Description -eq $result.Description } | Select-Object -First 1
-        $status = if ($result.Status -eq "Success") { "✅ Fonctionne" } else { "❌ Echoue" }
+        $status = if ($result.Status -eq "Success") { "âœ… Fonctionne" } else { "âŒ Echoue" }
         $comment = if ($result.Status -eq "Success") { "Fonctionne correctement" } else { $result.Error }
         
         $documentation += "| $($endpoint.Method) | $($endpoint.Endpoint) | $($result.Description) | $status | $comment |`n"

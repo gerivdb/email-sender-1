@@ -1,5 +1,5 @@
-# Script PowerShell pour le hook pre-push
-# Ce script est exécuté automatiquement avant chaque push
+﻿# Script PowerShell pour le hook pre-push
+# Ce script est exÃ©cutÃ© automatiquement avant chaque push
 
 param (
     [Parameter(Mandatory = $false)]
@@ -16,7 +16,7 @@ param (
 $projectRoot = git rev-parse --show-toplevel
 Set-Location $projectRoot
 
-# Fonction pour afficher un message coloré
+# Fonction pour afficher un message colorÃ©
 function Write-ColorMessage {
     param (
         [string]$Message,
@@ -37,17 +37,17 @@ function Write-VerboseMessage {
     }
 }
 
-Write-ColorMessage "Exécution du hook pre-push PowerShell..." -ForegroundColor "Cyan"
+Write-ColorMessage "ExÃ©cution du hook pre-push PowerShell..." -ForegroundColor "Cyan"
 
-# Liste des vérifications à effectuer
+# Liste des vÃ©rifications Ã  effectuer
 $checks = @(
     @{
-        Name = "Vérification des conflits non résolus"
+        Name = "VÃ©rification des conflits non rÃ©solus"
         Function = {
             $conflictFiles = git diff --name-only --diff-filter=U
             
             if (-not [string]::IsNullOrEmpty($conflictFiles)) {
-                Write-ColorMessage "Des conflits non résolus ont été détectés dans les fichiers suivants:" -ForegroundColor "Red"
+                Write-ColorMessage "Des conflits non rÃ©solus ont Ã©tÃ© dÃ©tectÃ©s dans les fichiers suivants:" -ForegroundColor "Red"
                 $conflictFiles | ForEach-Object {
                     Write-ColorMessage "  - $_" -ForegroundColor "Red"
                 }
@@ -58,7 +58,7 @@ $checks = @(
         }
     },
     @{
-        Name = "Vérification des fichiers volumineux"
+        Name = "VÃ©rification des fichiers volumineux"
         Function = {
             $largeFiles = git status --porcelain | Where-Object { $_ -match '^\s*[AM]' } | ForEach-Object {
                 $file = $_.Substring(3)
@@ -73,15 +73,15 @@ $checks = @(
             }
             
             if ($largeFiles) {
-                Write-ColorMessage "Des fichiers volumineux ont été détectés:" -ForegroundColor "Yellow"
+                Write-ColorMessage "Des fichiers volumineux ont Ã©tÃ© dÃ©tectÃ©s:" -ForegroundColor "Yellow"
                 $largeFiles | ForEach-Object {
                     Write-ColorMessage "  - $($_.Path) ($($_.Size) MB)" -ForegroundColor "Yellow"
                 }
                 
-                Write-ColorMessage "Considérez l'utilisation de Git LFS pour les fichiers volumineux" -ForegroundColor "Yellow"
+                Write-ColorMessage "ConsidÃ©rez l'utilisation de Git LFS pour les fichiers volumineux" -ForegroundColor "Yellow"
                 
                 if (-not $Force) {
-                    $confirmation = Read-Host "Voulez-vous continuer malgré les fichiers volumineux? (O/N)"
+                    $confirmation = Read-Host "Voulez-vous continuer malgrÃ© les fichiers volumineux? (O/N)"
                     return ($confirmation -eq "O" -or $confirmation -eq "o")
                 }
             }
@@ -90,44 +90,44 @@ $checks = @(
         }
     },
     @{
-        Name = "Vérification des tests unitaires"
+        Name = "VÃ©rification des tests unitaires"
         Function = {
             if ($SkipTests) {
-                Write-ColorMessage "Tests unitaires ignorés (option -SkipTests)" -ForegroundColor "Yellow"
+                Write-ColorMessage "Tests unitaires ignorÃ©s (option -SkipTests)" -ForegroundColor "Yellow"
                 return $true
             }
             
-            # Vérifier s'il y a des tests à exécuter
+            # VÃ©rifier s'il y a des tests Ã  exÃ©cuter
             $testFiles = Get-ChildItem -Path $projectRoot -Recurse -Include "*test*.py", "*Test*.ps1" -File
             
             if ($testFiles.Count -eq 0) {
-                Write-ColorMessage "Aucun fichier de test trouvé" -ForegroundColor "Yellow"
+                Write-ColorMessage "Aucun fichier de test trouvÃ©" -ForegroundColor "Yellow"
                 return $true
             }
             
-            Write-ColorMessage "Exécution des tests unitaires..." -ForegroundColor "Cyan"
+            Write-ColorMessage "ExÃ©cution des tests unitaires..." -ForegroundColor "Cyan"
             
-            # Exécuter les tests Python
+            # ExÃ©cuter les tests Python
             $pythonTestFiles = $testFiles | Where-Object { $_.Extension -eq ".py" }
             if ($pythonTestFiles.Count -gt 0) {
-                Write-ColorMessage "Exécution des tests Python..." -ForegroundColor "Cyan"
+                Write-ColorMessage "ExÃ©cution des tests Python..." -ForegroundColor "Cyan"
                 
                 if (Get-Command pytest -ErrorAction SilentlyContinue) {
                     $testResult = $true
                     
                     foreach ($testFile in $pythonTestFiles) {
-                        Write-ColorMessage "  Exécution de $($testFile.Name)..." -ForegroundColor "Cyan"
+                        Write-ColorMessage "  ExÃ©cution de $($testFile.Name)..." -ForegroundColor "Cyan"
                         $output = & pytest $testFile.FullName -v
                         
                         if ($LASTEXITCODE -ne 0) {
-                            Write-ColorMessage "  Échec des tests dans $($testFile.Name)" -ForegroundColor "Red"
+                            Write-ColorMessage "  Ã‰chec des tests dans $($testFile.Name)" -ForegroundColor "Red"
                             $output | ForEach-Object {
                                 Write-ColorMessage "    $_" -ForegroundColor "Red"
                             }
                             $testResult = $false
                         }
                         else {
-                            Write-ColorMessage "  Tests réussis dans $($testFile.Name)" -ForegroundColor "Green"
+                            Write-ColorMessage "  Tests rÃ©ussis dans $($testFile.Name)" -ForegroundColor "Green"
                         }
                     }
                     
@@ -137,28 +137,28 @@ $checks = @(
                     }
                 }
                 else {
-                    Write-ColorMessage "pytest non installé. Installation recommandée : pip install pytest" -ForegroundColor "Yellow"
+                    Write-ColorMessage "pytest non installÃ©. Installation recommandÃ©e : pip install pytest" -ForegroundColor "Yellow"
                 }
             }
             
-            # Exécuter les tests PowerShell
+            # ExÃ©cuter les tests PowerShell
             $powershellTestFiles = $testFiles | Where-Object { $_.Extension -eq ".ps1" }
             if ($powershellTestFiles.Count -gt 0) {
-                Write-ColorMessage "Exécution des tests PowerShell..." -ForegroundColor "Cyan"
+                Write-ColorMessage "ExÃ©cution des tests PowerShell..." -ForegroundColor "Cyan"
                 
                 if (Get-Command Invoke-Pester -ErrorAction SilentlyContinue) {
                     $testResult = $true
                     
                     foreach ($testFile in $powershellTestFiles) {
-                        Write-ColorMessage "  Exécution de $($testFile.Name)..." -ForegroundColor "Cyan"
+                        Write-ColorMessage "  ExÃ©cution de $($testFile.Name)..." -ForegroundColor "Cyan"
                         $results = Invoke-Pester -Path $testFile.FullName -PassThru
                         
                         if ($results.FailedCount -gt 0) {
-                            Write-ColorMessage "  Échec des tests dans $($testFile.Name): $($results.FailedCount) test(s) échoué(s)" -ForegroundColor "Red"
+                            Write-ColorMessage "  Ã‰chec des tests dans $($testFile.Name): $($results.FailedCount) test(s) Ã©chouÃ©(s)" -ForegroundColor "Red"
                             $testResult = $false
                         }
                         else {
-                            Write-ColorMessage "  Tests réussis dans $($testFile.Name): $($results.PassedCount) test(s) réussi(s)" -ForegroundColor "Green"
+                            Write-ColorMessage "  Tests rÃ©ussis dans $($testFile.Name): $($results.PassedCount) test(s) rÃ©ussi(s)" -ForegroundColor "Green"
                         }
                     }
                     
@@ -168,7 +168,7 @@ $checks = @(
                     }
                 }
                 else {
-                    Write-ColorMessage "Pester non installé. Installation recommandée : Install-Module -Name Pester -Force" -ForegroundColor "Yellow"
+                    Write-ColorMessage "Pester non installÃ©. Installation recommandÃ©e : Install-Module -Name Pester -Force" -ForegroundColor "Yellow"
                 }
             }
             
@@ -176,7 +176,7 @@ $checks = @(
         }
     },
     @{
-        Name = "Vérification des informations sensibles"
+        Name = "VÃ©rification des informations sensibles"
         Function = {
             $sensitivePatterns = @(
                 "password\s*=\s*['\"][^'\"]+['\"]",
@@ -208,15 +208,15 @@ $checks = @(
             }
             
             if ($sensitiveFiles.Count -gt 0) {
-                Write-ColorMessage "Des informations potentiellement sensibles ont été détectées:" -ForegroundColor "Red"
+                Write-ColorMessage "Des informations potentiellement sensibles ont Ã©tÃ© dÃ©tectÃ©es:" -ForegroundColor "Red"
                 $sensitiveFiles | ForEach-Object {
                     Write-ColorMessage "  - $_" -ForegroundColor "Red"
                 }
                 
-                Write-ColorMessage "Assurez-vous de ne pas commiter d'informations sensibles comme des mots de passe ou des clés API" -ForegroundColor "Red"
+                Write-ColorMessage "Assurez-vous de ne pas commiter d'informations sensibles comme des mots de passe ou des clÃ©s API" -ForegroundColor "Red"
                 
                 if (-not $Force) {
-                    $confirmation = Read-Host "Voulez-vous continuer malgré les informations sensibles? (O/N)"
+                    $confirmation = Read-Host "Voulez-vous continuer malgrÃ© les informations sensibles? (O/N)"
                     return ($confirmation -eq "O" -or $confirmation -eq "o")
                 }
             }
@@ -226,19 +226,19 @@ $checks = @(
     }
 )
 
-# Exécuter les vérifications
+# ExÃ©cuter les vÃ©rifications
 $allPassed = $true
 
 foreach ($check in $checks) {
-    Write-VerboseMessage "Exécution de: $($check.Name)..."
+    Write-VerboseMessage "ExÃ©cution de: $($check.Name)..."
     
     $result = & $check.Function
     
     if ($result) {
-        Write-VerboseMessage "✓ $($check.Name): Réussi"
+        Write-VerboseMessage "âœ“ $($check.Name): RÃ©ussi"
     }
     else {
-        Write-ColorMessage "✗ $($check.Name): Échec" -ForegroundColor "Red"
+        Write-ColorMessage "âœ— $($check.Name): Ã‰chec" -ForegroundColor "Red"
         $allPassed = $false
         
         if (-not $Force) {
@@ -247,19 +247,19 @@ foreach ($check in $checks) {
     }
 }
 
-# Afficher le résultat final
+# Afficher le rÃ©sultat final
 if ($allPassed) {
-    Write-ColorMessage "`nToutes les vérifications ont réussi. Vous pouvez procéder au push." -ForegroundColor "Green"
+    Write-ColorMessage "`nToutes les vÃ©rifications ont rÃ©ussi. Vous pouvez procÃ©der au push." -ForegroundColor "Green"
     exit 0
 }
 else {
     if ($Force) {
-        Write-ColorMessage "`nCertaines vérifications ont échoué, mais l'option -Force est activée." -ForegroundColor "Yellow"
+        Write-ColorMessage "`nCertaines vÃ©rifications ont Ã©chouÃ©, mais l'option -Force est activÃ©e." -ForegroundColor "Yellow"
         exit 0
     }
     else {
-        Write-ColorMessage "`nCertaines vérifications ont échoué. Corrigez les problèmes avant de procéder au push." -ForegroundColor "Red"
-        Write-ColorMessage "Vous pouvez utiliser l'option -Force pour ignorer ces vérifications." -ForegroundColor "Yellow"
+        Write-ColorMessage "`nCertaines vÃ©rifications ont Ã©chouÃ©. Corrigez les problÃ¨mes avant de procÃ©der au push." -ForegroundColor "Red"
+        Write-ColorMessage "Vous pouvez utiliser l'option -Force pour ignorer ces vÃ©rifications." -ForegroundColor "Yellow"
         exit 1
     }
 }

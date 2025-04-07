@@ -1,4 +1,4 @@
-# Script pour corriger les problemes d'encodage dans les scripts PowerShell
+﻿# Script pour corriger les problemes d'encodage dans les scripts PowerShell
 
 Write-Host "=== Correction des problemes d'encodage dans les scripts PowerShell ===" -ForegroundColor Cyan
 

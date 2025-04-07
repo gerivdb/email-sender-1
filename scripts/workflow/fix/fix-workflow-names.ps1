@@ -1,13 +1,13 @@
-# Script pour corriger les noms des workflows en remplaçant les caractères accentués
+﻿# Script pour corriger les noms des workflows en remplaÃ§ant les caractÃ¨res accentuÃ©s
 
-# Créer un répertoire pour les fichiers corrigés
+# CrÃ©er un rÃ©pertoire pour les fichiers corrigÃ©s
 $outputDir = "workflows-fixed-names"
 if (-not (Test-Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir | Out-Null
     Write-Host "Repertoire $outputDir cree."
 }
 
-# Traiter tous les fichiers JSON dans le répertoire de référence
+# Traiter tous les fichiers JSON dans le rÃ©pertoire de rÃ©fÃ©rence
 $workflowsDir = "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\workflows\re-import_pour_analyse"
 if (-not (Test-Path $workflowsDir)) {
     Write-Host "Le repertoire de reference n'existe pas: $workflowsDir" -ForegroundColor Red
@@ -27,20 +27,20 @@ foreach ($file in $workflowFiles) {
         # Convertir le contenu JSON en objet PowerShell
         $workflowJson = $content | ConvertFrom-Json
         
-        # Remplacer les caractères accentués dans le nom du workflow
+        # Remplacer les caractÃ¨res accentuÃ©s dans le nom du workflow
         $originalName = $workflowJson.name
-        $newName = $originalName -replace "é", "e" -replace "è", "e" -replace "ê", "e" -replace "à", "a" -replace "ù", "u" -replace "ç", "c" -replace "î", "i" -replace "ï", "i" -replace "ô", "o" -replace "É", "E" -replace "È", "E" -replace "Ê", "E" -replace "À", "A" -replace "Ù", "U" -replace "Ç", "C" -replace "Î", "I" -replace "Ï", "I" -replace "Ô", "O"
+        $newName = $originalName -replace "Ã©", "e" -replace "Ã¨", "e" -replace "Ãª", "e" -replace "Ã ", "a" -replace "Ã¹", "u" -replace "Ã§", "c" -replace "Ã®", "i" -replace "Ã¯", "i" -replace "Ã´", "o" -replace "Ã‰", "E" -replace "Ãˆ", "E" -replace "ÃŠ", "E" -replace "Ã€", "A" -replace "Ã™", "U" -replace "Ã‡", "C" -replace "ÃŽ", "I" -replace "Ã", "I" -replace "Ã”", "O"
         
         Write-Host " - Nom original: $originalName"
         Write-Host " - Nouveau nom: $newName"
         
-        # Mettre à jour le nom du workflow
+        # Mettre Ã  jour le nom du workflow
         $workflowJson.name = $newName
         
         # Convertir l'objet PowerShell en JSON
         $updatedContent = $workflowJson | ConvertTo-Json -Depth 100
         
-        # Sauvegarder le fichier avec le nom corrigé
+        # Sauvegarder le fichier avec le nom corrigÃ©
         $outputPath = Join-Path -Path $outputDir -ChildPath $file.Name
         $updatedContent | Out-File -FilePath $outputPath -Encoding UTF8
         

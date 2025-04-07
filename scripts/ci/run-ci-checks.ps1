@@ -1,5 +1,5 @@
-# Script pour exécuter les vérifications CI/CD
-# Ce script est conçu pour être exécuté dans un environnement CI/CD
+﻿# Script pour exÃ©cuter les vÃ©rifications CI/CD
+# Ce script est conÃ§u pour Ãªtre exÃ©cutÃ© dans un environnement CI/CD
 
 param (
     [Parameter(Mandatory = $false)]
@@ -25,7 +25,7 @@ else {
 }
 Set-Location $projectRoot
 
-# Fonction pour afficher un message coloré
+# Fonction pour afficher un message colorÃ©
 function Write-ColorMessage {
     param (
         [string]$Message,
@@ -46,24 +46,24 @@ function Write-VerboseMessage {
     }
 }
 
-Write-ColorMessage "Exécution des vérifications CI/CD..." -ForegroundColor "Cyan"
+Write-ColorMessage "ExÃ©cution des vÃ©rifications CI/CD..." -ForegroundColor "Cyan"
 
 $allPassed = $true
 
-# Étape 1: Vérification du style de code
+# Ã‰tape 1: VÃ©rification du style de code
 if (-not $SkipLint) {
-    Write-ColorMessage "Étape 1: Vérification du style de code..." -ForegroundColor "Cyan"
+    Write-ColorMessage "Ã‰tape 1: VÃ©rification du style de code..." -ForegroundColor "Cyan"
     
-    # Vérifier les fichiers PowerShell avec PSScriptAnalyzer
+    # VÃ©rifier les fichiers PowerShell avec PSScriptAnalyzer
     $psFiles = Get-ChildItem -Path $projectRoot -Recurse -Include "*.ps1" -File
     if ($psFiles.Count -gt 0) {
-        Write-ColorMessage "Vérification de $($psFiles.Count) fichiers PowerShell..." -ForegroundColor "Cyan"
+        Write-ColorMessage "VÃ©rification de $($psFiles.Count) fichiers PowerShell..." -ForegroundColor "Cyan"
         
         $hasErrors = $false
         
         if (Get-Command Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue) {
             foreach ($file in $psFiles) {
-                Write-VerboseMessage "Vérification de $($file.Name)..."
+                Write-VerboseMessage "VÃ©rification de $($file.Name)..."
                 $results = Invoke-ScriptAnalyzer -Path $file.FullName -Severity Error
                 
                 if ($results.Count -gt 0) {
@@ -76,28 +76,28 @@ if (-not $SkipLint) {
             }
             
             if ($hasErrors) {
-                Write-ColorMessage "Des erreurs de style ont été détectées dans les fichiers PowerShell" -ForegroundColor "Red"
+                Write-ColorMessage "Des erreurs de style ont Ã©tÃ© dÃ©tectÃ©es dans les fichiers PowerShell" -ForegroundColor "Red"
                 $allPassed = $false
             }
             else {
-                Write-ColorMessage "Aucune erreur de style détectée dans les fichiers PowerShell" -ForegroundColor "Green"
+                Write-ColorMessage "Aucune erreur de style dÃ©tectÃ©e dans les fichiers PowerShell" -ForegroundColor "Green"
             }
         }
         else {
-            Write-ColorMessage "PSScriptAnalyzer non installé. Installation recommandée : Install-Module -Name PSScriptAnalyzer -Force" -ForegroundColor "Yellow"
+            Write-ColorMessage "PSScriptAnalyzer non installÃ©. Installation recommandÃ©e : Install-Module -Name PSScriptAnalyzer -Force" -ForegroundColor "Yellow"
         }
     }
     
-    # Vérifier les fichiers Python avec flake8
+    # VÃ©rifier les fichiers Python avec flake8
     $pyFiles = Get-ChildItem -Path $projectRoot -Recurse -Include "*.py" -File
     if ($pyFiles.Count -gt 0) {
-        Write-ColorMessage "Vérification de $($pyFiles.Count) fichiers Python..." -ForegroundColor "Cyan"
+        Write-ColorMessage "VÃ©rification de $($pyFiles.Count) fichiers Python..." -ForegroundColor "Cyan"
         
         $hasErrors = $false
         
         if (Get-Command flake8 -ErrorAction SilentlyContinue) {
             foreach ($file in $pyFiles) {
-                Write-VerboseMessage "Vérification de $($file.Name)..."
+                Write-VerboseMessage "VÃ©rification de $($file.Name)..."
                 $output = & flake8 $file.FullName
                 
                 if ($output) {
@@ -110,106 +110,106 @@ if (-not $SkipLint) {
             }
             
             if ($hasErrors) {
-                Write-ColorMessage "Des erreurs de style ont été détectées dans les fichiers Python" -ForegroundColor "Red"
+                Write-ColorMessage "Des erreurs de style ont Ã©tÃ© dÃ©tectÃ©es dans les fichiers Python" -ForegroundColor "Red"
                 $allPassed = $false
             }
             else {
-                Write-ColorMessage "Aucune erreur de style détectée dans les fichiers Python" -ForegroundColor "Green"
+                Write-ColorMessage "Aucune erreur de style dÃ©tectÃ©e dans les fichiers Python" -ForegroundColor "Green"
             }
         }
         else {
-            Write-ColorMessage "flake8 non installé. Installation recommandée : pip install flake8" -ForegroundColor "Yellow"
+            Write-ColorMessage "flake8 non installÃ©. Installation recommandÃ©e : pip install flake8" -ForegroundColor "Yellow"
         }
     }
 }
 else {
-    Write-ColorMessage "Étape 1: Vérification du style de code ignorée (option -SkipLint)" -ForegroundColor "Yellow"
+    Write-ColorMessage "Ã‰tape 1: VÃ©rification du style de code ignorÃ©e (option -SkipLint)" -ForegroundColor "Yellow"
 }
 
-# Étape 2: Exécution des tests unitaires
+# Ã‰tape 2: ExÃ©cution des tests unitaires
 if (-not $SkipTests) {
-    Write-ColorMessage "Étape 2: Exécution des tests unitaires..." -ForegroundColor "Cyan"
+    Write-ColorMessage "Ã‰tape 2: ExÃ©cution des tests unitaires..." -ForegroundColor "Cyan"
     
-    # Vérifier s'il y a des tests à exécuter
+    # VÃ©rifier s'il y a des tests Ã  exÃ©cuter
     $testFiles = Get-ChildItem -Path $projectRoot -Recurse -Include "*test*.py", "*Test*.ps1" -File
     
     if ($testFiles.Count -eq 0) {
-        Write-ColorMessage "Aucun fichier de test trouvé" -ForegroundColor "Yellow"
+        Write-ColorMessage "Aucun fichier de test trouvÃ©" -ForegroundColor "Yellow"
     }
     else {
-        # Exécuter les tests Python
+        # ExÃ©cuter les tests Python
         $pythonTestFiles = $testFiles | Where-Object { $_.Extension -eq ".py" }
         if ($pythonTestFiles.Count -gt 0) {
-            Write-ColorMessage "Exécution des tests Python..." -ForegroundColor "Cyan"
+            Write-ColorMessage "ExÃ©cution des tests Python..." -ForegroundColor "Cyan"
             
             $testResult = $true
             
             if (Get-Command pytest -ErrorAction SilentlyContinue) {
                 foreach ($testFile in $pythonTestFiles) {
-                    Write-ColorMessage "  Exécution de $($testFile.Name)..." -ForegroundColor "Cyan"
+                    Write-ColorMessage "  ExÃ©cution de $($testFile.Name)..." -ForegroundColor "Cyan"
                     $output = & pytest $testFile.FullName -v
                     
                     if ($LASTEXITCODE -ne 0) {
-                        Write-ColorMessage "  Échec des tests dans $($testFile.Name)" -ForegroundColor "Red"
+                        Write-ColorMessage "  Ã‰chec des tests dans $($testFile.Name)" -ForegroundColor "Red"
                         $output | ForEach-Object {
                             Write-ColorMessage "    $_" -ForegroundColor "Red"
                         }
                         $testResult = $false
                     }
                     else {
-                        Write-ColorMessage "  Tests réussis dans $($testFile.Name)" -ForegroundColor "Green"
+                        Write-ColorMessage "  Tests rÃ©ussis dans $($testFile.Name)" -ForegroundColor "Green"
                     }
                 }
                 
                 if (-not $testResult) {
-                    Write-ColorMessage "Des tests Python ont échoué" -ForegroundColor "Red"
+                    Write-ColorMessage "Des tests Python ont Ã©chouÃ©" -ForegroundColor "Red"
                     $allPassed = $false
                 }
             }
             else {
-                Write-ColorMessage "pytest non installé. Installation recommandée : pip install pytest" -ForegroundColor "Yellow"
+                Write-ColorMessage "pytest non installÃ©. Installation recommandÃ©e : pip install pytest" -ForegroundColor "Yellow"
             }
         }
         
-        # Exécuter les tests PowerShell
+        # ExÃ©cuter les tests PowerShell
         $powershellTestFiles = $testFiles | Where-Object { $_.Extension -eq ".ps1" }
         if ($powershellTestFiles.Count -gt 0) {
-            Write-ColorMessage "Exécution des tests PowerShell..." -ForegroundColor "Cyan"
+            Write-ColorMessage "ExÃ©cution des tests PowerShell..." -ForegroundColor "Cyan"
             
             $testResult = $true
             
             if (Get-Command Invoke-Pester -ErrorAction SilentlyContinue) {
                 foreach ($testFile in $powershellTestFiles) {
-                    Write-ColorMessage "  Exécution de $($testFile.Name)..." -ForegroundColor "Cyan"
+                    Write-ColorMessage "  ExÃ©cution de $($testFile.Name)..." -ForegroundColor "Cyan"
                     $results = Invoke-Pester -Path $testFile.FullName -PassThru
                     
                     if ($results.FailedCount -gt 0) {
-                        Write-ColorMessage "  Échec des tests dans $($testFile.Name): $($results.FailedCount) test(s) échoué(s)" -ForegroundColor "Red"
+                        Write-ColorMessage "  Ã‰chec des tests dans $($testFile.Name): $($results.FailedCount) test(s) Ã©chouÃ©(s)" -ForegroundColor "Red"
                         $testResult = $false
                     }
                     else {
-                        Write-ColorMessage "  Tests réussis dans $($testFile.Name): $($results.PassedCount) test(s) réussi(s)" -ForegroundColor "Green"
+                        Write-ColorMessage "  Tests rÃ©ussis dans $($testFile.Name): $($results.PassedCount) test(s) rÃ©ussi(s)" -ForegroundColor "Green"
                     }
                 }
                 
                 if (-not $testResult) {
-                    Write-ColorMessage "Des tests PowerShell ont échoué" -ForegroundColor "Red"
+                    Write-ColorMessage "Des tests PowerShell ont Ã©chouÃ©" -ForegroundColor "Red"
                     $allPassed = $false
                 }
             }
             else {
-                Write-ColorMessage "Pester non installé. Installation recommandée : Install-Module -Name Pester -Force" -ForegroundColor "Yellow"
+                Write-ColorMessage "Pester non installÃ©. Installation recommandÃ©e : Install-Module -Name Pester -Force" -ForegroundColor "Yellow"
             }
         }
     }
 }
 else {
-    Write-ColorMessage "Étape 2: Exécution des tests unitaires ignorée (option -SkipTests)" -ForegroundColor "Yellow"
+    Write-ColorMessage "Ã‰tape 2: ExÃ©cution des tests unitaires ignorÃ©e (option -SkipTests)" -ForegroundColor "Yellow"
 }
 
-# Étape 3: Vérification de sécurité
+# Ã‰tape 3: VÃ©rification de sÃ©curitÃ©
 if (-not $SkipSecurity) {
-    Write-ColorMessage "Étape 3: Vérification de sécurité..." -ForegroundColor "Cyan"
+    Write-ColorMessage "Ã‰tape 3: VÃ©rification de sÃ©curitÃ©..." -ForegroundColor "Cyan"
     
     $sensitivePatterns = @(
         "password\s*=\s*['\"][^'\"]+['\"]",
@@ -238,28 +238,28 @@ if (-not $SkipSecurity) {
     }
     
     if ($sensitiveFiles.Count -gt 0) {
-        Write-ColorMessage "Des informations potentiellement sensibles ont été détectées:" -ForegroundColor "Red"
+        Write-ColorMessage "Des informations potentiellement sensibles ont Ã©tÃ© dÃ©tectÃ©es:" -ForegroundColor "Red"
         $sensitiveFiles | ForEach-Object {
             Write-ColorMessage "  - $_" -ForegroundColor "Red"
         }
         
-        Write-ColorMessage "Assurez-vous de ne pas commiter d'informations sensibles comme des mots de passe ou des clés API" -ForegroundColor "Red"
+        Write-ColorMessage "Assurez-vous de ne pas commiter d'informations sensibles comme des mots de passe ou des clÃ©s API" -ForegroundColor "Red"
         $allPassed = $false
     }
     else {
-        Write-ColorMessage "Aucune information sensible détectée" -ForegroundColor "Green"
+        Write-ColorMessage "Aucune information sensible dÃ©tectÃ©e" -ForegroundColor "Green"
     }
 }
 else {
-    Write-ColorMessage "Étape 3: Vérification de sécurité ignorée (option -SkipSecurity)" -ForegroundColor "Yellow"
+    Write-ColorMessage "Ã‰tape 3: VÃ©rification de sÃ©curitÃ© ignorÃ©e (option -SkipSecurity)" -ForegroundColor "Yellow"
 }
 
-# Afficher le résultat final
+# Afficher le rÃ©sultat final
 if ($allPassed) {
-    Write-ColorMessage "`nToutes les vérifications ont réussi." -ForegroundColor "Green"
+    Write-ColorMessage "`nToutes les vÃ©rifications ont rÃ©ussi." -ForegroundColor "Green"
     exit 0
 }
 else {
-    Write-ColorMessage "`nCertaines vérifications ont échoué. Consultez les messages d'erreur ci-dessus." -ForegroundColor "Red"
+    Write-ColorMessage "`nCertaines vÃ©rifications ont Ã©chouÃ©. Consultez les messages d'erreur ci-dessus." -ForegroundColor "Red"
     exit 1
 }

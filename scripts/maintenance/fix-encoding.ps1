@@ -1,4 +1,4 @@
-# Script pour corriger les problemes d'encodage dans les scripts PowerShell
+﻿# Script pour corriger les problemes d'encodage dans les scripts PowerShell
 # Ce script remplace les caracteres accentues par leurs equivalents non accentues
 
 Write-Host "=== Correction des problemes d'encodage dans les scripts PowerShell ===" -ForegroundColor Cyan
@@ -17,12 +17,12 @@ function Replace-AccentedChars {
         'o' = 'o'; 'o' = 'o';
         'u' = 'u'; 'u' = 'u'; 'u' = 'u';
         'c' = 'c';
-        'É' = 'E'; 'È' = 'E'; 'Ê' = 'E'; 'Ë' = 'E';
-        'À' = 'A'; 'Â' = 'A'; 'Ä' = 'A';
-        'Î' = 'I'; 'Ï' = 'I';
-        'Ô' = 'O'; 'Ö' = 'O';
-        'Ù' = 'U'; 'Û' = 'U'; 'Ü' = 'U';
-        'Ç' = 'C'
+        'Ã‰' = 'E'; 'Ãˆ' = 'E'; 'ÃŠ' = 'E'; 'Ã‹' = 'E';
+        'Ã€' = 'A'; 'Ã‚' = 'A'; 'Ã„' = 'A';
+        'ÃŽ' = 'I'; 'Ã' = 'I';
+        'Ã”' = 'O'; 'Ã–' = 'O';
+        'Ã™' = 'U'; 'Ã›' = 'U'; 'Ãœ' = 'U';
+        'Ã‡' = 'C'
     }
     
     # Remplacer les caracteres accentues

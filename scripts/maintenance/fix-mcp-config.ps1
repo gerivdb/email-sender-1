@@ -1,4 +1,4 @@
-# Script pour corriger l'emplacement des fichiers de configuration MCP
+﻿# Script pour corriger l'emplacement des fichiers de configuration MCP
 
 Write-Host "=== Correction de l'emplacement des fichiers de configuration MCP ===" -ForegroundColor Cyan
 

@@ -1,4 +1,4 @@
-# Script pour corriger les chemins dans les fichiers de configuration
+﻿# Script pour corriger les chemins dans les fichiers de configuration
 # Ce script remplace les anciens chemins par les nouveaux chemins dans les fichiers de configuration
 
 Write-Host "=== Correction des chemins dans les fichiers de configuration ===" -ForegroundColor Cyan
@@ -14,7 +14,7 @@ $oldPathVariants = @(
 # Nouveau chemin (avec underscores)
 $newPath = "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1"
 
-# Types de fichiers à corriger
+# Types de fichiers Ã  corriger
 $fileTypes = @("*.json", "*.cmd", "*.ps1", "*.yaml", "*.md")
 
 # Fonction pour corriger un fichier
@@ -56,16 +56,16 @@ foreach ($fileType in $fileTypes) {
     }
 }
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 if ($correctedFiles.Count -eq 0) {
-    Write-Host "✅ Aucun fichier n'a eu besoin d'être corrigé." -ForegroundColor Green
+    Write-Host "âœ… Aucun fichier n'a eu besoin d'Ãªtre corrigÃ©." -ForegroundColor Green
 } else {
-    Write-Host "✅ Les fichiers suivants ont été corrigés :" -ForegroundColor Green
+    Write-Host "âœ… Les fichiers suivants ont Ã©tÃ© corrigÃ©s :" -ForegroundColor Green
     foreach ($file in $correctedFiles) {
         Write-Host "   - $file" -ForegroundColor Yellow
     }
 }
 
 Write-Host "`n=== Correction terminee ===" -ForegroundColor Cyan
-Write-Host "Pour vérifier que tous les chemins ont été corrigés, exécutez :"
+Write-Host "Pour vÃ©rifier que tous les chemins ont Ã©tÃ© corrigÃ©s, exÃ©cutez :"
 Write-Host "   .\scripts\maintenance\check-paths.ps1"

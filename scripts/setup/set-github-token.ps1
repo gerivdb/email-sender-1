@@ -1,10 +1,10 @@
-# Script simplifié pour configurer le token GitHub
-# Ce script permet de configurer facilement le token GitHub sans utiliser de saisie sécurisée
+﻿# Script simplifiÃ© pour configurer le token GitHub
+# Ce script permet de configurer facilement le token GitHub sans utiliser de saisie sÃ©curisÃ©e
 
-Write-Host "=== Configuration simplifiée du token GitHub pour MCP ===" -ForegroundColor Cyan
+Write-Host "=== Configuration simplifiÃ©e du token GitHub pour MCP ===" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Ce script va vous aider à configurer le token GitHub pour le serveur MCP GitHub." -ForegroundColor Yellow
-Write-Host "Le token sera stocké dans un fichier .env à la racine du projet." -ForegroundColor Yellow
+Write-Host "Ce script va vous aider Ã  configurer le token GitHub pour le serveur MCP GitHub." -ForegroundColor Yellow
+Write-Host "Le token sera stockÃ© dans un fichier .env Ã  la racine du projet." -ForegroundColor Yellow
 Write-Host ""
 
 # Demander le token GitHub
@@ -12,7 +12,7 @@ Write-Host "Entrez votre token GitHub (vous pouvez le coller avec Ctrl+V) :" -Fo
 $githubToken = Read-Host
 
 if ([string]::IsNullOrEmpty($githubToken)) {
-    Write-Host "Aucun token GitHub fourni. Configuration annulée." -ForegroundColor Red
+    Write-Host "Aucun token GitHub fourni. Configuration annulÃ©e." -ForegroundColor Red
     exit 1
 }
 
@@ -31,29 +31,29 @@ if ($envExists) {
         $envContent += "`nGITHUB_TOKEN=$githubToken`n"
     }
 } else {
-    # Créer un nouveau fichier .env
-    $envContent = "# Configuration GitHub pour l'intégration avec MCP`nGITHUB_TOKEN=$githubToken`n"
+    # CrÃ©er un nouveau fichier .env
+    $envContent = "# Configuration GitHub pour l'intÃ©gration avec MCP`nGITHUB_TOKEN=$githubToken`n"
 }
 
-# Écrire le fichier .env
+# Ã‰crire le fichier .env
 Set-Content -Path $envPath -Value $envContent
 Write-Host ""
-Write-Host "✅ Token GitHub configuré avec succès dans le fichier .env" -ForegroundColor Green
+Write-Host "âœ… Token GitHub configurÃ© avec succÃ¨s dans le fichier .env" -ForegroundColor Green
 Write-Host "Vous pouvez maintenant utiliser le serveur MCP GitHub avec votre token." -ForegroundColor Green
 
 # Tester la configuration
 Write-Host ""
-Write-Host "Voulez-vous tester la configuration en démarrant le serveur MCP GitHub ? (O/N)" -ForegroundColor Yellow
+Write-Host "Voulez-vous tester la configuration en dÃ©marrant le serveur MCP GitHub ? (O/N)" -ForegroundColor Yellow
 $testConfig = Read-Host
 
 if ($testConfig -eq "O" -or $testConfig -eq "o") {
-    Write-Host "Démarrage du serveur MCP GitHub..." -ForegroundColor Cyan
-    Write-Host "Appuyez sur Ctrl+C pour arrêter le serveur." -ForegroundColor Yellow
+    Write-Host "DÃ©marrage du serveur MCP GitHub..." -ForegroundColor Cyan
+    Write-Host "Appuyez sur Ctrl+C pour arrÃªter le serveur." -ForegroundColor Yellow
     Write-Host ""
     
-    # Définir la variable d'environnement pour ce processus
+    # DÃ©finir la variable d'environnement pour ce processus
     $env:GITHUB_TOKEN = $githubToken
     
-    # Exécuter la commande
+    # ExÃ©cuter la commande
     mcp-server-github
 }

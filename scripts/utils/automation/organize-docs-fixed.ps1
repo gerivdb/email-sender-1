@@ -1,4 +1,4 @@
-# Script pour organiser les fichiers de documentation
+﻿# Script pour organiser les fichiers de documentation
 # Ce script organise les fichiers de documentation dans des sous-dossiers appropries
 
 # Definition des regles de deplacement pour le dossier docs

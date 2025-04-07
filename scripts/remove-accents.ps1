@@ -1,4 +1,4 @@
-# Script pour remplacer les caracteres accentues par des caracteres non accentues
+﻿# Script pour remplacer les caracteres accentues par des caracteres non accentues
 # Version ASCII simple pour eviter les problemes d'encodage
 
 function Remove-Accent {

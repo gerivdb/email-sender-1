@@ -1,13 +1,13 @@
-# Script pour corriger l'encodage des caractères accentués dans les fichiers JSON
+﻿# Script pour corriger l'encodage des caractÃ¨res accentuÃ©s dans les fichiers JSON
 
-# Créer un répertoire pour les fichiers corrigés
+# CrÃ©er un rÃ©pertoire pour les fichiers corrigÃ©s
 $outputDir = "workflows-fixed"
 if (-not (Test-Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir | Out-Null
-    Write-Host "Répertoire $outputDir créé."
+    Write-Host "RÃ©pertoire $outputDir crÃ©Ã©."
 }
 
-# Traiter tous les fichiers JSON dans le répertoire workflows
+# Traiter tous les fichiers JSON dans le rÃ©pertoire workflows
 $workflowFiles = Get-ChildItem -Path "workflows" -Filter "*.json"
 $successCount = 0
 
@@ -18,8 +18,8 @@ foreach ($file in $workflowFiles) {
         # Lire le contenu du fichier
         $content = Get-Content -Path $file.FullName -Raw -Encoding UTF8
         
-        # Utiliser une approche plus simple pour remplacer les séquences d'échappement Unicode
-        # Cette méthode utilise la classe .NET pour décoder les séquences d'échappement
+        # Utiliser une approche plus simple pour remplacer les sÃ©quences d'Ã©chappement Unicode
+        # Cette mÃ©thode utilise la classe .NET pour dÃ©coder les sÃ©quences d'Ã©chappement
         $fixedContent = [System.Text.RegularExpressions.Regex]::Replace(
             $content,
             '\\u([0-9a-fA-F]{4})',
@@ -30,19 +30,19 @@ foreach ($file in $workflowFiles) {
             }
         )
         
-        # Sauvegarder le fichier corrigé
+        # Sauvegarder le fichier corrigÃ©
         $outputPath = Join-Path -Path $outputDir -ChildPath $file.Name
         $fixedContent | Out-File -FilePath $outputPath -Encoding UTF8 -NoNewline
         
-        Write-Host " - Succès!" -ForegroundColor Green
+        Write-Host " - SuccÃ¨s!" -ForegroundColor Green
         $successCount++
     }
     catch {
-        Write-Host " - Échec!" -ForegroundColor Red
+        Write-Host " - Ã‰chec!" -ForegroundColor Red
         Write-Host "  Erreur: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
 
-Write-Host "`nTraitement terminé: $successCount/$($workflowFiles.Count) fichiers corrigés."
-Write-Host "Les fichiers corrigés se trouvent dans le répertoire: $outputDir"
-Write-Host "`nVous pouvez maintenant importer ces fichiers corrigés dans n8n."
+Write-Host "`nTraitement terminÃ©: $successCount/$($workflowFiles.Count) fichiers corrigÃ©s."
+Write-Host "Les fichiers corrigÃ©s se trouvent dans le rÃ©pertoire: $outputDir"
+Write-Host "`nVous pouvez maintenant importer ces fichiers corrigÃ©s dans n8n."

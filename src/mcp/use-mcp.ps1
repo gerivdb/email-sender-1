@@ -1,4 +1,4 @@
-# Script pour utiliser les MCP depuis le dossier mcp
+﻿# Script pour utiliser les MCP depuis le dossier mcp
 
 # Definir les variables d'environnement
 $env:N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE = "true"

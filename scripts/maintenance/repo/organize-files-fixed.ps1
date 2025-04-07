@@ -1,4 +1,4 @@
-# Script simplifie pour organiser les fichiers
+﻿# Script simplifie pour organiser les fichiers
 # Ce script organise les fichiers dans des sous-dossiers appropries
 
 # Organiser les fichiers dans le dossier scripts

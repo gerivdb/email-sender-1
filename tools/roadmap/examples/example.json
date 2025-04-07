@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Analyse",
+    "isPhase": true,
+    "subtasks": [
+      {
+        "name": "Identifier les besoins",
+        "timeEstimate": "2 jours"
+      },
+      {
+        "name": "Documenter les cas d'utilisation",
+        "priority": true,
+        "timeEstimate": "3 jours"
+      },
+      {
+        "name": "Définir les critères de succès",
+        "timeEstimate": "1 jour"
+      }
+    ]
+  },
+  {
+    "name": "Conception",
+    "isPhase": true,
+    "subtasks": [
+      {
+        "name": "Créer les maquettes",
+        "timeEstimate": "5 jours"
+      },
+      {
+        "name": "Définir l'architecture",
+        "priority": true,
+        "timeEstimate": "3 jours"
+      },
+      {
+        "name": "Choisir les technologies",
+        "subtasks": [
+          {
+            "name": "Framework frontend",
+            "timeEstimate": "2 jours"
+          },
+          {
+            "name": "Base de données",
+            "priority": true,
+            "timeEstimate": "1 jour"
+          },
+          {
+            "name": "Services backend",
+            "timeEstimate": "4 jours"
+          }
+        ]
+      }
+    ]
+  }
+]

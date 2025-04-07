@@ -1,7 +1,7 @@
-# Script pour organiser la structure du dépôt
+﻿# Script pour organiser la structure du dÃ©pÃ´t
 # Ce script organise les fichiers selon leur nature, type et usage
 
-# Définition des dossiers principaux
+# DÃ©finition des dossiers principaux
 $mainFolders = @(
     "config",       # Fichiers de configuration
     "scripts",      # Scripts divers
@@ -15,7 +15,7 @@ $mainFolders = @(
     "tools"         # Outils divers
 )
 
-# Définition des sous-dossiers
+# DÃ©finition des sous-dossiers
 $subFolders = @(
     # Config
     "config\app",           # Configuration de l'application
@@ -30,7 +30,7 @@ $subFolders = @(
     "scripts\cmd\batch",    # Scripts batch
     "scripts\maintenance",  # Scripts de maintenance
     "scripts\setup",        # Scripts d'installation
-    "scripts\workflow",     # Scripts liés aux workflows
+    "scripts\workflow",     # Scripts liÃ©s aux workflows
     "scripts\utils",        # Scripts utilitaires
     
     # MCP
@@ -46,22 +46,22 @@ $subFolders = @(
     "logs\workflows"        # Logs des workflows
 )
 
-# Création des dossiers s'ils n'existent pas
+# CrÃ©ation des dossiers s'ils n'existent pas
 foreach ($folder in $mainFolders) {
     if (-not (Test-Path -Path $folder)) {
-        Write-Host "Création du dossier: $folder" -ForegroundColor Yellow
+        Write-Host "CrÃ©ation du dossier: $folder" -ForegroundColor Yellow
         New-Item -Path $folder -ItemType Directory -Force | Out-Null
     }
 }
 
 foreach ($folder in $subFolders) {
     if (-not (Test-Path -Path $folder)) {
-        Write-Host "Création du dossier: $folder" -ForegroundColor Yellow
+        Write-Host "CrÃ©ation du dossier: $folder" -ForegroundColor Yellow
         New-Item -Path $folder -ItemType Directory -Force | Out-Null
     }
 }
 
-# Définition des règles de déplacement des fichiers
+# DÃ©finition des rÃ¨gles de dÃ©placement des fichiers
 $fileRules = @(
     # Fichiers de configuration JSON
     @{
@@ -69,10 +69,10 @@ $fileRules = @(
         Destination = "config\vscode"
         Exclude = ".github"
     },
-    # Fichiers package.json et associés
+    # Fichiers package.json et associÃ©s
     @{
         Pattern = "package.json", "package-lock.json"
-        Destination = "."  # Reste à la racine (convention GitHub)
+        Destination = "."  # Reste Ã  la racine (convention GitHub)
         Exclude = ""
     },
     # Fichiers CMD
@@ -81,7 +81,7 @@ $fileRules = @(
         Destination = "scripts\cmd\batch"
         Exclude = "scripts\cmd"
     },
-    # Fichiers de redémarrage
+    # Fichiers de redÃ©marrage
     @{
         Pattern = "restart_*.cmd"
         Destination = "scripts\cmd\batch"
@@ -101,7 +101,7 @@ $fileRules = @(
     }
 )
 
-# Fonction pour déplacer les fichiers selon les règles
+# Fonction pour dÃ©placer les fichiers selon les rÃ¨gles
 function Move-FilesAccordingToRules {
     foreach ($rule in $fileRules) {
         foreach ($pattern in $rule.Pattern) {
@@ -116,20 +116,20 @@ function Move-FilesAccordingToRules {
                 $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
                 
                 if (-not (Test-Path -Path $destinationFile)) {
-                    Write-Host "Déplacement de $($file.Name) vers $destination" -ForegroundColor Yellow
+                    Write-Host "DÃ©placement de $($file.Name) vers $destination" -ForegroundColor Yellow
                     Copy-Item -Path $file.FullName -Destination $destination -Force
                     Remove-Item -Path $file.FullName -Force
                 } else {
-                    Write-Host "Le fichier $($file.Name) existe déjà dans $destination" -ForegroundColor Red
+                    Write-Host "Le fichier $($file.Name) existe dÃ©jÃ  dans $destination" -ForegroundColor Red
                 }
             }
         }
     }
 }
 
-# Fonction pour déplacer les dossiers MCP
+# Fonction pour dÃ©placer les dossiers MCP
 function Organize-McpFolders {
-    # Déplacer le contenu de mcp-gdrive vers mcp\gdrive
+    # DÃ©placer le contenu de mcp-gdrive vers mcp\gdrive
     if (Test-Path -Path "mcp-gdrive") {
         $files = Get-ChildItem -Path "mcp-gdrive" -File
         foreach ($file in $files) {
@@ -137,7 +137,7 @@ function Organize-McpFolders {
             $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
             
             if (-not (Test-Path -Path $destinationFile)) {
-                Write-Host "Déplacement de mcp-gdrive\$($file.Name) vers $destination" -ForegroundColor Yellow
+                Write-Host "DÃ©placement de mcp-gdrive\$($file.Name) vers $destination" -ForegroundColor Yellow
                 Copy-Item -Path $file.FullName -Destination $destination -Force
             }
         }
@@ -149,7 +149,7 @@ function Organize-McpFolders {
         }
     }
     
-    # Déplacer le contenu de mcp-servers vers mcp\servers
+    # DÃ©placer le contenu de mcp-servers vers mcp\servers
     if (Test-Path -Path "mcp-servers") {
         $files = Get-ChildItem -Path "mcp-servers" -File
         foreach ($file in $files) {
@@ -157,7 +157,7 @@ function Organize-McpFolders {
             $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
             
             if (-not (Test-Path -Path $destinationFile)) {
-                Write-Host "Déplacement de mcp-servers\$($file.Name) vers $destination" -ForegroundColor Yellow
+                Write-Host "DÃ©placement de mcp-servers\$($file.Name) vers $destination" -ForegroundColor Yellow
                 Copy-Item -Path $file.FullName -Destination $destination -Force
             }
         }
@@ -170,14 +170,14 @@ function Organize-McpFolders {
     }
 }
 
-# Fonction pour déplacer le contenu du dossier cmd à la racine
+# Fonction pour dÃ©placer le contenu du dossier cmd Ã  la racine
 function Organize-CmdFolder {
     if (Test-Path -Path "cmd") {
         $files = Get-ChildItem -Path "cmd" -File
         foreach ($file in $files) {
             $destination = ""
             
-            # Déterminer le dossier de destination en fonction du nom du fichier
+            # DÃ©terminer le dossier de destination en fonction du nom du fichier
             if ($file.Name -like "augment-*") {
                 $destination = "scripts\cmd\augment"
             } elseif ($file.Name -like "*mcp*") {
@@ -189,7 +189,7 @@ function Organize-CmdFolder {
             $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
             
             if (-not (Test-Path -Path $destinationFile)) {
-                Write-Host "Déplacement de cmd\$($file.Name) vers $destination" -ForegroundColor Yellow
+                Write-Host "DÃ©placement de cmd\$($file.Name) vers $destination" -ForegroundColor Yellow
                 Copy-Item -Path $file.FullName -Destination $destination -Force
             }
         }
@@ -202,10 +202,10 @@ function Organize-CmdFolder {
     }
 }
 
-# Exécution principale
-Write-Host "Début de l'organisation de la structure du dépôt..." -ForegroundColor Cyan
+# ExÃ©cution principale
+Write-Host "DÃ©but de l'organisation de la structure du dÃ©pÃ´t..." -ForegroundColor Cyan
 
-# Déplacer les fichiers selon les règles
+# DÃ©placer les fichiers selon les rÃ¨gles
 Move-FilesAccordingToRules
 
 # Organiser les dossiers MCP
@@ -214,4 +214,4 @@ Organize-McpFolders
 # Organiser le dossier cmd
 Organize-CmdFolder
 
-Write-Host "`nOrganisation de la structure du dépôt terminée avec succès!" -ForegroundColor Green
+Write-Host "`nOrganisation de la structure du dÃ©pÃ´t terminÃ©e avec succÃ¨s!" -ForegroundColor Green

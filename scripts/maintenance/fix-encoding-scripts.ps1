@@ -1,5 +1,5 @@
-# Script pour corriger l'encodage des fichiers PowerShell
-# Ce script convertit tous les fichiers .ps1 en UTF-8 avec BOM pour assurer la compatibilité avec les caractères français
+﻿# Script pour corriger l'encodage des fichiers PowerShell
+# Ce script convertit tous les fichiers .ps1 en UTF-8 avec BOM pour assurer la compatibilitÃ© avec les caractÃ¨res franÃ§ais
 
 Write-Host "=== Correction de l'encodage des fichiers PowerShell ===" -ForegroundColor Cyan
 
@@ -28,4 +28,4 @@ foreach ($file in $scriptFiles) {
     ConvertTo-UTF8WithBOM -FilePath $file.FullName
 }
 
-Write-Host "`n=== Correction de l'encodage des fichiers PowerShell terminée ===" -ForegroundColor Cyan
+Write-Host "`n=== Correction de l'encodage des fichiers PowerShell terminÃ©e ===" -ForegroundColor Cyan

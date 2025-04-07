@@ -1,4 +1,4 @@
-# Script pour creer la structure de dossiers
+﻿# Script pour creer la structure de dossiers
 
 Write-Host "=== Creation de la structure de dossiers ===" -ForegroundColor Cyan
 

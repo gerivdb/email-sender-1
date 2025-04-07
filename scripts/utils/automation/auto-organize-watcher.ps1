@@ -1,10 +1,10 @@
-# Script pour surveiller et organiser automatiquement les nouveaux fichiers
-# Ce script surveille le dépôt et organise automatiquement les nouveaux fichiers
+﻿# Script pour surveiller et organiser automatiquement les nouveaux fichiers
+# Ce script surveille le dÃ©pÃ´t et organise automatiquement les nouveaux fichiers
 
-# Importation des modules nécessaires
+# Importation des modules nÃ©cessaires
 Add-Type -AssemblyName System.IO.FileSystem.Watcher
 
-# Définition des règles d'organisation
+# DÃ©finition des rÃ¨gles d'organisation
 $rules = @(
     # Fichiers de configuration JSON
     @{
@@ -18,7 +18,7 @@ $rules = @(
         Destination = "scripts\cmd\batch"
         Exclude = "scripts\cmd"
     },
-    # Fichiers de redémarrage
+    # Fichiers de redÃ©marrage
     @{
         Pattern = "restart_*.cmd"
         Destination = "scripts\cmd\batch"
@@ -56,7 +56,7 @@ $rules = @(
     }
 )
 
-# Fonction pour déterminer la destination d'un fichier
+# Fonction pour dÃ©terminer la destination d'un fichier
 function Get-FileDestination {
     param (
         [string]$FilePath
@@ -65,11 +65,11 @@ function Get-FileDestination {
     $fileName = [System.IO.Path]::GetFileName($FilePath)
     $fileDir = [System.IO.Path]::GetDirectoryName($FilePath)
     
-    # Vérifier si le fichier correspond à une règle
+    # VÃ©rifier si le fichier correspond Ã  une rÃ¨gle
     foreach ($rule in $rules) {
         foreach ($pattern in $rule.Pattern) {
             if ($fileName -like $pattern) {
-                # Vérifier si le fichier est dans un dossier à exclure
+                # VÃ©rifier si le fichier est dans un dossier Ã  exclure
                 if ($rule.Exclude -and $fileDir -like "*$($rule.Exclude)*") {
                     return $null
                 }
@@ -79,7 +79,7 @@ function Get-FileDestination {
         }
     }
     
-    # Aucune règle ne correspond
+    # Aucune rÃ¨gle ne correspond
     return $null
 }
 
@@ -95,20 +95,20 @@ function Organize-File {
         $fileName = [System.IO.Path]::GetFileName($FilePath)
         $destinationPath = Join-Path -Path $destination -ChildPath $fileName
         
-        # Vérifier si le dossier de destination existe
+        # VÃ©rifier si le dossier de destination existe
         if (-not (Test-Path -Path $destination -PathType Container)) {
             New-Item -Path $destination -ItemType Directory -Force | Out-Null
         }
         
-        # Déplacer le fichier
+        # DÃ©placer le fichier
         if (-not (Test-Path -Path $destinationPath)) {
             Move-Item -Path $FilePath -Destination $destinationPath -Force
-            Write-Host "Fichier $fileName déplacé vers $destination" -ForegroundColor Green
+            Write-Host "Fichier $fileName dÃ©placÃ© vers $destination" -ForegroundColor Green
         }
     }
 }
 
-# Fonction pour gérer les événements de création de fichier
+# Fonction pour gÃ©rer les Ã©vÃ©nements de crÃ©ation de fichier
 function Handle-FileCreated {
     param (
         [System.IO.FileSystemEventArgs]$Event
@@ -116,29 +116,29 @@ function Handle-FileCreated {
     
     $filePath = $Event.FullPath
     
-    # Vérifier si le fichier existe toujours (peut avoir été supprimé entre-temps)
+    # VÃ©rifier si le fichier existe toujours (peut avoir Ã©tÃ© supprimÃ© entre-temps)
     if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "Nouveau fichier détecté: $filePath" -ForegroundColor Yellow
+        Write-Host "Nouveau fichier dÃ©tectÃ©: $filePath" -ForegroundColor Yellow
         Organize-File -FilePath $filePath
     }
 }
 
-# Fonction pour démarrer la surveillance
+# Fonction pour dÃ©marrer la surveillance
 function Start-FileWatcher {
     param (
         [string]$Path = ".",
         [switch]$Recursive = $true
     )
     
-    # Créer un objet FileSystemWatcher
+    # CrÃ©er un objet FileSystemWatcher
     $watcher = New-Object System.IO.FileSystemWatcher
     $watcher.Path = (Resolve-Path $Path).Path
     $watcher.IncludeSubdirectories = $Recursive
     
-    # Définir les événements à surveiller
+    # DÃ©finir les Ã©vÃ©nements Ã  surveiller
     $watcher.EnableRaisingEvents = $true
     
-    # Créer les gestionnaires d'événements
+    # CrÃ©er les gestionnaires d'Ã©vÃ©nements
     $action = {
         $event = $Event.SourceEventArgs
         $name = $event.Name
@@ -151,32 +151,32 @@ function Start-FileWatcher {
         }
     }
     
-    # Enregistrer les gestionnaires d'événements
+    # Enregistrer les gestionnaires d'Ã©vÃ©nements
     $handlers = . {
         Register-ObjectEvent -InputObject $watcher -EventName Created -Action $action
     }
     
-    Write-Host "Surveillance des fichiers démarrée dans $Path" -ForegroundColor Cyan
-    Write-Host "Appuyez sur CTRL+C pour arrêter la surveillance" -ForegroundColor Cyan
+    Write-Host "Surveillance des fichiers dÃ©marrÃ©e dans $Path" -ForegroundColor Cyan
+    Write-Host "Appuyez sur CTRL+C pour arrÃªter la surveillance" -ForegroundColor Cyan
     
     try {
-        # Maintenir le script en cours d'exécution
+        # Maintenir le script en cours d'exÃ©cution
         while ($true) {
             Start-Sleep -Seconds 1
         }
     }
     finally {
-        # Nettoyer les gestionnaires d'événements
+        # Nettoyer les gestionnaires d'Ã©vÃ©nements
         $handlers | ForEach-Object {
             Unregister-Event -SourceIdentifier $_.Name
         }
         $watcher.EnableRaisingEvents = $false
         $watcher.Dispose()
-        Write-Host "Surveillance des fichiers arrêtée" -ForegroundColor Cyan
+        Write-Host "Surveillance des fichiers arrÃªtÃ©e" -ForegroundColor Cyan
     }
 }
 
-# Exécution principale
+# ExÃ©cution principale
 if ($args.Count -gt 0) {
     $path = $args[0]
     Start-FileWatcher -Path $path

@@ -1,4 +1,4 @@
-# Script pour mettre à jour les identifiants GCP MCP
+﻿# Script pour mettre Ã  jour les identifiants GCP MCP
 
 # Utiliser les identifiants existants
 Write-Host "Utilisation des identifiants existants..." -ForegroundColor Green
@@ -7,12 +7,12 @@ Write-Host "Utilisation des identifiants existants..." -ForegroundColor Green
 $existingCredentialsPath = "$PSScriptRoot\credentials.json"
 
 if (Test-Path $existingCredentialsPath) {
-    Write-Host "Fichier d'identifiants trouvé : $existingCredentialsPath" -ForegroundColor Green
+    Write-Host "Fichier d'identifiants trouvÃ© : $existingCredentialsPath" -ForegroundColor Green
 
     # Lire le contenu du fichier credentials.json
     $credentials = Get-Content -Raw -Path $existingCredentialsPath | ConvertFrom-Json
 
-    # Créer un fichier token.json avec les champs requis pour l'authentification GCP
+    # CrÃ©er un fichier token.json avec les champs requis pour l'authentification GCP
     $token = @{
         type = "authorized_user"
         client_id = $credentials.installed.client_id
@@ -23,9 +23,9 @@ if (Test-Path $existingCredentialsPath) {
     $tokenJson = ConvertTo-Json $token
     Set-Content -Path "$PSScriptRoot\token.json" -Value $tokenJson -Encoding UTF8
 
-    Write-Host "Fichier token.json créé avec les champs requis" -ForegroundColor Green
-    Write-Host "Configuration terminée. Vous pouvez maintenant tester le MCP GCP." -ForegroundColor Green
+    Write-Host "Fichier token.json crÃ©Ã© avec les champs requis" -ForegroundColor Green
+    Write-Host "Configuration terminÃ©e. Vous pouvez maintenant tester le MCP GCP." -ForegroundColor Green
 } else {
-    Write-Host "Erreur : Fichier credentials.json non trouvé dans $PSScriptRoot" -ForegroundColor Red
+    Write-Host "Erreur : Fichier credentials.json non trouvÃ© dans $PSScriptRoot" -ForegroundColor Red
     exit 1
 }

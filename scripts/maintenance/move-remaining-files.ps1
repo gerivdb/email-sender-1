@@ -1,4 +1,4 @@
-# Script pour deplacer les fichiers restants
+﻿# Script pour deplacer les fichiers restants
 
 Write-Host "=== Deplacement des fichiers restants ===" -ForegroundColor Cyan
 

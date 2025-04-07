@@ -1,12 +1,12 @@
-# Script pour organiser automatiquement les fichiers en mode silencieux
-# Ce script peut être exécuté périodiquement via une tâche planifiée sans interaction utilisateur
-# Version améliorée avec gestion des conflits de hooks Git
+﻿# Script pour organiser automatiquement les fichiers en mode silencieux
+# Ce script peut Ãªtre exÃ©cutÃ© pÃ©riodiquement via une tÃ¢che planifiÃ©e sans interaction utilisateur
+# Version amÃ©liorÃ©e avec gestion des conflits de hooks Git
 
-# Obtenir le chemin racine du projet (où se trouve ce script)
+# Obtenir le chemin racine du projet (oÃ¹ se trouve ce script)
 $projectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 Set-Location $projectRoot
 
-# Créer un fichier de log
+# CrÃ©er un fichier de log
 $logFile = "$projectRoot\logs\auto-organize-$(Get-Date -Format 'yyyy-MM-dd').log"
 $logFolder = Split-Path $logFile -Parent
 
@@ -14,7 +14,7 @@ if (-not (Test-Path $logFolder)) {
     New-Item -ItemType Directory -Path $logFolder -Force | Out-Null
 }
 
-# Fonction pour écrire dans le log
+# Fonction pour Ã©crire dans le log
 function Write-Log {
     param (
         [string]$Message,
@@ -27,9 +27,9 @@ function Write-Log {
     Add-Content -Path $logFile -Value $logMessage
 }
 
-Write-Log "Début de l'organisation automatique des fichiers"
+Write-Log "DÃ©but de l'organisation automatique des fichiers"
 
-# Règles d'organisation automatique
+# RÃ¨gles d'organisation automatique
 $autoOrganizeRules = @(
     # Format: [pattern, destination, description]
     @("*.json", "all-workflows/original", "Workflows n8n"),
@@ -41,21 +41,21 @@ $autoOrganizeRules = @(
     @("*.ps1", "scripts", "Scripts PowerShell"),
     @("configure-*.ps1", "scripts/setup", "Scripts de configuration"),
     @("setup-*.ps1", "scripts/setup", "Scripts d'installation"),
-    @("update-*.ps1", "scripts/maintenance", "Scripts de mise à jour"),
+    @("update-*.ps1", "scripts/maintenance", "Scripts de mise Ã  jour"),
     @("cleanup-*.ps1", "scripts/maintenance", "Scripts de nettoyage"),
-    @("check-*.ps1", "scripts/maintenance", "Scripts de vérification"),
+    @("check-*.ps1", "scripts/maintenance", "Scripts de vÃ©rification"),
     @("organize-*.ps1", "scripts/maintenance", "Scripts d'organisation"),
     @("GUIDE_*.md", "docs/guides", "Guides d'utilisation"),
     @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)"),
     @("*.log", "logs", "Fichiers de logs"),
     @("*.env", "config", "Fichiers d'environnement"),
     @("*.config", "config", "Fichiers de configuration"),
-    @("start-*.cmd", "tools", "Scripts de démarrage"),
+    @("start-*.cmd", "tools", "Scripts de dÃ©marrage"),
     @("*.cmd", "cmd", "Fichiers de commande Windows (sauf standards GitHub)"),
     @("*.py", "src", "Scripts Python")
 )
 
-# Fichiers à conserver à la racine
+# Fichiers Ã  conserver Ã  la racine
 $keepFiles = @(
     "README.md",
     ".gitignore",
@@ -68,16 +68,16 @@ $keepFiles = @(
     "CODE_OF_CONDUCT.md"
 )
 
-# Vérifier si les dossiers existent, sinon les créer
+# VÃ©rifier si les dossiers existent, sinon les crÃ©er
 foreach ($rule in $autoOrganizeRules) {
     $destination = $rule[1]
     if (-not (Test-Path "$projectRoot\$destination")) {
         New-Item -ItemType Directory -Path "$projectRoot\$destination" -Force | Out-Null
-        Write-Log "Dossier $destination créé"
+        Write-Log "Dossier $destination crÃ©Ã©"
     }
 }
 
-# Fonction pour déplacer un fichier automatiquement
+# Fonction pour dÃ©placer un fichier automatiquement
 function Move-FileAutomatically {
     param (
         [string]$SourcePath,
@@ -88,61 +88,61 @@ function Move-FileAutomatically {
     $fileName = Split-Path $SourcePath -Leaf
     $destinationPath = Join-Path $DestinationFolder $fileName
 
-    # Ne pas déplacer les fichiers à conserver à la racine
+    # Ne pas dÃ©placer les fichiers Ã  conserver Ã  la racine
     if ($keepFiles -contains $fileName) {
-        Write-Log "Fichier $fileName conservé à la racine (fichier essentiel)"
+        Write-Log "Fichier $fileName conservÃ© Ã  la racine (fichier essentiel)"
         return
     }
 
-    # Ne pas déplacer les fichiers déjà dans le bon dossier
+    # Ne pas dÃ©placer les fichiers dÃ©jÃ  dans le bon dossier
     $sourceDir = Split-Path $SourcePath -Parent
     $expectedPath = Join-Path $projectRoot $DestinationFolder
     if ($sourceDir -eq $expectedPath) {
         return
     }
 
-    # Vérifier si le fichier existe déjà à destination
+    # VÃ©rifier si le fichier existe dÃ©jÃ  Ã  destination
     if (Test-Path $destinationPath) {
         # Comparer les dates de modification
         $sourceFile = Get-Item $SourcePath
         $destFile = Get-Item $destinationPath
 
         if ($sourceFile.LastWriteTime -gt $destFile.LastWriteTime) {
-            # Le fichier source est plus récent
+            # Le fichier source est plus rÃ©cent
             try {
                 Move-Item -Path $SourcePath -Destination $destinationPath -Force
-                Write-Log "Fichier $fileName déplacé vers $DestinationFolder (plus récent)"
+                Write-Log "Fichier $fileName dÃ©placÃ© vers $DestinationFolder (plus rÃ©cent)"
             }
             catch {
-                Write-Log "Erreur lors du déplacement de $fileName : $_" -Level "ERROR"
+                Write-Log "Erreur lors du dÃ©placement de $fileName : $_" -Level "ERROR"
             }
         }
     } else {
-        # Le fichier n'existe pas à destination
+        # Le fichier n'existe pas Ã  destination
         try {
             Move-Item -Path $SourcePath -Destination $destinationPath
-            Write-Log "Fichier $fileName déplacé vers $DestinationFolder"
+            Write-Log "Fichier $fileName dÃ©placÃ© vers $DestinationFolder"
         }
         catch {
-            Write-Log "Erreur lors du déplacement de $fileName : $_" -Level "ERROR"
+            Write-Log "Erreur lors du dÃ©placement de $fileName : $_" -Level "ERROR"
         }
     }
 }
 
 # Rechercher et organiser les fichiers
-Write-Log "Recherche de fichiers à organiser..."
+Write-Log "Recherche de fichiers Ã  organiser..."
 
 foreach ($rule in $autoOrganizeRules) {
     $pattern = $rule[0]
     $destination = $rule[1]
     $description = $rule[2]
 
-    # Trouver les fichiers correspondant au pattern à la racine
+    # Trouver les fichiers correspondant au pattern Ã  la racine
     $files = Get-ChildItem -Path $projectRoot -Filter $pattern -File |
              Where-Object { $_.DirectoryName -eq $projectRoot }
 
     if ($files.Count -gt 0) {
-        Write-Log "Traitement des fichiers $description ($pattern) - $($files.Count) fichier(s) trouvé(s)"
+        Write-Log "Traitement des fichiers $description ($pattern) - $($files.Count) fichier(s) trouvÃ©(s)"
 
         foreach ($file in $files) {
             Move-FileAutomatically -SourcePath $file.FullName -DestinationFolder $destination -Description $description
@@ -155,16 +155,16 @@ $logFiles = Get-ChildItem -Path $projectRoot -Recurse -Include "*.log" -File |
             Where-Object { $_.DirectoryName -ne "$projectRoot\logs" }
 
 if ($logFiles.Count -gt 0) {
-    Write-Log "Traitement des fichiers de logs - $($logFiles.Count) fichier(s) de logs trouvé(s)"
+    Write-Log "Traitement des fichiers de logs - $($logFiles.Count) fichier(s) de logs trouvÃ©(s)"
 
     foreach ($file in $logFiles) {
         Move-FileAutomatically -SourcePath $file.FullName -DestinationFolder "logs" -Description "Fichiers de logs"
     }
 }
 
-Write-Log "Organisation automatique terminée"
+Write-Log "Organisation automatique terminÃ©e"
 
-# Fonction pour vérifier si un fichier est verrouillé
+# Fonction pour vÃ©rifier si un fichier est verrouillÃ©
 function Test-FileLock {
     param (
         [parameter(Mandatory = $true)]
@@ -188,78 +188,78 @@ function Test-FileLock {
     return $locked
 }
 
-# Créer un hook Git pour organiser automatiquement les fichiers lors des commits
+# CrÃ©er un hook Git pour organiser automatiquement les fichiers lors des commits
 $gitHooksDir = "$projectRoot\.git\hooks"
 if (Test-Path "$projectRoot\.git") {
     if (-not (Test-Path $gitHooksDir)) {
         try {
             New-Item -ItemType Directory -Path $gitHooksDir -Force | Out-Null
-            Write-Log "Dossier de hooks Git créé"
+            Write-Log "Dossier de hooks Git crÃ©Ã©"
         }
         catch {
-            Write-Log "Erreur lors de la création du dossier de hooks Git : $_" -Level "ERROR"
+            Write-Log "Erreur lors de la crÃ©ation du dossier de hooks Git : $_" -Level "ERROR"
         }
     }
 
     $preCommitHookPath = "$gitHooksDir\pre-commit"
 
-    # Vérifier si le fichier pre-commit est verrouillé
+    # VÃ©rifier si le fichier pre-commit est verrouillÃ©
     $isLocked = Test-FileLock -Path $preCommitHookPath
 
     if ($isLocked) {
-        Write-Log "Le fichier pre-commit hook est actuellement verrouillé ou utilisé par un autre processus" -Level "WARNING"
-        Write-Log "Le hook Git pre-commit n'a pas été mis à jour"
+        Write-Log "Le fichier pre-commit hook est actuellement verrouillÃ© ou utilisÃ© par un autre processus" -Level "WARNING"
+        Write-Log "Le hook Git pre-commit n'a pas Ã©tÃ© mis Ã  jour"
     }
     else {
-        # Créer un fichier temporaire pour le hook
+        # CrÃ©er un fichier temporaire pour le hook
         $tempHookPath = "$gitHooksDir\pre-commit.tmp"
 
         $preCommitHookContent = @"
 #!/bin/sh
-# Pre-commit hook amélioré pour organiser automatiquement les fichiers
+# Pre-commit hook amÃ©liorÃ© pour organiser automatiquement les fichiers
 
 echo "Organisation automatique des fichiers avant commit..."
 
-# Obtenir le chemin du répertoire Git
+# Obtenir le chemin du rÃ©pertoire Git
 GIT_DIR=$(git rev-parse --git-dir)
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 
-# Définir le chemin relatif du script
+# DÃ©finir le chemin relatif du script
 SCRIPT_PATH="\$PROJECT_ROOT/scripts/maintenance/auto-organize-silent-improved.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if [ -f "\$SCRIPT_PATH" ]; then
-    # Exécuter le script amélioré qui gère les conflits de fichiers
+    # ExÃ©cuter le script amÃ©liorÃ© qui gÃ¨re les conflits de fichiers
     powershell -ExecutionPolicy Bypass -File "\$SCRIPT_PATH"
     SCRIPT_EXIT_CODE=\$?
 
     if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
-        echo "Avertissement: Le script d'organisation a rencontré des problèmes, mais le commit continuera."
+        echo "Avertissement: Le script d'organisation a rencontrÃ© des problÃ¨mes, mais le commit continuera."
     fi
 else
-    echo "Avertissement: Script d'organisation non trouvé à \$SCRIPT_PATH"
+    echo "Avertissement: Script d'organisation non trouvÃ© Ã  \$SCRIPT_PATH"
     echo "Le commit continuera sans organisation automatique."
 fi
 
-# Ajouter les fichiers déplacés au commit
+# Ajouter les fichiers dÃ©placÃ©s au commit
 git add .
 
 exit 0
 "@
 
         try {
-            # Écrire d'abord dans un fichier temporaire
+            # Ã‰crire d'abord dans un fichier temporaire
             Set-Content -Path $tempHookPath -Value $preCommitHookContent -NoNewline
 
-            # Puis renommer le fichier temporaire (opération atomique)
+            # Puis renommer le fichier temporaire (opÃ©ration atomique)
             if (Test-Path $preCommitHookPath) {
                 Remove-Item -Path $preCommitHookPath -Force
             }
             Rename-Item -Path $tempHookPath -NewName (Split-Path $preCommitHookPath -Leaf)
 
-            Write-Log "Hook Git pre-commit configuré pour l'organisation automatique"
+            Write-Log "Hook Git pre-commit configurÃ© pour l'organisation automatique"
 
-            # Rendre le hook exécutable sous Unix
+            # Rendre le hook exÃ©cutable sous Unix
             if ($IsLinux -or $IsMacOS) {
                 & chmod +x $preCommitHookPath
             }
@@ -269,65 +269,65 @@ exit 0
         }
     }
 
-    # Configurer également le hook pre-push
+    # Configurer Ã©galement le hook pre-push
     $prePushHookPath = "$gitHooksDir\pre-push"
 
-    # Vérifier si le fichier pre-push est verrouillé
+    # VÃ©rifier si le fichier pre-push est verrouillÃ©
     $isLocked = Test-FileLock -Path $prePushHookPath
 
     if ($isLocked) {
-        Write-Log "Le fichier pre-push hook est actuellement verrouillé ou utilisé par un autre processus" -Level "WARNING"
-        Write-Log "Le hook Git pre-push n'a pas été mis à jour"
+        Write-Log "Le fichier pre-push hook est actuellement verrouillÃ© ou utilisÃ© par un autre processus" -Level "WARNING"
+        Write-Log "Le hook Git pre-push n'a pas Ã©tÃ© mis Ã  jour"
     }
     else {
-        # Créer un fichier temporaire pour le hook
+        # CrÃ©er un fichier temporaire pour le hook
         $tempHookPath = "$gitHooksDir\pre-push.tmp"
 
         $prePushHookContent = @"
 #!/bin/sh
-# Pre-push hook amélioré pour vérifier les changements avant push
+# Pre-push hook amÃ©liorÃ© pour vÃ©rifier les changements avant push
 
-echo "Vérification des changements avant push..."
+echo "VÃ©rification des changements avant push..."
 
-# Obtenir le chemin du répertoire Git
+# Obtenir le chemin du rÃ©pertoire Git
 GIT_DIR=$(git rev-parse --git-dir)
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 
-# Définir le chemin relatif du script
+# DÃ©finir le chemin relatif du script
 SCRIPT_PATH="\$PROJECT_ROOT/scripts/utils/git/git-pre-push-check.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if [ -f "\$SCRIPT_PATH" ]; then
-    # Exécuter le script de vérification
+    # ExÃ©cuter le script de vÃ©rification
     powershell -ExecutionPolicy Bypass -File "\$SCRIPT_PATH"
     SCRIPT_EXIT_CODE=\$?
 
-    # Vérifier le code de sortie du script
+    # VÃ©rifier le code de sortie du script
     if [ \$SCRIPT_EXIT_CODE -ne 0 ]; then
-        echo "Vérification échouée. Push annulé."
+        echo "VÃ©rification Ã©chouÃ©e. Push annulÃ©."
         exit 1
     fi
 else
-    echo "Avertissement: Script de vérification non trouvé à \$SCRIPT_PATH"
-    echo "Le push continuera sans vérification."
+    echo "Avertissement: Script de vÃ©rification non trouvÃ© Ã  \$SCRIPT_PATH"
+    echo "Le push continuera sans vÃ©rification."
 fi
 
 exit 0
 "@
 
         try {
-            # Écrire d'abord dans un fichier temporaire
+            # Ã‰crire d'abord dans un fichier temporaire
             Set-Content -Path $tempHookPath -Value $prePushHookContent -NoNewline
 
-            # Puis renommer le fichier temporaire (opération atomique)
+            # Puis renommer le fichier temporaire (opÃ©ration atomique)
             if (Test-Path $prePushHookPath) {
                 Remove-Item -Path $prePushHookPath -Force
             }
             Rename-Item -Path $tempHookPath -NewName (Split-Path $prePushHookPath -Leaf)
 
-            Write-Log "Hook Git pre-push configuré pour la vérification avant push"
+            Write-Log "Hook Git pre-push configurÃ© pour la vÃ©rification avant push"
 
-            # Rendre le hook exécutable sous Unix
+            # Rendre le hook exÃ©cutable sous Unix
             if ($IsLinux -or $IsMacOS) {
                 & chmod +x $prePushHookPath
             }

@@ -1,4 +1,4 @@
-# Script pour surveiller et organiser automatiquement les nouveaux fichiers
+﻿# Script pour surveiller et organiser automatiquement les nouveaux fichiers
 # Ce script peut etre execute periodiquement via une tache planifiee
 
 Write-Host "=== Organisation automatique des fichiers ===" -ForegroundColor Cyan

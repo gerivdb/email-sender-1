@@ -1,4 +1,4 @@
-# Script PowerShell pour simuler le MCP Gateway
+﻿# Script PowerShell pour simuler le MCP Gateway
 
 param (
     [string]$command,

@@ -1,4 +1,4 @@
-# Script de configuration pour MCP Gateway (centralmind/gateway)
+﻿# Script de configuration pour MCP Gateway (centralmind/gateway)
 
 # Definir les variables d'environnement necessaires
 $env:N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE = "true"

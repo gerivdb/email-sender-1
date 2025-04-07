@@ -1,11 +1,11 @@
-# Script de configuration pour BifrostMCP dans n8n
+﻿# Script de configuration pour BifrostMCP dans n8n
 
 Write-Host "=== Configuration de BifrostMCP pour n8n ===" -ForegroundColor Cyan
 
 # Verifier si le fichier bifrost.config.json existe
 $bifrostConfigPath = ".\bifrost.config.json"
 if (-not (Test-Path $bifrostConfigPath)) {
-    Write-Host "❌ Le fichier bifrost.config.json n'existe pas" -ForegroundColor Red
+    Write-Host "âŒ Le fichier bifrost.config.json n'existe pas" -ForegroundColor Red
     Write-Host "Creez d'abord le fichier bifrost.config.json a la racine du projet" -ForegroundColor Yellow
     exit 1
 }
@@ -13,7 +13,7 @@ if (-not (Test-Path $bifrostConfigPath)) {
 # Verifier si le fichier batch existe
 $mcpBifrostPath = ".\src\mcp\batch\mcp-bifrost.cmd"
 if (-not (Test-Path $mcpBifrostPath)) {
-    Write-Host "❌ Le fichier $mcpBifrostPath n'existe pas" -ForegroundColor Red
+    Write-Host "âŒ Le fichier $mcpBifrostPath n'existe pas" -ForegroundColor Red
     Write-Host "Creez d'abord le fichier mcp-bifrost.cmd dans le dossier src\mcp\batch" -ForegroundColor Yellow
     exit 1
 }
@@ -22,18 +22,18 @@ if (-not (Test-Path $mcpBifrostPath)) {
 $n8nDir = ".\.n8n"
 if (-not (Test-Path $n8nDir)) {
     New-Item -ItemType Directory -Path $n8nDir | Out-Null
-    Write-Host "✅ Repertoire .n8n cree" -ForegroundColor Green
+    Write-Host "âœ… Repertoire .n8n cree" -ForegroundColor Green
 } else {
-    Write-Host "✅ Repertoire .n8n existe deja" -ForegroundColor Green
+    Write-Host "âœ… Repertoire .n8n existe deja" -ForegroundColor Green
 }
 
 # Creer le repertoire .n8n/credentials s'il n'existe pas
 $credentialsDir = "$n8nDir\credentials"
 if (-not (Test-Path $credentialsDir)) {
     New-Item -ItemType Directory -Path $credentialsDir | Out-Null
-    Write-Host "✅ Repertoire .n8n/credentials cree" -ForegroundColor Green
+    Write-Host "âœ… Repertoire .n8n/credentials cree" -ForegroundColor Green
 } else {
-    Write-Host "✅ Repertoire .n8n/credentials existe deja" -ForegroundColor Green
+    Write-Host "âœ… Repertoire .n8n/credentials existe deja" -ForegroundColor Green
 }
 
 # Generer un identifiant unique
@@ -54,7 +54,7 @@ $mcpBifrostCredContent = @"
 "@
 
 Set-Content -Path $mcpBifrostCredPath -Value $mcpBifrostCredContent
-Write-Host "✅ Fichier d'identifiants pour BifrostMCP cree" -ForegroundColor Green
+Write-Host "âœ… Fichier d'identifiants pour BifrostMCP cree" -ForegroundColor Green
 
 # Mettre a jour le fichier credentials.db s'il existe
 $credentialsDbPath = "$n8nDir\credentials.db"
@@ -78,9 +78,9 @@ if (Test-Path $credentialsDbPath) {
         
         # Convertir en JSON et enregistrer
         $credentialsDbJson | ConvertTo-Json -Depth 10 -Compress | Set-Content -Path $credentialsDbPath
-        Write-Host "✅ Fichier credentials.db mis a jour" -ForegroundColor Green
+        Write-Host "âœ… Fichier credentials.db mis a jour" -ForegroundColor Green
     } catch {
-        Write-Host "❌ Erreur lors de la mise a jour du fichier credentials.db" -ForegroundColor Red
+        Write-Host "âŒ Erreur lors de la mise a jour du fichier credentials.db" -ForegroundColor Red
         Write-Host "Le fichier n'est pas au format JSON valide" -ForegroundColor Yellow
         Write-Host "Vous devrez ajouter manuellement l'identifiant dans n8n" -ForegroundColor Yellow
     }
@@ -90,7 +90,7 @@ if (Test-Path $credentialsDbPath) {
 {"$mcpBifrostId":{"name":"MCP Bifrost","type":"mcpClientApi","nodesAccess":[{"nodeType":"n8n-nodes-base.mcpClient"}]}}
 "@
     Set-Content -Path $credentialsDbPath -Value $credentialsDbContent
-    Write-Host "✅ Fichier credentials.db cree" -ForegroundColor Green
+    Write-Host "âœ… Fichier credentials.db cree" -ForegroundColor Green
 }
 
 Write-Host "`n=== Configuration terminee ===" -ForegroundColor Cyan

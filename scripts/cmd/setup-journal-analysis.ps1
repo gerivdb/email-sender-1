@@ -1,6 +1,6 @@
-# Script PowerShell pour configurer et exécuter l'analyse du journal de bord
+﻿# Script PowerShell pour configurer et exÃ©cuter l'analyse du journal de bord
 
-# Chemin absolu vers le répertoire du projet
+# Chemin absolu vers le rÃ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $PythonScriptsDir = Join-Path $ProjectDir "scripts\python\journal"
 
@@ -16,89 +16,89 @@ function Write-Section {
 }
 
 # Afficher un message d'introduction
-Write-Host "Configuration et exécution de l'analyse du journal de bord" -ForegroundColor Magenta
+Write-Host "Configuration et exÃ©cution de l'analyse du journal de bord" -ForegroundColor Magenta
 Write-Host "=======================================================" -ForegroundColor Magenta
 Write-Host ""
 
-# 1. Installer les dépendances Python
-Write-Section "Installation des dépendances Python"
+# 1. Installer les dÃ©pendances Python
+Write-Section "Installation des dÃ©pendances Python"
 pip install numpy pandas matplotlib wordcloud scikit-learn
 
-# 2. Créer les répertoires nécessaires
-Write-Section "Création des répertoires"
+# 2. CrÃ©er les rÃ©pertoires nÃ©cessaires
+Write-Section "CrÃ©ation des rÃ©pertoires"
 $AnalysisDir = Join-Path $ProjectDir "docs\journal_de_bord\analysis"
 New-Item -ItemType Directory -Path $AnalysisDir -Force | Out-Null
-Write-Host "Répertoire d'analyse créé: $AnalysisDir" -ForegroundColor Green
+Write-Host "RÃ©pertoire d'analyse crÃ©Ã©: $AnalysisDir" -ForegroundColor Green
 
-# 3. Exécuter les analyses
-Write-Section "Exécution des analyses"
+# 3. ExÃ©cuter les analyses
+Write-Section "ExÃ©cution des analyses"
 
-Write-Host "Analyse de la fréquence des termes..." -ForegroundColor Cyan
+Write-Host "Analyse de la frÃ©quence des termes..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --term-frequency
 
-Write-Host "Génération du nuage de mots..." -ForegroundColor Cyan
+Write-Host "GÃ©nÃ©ration du nuage de mots..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --word-cloud
 
-Write-Host "Analyse de l'évolution des tags..." -ForegroundColor Cyan
+Write-Host "Analyse de l'Ã©volution des tags..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --tag-evolution
 
 Write-Host "Analyse des tendances des sujets..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --topic-trends
 
-Write-Host "Regroupement des entrées..." -ForegroundColor Cyan
+Write-Host "Regroupement des entrÃ©es..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --cluster
 
-# 4. Configurer une tâche planifiée pour l'analyse périodique
-Write-Section "Configuration de l'analyse périodique"
+# 4. Configurer une tÃ¢che planifiÃ©e pour l'analyse pÃ©riodique
+Write-Section "Configuration de l'analyse pÃ©riodique"
 
-$ScheduleAnalysis = Read-Host "Voulez-vous configurer une analyse périodique automatique? (O/N)"
+$ScheduleAnalysis = Read-Host "Voulez-vous configurer une analyse pÃ©riodique automatique? (O/N)"
 
 if ($ScheduleAnalysis -eq "O" -or $ScheduleAnalysis -eq "o") {
     $TaskName = "Journal_Analysis"
     $TaskPath = "\Journal\"
     
-    # Créer le dossier de tâches s'il n'existe pas
+    # CrÃ©er le dossier de tÃ¢ches s'il n'existe pas
     $null = schtasks /query /tn $TaskPath 2>$null
     if ($LASTEXITCODE -ne 0) {
         $null = schtasks /create /tn "$TaskPath\dummy" /tr "cmd.exe" /sc once /st 00:00 /sd 01/01/2099
         $null = schtasks /delete /tn "$TaskPath\dummy" /f
     }
     
-    # Créer la tâche planifiée
+    # CrÃ©er la tÃ¢che planifiÃ©e
     $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$PythonScriptsDir\journal_analyzer.py`" --all"
     $Trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At 3am
     $Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries
     
-    # Vérifier si la tâche existe déjà
+    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
     $ExistingTask = Get-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -ErrorAction SilentlyContinue
     
     if ($ExistingTask) {
-        # Mettre à jour la tâche existante
+        # Mettre Ã  jour la tÃ¢che existante
         Set-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -Action $Action -Trigger $Trigger -Settings $Settings
-        Write-Host "Tâche planifiée mise à jour: $TaskPath$TaskName" -ForegroundColor Green
+        Write-Host "TÃ¢che planifiÃ©e mise Ã  jour: $TaskPath$TaskName" -ForegroundColor Green
     } else {
-        # Créer une nouvelle tâche
+        # CrÃ©er une nouvelle tÃ¢che
         Register-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -Action $Action -Trigger $Trigger -Settings $Settings -User "SYSTEM"
-        Write-Host "Tâche planifiée créée: $TaskPath$TaskName" -ForegroundColor Green
+        Write-Host "TÃ¢che planifiÃ©e crÃ©Ã©e: $TaskPath$TaskName" -ForegroundColor Green
     }
     
-    Write-Host "L'analyse sera exécutée automatiquement chaque dimanche à 3h du matin." -ForegroundColor Green
+    Write-Host "L'analyse sera exÃ©cutÃ©e automatiquement chaque dimanche Ã  3h du matin." -ForegroundColor Green
 } else {
-    Write-Host "Configuration de l'analyse périodique ignorée." -ForegroundColor Yellow
+    Write-Host "Configuration de l'analyse pÃ©riodique ignorÃ©e." -ForegroundColor Yellow
 }
 
 # Afficher un message de conclusion
-Write-Section "Analyse terminée"
-Write-Host "L'analyse du journal de bord a été exécutée avec succès!" -ForegroundColor Green
+Write-Section "Analyse terminÃ©e"
+Write-Host "L'analyse du journal de bord a Ã©tÃ© exÃ©cutÃ©e avec succÃ¨s!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Résultats sauvegardés dans: $AnalysisDir"
+Write-Host "RÃ©sultats sauvegardÃ©s dans: $AnalysisDir"
 Write-Host ""
-Write-Host "Vous pouvez exécuter des analyses spécifiques avec:"
+Write-Host "Vous pouvez exÃ©cuter des analyses spÃ©cifiques avec:"
 Write-Host "  python scripts/python/journal/journal_analyzer.py --term-frequency"
 Write-Host "  python scripts/python/journal/journal_analyzer.py --word-cloud"
 Write-Host "  python scripts/python/journal/journal_analyzer.py --tag-evolution"
 Write-Host "  python scripts/python/journal/journal_analyzer.py --topic-trends"
 Write-Host "  python scripts/python/journal/journal_analyzer.py --cluster"
 Write-Host ""
-Write-Host "Ou toutes les analyses à la fois:"
+Write-Host "Ou toutes les analyses Ã  la fois:"
 Write-Host "  python scripts/python/journal/journal_analyzer.py --all"

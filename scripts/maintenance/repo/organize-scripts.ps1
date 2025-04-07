@@ -1,7 +1,7 @@
-# Script pour organiser les scripts en sous-dossiers sémantiques
-# Ce script crée une structure de sous-dossiers et déplace les scripts dans les dossiers appropriés
+﻿# Script pour organiser les scripts en sous-dossiers sÃ©mantiques
+# Ce script crÃ©e une structure de sous-dossiers et dÃ©place les scripts dans les dossiers appropriÃ©s
 
-# Définition des sous-dossiers à créer
+# DÃ©finition des sous-dossiers Ã  crÃ©er
 $scriptFolders = @(
     # Maintenance
     "maintenance\repo",
@@ -23,17 +23,17 @@ $scriptFolders = @(
     "utils\automation"
 )
 
-# Création des sous-dossiers
-Write-Host "Création des sous-dossiers pour les scripts..." -ForegroundColor Cyan
+# CrÃ©ation des sous-dossiers
+Write-Host "CrÃ©ation des sous-dossiers pour les scripts..." -ForegroundColor Cyan
 foreach ($folder in $scriptFolders) {
     $path = Join-Path -Path "scripts" -ChildPath $folder
     if (-not (Test-Path -Path $path)) {
-        Write-Host "Création du dossier: $path" -ForegroundColor Yellow
+        Write-Host "CrÃ©ation du dossier: $path" -ForegroundColor Yellow
         New-Item -Path $path -ItemType Directory -Force | Out-Null
     }
 }
 
-# Définition des règles de déplacement des fichiers
+# DÃ©finition des rÃ¨gles de dÃ©placement des fichiers
 $fileRules = @(
     # Maintenance - Repo
     @{
@@ -95,8 +95,8 @@ $fileRules = @(
     }
 )
 
-# Déplacement des fichiers selon les règles
-Write-Host "`nDéplacement des fichiers selon les règles..." -ForegroundColor Cyan
+# DÃ©placement des fichiers selon les rÃ¨gles
+Write-Host "`nDÃ©placement des fichiers selon les rÃ¨gles..." -ForegroundColor Cyan
 foreach ($rule in $fileRules) {
     foreach ($pattern in $rule.Pattern) {
         $files = Get-ChildItem -Path "scripts" -Filter $pattern -File -Recurse | 
@@ -107,7 +107,7 @@ foreach ($rule in $fileRules) {
             $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
             
             if (-not (Test-Path -Path $destinationFile)) {
-                Write-Host "Déplacement de $($file.Name) vers $($rule.Destination)" -ForegroundColor Yellow
+                Write-Host "DÃ©placement de $($file.Name) vers $($rule.Destination)" -ForegroundColor Yellow
                 Move-Item -Path $file.FullName -Destination $destination -Force
             }
         }
@@ -125,12 +125,12 @@ $workflowFolders = @(
 
 foreach ($folder in $workflowFolders) {
     if (-not (Test-Path -Path $folder)) {
-        Write-Host "Création du dossier: $folder" -ForegroundColor Yellow
+        Write-Host "CrÃ©ation du dossier: $folder" -ForegroundColor Yellow
         New-Item -Path $folder -ItemType Directory -Force | Out-Null
     }
 }
 
-# Déplacement des workflows
+# DÃ©placement des workflows
 $workflowRules = @(
     @{
         Pattern = "EMAIL_SENDER_1*.json"
@@ -159,7 +159,7 @@ foreach ($rule in $workflowRules) {
             $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
             
             if (-not (Test-Path -Path $destinationFile)) {
-                Write-Host "Déplacement de $($file.Name) vers $($rule.Destination)" -ForegroundColor Yellow
+                Write-Host "DÃ©placement de $($file.Name) vers $($rule.Destination)" -ForegroundColor Yellow
                 Move-Item -Path $file.FullName -Destination $destination -Force
             }
         }
@@ -178,12 +178,12 @@ $logFolders = @(
 
 foreach ($folder in $logFolders) {
     if (-not (Test-Path -Path $folder)) {
-        Write-Host "Création du dossier: $folder" -ForegroundColor Yellow
+        Write-Host "CrÃ©ation du dossier: $folder" -ForegroundColor Yellow
         New-Item -Path $folder -ItemType Directory -Force | Out-Null
     }
 }
 
-# Déplacement des logs existants
+# DÃ©placement des logs existants
 $logFiles = Get-ChildItem -Path "logs" -File
 foreach ($file in $logFiles) {
     if ($file.Name -like "*workflow*" -or $file.Name -like "*n8n*") {
@@ -194,9 +194,9 @@ foreach ($file in $logFiles) {
     
     $destinationFile = Join-Path -Path $destination -ChildPath $file.Name
     if (-not (Test-Path -Path $destinationFile)) {
-        Write-Host "Déplacement de $($file.Name) vers $destination" -ForegroundColor Yellow
+        Write-Host "DÃ©placement de $($file.Name) vers $destination" -ForegroundColor Yellow
         Move-Item -Path $file.FullName -Destination $destination -Force
     }
 }
 
-Write-Host "`nOrganisation des scripts et dossiers terminée avec succès!" -ForegroundColor Green
+Write-Host "`nOrganisation des scripts et dossiers terminÃ©e avec succÃ¨s!" -ForegroundColor Green

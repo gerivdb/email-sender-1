@@ -1,5 +1,5 @@
-# Script PowerShell pour le hook pre-commit
-# Ce script est exécuté automatiquement avant chaque commit
+﻿# Script PowerShell pour le hook pre-commit
+# Ce script est exÃ©cutÃ© automatiquement avant chaque commit
 
 param (
     [Parameter(Mandatory = $false)]
@@ -13,7 +13,7 @@ param (
 $projectRoot = git rev-parse --show-toplevel
 Set-Location $projectRoot
 
-# Fonction pour afficher un message coloré
+# Fonction pour afficher un message colorÃ©
 function Write-ColorMessage {
     param (
         [string]$Message,
@@ -23,43 +23,43 @@ function Write-ColorMessage {
     Write-Host $Message -ForegroundColor $ForegroundColor
 }
 
-Write-ColorMessage "Exécution du hook pre-commit PowerShell..." -ForegroundColor "Cyan"
+Write-ColorMessage "ExÃ©cution du hook pre-commit PowerShell..." -ForegroundColor "Cyan"
 
-# Étape 1: Organisation des fichiers (si non désactivée)
+# Ã‰tape 1: Organisation des fichiers (si non dÃ©sactivÃ©e)
 if (-not $SkipOrganize) {
-    Write-ColorMessage "Étape 1: Organisation des fichiers..." -ForegroundColor "Cyan"
+    Write-ColorMessage "Ã‰tape 1: Organisation des fichiers..." -ForegroundColor "Cyan"
     
     $organizationScript = Join-Path $projectRoot "scripts\maintenance\auto-organize-silent-improved.ps1"
     
     if (Test-Path $organizationScript) {
         try {
             & $organizationScript
-            Write-ColorMessage "Organisation des fichiers terminée" -ForegroundColor "Green"
+            Write-ColorMessage "Organisation des fichiers terminÃ©e" -ForegroundColor "Green"
         }
         catch {
             Write-ColorMessage "Erreur lors de l'organisation des fichiers : $_" -ForegroundColor "Red"
             if (-not $Force) {
-                Write-ColorMessage "Utilisez -Force pour continuer malgré les erreurs" -ForegroundColor "Yellow"
+                Write-ColorMessage "Utilisez -Force pour continuer malgrÃ© les erreurs" -ForegroundColor "Yellow"
                 exit 1
             }
         }
     }
     else {
-        Write-ColorMessage "Script d'organisation non trouvé : $organizationScript" -ForegroundColor "Yellow"
+        Write-ColorMessage "Script d'organisation non trouvÃ© : $organizationScript" -ForegroundColor "Yellow"
         Write-ColorMessage "Le commit continuera sans organisation automatique" -ForegroundColor "Yellow"
     }
 }
 else {
-    Write-ColorMessage "Étape 1: Organisation des fichiers ignorée (option -SkipOrganize)" -ForegroundColor "Yellow"
+    Write-ColorMessage "Ã‰tape 1: Organisation des fichiers ignorÃ©e (option -SkipOrganize)" -ForegroundColor "Yellow"
 }
 
-# Étape 2: Vérification du style de code
-Write-ColorMessage "Étape 2: Vérification du style de code..." -ForegroundColor "Cyan"
+# Ã‰tape 2: VÃ©rification du style de code
+Write-ColorMessage "Ã‰tape 2: VÃ©rification du style de code..." -ForegroundColor "Cyan"
 
-# Vérifier les fichiers PowerShell avec PSScriptAnalyzer
+# VÃ©rifier les fichiers PowerShell avec PSScriptAnalyzer
 $psFiles = git diff --cached --name-only --diff-filter=ACM | Where-Object { $_ -match '\.ps1$' }
 if ($psFiles.Count -gt 0) {
-    Write-ColorMessage "Vérification de $($psFiles.Count) fichiers PowerShell..." -ForegroundColor "Cyan"
+    Write-ColorMessage "VÃ©rification de $($psFiles.Count) fichiers PowerShell..." -ForegroundColor "Cyan"
     
     $hasErrors = $false
     
@@ -78,7 +78,7 @@ if ($psFiles.Count -gt 0) {
             }
         }
         else {
-            Write-ColorMessage "PSScriptAnalyzer non installé. Installation recommandée : Install-Module -Name PSScriptAnalyzer -Force" -ForegroundColor "Yellow"
+            Write-ColorMessage "PSScriptAnalyzer non installÃ©. Installation recommandÃ©e : Install-Module -Name PSScriptAnalyzer -Force" -ForegroundColor "Yellow"
         }
     }
     
@@ -88,10 +88,10 @@ if ($psFiles.Count -gt 0) {
     }
 }
 
-# Vérifier les fichiers Python avec flake8
+# VÃ©rifier les fichiers Python avec flake8
 $pyFiles = git diff --cached --name-only --diff-filter=ACM | Where-Object { $_ -match '\.py$' }
 if ($pyFiles.Count -gt 0) {
-    Write-ColorMessage "Vérification de $($pyFiles.Count) fichiers Python..." -ForegroundColor "Cyan"
+    Write-ColorMessage "VÃ©rification de $($pyFiles.Count) fichiers Python..." -ForegroundColor "Cyan"
     
     if (Get-Command flake8 -ErrorAction SilentlyContinue) {
         $hasErrors = $false
@@ -115,12 +115,12 @@ if ($pyFiles.Count -gt 0) {
         }
     }
     else {
-        Write-ColorMessage "flake8 non installé. Installation recommandée : pip install flake8" -ForegroundColor "Yellow"
+        Write-ColorMessage "flake8 non installÃ©. Installation recommandÃ©e : pip install flake8" -ForegroundColor "Yellow"
     }
 }
 
-# Étape 3: Vérification des informations sensibles
-Write-ColorMessage "Étape 3: Vérification des informations sensibles..." -ForegroundColor "Cyan"
+# Ã‰tape 3: VÃ©rification des informations sensibles
+Write-ColorMessage "Ã‰tape 3: VÃ©rification des informations sensibles..." -ForegroundColor "Cyan"
 
 $sensitivePatterns = @(
     "password\s*=\s*['\"][^'\"]+['\"]",
@@ -143,7 +143,7 @@ foreach ($file in $allFiles) {
         
         foreach ($pattern in $sensitivePatterns) {
             if ($content -match $pattern) {
-                Write-ColorMessage "Information sensible détectée dans $file : $pattern" -ForegroundColor "Red"
+                Write-ColorMessage "Information sensible dÃ©tectÃ©e dans $file : $pattern" -ForegroundColor "Red"
                 $hasSecrets = $true
             }
         }
@@ -155,10 +155,10 @@ if ($hasSecrets -and -not $Force) {
     exit 1
 }
 
-# Étape 4: Ajouter les fichiers déplacés au commit
-Write-ColorMessage "Étape 4: Ajout des fichiers déplacés au commit..." -ForegroundColor "Cyan"
+# Ã‰tape 4: Ajouter les fichiers dÃ©placÃ©s au commit
+Write-ColorMessage "Ã‰tape 4: Ajout des fichiers dÃ©placÃ©s au commit..." -ForegroundColor "Cyan"
 
 git add .
 
-Write-ColorMessage "Hook pre-commit exécuté avec succès" -ForegroundColor "Green"
+Write-ColorMessage "Hook pre-commit exÃ©cutÃ© avec succÃ¨s" -ForegroundColor "Green"
 exit 0

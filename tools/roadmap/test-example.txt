@@ -1,0 +1,12 @@
+PHASE 1: Analyse
+Identifier les besoins (2 jours)
+Documenter les exigences prioritaire (3 jours)
+Définir les critères de succès (1 jour)
+
+PHASE 2: Conception
+Créer les maquettes (5 jours)
+Définir l'architecture ! (3 jours)
+Choisir les technologies
+  Framework frontend (2 jours)
+  Base de données * (1 jour)
+  Services backend (4 jours)

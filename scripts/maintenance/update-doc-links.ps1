@@ -1,4 +1,4 @@
-# Script pour mettre a jour les liens dans les fichiers de documentation
+﻿# Script pour mettre a jour les liens dans les fichiers de documentation
 
 Write-Host "=== Mise a jour des liens dans les fichiers de documentation ===" -ForegroundColor Cyan
 

@@ -1,4 +1,4 @@
-# Script de verification avant push
+﻿# Script de verification avant push
 # Version simplifiee pour eviter les problemes de syntaxe
 
 param (

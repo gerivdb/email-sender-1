@@ -1,4 +1,4 @@
-# Script pour configurer BifrostMCP dans Augment Settings
+﻿# Script pour configurer BifrostMCP dans Augment Settings
 
 Write-Host "=== Configuration de BifrostMCP pour Augment ===" -ForegroundColor Cyan
 
@@ -6,14 +6,14 @@ Write-Host "=== Configuration de BifrostMCP pour Augment ===" -ForegroundColor C
 try {
     $supergatewayVersion = (supergateway --version) 2>&1
     if ($supergatewayVersion -match "\d+\.\d+\.\d+") {
-        Write-Host "✅ supergateway version $supergatewayVersion est installe" -ForegroundColor Green
+        Write-Host "âœ… supergateway version $supergatewayVersion est installe" -ForegroundColor Green
     } else {
-        Write-Host "❌ supergateway n'est pas correctement installe" -ForegroundColor Red
+        Write-Host "âŒ supergateway n'est pas correctement installe" -ForegroundColor Red
         Write-Host "Installation de supergateway..." -ForegroundColor Yellow
         npm install -g supergateway
     }
 } catch {
-    Write-Host "❌ supergateway n'est pas installe" -ForegroundColor Red
+    Write-Host "âŒ supergateway n'est pas installe" -ForegroundColor Red
     Write-Host "Installation de supergateway..." -ForegroundColor Yellow
     npm install -g supergateway
 }
@@ -21,7 +21,7 @@ try {
 # Verifier si le fichier bifrost.config.json existe
 $bifrostConfigPath = ".\bifrost.config.json"
 if (-not (Test-Path $bifrostConfigPath)) {
-    Write-Host "❌ Le fichier bifrost.config.json n'existe pas" -ForegroundColor Red
+    Write-Host "âŒ Le fichier bifrost.config.json n'existe pas" -ForegroundColor Red
     Write-Host "Creez d'abord le fichier bifrost.config.json a la racine du projet" -ForegroundColor Yellow
     exit 1
 }
@@ -41,7 +41,7 @@ Write-Host "-------------------------------------------------------" -Foreground
 Write-Host "`nInstructions :" -ForegroundColor Cyan
 Write-Host "1. Ouvrez VSCode"
 Write-Host "2. Cliquez sur l'icone Augment dans la barre laterale"
-Write-Host "3. Cliquez sur l'icone d'engrenage (⚙️) pour ouvrir les parametres"
+Write-Host "3. Cliquez sur l'icone d'engrenage (âš™ï¸) pour ouvrir les parametres"
 Write-Host "4. Dans la section MCP Servers, ajoutez un nouveau serveur avec les informations ci-dessus"
 Write-Host "5. Sauvegardez les parametres"
 

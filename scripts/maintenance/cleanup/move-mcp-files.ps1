@@ -1,4 +1,4 @@
-# Script pour deplacer les fichiers MCP dans la nouvelle structure
+﻿# Script pour deplacer les fichiers MCP dans la nouvelle structure
 
 Write-Host "=== Deplacement des fichiers MCP ===" -ForegroundColor Cyan
 

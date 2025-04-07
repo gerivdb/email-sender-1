@@ -1,0 +1,12 @@
+Task,Level,Priority,TimeEstimate
+Analyse,0,False,
+Identifier les besoins,1,False,2 jours
+Documenter les cas d'utilisation,1,True,3 jours
+Définir les critères de succès,1,False,1 jour
+Conception,0,False,
+Créer les maquettes,1,False,5 jours
+Définir l'architecture,1,True,3 jours
+Choisir les technologies,1,False,
+Framework frontend,2,False,2 jours
+Base de données,2,True,1 jour
+Services backend,2,False,4 jours

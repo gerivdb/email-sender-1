@@ -1,7 +1,7 @@
-# Script pour vérifier la structure du dépôt GitHub
-# Ce script vérifie que la structure du dépôt est conforme aux conventions GitHub
+﻿# Script pour vÃ©rifier la structure du dÃ©pÃ´t GitHub
+# Ce script vÃ©rifie que la structure du dÃ©pÃ´t est conforme aux conventions GitHub
 
-Write-Host "Vérification de la structure du dépôt GitHub..." -ForegroundColor Cyan
+Write-Host "VÃ©rification de la structure du dÃ©pÃ´t GitHub..." -ForegroundColor Cyan
 
 # Liste des fichiers essentiels
 $essentialFiles = @(
@@ -15,7 +15,7 @@ $essentialFiles = @(
     "package.json"
 )
 
-# Liste des répertoires essentiels
+# Liste des rÃ©pertoires essentiels
 $essentialDirs = @(
     ".github",
     "workflows",
@@ -24,73 +24,73 @@ $essentialDirs = @(
     "scripts"
 )
 
-# Vérification des fichiers essentiels
-Write-Host "`nVérification des fichiers essentiels:" -ForegroundColor Yellow
+# VÃ©rification des fichiers essentiels
+Write-Host "`nVÃ©rification des fichiers essentiels:" -ForegroundColor Yellow
 $missingFiles = @()
 foreach ($file in $essentialFiles) {
     if (Test-Path -Path $file) {
-        Write-Host "✓ $file existe" -ForegroundColor Green
+        Write-Host "âœ“ $file existe" -ForegroundColor Green
     } else {
-        Write-Host "✗ $file est manquant" -ForegroundColor Red
+        Write-Host "âœ— $file est manquant" -ForegroundColor Red
         $missingFiles += $file
     }
 }
 
-# Vérification des répertoires essentiels
-Write-Host "`nVérification des répertoires essentiels:" -ForegroundColor Yellow
+# VÃ©rification des rÃ©pertoires essentiels
+Write-Host "`nVÃ©rification des rÃ©pertoires essentiels:" -ForegroundColor Yellow
 $missingDirs = @()
 foreach ($dir in $essentialDirs) {
     if (Test-Path -Path $dir -PathType Container) {
-        Write-Host "✓ $dir existe" -ForegroundColor Green
+        Write-Host "âœ“ $dir existe" -ForegroundColor Green
     } else {
-        Write-Host "✗ $dir est manquant" -ForegroundColor Red
+        Write-Host "âœ— $dir est manquant" -ForegroundColor Red
         $missingDirs += $dir
     }
 }
 
-# Vérification de la structure GitHub
-Write-Host "`nVérification de la structure GitHub:" -ForegroundColor Yellow
+# VÃ©rification de la structure GitHub
+Write-Host "`nVÃ©rification de la structure GitHub:" -ForegroundColor Yellow
 if (Test-Path -Path ".github\workflows") {
-    Write-Host "✓ .github\workflows existe" -ForegroundColor Green
+    Write-Host "âœ“ .github\workflows existe" -ForegroundColor Green
     
-    # Vérifier s'il y a des fichiers de workflow
+    # VÃ©rifier s'il y a des fichiers de workflow
     $workflowFiles = Get-ChildItem -Path ".github\workflows" -Filter "*.yml" -File
     if ($workflowFiles.Count -gt 0) {
-        Write-Host "✓ Des fichiers de workflow GitHub Actions sont présents" -ForegroundColor Green
+        Write-Host "âœ“ Des fichiers de workflow GitHub Actions sont prÃ©sents" -ForegroundColor Green
     } else {
-        Write-Host "✗ Aucun fichier de workflow GitHub Actions trouvé" -ForegroundColor Red
+        Write-Host "âœ— Aucun fichier de workflow GitHub Actions trouvÃ©" -ForegroundColor Red
     }
 } else {
-    Write-Host "✗ .github\workflows est manquant" -ForegroundColor Red
+    Write-Host "âœ— .github\workflows est manquant" -ForegroundColor Red
 }
 
 if (Test-Path -Path ".github\ISSUE_TEMPLATE") {
-    Write-Host "✓ .github\ISSUE_TEMPLATE existe" -ForegroundColor Green
+    Write-Host "âœ“ .github\ISSUE_TEMPLATE existe" -ForegroundColor Green
 } else {
-    Write-Host "✗ .github\ISSUE_TEMPLATE est manquant" -ForegroundColor Red
+    Write-Host "âœ— .github\ISSUE_TEMPLATE est manquant" -ForegroundColor Red
 }
 
-# Vérification du package.json
+# VÃ©rification du package.json
 if (Test-Path -Path "package.json") {
-    Write-Host "`nVérification du package.json:" -ForegroundColor Yellow
+    Write-Host "`nVÃ©rification du package.json:" -ForegroundColor Yellow
     $packageJson = Get-Content -Path "package.json" -Raw | ConvertFrom-Json
     
     $requiredFields = @("name", "version", "description", "scripts", "license", "repository")
     foreach ($field in $requiredFields) {
         if ($packageJson.PSObject.Properties.Name -contains $field) {
-            Write-Host "✓ Le champ '$field' existe dans package.json" -ForegroundColor Green
+            Write-Host "âœ“ Le champ '$field' existe dans package.json" -ForegroundColor Green
         } else {
-            Write-Host "✗ Le champ '$field' est manquant dans package.json" -ForegroundColor Red
+            Write-Host "âœ— Le champ '$field' est manquant dans package.json" -ForegroundColor Red
         }
     }
 }
 
-# Résumé
-Write-Host "`nRésumé de la vérification:" -ForegroundColor Cyan
+# RÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de la vÃ©rification:" -ForegroundColor Cyan
 if ($missingFiles.Count -eq 0 -and $missingDirs.Count -eq 0) {
-    Write-Host "✓ La structure du dépôt est conforme aux conventions GitHub!" -ForegroundColor Green
+    Write-Host "âœ“ La structure du dÃ©pÃ´t est conforme aux conventions GitHub!" -ForegroundColor Green
 } else {
-    Write-Host "✗ La structure du dépôt n'est pas entièrement conforme aux conventions GitHub." -ForegroundColor Red
+    Write-Host "âœ— La structure du dÃ©pÃ´t n'est pas entiÃ¨rement conforme aux conventions GitHub." -ForegroundColor Red
     
     if ($missingFiles.Count -gt 0) {
         Write-Host "`nFichiers manquants:" -ForegroundColor Yellow
@@ -100,11 +100,11 @@ if ($missingFiles.Count -eq 0 -and $missingDirs.Count -eq 0) {
     }
     
     if ($missingDirs.Count -gt 0) {
-        Write-Host "`nRépertoires manquants:" -ForegroundColor Yellow
+        Write-Host "`nRÃ©pertoires manquants:" -ForegroundColor Yellow
         foreach ($dir in $missingDirs) {
             Write-Host "  - $dir" -ForegroundColor Red
         }
     }
     
-    Write-Host "`nConsidérez d'ajouter ces éléments pour améliorer la conformité de votre dépôt." -ForegroundColor Yellow
+    Write-Host "`nConsidÃ©rez d'ajouter ces Ã©lÃ©ments pour amÃ©liorer la conformitÃ© de votre dÃ©pÃ´t." -ForegroundColor Yellow
 }

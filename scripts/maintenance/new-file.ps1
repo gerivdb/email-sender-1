@@ -1,4 +1,4 @@
-# Script pour creer de nouveaux fichiers dans les bons dossiers
+﻿# Script pour creer de nouveaux fichiers dans les bons dossiers
 # Usage: .\scripts\maintenance\new-file.ps1 -Type workflow -Name mon-workflow
 
 param (

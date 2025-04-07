@@ -1,4 +1,4 @@
-# Script pour simuler l'execution du workflow et verifier si les MCP fonctionnent correctement
+﻿# Script pour simuler l'execution du workflow et verifier si les MCP fonctionnent correctement
 
 Write-Host "=== Simulation de l'execution du workflow ===" -ForegroundColor Cyan
 

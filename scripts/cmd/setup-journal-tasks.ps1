@@ -1,10 +1,10 @@
-# Script PowerShell pour configurer les tâches planifiées du journal de bord
+﻿# Script PowerShell pour configurer les tÃ¢ches planifiÃ©es du journal de bord
 
-# Chemin absolu vers le répertoire du projet
+# Chemin absolu vers le rÃ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $ScriptsDir = Join-Path $ProjectDir "scripts\cmd"
 
-# Fonction pour créer une tâche planifiée
+# Fonction pour crÃ©er une tÃ¢che planifiÃ©e
 function Create-ScheduledTask {
     param (
         [string]$TaskName,
@@ -28,28 +28,28 @@ function Create-ScheduledTask {
     
     $Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries
     
-    # Vérifier si la tâche existe déjà
+    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
     $ExistingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
     
     if ($ExistingTask) {
-        # Mettre à jour la tâche existante
+        # Mettre Ã  jour la tÃ¢che existante
         Set-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Settings $Settings
-        Write-Host "Tâche mise à jour: $TaskName"
+        Write-Host "TÃ¢che mise Ã  jour: $TaskName"
     } else {
-        # Créer une nouvelle tâche
+        # CrÃ©er une nouvelle tÃ¢che
         Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Settings $Settings -User "$env:USERDOMAIN\$env:USERNAME"
-        Write-Host "Tâche créée: $TaskName"
+        Write-Host "TÃ¢che crÃ©Ã©e: $TaskName"
     }
 }
 
-# Créer la tâche quotidienne
+# CrÃ©er la tÃ¢che quotidienne
 $DailyScriptPath = Join-Path $ScriptsDir "journal-daily.ps1"
 Create-ScheduledTask -TaskName "Journal_Quotidien" -ScriptPath $DailyScriptPath -Arguments "" -Schedule "DAILY" -StartTime "09:00"
 
-# Créer la tâche hebdomadaire
+# CrÃ©er la tÃ¢che hebdomadaire
 Create-ScheduledTask -TaskName "Journal_Hebdomadaire" -ScriptPath $DailyScriptPath -Arguments "-Weekly" -Schedule "WEEKLY" -StartTime "08:00"
 
-Write-Host "Configuration des tâches planifiées terminée."
-Write-Host "Tâches créées:"
-Write-Host "  - Journal_Quotidien: Exécution quotidienne à 09:00"
-Write-Host "  - Journal_Hebdomadaire: Exécution hebdomadaire le lundi à 08:00"
+Write-Host "Configuration des tÃ¢ches planifiÃ©es terminÃ©e."
+Write-Host "TÃ¢ches crÃ©Ã©es:"
+Write-Host "  - Journal_Quotidien: ExÃ©cution quotidienne Ã  09:00"
+Write-Host "  - Journal_Hebdomadaire: ExÃ©cution hebdomadaire le lundi Ã  08:00"

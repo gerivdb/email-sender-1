@@ -1,4 +1,4 @@
-# Script pour mettre a jour les MCP
+﻿# Script pour mettre a jour les MCP
 
 Write-Host "=== Mise a jour des MCP ===" -ForegroundColor Cyan
 
@@ -12,9 +12,9 @@ function Update-NpmPackage {
     Write-Host "Mise a jour de $Package..." -ForegroundColor Yellow
     npm update $Package
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✅ $Package mis a jour" -ForegroundColor Green
+        Write-Host "âœ… $Package mis a jour" -ForegroundColor Green
     } else {
-        Write-Host "❌ Erreur lors de la mise a jour de $Package" -ForegroundColor Red
+        Write-Host "âŒ Erreur lors de la mise a jour de $Package" -ForegroundColor Red
     }
 }
 
@@ -28,9 +28,9 @@ function Update-PipPackage {
     Write-Host "Mise a jour de $Package..." -ForegroundColor Yellow
     pip install --upgrade $Package
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✅ $Package mis a jour" -ForegroundColor Green
+        Write-Host "âœ… $Package mis a jour" -ForegroundColor Green
     } else {
-        Write-Host "❌ Erreur lors de la mise a jour de $Package" -ForegroundColor Red
+        Write-Host "âŒ Erreur lors de la mise a jour de $Package" -ForegroundColor Red
     }
 }
 
@@ -58,10 +58,10 @@ try {
         Write-Host "Nouvelle version de Gateway disponible : $latestVersion (actuelle : $gatewayVersion)" -ForegroundColor Yellow
         Write-Host "Telechargez la nouvelle version depuis : https://github.com/centralmind/gateway/releases/latest" -ForegroundColor Yellow
     } else {
-        Write-Host "✅ Gateway est a jour (version $gatewayVersion)" -ForegroundColor Green
+        Write-Host "âœ… Gateway est a jour (version $gatewayVersion)" -ForegroundColor Green
     }
 } catch {
-    Write-Host "❌ Erreur lors de la verification des mises a jour de Gateway : $_" -ForegroundColor Red
+    Write-Host "âŒ Erreur lors de la verification des mises a jour de Gateway : $_" -ForegroundColor Red
 }
 
 Write-Host "`n=== Mise a jour terminee ===" -ForegroundColor Cyan

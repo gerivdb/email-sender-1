@@ -1,4 +1,4 @@
-# Script simplifie pour verifier les resultats du workflow
+﻿# Script simplifie pour verifier les resultats du workflow
 # Version avec encodage corrige
 
 Write-Host "=== Verification simplifiee des resultats du workflow ===" -ForegroundColor Cyan

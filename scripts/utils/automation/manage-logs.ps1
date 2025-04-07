@@ -1,7 +1,7 @@
-# Script pour gérer automatiquement les logs par unité de temps
+﻿# Script pour gÃ©rer automatiquement les logs par unitÃ© de temps
 # Ce script organise les logs dans des dossiers quotidiens, hebdomadaires et mensuels
 
-# Création des dossiers de logs s'ils n'existent pas
+# CrÃ©ation des dossiers de logs s'ils n'existent pas
 $logFolders = @(
     "logs\daily",
     "logs\weekly",
@@ -12,7 +12,7 @@ $logFolders = @(
 
 foreach ($folder in $logFolders) {
     if (-not (Test-Path -Path $folder)) {
-        Write-Host "Création du dossier: $folder" -ForegroundColor Yellow
+        Write-Host "CrÃ©ation du dossier: $folder" -ForegroundColor Yellow
         New-Item -Path $folder -ItemType Directory -Force | Out-Null
     }
 }
@@ -44,19 +44,19 @@ function Get-MonthlyFolder {
     return "logs\monthly\$year-$month"
 }
 
-# Création des dossiers par unité de temps
+# CrÃ©ation des dossiers par unitÃ© de temps
 $dailyFolder = Get-DailyFolder
 $weeklyFolder = Get-WeeklyFolder
 $monthlyFolder = Get-MonthlyFolder
 
 foreach ($folder in @($dailyFolder, $weeklyFolder, $monthlyFolder)) {
     if (-not (Test-Path -Path $folder)) {
-        Write-Host "Création du dossier: $folder" -ForegroundColor Yellow
+        Write-Host "CrÃ©ation du dossier: $folder" -ForegroundColor Yellow
         New-Item -Path $folder -ItemType Directory -Force | Out-Null
     }
 }
 
-# Fonction pour créer un nouveau fichier log avec horodatage
+# Fonction pour crÃ©er un nouveau fichier log avec horodatage
 function New-LogFile {
     param (
         [string]$LogName,
@@ -66,11 +66,11 @@ function New-LogFile {
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
     $logFileName = "$LogName-$timestamp.log"
     
-    # Création du fichier log dans le dossier quotidien
+    # CrÃ©ation du fichier log dans le dossier quotidien
     $dailyLogPath = Join-Path -Path (Get-DailyFolder) -ChildPath $logFileName
     New-Item -Path $dailyLogPath -ItemType File -Force | Out-Null
     
-    # Création de liens symboliques dans les dossiers hebdomadaires et mensuels
+    # CrÃ©ation de liens symboliques dans les dossiers hebdomadaires et mensuels
     $weeklyLogPath = Join-Path -Path (Get-WeeklyFolder) -ChildPath $logFileName
     $monthlyLogPath = Join-Path -Path (Get-MonthlyFolder) -ChildPath $logFileName
     $categoryLogPath = Join-Path -Path "logs\$Category" -ChildPath $logFileName
@@ -166,12 +166,12 @@ if ($args.Count -gt 0) {
     $category = if ($args.Count -gt 1) { $args[1] } else { "scripts" }
     
     $logPath = New-LogFile -LogName $logName -Category $category
-    Write-Host "Nouveau fichier log créé: $logPath" -ForegroundColor Green
+    Write-Host "Nouveau fichier log crÃ©Ã©: $logPath" -ForegroundColor Green
     
     # Archivage des anciens logs
     Archive-OldLogs
 } else {
     Write-Host "Usage: manage-logs.ps1 <LogName> [Category]" -ForegroundColor Cyan
     Write-Host "  LogName: Nom du fichier log (sans extension)" -ForegroundColor Cyan
-    Write-Host "  Category: 'scripts' ou 'workflows' (par défaut: 'scripts')" -ForegroundColor Cyan
+    Write-Host "  Category: 'scripts' ou 'workflows' (par dÃ©faut: 'scripts')" -ForegroundColor Cyan
 }

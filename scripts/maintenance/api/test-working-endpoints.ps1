@@ -1,4 +1,4 @@
-# Script pour tester les endpoints fonctionnels de l'API n8n avec des exemples concrets
+﻿# Script pour tester les endpoints fonctionnels de l'API n8n avec des exemples concrets
 
 # Configuration
 $n8nUrl = "http://localhost:5678"

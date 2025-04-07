@@ -1,4 +1,4 @@
-# Script pour nettoyer les dossiers restants a la racine
+﻿# Script pour nettoyer les dossiers restants a la racine
 
 Write-Host "=== Nettoyage des dossiers restants a la racine ===" -ForegroundColor Cyan
 

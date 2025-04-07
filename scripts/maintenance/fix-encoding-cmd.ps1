@@ -1,5 +1,5 @@
-# Script pour corriger l'encodage des fichiers CMD
-# Ce script convertit tous les fichiers .cmd en ANSI (Windows-1252) pour assurer la compatibilité avec cmd.exe
+﻿# Script pour corriger l'encodage des fichiers CMD
+# Ce script convertit tous les fichiers .cmd en ANSI (Windows-1252) pour assurer la compatibilitÃ© avec cmd.exe
 
 Write-Host "=== Correction de l'encodage des fichiers CMD ===" -ForegroundColor Cyan
 
@@ -32,4 +32,4 @@ foreach ($file in $cmdFiles) {
     ConvertTo-ANSI -FilePath $file.FullName
 }
 
-Write-Host "`n=== Correction de l'encodage des fichiers CMD terminée ===" -ForegroundColor Cyan
+Write-Host "`n=== Correction de l'encodage des fichiers CMD terminÃ©e ===" -ForegroundColor Cyan

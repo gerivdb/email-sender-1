@@ -1,4 +1,4 @@
-# Script pour organiser le repo selon les bonnes pratiques
+﻿# Script pour organiser le repo selon les bonnes pratiques
 # Cree une structure de dossiers logique et deplace les fichiers dans les bons repertoires
 
 Write-Host "=== Reorganisation du repo selon les bonnes pratiques ===" -ForegroundColor Cyan
@@ -182,22 +182,22 @@ Ce projet contient des workflows n8n et des outils pour automatiser l'envoi d'em
 ## Structure du projet
 
 ```
-├── src/                  # Code source principal
-│   ├── workflows/        # Workflows n8n
-│   └── mcp/              # Fichiers MCP (Model Context Protocol)
-│       ├── batch/        # Fichiers batch pour MCP
-│       └── config/       # Configurations MCP
-├── scripts/              # Scripts utilitaires
-│   ├── setup/            # Scripts d'installation
-│   └── maintenance/      # Scripts de maintenance
-├── config/               # Fichiers de configuration
-├── logs/                 # Fichiers de logs
-├── docs/                 # Documentation
-│   ├── guides/           # Guides d'utilisation
-│   └── api/              # Documentation API
-├── tests/                # Tests
-├── tools/                # Outils divers
-└── assets/               # Ressources statiques
+â”œâ”€â”€ src/                  # Code source principal
+â”‚   â”œâ”€â”€ workflows/        # Workflows n8n
+â”‚   â””â”€â”€ mcp/              # Fichiers MCP (Model Context Protocol)
+â”‚       â”œâ”€â”€ batch/        # Fichiers batch pour MCP
+â”‚       â””â”€â”€ config/       # Configurations MCP
+â”œâ”€â”€ scripts/              # Scripts utilitaires
+â”‚   â”œâ”€â”€ setup/            # Scripts d'installation
+â”‚   â””â”€â”€ maintenance/      # Scripts de maintenance
+â”œâ”€â”€ config/               # Fichiers de configuration
+â”œâ”€â”€ logs/                 # Fichiers de logs
+â”œâ”€â”€ docs/                 # Documentation
+â”‚   â”œâ”€â”€ guides/           # Guides d'utilisation
+â”‚   â””â”€â”€ api/              # Documentation API
+â”œâ”€â”€ tests/                # Tests
+â”œâ”€â”€ tools/                # Outils divers
+â””â”€â”€ assets/               # Ressources statiques
 ```
 
 ## Installation

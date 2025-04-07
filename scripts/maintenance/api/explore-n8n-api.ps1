@@ -1,15 +1,15 @@
-# Script pour explorer l'API n8n et documenter les endpoints disponibles
+﻿# Script pour explorer l'API n8n et documenter les endpoints disponibles
 
 # Configuration
 $n8nUrl = "http://localhost:5678"
 $apiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmNzI5MDhiZC0wYmViLTQ3YzQtOTgzMy0zOGM1ZmRmNjZlZGQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzQzNzkzMzA0fQ.EfYMSbUmk6OLDw70wXNYPl0B-ont0B1WbAnowIQdJbw" # Jeton API AUGMENT
 $outputFile = "docs/api/N8N_API_DOCUMENTATION.md"
 
-# Création du répertoire de sortie s'il n'existe pas
+# CrÃ©ation du rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Parent $outputFile
 if (-not (Test-Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
-    Write-Host "Répertoire créé: $outputDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire crÃ©Ã©: $outputDir" -ForegroundColor Green
 }
 
 # Fonction pour tester un endpoint API
@@ -51,20 +51,20 @@ function Test-ApiEndpoint {
     }
 }
 
-# Création de l'en-tête du fichier de documentation
+# CrÃ©ation de l'en-tÃªte du fichier de documentation
 $documentation = @"
 # Documentation de l'API n8n (Version locale)
 
-Cette documentation a été générée automatiquement en testant les endpoints de l'API n8n disponibles sur votre instance locale.
+Cette documentation a Ã©tÃ© gÃ©nÃ©rÃ©e automatiquement en testant les endpoints de l'API n8n disponibles sur votre instance locale.
 
 URL de base: $n8nUrl
 
-## Table des matières
+## Table des matiÃ¨res
 
 - [Authentification](#authentification)
-- [Endpoints testés](#endpoints-testés)
+- [Endpoints testÃ©s](#endpoints-testÃ©s)
   - [Workflows](#workflows)
-  - [Exécutions](#exécutions)
+  - [ExÃ©cutions](#exÃ©cutions)
   - [Credentials](#credentials)
   - [Tags](#tags)
   - [Utilisateurs](#utilisateurs)
@@ -73,58 +73,58 @@ URL de base: $n8nUrl
 
 ## Authentification
 
-L'API n8n utilise un jeton d'API pour l'authentification. Vous devez inclure ce jeton dans l'en-tête `X-N8N-API-KEY` de vos requêtes.
+L'API n8n utilise un jeton d'API pour l'authentification. Vous devez inclure ce jeton dans l'en-tÃªte `X-N8N-API-KEY` de vos requÃªtes.
 
 Exemple:
 ```
 X-N8N-API-KEY: votre-jeton-api
 ```
 
-## Endpoints testés
+## Endpoints testÃ©s
 
-Voici les résultats des tests effectués sur les différents endpoints de l'API n8n.
+Voici les rÃ©sultats des tests effectuÃ©s sur les diffÃ©rents endpoints de l'API n8n.
 
 "@
 
-# Préparation des en-têtes pour les requêtes API
+# PrÃ©paration des en-tÃªtes pour les requÃªtes API
 $headers = @{
     "X-N8N-API-KEY" = $apiToken
 }
 
-# Liste des endpoints à tester
+# Liste des endpoints Ã  tester
 $endpoints = @(
     # Workflows
     @{ Method = "GET"; Endpoint = "/api/v1/workflows"; Description = "Liste tous les workflows" },
-    @{ Method = "GET"; Endpoint = "/api/v1/workflows/1"; Description = "Récupère un workflow spécifique par ID" },
-    @{ Method = "POST"; Endpoint = "/api/v1/workflows"; Description = "Crée un nouveau workflow"; Body = @{ name = "Test Workflow"; nodes = @(); connections = @{} } },
-    @{ Method = "PUT"; Endpoint = "/api/v1/workflows/1"; Description = "Met à jour un workflow existant"; Body = @{ name = "Updated Workflow"; nodes = @(); connections = @{} } },
+    @{ Method = "GET"; Endpoint = "/api/v1/workflows/1"; Description = "RÃ©cupÃ¨re un workflow spÃ©cifique par ID" },
+    @{ Method = "POST"; Endpoint = "/api/v1/workflows"; Description = "CrÃ©e un nouveau workflow"; Body = @{ name = "Test Workflow"; nodes = @(); connections = @{} } },
+    @{ Method = "PUT"; Endpoint = "/api/v1/workflows/1"; Description = "Met Ã  jour un workflow existant"; Body = @{ name = "Updated Workflow"; nodes = @(); connections = @{} } },
     @{ Method = "DELETE"; Endpoint = "/api/v1/workflows/1"; Description = "Supprime un workflow" },
     @{ Method = "POST"; Endpoint = "/api/v1/workflows/1/activate"; Description = "Active un workflow" },
-    @{ Method = "POST"; Endpoint = "/api/v1/workflows/1/deactivate"; Description = "Désactive un workflow" },
+    @{ Method = "POST"; Endpoint = "/api/v1/workflows/1/deactivate"; Description = "DÃ©sactive un workflow" },
     
-    # Exécutions
-    @{ Method = "GET"; Endpoint = "/api/v1/executions"; Description = "Liste toutes les exécutions" },
-    @{ Method = "GET"; Endpoint = "/api/v1/executions/1"; Description = "Récupère une exécution spécifique par ID" },
-    @{ Method = "POST"; Endpoint = "/api/v1/workflows/1/execute"; Description = "Exécute un workflow" },
-    @{ Method = "DELETE"; Endpoint = "/api/v1/executions/1"; Description = "Supprime une exécution" },
+    # ExÃ©cutions
+    @{ Method = "GET"; Endpoint = "/api/v1/executions"; Description = "Liste toutes les exÃ©cutions" },
+    @{ Method = "GET"; Endpoint = "/api/v1/executions/1"; Description = "RÃ©cupÃ¨re une exÃ©cution spÃ©cifique par ID" },
+    @{ Method = "POST"; Endpoint = "/api/v1/workflows/1/execute"; Description = "ExÃ©cute un workflow" },
+    @{ Method = "DELETE"; Endpoint = "/api/v1/executions/1"; Description = "Supprime une exÃ©cution" },
     
     # Credentials
     @{ Method = "GET"; Endpoint = "/api/v1/credentials"; Description = "Liste toutes les credentials" },
-    @{ Method = "GET"; Endpoint = "/api/v1/credentials/1"; Description = "Récupère une credential spécifique par ID" },
+    @{ Method = "GET"; Endpoint = "/api/v1/credentials/1"; Description = "RÃ©cupÃ¨re une credential spÃ©cifique par ID" },
     @{ Method = "GET"; Endpoint = "/api/v1/credentials/types"; Description = "Liste tous les types de credentials" },
     
     # Tags
     @{ Method = "GET"; Endpoint = "/api/v1/tags"; Description = "Liste tous les tags" },
-    @{ Method = "POST"; Endpoint = "/api/v1/tags"; Description = "Crée un nouveau tag"; Body = @{ name = "Test Tag" } },
+    @{ Method = "POST"; Endpoint = "/api/v1/tags"; Description = "CrÃ©e un nouveau tag"; Body = @{ name = "Test Tag" } },
     @{ Method = "DELETE"; Endpoint = "/api/v1/tags/1"; Description = "Supprime un tag" },
     
     # Utilisateurs
     @{ Method = "GET"; Endpoint = "/api/v1/users"; Description = "Liste tous les utilisateurs" },
-    @{ Method = "GET"; Endpoint = "/api/v1/users/me"; Description = "Récupère l'utilisateur actuel" },
+    @{ Method = "GET"; Endpoint = "/api/v1/users/me"; Description = "RÃ©cupÃ¨re l'utilisateur actuel" },
     
     # Autres
-    @{ Method = "GET"; Endpoint = "/api/v1/node-types"; Description = "Liste tous les types de nœuds" },
-    @{ Method = "GET"; Endpoint = "/api/v1/node-types-description"; Description = "Récupère les descriptions des types de nœuds" },
+    @{ Method = "GET"; Endpoint = "/api/v1/node-types"; Description = "Liste tous les types de nÅ“uds" },
+    @{ Method = "GET"; Endpoint = "/api/v1/node-types-description"; Description = "RÃ©cupÃ¨re les descriptions des types de nÅ“uds" },
     @{ Method = "GET"; Endpoint = "/api/v1/variables"; Description = "Liste toutes les variables" }
 )
 
@@ -136,7 +136,7 @@ foreach ($endpoint in $endpoints) {
     
     $category = switch -Regex ($endpoint.Endpoint) {
         "/api/v1/workflows" { "Workflows" }
-        "/api/v1/executions" { "Exécutions" }
+        "/api/v1/executions" { "ExÃ©cutions" }
         "/api/v1/credentials" { "Credentials" }
         "/api/v1/tags" { "Tags" }
         "/api/v1/users" { "Utilisateurs" }
@@ -150,22 +150,22 @@ foreach ($endpoint in $endpoints) {
     $results[$category] += $result
     
     if ($result.Status -eq "Success") {
-        Write-Host " - Succès!" -ForegroundColor Green
+        Write-Host " - SuccÃ¨s!" -ForegroundColor Green
     }
     else {
-        Write-Host " - Échec: $($result.Error)" -ForegroundColor Red
+        Write-Host " - Ã‰chec: $($result.Error)" -ForegroundColor Red
     }
 }
 
-# Génération de la documentation pour chaque catégorie
+# GÃ©nÃ©ration de la documentation pour chaque catÃ©gorie
 foreach ($category in $results.Keys) {
     $documentation += "`n### $category`n`n"
-    $documentation += "| Méthode | Endpoint | Description | Statut | Commentaire |`n"
+    $documentation += "| MÃ©thode | Endpoint | Description | Statut | Commentaire |`n"
     $documentation += "| ------- | -------- | ----------- | ------ | ----------- |`n"
     
     foreach ($result in $results[$category]) {
         $endpoint = $endpoints | Where-Object { $_.Description -eq $result.Description } | Select-Object -First 1
-        $status = if ($result.Status -eq "Success") { "✅ Fonctionne" } else { "❌ Échoue" }
+        $status = if ($result.Status -eq "Success") { "âœ… Fonctionne" } else { "âŒ Ã‰choue" }
         $comment = if ($result.Status -eq "Success") { "Fonctionne correctement" } else { $result.Error }
         
         $documentation += "| $($endpoint.Method) | $($endpoint.Endpoint) | $($result.Description) | $status | $comment |`n"
@@ -195,7 +195,7 @@ Voici quelques exemples d'utilisation de l'API n8n avec PowerShell.
 `$response | Format-Table -Property id, name, active
 ```
 
-### Créer un nouveau workflow
+### CrÃ©er un nouveau workflow
 
 ```powershell
 `$n8nUrl = "http://localhost:5678"
@@ -218,7 +218,7 @@ Voici quelques exemples d'utilisation de l'API n8n avec PowerShell.
 `$response | Format-Table -Property id, name
 ```
 
-### Exécuter un workflow
+### ExÃ©cuter un workflow
 
 ```powershell
 `$n8nUrl = "http://localhost:5678"
@@ -232,28 +232,28 @@ Voici quelques exemples d'utilisation de l'API n8n avec PowerShell.
 
 `$response = Invoke-RestMethod -Uri "`$n8nUrl/api/v1/workflows/`$workflowId/execute" -Method Post -Headers `$headers
 
-# Afficher le résultat de l'exécution
+# Afficher le rÃ©sultat de l'exÃ©cution
 `$response | Format-Table -Property id, finished, status
 ```
 
 ## Remarques importantes
 
-- Certains endpoints peuvent nécessiter des permissions spécifiques.
-- Les endpoints qui échouent peuvent ne pas être disponibles dans votre version de n8n ou nécessiter des paramètres supplémentaires.
-- Cette documentation a été générée le $(Get-Date -Format "dd/MM/yyyy HH:mm:ss").
-- Version de n8n testée: Vérifiez votre version dans l'interface utilisateur de n8n.
+- Certains endpoints peuvent nÃ©cessiter des permissions spÃ©cifiques.
+- Les endpoints qui Ã©chouent peuvent ne pas Ãªtre disponibles dans votre version de n8n ou nÃ©cessiter des paramÃ¨tres supplÃ©mentaires.
+- Cette documentation a Ã©tÃ© gÃ©nÃ©rÃ©e le $(Get-Date -Format "dd/MM/yyyy HH:mm:ss").
+- Version de n8n testÃ©e: VÃ©rifiez votre version dans l'interface utilisateur de n8n.
 "@
 
-# Écriture de la documentation dans le fichier de sortie
+# Ã‰criture de la documentation dans le fichier de sortie
 $documentation | Out-File -FilePath $outputFile -Encoding utf8
-Write-Host "`nDocumentation générée: $outputFile" -ForegroundColor Green
+Write-Host "`nDocumentation gÃ©nÃ©rÃ©e: $outputFile" -ForegroundColor Green
 
-# Affichage d'un résumé
+# Affichage d'un rÃ©sumÃ©
 $successCount = ($results.Values | ForEach-Object { $_ } | Where-Object { $_.Status -eq "Success" }).Count
 $totalCount = ($results.Values | ForEach-Object { $_ }).Count
 
-Write-Host "`nRésumé des tests:"
-Write-Host "- Total des endpoints testés: $totalCount"
+Write-Host "`nRÃ©sumÃ© des tests:"
+Write-Host "- Total des endpoints testÃ©s: $totalCount"
 Write-Host "- Endpoints fonctionnels: $successCount"
 Write-Host "- Endpoints non fonctionnels: $($totalCount - $successCount)"
-Write-Host "`nConsultez la documentation générée pour plus de détails."
+Write-Host "`nConsultez la documentation gÃ©nÃ©rÃ©e pour plus de dÃ©tails."

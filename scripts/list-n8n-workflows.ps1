@@ -1,10 +1,10 @@
-# Script pour lister les workflows existants dans n8n
+﻿# Script pour lister les workflows existants dans n8n
 
 # Configuration
 $n8nUrl = "http://localhost:5678"
 $apiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmNzI5MDhiZC0wYmViLTQ3YzQtOTgzMy0zOGM1ZmRmNjZlZGQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzQzNzkzMzA0fQ.EfYMSbUmk6OLDw70wXNYPl0B-ont0B1WbAnowIQdJbw" # Jeton API AUGMENT
 
-# Vérifier la connexion à n8n
+# VÃ©rifier la connexion Ã  n8n
 Write-Host "Verification de la connexion a n8n ($n8nUrl)..." -NoNewline
 try {
     $headers = @{
@@ -19,7 +19,7 @@ catch {
     exit
 }
 
-# Récupérer tous les workflows existants
+# RÃ©cupÃ©rer tous les workflows existants
 Write-Host "`nListe des workflows dans n8n:"
 Write-Host "================================="
 try {

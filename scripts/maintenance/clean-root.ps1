@@ -1,4 +1,4 @@
-# Script pour nettoyer les fichiers restants a la racine
+﻿# Script pour nettoyer les fichiers restants a la racine
 
 Write-Host "=== Nettoyage des fichiers restants a la racine ===" -ForegroundColor Cyan
 

@@ -1,16 +1,16 @@
-# Script pour configurer Git et GitHub pour le projet Email Sender 1
+﻿# Script pour configurer Git et GitHub pour le projet Email Sender 1
 
 Write-Host "=== Configuration de Git et GitHub ===" -ForegroundColor Cyan
 
-# Vérifier si Git est installé
+# VÃ©rifier si Git est installÃ©
 $gitVersion = git --version 2>$null
 if (-not $gitVersion) {
-    Write-Host "❌ Git n'est pas installé ou n'est pas accessible" -ForegroundColor Red
+    Write-Host "âŒ Git n'est pas installÃ© ou n'est pas accessible" -ForegroundColor Red
     Write-Host "Veuillez installer Git depuis https://git-scm.com/downloads"
     exit 1
 }
 
-Write-Host "✅ Git version $gitVersion détecté" -ForegroundColor Green
+Write-Host "âœ… Git version $gitVersion dÃ©tectÃ©" -ForegroundColor Green
 
 # Configurer les informations utilisateur Git
 $userEmail = "gerivonderbitsh+dev@gmail.com"
@@ -19,22 +19,22 @@ $userName = "Gribitch"
 git config --global user.email $userEmail
 git config --global user.name $userName
 
-Write-Host "✅ Informations utilisateur Git configurées" -ForegroundColor Green
+Write-Host "âœ… Informations utilisateur Git configurÃ©es" -ForegroundColor Green
 
-# Vérifier si le dépôt Git est déjà initialisé
+# VÃ©rifier si le dÃ©pÃ´t Git est dÃ©jÃ  initialisÃ©
 if (-not (Test-Path ".git")) {
-    Write-Host "Initialisation du dépôt Git local..." -ForegroundColor Yellow
+    Write-Host "Initialisation du dÃ©pÃ´t Git local..." -ForegroundColor Yellow
     git init
-    Write-Host "✅ Dépôt Git local initialisé" -ForegroundColor Green
+    Write-Host "âœ… DÃ©pÃ´t Git local initialisÃ©" -ForegroundColor Green
 } else {
-    Write-Host "✅ Dépôt Git local déjà initialisé" -ForegroundColor Green
+    Write-Host "âœ… DÃ©pÃ´t Git local dÃ©jÃ  initialisÃ©" -ForegroundColor Green
 }
 
-# Vérifier si .gitignore existe
+# VÃ©rifier si .gitignore existe
 if (-not (Test-Path ".gitignore")) {
-    Write-Host "Création du fichier .gitignore..." -ForegroundColor Yellow
+    Write-Host "CrÃ©ation du fichier .gitignore..." -ForegroundColor Yellow
     $gitignoreContent = @"
-# Dépendances
+# DÃ©pendances
 node_modules/
 .npm
 npm-debug.log*
@@ -48,7 +48,7 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# Fichiers système
+# Fichiers systÃ¨me
 .DS_Store
 Thumbs.db
 
@@ -73,14 +73,14 @@ credentials/*.json
 .cache/
 "@
     Set-Content -Path ".gitignore" -Value $gitignoreContent
-    Write-Host "✅ Fichier .gitignore créé" -ForegroundColor Green
+    Write-Host "âœ… Fichier .gitignore crÃ©Ã©" -ForegroundColor Green
 } else {
-    Write-Host "✅ Fichier .gitignore existe déjà" -ForegroundColor Green
+    Write-Host "âœ… Fichier .gitignore existe dÃ©jÃ " -ForegroundColor Green
 }
 
-# Vérifier si .gitattributes existe
+# VÃ©rifier si .gitattributes existe
 if (-not (Test-Path ".gitattributes")) {
-    Write-Host "Création du fichier .gitattributes..." -ForegroundColor Yellow
+    Write-Host "CrÃ©ation du fichier .gitattributes..." -ForegroundColor Yellow
     $gitattributesContent = @"
 # Auto detect text files and perform LF normalization
 * text=auto
@@ -111,9 +111,9 @@ if (-not (Test-Path ".gitattributes")) {
 *.woff2 binary
 "@
     Set-Content -Path ".gitattributes" -Value $gitattributesContent
-    Write-Host "✅ Fichier .gitattributes créé" -ForegroundColor Green
+    Write-Host "âœ… Fichier .gitattributes crÃ©Ã©" -ForegroundColor Green
 } else {
-    Write-Host "✅ Fichier .gitattributes existe déjà" -ForegroundColor Green
+    Write-Host "âœ… Fichier .gitattributes existe dÃ©jÃ " -ForegroundColor Green
 }
 
 # Configurer GitHub comme remote
@@ -126,25 +126,25 @@ $remoteExists = git remote -v | Select-String -Pattern "origin"
 if (-not $remoteExists) {
     Write-Host "Ajout de GitHub comme remote..." -ForegroundColor Yellow
     git remote add origin $remoteUrl
-    Write-Host "✅ GitHub ajouté comme remote" -ForegroundColor Green
+    Write-Host "âœ… GitHub ajoutÃ© comme remote" -ForegroundColor Green
 } else {
-    Write-Host "Mise à jour du remote GitHub..." -ForegroundColor Yellow
+    Write-Host "Mise Ã  jour du remote GitHub..." -ForegroundColor Yellow
     git remote set-url origin $remoteUrl
-    Write-Host "✅ Remote GitHub mis à jour" -ForegroundColor Green
+    Write-Host "âœ… Remote GitHub mis Ã  jour" -ForegroundColor Green
 }
 
-# Instructions pour créer un dépôt privé sur GitHub
-Write-Host "`nInstructions pour créer un dépôt privé sur GitHub :" -ForegroundColor Cyan
-Write-Host "1. Connectez-vous à votre compte GitHub (https://github.com/login)"
-Write-Host "2. Cliquez sur le bouton '+' en haut à droite et sélectionnez 'New repository'"
-Write-Host "3. Entrez '$repoName' comme nom de dépôt"
-Write-Host "4. Sélectionnez 'Private' pour rendre le dépôt privé"
+# Instructions pour crÃ©er un dÃ©pÃ´t privÃ© sur GitHub
+Write-Host "`nInstructions pour crÃ©er un dÃ©pÃ´t privÃ© sur GitHub :" -ForegroundColor Cyan
+Write-Host "1. Connectez-vous Ã  votre compte GitHub (https://github.com/login)"
+Write-Host "2. Cliquez sur le bouton '+' en haut Ã  droite et sÃ©lectionnez 'New repository'"
+Write-Host "3. Entrez '$repoName' comme nom de dÃ©pÃ´t"
+Write-Host "4. SÃ©lectionnez 'Private' pour rendre le dÃ©pÃ´t privÃ©"
 Write-Host "5. Ne cochez PAS 'Initialize this repository with a README'"
 Write-Host "6. Cliquez sur 'Create repository'"
 
-Write-Host "`nUne fois le dépôt créé, exécutez les commandes suivantes pour pousser votre code :" -ForegroundColor Cyan
+Write-Host "`nUne fois le dÃ©pÃ´t crÃ©Ã©, exÃ©cutez les commandes suivantes pour pousser votre code :" -ForegroundColor Cyan
 Write-Host "git add ."
 Write-Host "git commit -m 'Initial commit'"
 Write-Host "git push -u origin master"
 
-Write-Host "`n=== Configuration de Git et GitHub terminée ===" -ForegroundColor Cyan
+Write-Host "`n=== Configuration de Git et GitHub terminÃ©e ===" -ForegroundColor Cyan

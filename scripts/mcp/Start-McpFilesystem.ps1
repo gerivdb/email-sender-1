@@ -1,4 +1,4 @@
-# Script PowerShell pour démarrer le serveur MCP Filesystem avec des options avancées
+﻿# Script PowerShell pour dÃ©marrer le serveur MCP Filesystem avec des options avancÃ©es
 # Ce script permet de configurer et lancer le serveur MCP pour notre projet n8n
 
 param (
@@ -15,14 +15,14 @@ function Show-Help {
     Write-Host "Utilisation du script Start-McpFilesystem.ps1"
     Write-Host "=================================================="
     Write-Host ""
-    Write-Host "Ce script démarre le serveur MCP Filesystem pour notre projet n8n."
+    Write-Host "Ce script dÃ©marre le serveur MCP Filesystem pour notre projet n8n."
     Write-Host ""
     Write-Host "Options :"
     Write-Host "  -ReadOnly         : Lance le serveur en mode lecture seule (pas de modification de fichiers)"
-    Write-Host "  -IncludeWorkflows : Inclut les répertoires de workflows (par défaut: activé)"
-    Write-Host "  -IncludeScripts   : Inclut les répertoires de scripts (par défaut: activé)"
-    Write-Host "  -IncludeDocs      : Inclut les répertoires de documentation (par défaut: activé)"
-    Write-Host "  -CustomPath       : Spécifie un chemin personnalisé à inclure"
+    Write-Host "  -IncludeWorkflows : Inclut les rÃ©pertoires de workflows (par dÃ©faut: activÃ©)"
+    Write-Host "  -IncludeScripts   : Inclut les rÃ©pertoires de scripts (par dÃ©faut: activÃ©)"
+    Write-Host "  -IncludeDocs      : Inclut les rÃ©pertoires de documentation (par dÃ©faut: activÃ©)"
+    Write-Host "  -CustomPath       : SpÃ©cifie un chemin personnalisÃ© Ã  inclure"
     Write-Host "  -Help             : Affiche cette aide"
     Write-Host ""
     Write-Host "Exemples :"
@@ -34,12 +34,12 @@ function Show-Help {
     exit
 }
 
-# Afficher l'aide si demandé
+# Afficher l'aide si demandÃ©
 if ($Help) {
     Show-Help
 }
 
-# Vérifier si MCP est installé
+# VÃ©rifier si MCP est installÃ©
 $mcpInstalled = $null
 try {
     $mcpInstalled = Get-Command mcp-server-filesystem -ErrorAction SilentlyContinue
@@ -48,7 +48,7 @@ try {
 }
 
 if ($null -eq $mcpInstalled) {
-    Write-Host "Le serveur MCP Filesystem n'est pas installé." -ForegroundColor Yellow
+    Write-Host "Le serveur MCP Filesystem n'est pas installÃ©." -ForegroundColor Yellow
     $installChoice = Read-Host "Voulez-vous l'installer maintenant ? (O/N)"
     
     if ($installChoice -eq "O" -or $installChoice -eq "o") {
@@ -56,27 +56,27 @@ if ($null -eq $mcpInstalled) {
         npm install -g @modelcontextprotocol/server-filesystem
         
         if ($LASTEXITCODE -ne 0) {
-            Write-Host "Échec de l'installation. Veuillez installer manuellement avec :" -ForegroundColor Red
+            Write-Host "Ã‰chec de l'installation. Veuillez installer manuellement avec :" -ForegroundColor Red
             Write-Host "npm install -g @modelcontextprotocol/server-filesystem" -ForegroundColor Red
             exit 1
         }
         
-        Write-Host "Installation réussie." -ForegroundColor Green
+        Write-Host "Installation rÃ©ussie." -ForegroundColor Green
     } else {
-        Write-Host "Installation annulée. Le script ne peut pas continuer sans MCP." -ForegroundColor Red
+        Write-Host "Installation annulÃ©e. Le script ne peut pas continuer sans MCP." -ForegroundColor Red
         exit 1
     }
 }
 
-# Déterminer le répertoire racine du projet
+# DÃ©terminer le rÃ©pertoire racine du projet
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = (Get-Item $scriptDir).Parent.Parent.FullName
 
-# Construire la liste des répertoires à autoriser
+# Construire la liste des rÃ©pertoires Ã  autoriser
 $allowedDirs = @()
 
 if ($IncludeWorkflows) {
-    # Ajouter les répertoires de workflows
+    # Ajouter les rÃ©pertoires de workflows
     $workflowDirs = Get-ChildItem -Path $projectRoot -Directory | Where-Object { $_.Name -like "*workflow*" }
     foreach ($dir in $workflowDirs) {
         $allowedDirs += $dir.FullName
@@ -84,7 +84,7 @@ if ($IncludeWorkflows) {
 }
 
 if ($IncludeScripts) {
-    # Ajouter le répertoire de scripts
+    # Ajouter le rÃ©pertoire de scripts
     $scriptsDir = Join-Path -Path $projectRoot -ChildPath "scripts"
     if (Test-Path $scriptsDir) {
         $allowedDirs += $scriptsDir
@@ -92,23 +92,23 @@ if ($IncludeScripts) {
 }
 
 if ($IncludeDocs) {
-    # Ajouter le répertoire de documentation
+    # Ajouter le rÃ©pertoire de documentation
     $docsDir = Join-Path -Path $projectRoot -ChildPath "docs"
     if (Test-Path $docsDir) {
         $allowedDirs += $docsDir
     }
 }
 
-# Ajouter le chemin personnalisé s'il est spécifié
+# Ajouter le chemin personnalisÃ© s'il est spÃ©cifiÃ©
 if ($CustomPath -ne "") {
     if (Test-Path $CustomPath) {
         $allowedDirs += $CustomPath
     } else {
-        Write-Host "Avertissement : Le chemin personnalisé '$CustomPath' n'existe pas." -ForegroundColor Yellow
+        Write-Host "Avertissement : Le chemin personnalisÃ© '$CustomPath' n'existe pas." -ForegroundColor Yellow
     }
 }
 
-# Si aucun répertoire n'est spécifié, utiliser le répertoire racine du projet
+# Si aucun rÃ©pertoire n'est spÃ©cifiÃ©, utiliser le rÃ©pertoire racine du projet
 if ($allowedDirs.Count -eq 0) {
     $allowedDirs += $projectRoot
 }
@@ -119,13 +119,13 @@ Write-Host "=======================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Mode lecture seule : $ReadOnly" -ForegroundColor White
 Write-Host ""
-Write-Host "Répertoires autorisés :" -ForegroundColor White
+Write-Host "RÃ©pertoires autorisÃ©s :" -ForegroundColor White
 foreach ($dir in $allowedDirs) {
     Write-Host "  - $dir" -ForegroundColor White
 }
 Write-Host ""
-Write-Host "Démarrage du serveur..." -ForegroundColor Green
-Write-Host "Appuyez sur Ctrl+C pour arrêter le serveur." -ForegroundColor Yellow
+Write-Host "DÃ©marrage du serveur..." -ForegroundColor Green
+Write-Host "Appuyez sur Ctrl+C pour arrÃªter le serveur." -ForegroundColor Yellow
 Write-Host ""
 
 # Construire la commande
@@ -133,12 +133,12 @@ $command = "mcp-server-filesystem"
 foreach ($dir in $allowedDirs) {
     if ($ReadOnly) {
         # En mode lecture seule, nous devons utiliser Docker avec l'option ro
-        # Mais comme nous n'utilisons pas Docker ici, nous ajoutons simplement le répertoire
+        # Mais comme nous n'utilisons pas Docker ici, nous ajoutons simplement le rÃ©pertoire
         $command += " `"$dir`""
     } else {
         $command += " `"$dir`""
     }
 }
 
-# Exécuter la commande
+# ExÃ©cuter la commande
 Invoke-Expression $command

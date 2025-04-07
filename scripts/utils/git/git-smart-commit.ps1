@@ -1,5 +1,5 @@
-# Script d'automatisation Git pour simplifier et standardiser le processus de commit et push
-# Ce script combine toutes les étapes : organisation, vérification, ajout, commit et push
+﻿# Script d'automatisation Git pour simplifier et standardiser le processus de commit et push
+# Ce script combine toutes les Ã©tapes : organisation, vÃ©rification, ajout, commit et push
 
 param (
     [Parameter(Mandatory = $false)]
@@ -23,14 +23,14 @@ $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path -Parent $scriptPath
 $projectRoot = (Get-Item $scriptDir).Parent.Parent.FullName
 
-# Si le script est exécuté depuis un autre répertoire, utiliser le répertoire courant
+# Si le script est exÃ©cutÃ© depuis un autre rÃ©pertoire, utiliser le rÃ©pertoire courant
 if (-not (Test-Path "$projectRoot\.git")) {
     $projectRoot = (Get-Location).Path
 }
 
 Set-Location $projectRoot
 
-# Créer un fichier de log
+# CrÃ©er un fichier de log
 $logFile = "$projectRoot\logs\git-smart-commit-$(Get-Date -Format 'yyyy-MM-dd').log"
 $logFolder = Split-Path $logFile -Parent
 
@@ -38,7 +38,7 @@ if (-not (Test-Path $logFolder)) {
     New-Item -ItemType Directory -Path $logFolder -Force | Out-Null
 }
 
-# Fonction pour écrire dans le log
+# Fonction pour Ã©crire dans le log
 function Write-Log {
     param (
         [string]$Message,
@@ -50,7 +50,7 @@ function Write-Log {
 
     Add-Content -Path $logFile -Value $logMessage
 
-    # Afficher également dans la console avec des couleurs
+    # Afficher Ã©galement dans la console avec des couleurs
     switch ($Level) {
         "ERROR" { Write-Host $logMessage -ForegroundColor Red }
         "WARNING" { Write-Host $logMessage -ForegroundColor Yellow }
@@ -59,42 +59,42 @@ function Write-Log {
     }
 }
 
-Write-Log "Début du processus de commit intelligent"
+Write-Log "DÃ©but du processus de commit intelligent"
 
-# Vérifier si nous sommes dans un dépôt Git
+# VÃ©rifier si nous sommes dans un dÃ©pÃ´t Git
 if (-not (Test-Path "$projectRoot\.git")) {
-    Write-Log "Ce dossier n'est pas un dépôt Git" -Level "ERROR"
+    Write-Log "Ce dossier n'est pas un dÃ©pÃ´t Git" -Level "ERROR"
     exit 1
 }
 
-# Étape 1: Organisation des fichiers (si non désactivée)
+# Ã‰tape 1: Organisation des fichiers (si non dÃ©sactivÃ©e)
 if (-not $SkipOrganize) {
-    Write-Log "Étape 1: Organisation des fichiers..."
+    Write-Log "Ã‰tape 1: Organisation des fichiers..."
 
     try {
         & "$projectRoot\scripts\maintenance\auto-organize-silent-improved.ps1"
-        Write-Log "Organisation des fichiers terminée" -Level "SUCCESS"
+        Write-Log "Organisation des fichiers terminÃ©e" -Level "SUCCESS"
     }
     catch {
         Write-Log "Erreur lors de l'organisation des fichiers : $_" -Level "ERROR"
         if (-not $Force) {
-            Write-Log "Utilisez -Force pour continuer malgré les erreurs" -Level "WARNING"
+            Write-Log "Utilisez -Force pour continuer malgrÃ© les erreurs" -Level "WARNING"
             exit 1
         }
     }
 }
 else {
-    Write-Log "Étape 1: Organisation des fichiers ignorée (option -SkipOrganize)"
+    Write-Log "Ã‰tape 1: Organisation des fichiers ignorÃ©e (option -SkipOrganize)"
 }
 
-# Étape 2: Vérification de l'état Git
-Write-Log "Étape 2: Vérification de l'état Git..."
+# Ã‰tape 2: VÃ©rification de l'Ã©tat Git
+Write-Log "Ã‰tape 2: VÃ©rification de l'Ã©tat Git..."
 
 try {
     $gitStatus = git status --porcelain
 
     if ([string]::IsNullOrEmpty($gitStatus)) {
-        Write-Log "Aucun changement à commiter" -Level "WARNING"
+        Write-Log "Aucun changement Ã  commiter" -Level "WARNING"
         exit 0
     }
 
@@ -103,36 +103,36 @@ try {
     $deletedFiles = $gitStatus | Where-Object { $_ -match '^\s*D' } | Measure-Object | Select-Object -ExpandProperty Count
     $renamedFiles = $gitStatus | Where-Object { $_ -match '^\s*R' } | Measure-Object | Select-Object -ExpandProperty Count
 
-    Write-Log "Changements détectés: $modifiedFiles modifiés, $addedFiles ajoutés, $deletedFiles supprimés, $renamedFiles renommés" -Level "SUCCESS"
+    Write-Log "Changements dÃ©tectÃ©s: $modifiedFiles modifiÃ©s, $addedFiles ajoutÃ©s, $deletedFiles supprimÃ©s, $renamedFiles renommÃ©s" -Level "SUCCESS"
 
     # Afficher les changements
-    Write-Host "`nChangements détectés:" -ForegroundColor Cyan
+    Write-Host "`nChangements dÃ©tectÃ©s:" -ForegroundColor Cyan
     $gitStatus | ForEach-Object {
         $status = $_.Substring(0, 2).Trim()
         $file = $_.Substring(3)
 
         switch -Regex ($status) {
-            'M' { Write-Host "  Modifié: $file" -ForegroundColor Yellow }
-            'A|(\?\?)' { Write-Host "  Ajouté: $file" -ForegroundColor Green }
-            'D' { Write-Host "  Supprimé: $file" -ForegroundColor Red }
-            'R' { Write-Host "  Renommé: $file" -ForegroundColor Blue }
+            'M' { Write-Host "  ModifiÃ©: $file" -ForegroundColor Yellow }
+            'A|(\?\?)' { Write-Host "  AjoutÃ©: $file" -ForegroundColor Green }
+            'D' { Write-Host "  SupprimÃ©: $file" -ForegroundColor Red }
+            'R' { Write-Host "  RenommÃ©: $file" -ForegroundColor Blue }
             default { Write-Host "  Statut $status : $file" }
         }
     }
     Write-Host ""
 }
 catch {
-    Write-Log "Erreur lors de la vérification de l'état Git : $_" -Level "ERROR"
+    Write-Log "Erreur lors de la vÃ©rification de l'Ã©tat Git : $_" -Level "ERROR"
     exit 1
 }
 
-# Étape 3: Ajout des fichiers modifiés
-Write-Log "Étape 3: Ajout des fichiers modifiés..."
+# Ã‰tape 3: Ajout des fichiers modifiÃ©s
+Write-Log "Ã‰tape 3: Ajout des fichiers modifiÃ©s..."
 
 try {
     if ($AtomicCommit) {
         # Mode commit atomique: demander quels fichiers ajouter
-        Write-Host "Mode commit atomique activé. Sélectionnez les types de fichiers à inclure:" -ForegroundColor Cyan
+        Write-Host "Mode commit atomique activÃ©. SÃ©lectionnez les types de fichiers Ã  inclure:" -ForegroundColor Cyan
         Write-Host "1. Fichiers de structure (dossiers, organisation)" -ForegroundColor Cyan
         Write-Host "2. Documentation (fichiers .md)" -ForegroundColor Cyan
         Write-Host "3. Scripts (PowerShell, Python)" -ForegroundColor Cyan
@@ -145,35 +145,35 @@ try {
         switch ($choice) {
             "1" {
                 git add **/*/
-                Write-Log "Fichiers de structure ajoutés" -Level "SUCCESS"
+                Write-Log "Fichiers de structure ajoutÃ©s" -Level "SUCCESS"
             }
             "2" {
                 git add *.md
                 git add **/*.md
-                Write-Log "Fichiers de documentation ajoutés" -Level "SUCCESS"
+                Write-Log "Fichiers de documentation ajoutÃ©s" -Level "SUCCESS"
             }
             "3" {
                 git add *.ps1
                 git add **/*.ps1
                 git add *.py
                 git add **/*.py
-                Write-Log "Scripts ajoutés" -Level "SUCCESS"
+                Write-Log "Scripts ajoutÃ©s" -Level "SUCCESS"
             }
             "4" {
                 git add *.json
                 git add **/*.json
-                Write-Log "Workflows n8n ajoutés" -Level "SUCCESS"
+                Write-Log "Workflows n8n ajoutÃ©s" -Level "SUCCESS"
             }
             "5" {
                 git add *.config
                 git add **/*.config
                 git add *.env
                 git add **/*.env
-                Write-Log "Fichiers de configuration ajoutés" -Level "SUCCESS"
+                Write-Log "Fichiers de configuration ajoutÃ©s" -Level "SUCCESS"
             }
             "6" {
                 git add .
-                Write-Log "Tous les fichiers ajoutés" -Level "SUCCESS"
+                Write-Log "Tous les fichiers ajoutÃ©s" -Level "SUCCESS"
             }
             default {
                 Write-Log "Choix invalide, ajout de tous les fichiers" -Level "WARNING"
@@ -184,7 +184,7 @@ try {
     else {
         # Mode standard: ajouter tous les fichiers
         git add .
-        Write-Log "Tous les fichiers ajoutés" -Level "SUCCESS"
+        Write-Log "Tous les fichiers ajoutÃ©s" -Level "SUCCESS"
     }
 }
 catch {
@@ -192,25 +192,25 @@ catch {
     exit 1
 }
 
-# Étape 4: Affichage des changements pour validation
-Write-Log "Étape 4: Affichage des changements pour validation..."
+# Ã‰tape 4: Affichage des changements pour validation
+Write-Log "Ã‰tape 4: Affichage des changements pour validation..."
 
 try {
     $stagedChanges = git diff --staged --stat
 
     if ([string]::IsNullOrEmpty($stagedChanges)) {
-        Write-Log "Aucun changement n'a été ajouté à l'index" -Level "WARNING"
+        Write-Log "Aucun changement n'a Ã©tÃ© ajoutÃ© Ã  l'index" -Level "WARNING"
         exit 0
     }
 
-    Write-Host "`nChangements qui seront commités:" -ForegroundColor Cyan
+    Write-Host "`nChangements qui seront commitÃ©s:" -ForegroundColor Cyan
     Write-Host $stagedChanges
     Write-Host ""
 
     if (-not $Force) {
         $confirmation = Read-Host "Voulez-vous continuer avec le commit? (O/N)"
         if ($confirmation -ne "O" -and $confirmation -ne "o") {
-            Write-Log "Commit annulé par l'utilisateur" -Level "WARNING"
+            Write-Log "Commit annulÃ© par l'utilisateur" -Level "WARNING"
             exit 0
         }
     }
@@ -220,21 +220,21 @@ catch {
     exit 1
 }
 
-# Étape 5: Création du commit avec message descriptif
-Write-Log "Étape 5: Création du commit..."
+# Ã‰tape 5: CrÃ©ation du commit avec message descriptif
+Write-Log "Ã‰tape 5: CrÃ©ation du commit..."
 
 try {
-    # Si aucun message de commit n'est fourni, demander à l'utilisateur
+    # Si aucun message de commit n'est fourni, demander Ã  l'utilisateur
     if ([string]::IsNullOrEmpty($CommitMessage)) {
         Write-Host "`nEntrez un message de commit descriptif:" -ForegroundColor Cyan
 
         if ($AtomicCommit) {
             # Suggestions pour les commits atomiques
             Write-Host "Suggestions pour les commits atomiques:" -ForegroundColor Yellow
-            Write-Host "- 'docs: Mise à jour de la documentation sur...'" -ForegroundColor Yellow
-            Write-Host "- 'feat: Ajout de la fonctionnalité...'" -ForegroundColor Yellow
-            Write-Host "- 'fix: Correction du problème...'" -ForegroundColor Yellow
-            Write-Host "- 'refactor: Réorganisation de...'" -ForegroundColor Yellow
+            Write-Host "- 'docs: Mise Ã  jour de la documentation sur...'" -ForegroundColor Yellow
+            Write-Host "- 'feat: Ajout de la fonctionnalitÃ©...'" -ForegroundColor Yellow
+            Write-Host "- 'fix: Correction du problÃ¨me...'" -ForegroundColor Yellow
+            Write-Host "- 'refactor: RÃ©organisation de...'" -ForegroundColor Yellow
             Write-Host "- 'chore: Maintenance de...'" -ForegroundColor Yellow
         }
 
@@ -242,25 +242,25 @@ try {
 
         if ([string]::IsNullOrEmpty($CommitMessage)) {
             $CommitMessage = "Commit automatique via git-smart-commit.ps1"
-            Write-Log "Aucun message fourni, utilisation du message par défaut" -Level "WARNING"
+            Write-Log "Aucun message fourni, utilisation du message par dÃ©faut" -Level "WARNING"
         }
     }
 
     git commit -m $CommitMessage
-    Write-Log "Commit créé avec le message: $CommitMessage" -Level "SUCCESS"
+    Write-Log "Commit crÃ©Ã© avec le message: $CommitMessage" -Level "SUCCESS"
 }
 catch {
-    Write-Log "Erreur lors de la création du commit : $_" -Level "ERROR"
+    Write-Log "Erreur lors de la crÃ©ation du commit : $_" -Level "ERROR"
     exit 1
 }
 
-# Étape 6: Push vers le dépôt distant (si non désactivé)
+# Ã‰tape 6: Push vers le dÃ©pÃ´t distant (si non dÃ©sactivÃ©)
 if (-not $SkipPush) {
-    Write-Log "Étape 6: Push vers le dépôt distant..."
+    Write-Log "Ã‰tape 6: Push vers le dÃ©pÃ´t distant..."
 
     try {
         git push
-        Write-Log "Push terminé avec succès" -Level "SUCCESS"
+        Write-Log "Push terminÃ© avec succÃ¨s" -Level "SUCCESS"
     }
     catch {
         Write-Log "Erreur lors du push : $_" -Level "ERROR"
@@ -268,28 +268,28 @@ if (-not $SkipPush) {
     }
 }
 else {
-    Write-Log "Étape 6: Push ignoré (option -SkipPush)"
+    Write-Log "Ã‰tape 6: Push ignorÃ© (option -SkipPush)"
 }
 
-Write-Log "Processus de commit intelligent terminé avec succès" -Level "SUCCESS"
+Write-Log "Processus de commit intelligent terminÃ© avec succÃ¨s" -Level "SUCCESS"
 
-# Afficher un résumé
-Write-Host "`nRésumé du commit:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© du commit:" -ForegroundColor Cyan
 Write-Host "- Message: $CommitMessage" -ForegroundColor Cyan
 Write-Host "- Mode: $(if ($AtomicCommit) { 'Atomique' } else { 'Standard' })" -ForegroundColor Cyan
-Write-Host "- Organisation: $(if ($SkipOrganize) { 'Ignorée' } else { 'Effectuée' })" -ForegroundColor Cyan
-Write-Host "- Push: $(if ($SkipPush) { 'Ignoré' } else { 'Effectué' })" -ForegroundColor Cyan
+Write-Host "- Organisation: $(if ($SkipOrganize) { 'IgnorÃ©e' } else { 'EffectuÃ©e' })" -ForegroundColor Cyan
+Write-Host "- Push: $(if ($SkipPush) { 'IgnorÃ©' } else { 'EffectuÃ©' })" -ForegroundColor Cyan
 
-# Afficher l'aide si demandé
+# Afficher l'aide si demandÃ©
 if ($args -contains "-help" -or $args -contains "--help" -or $args -contains "/?") {
     Write-Host "`nUtilisation: .\git-smart-commit.ps1 [options]" -ForegroundColor Cyan
     Write-Host "`nOptions:" -ForegroundColor Cyan
-    Write-Host "  -CommitMessage 'message'  Message de commit (si non fourni, sera demandé)" -ForegroundColor Cyan
-    Write-Host "  -AtomicCommit             Active le mode de commit atomique (sélection des fichiers par type)" -ForegroundColor Cyan
-    Write-Host "  -SkipOrganize             Ignore l'étape d'organisation des fichiers" -ForegroundColor Cyan
-    Write-Host "  -SkipPush                 Ne pas effectuer de push après le commit" -ForegroundColor Cyan
+    Write-Host "  -CommitMessage 'message'  Message de commit (si non fourni, sera demandÃ©)" -ForegroundColor Cyan
+    Write-Host "  -AtomicCommit             Active le mode de commit atomique (sÃ©lection des fichiers par type)" -ForegroundColor Cyan
+    Write-Host "  -SkipOrganize             Ignore l'Ã©tape d'organisation des fichiers" -ForegroundColor Cyan
+    Write-Host "  -SkipPush                 Ne pas effectuer de push aprÃ¨s le commit" -ForegroundColor Cyan
     Write-Host "  -Force                    Ne pas demander de confirmation" -ForegroundColor Cyan
     Write-Host "`nExemples:" -ForegroundColor Cyan
-    Write-Host "  .\git-smart-commit.ps1 -CommitMessage 'Ajout de nouvelles fonctionnalités'" -ForegroundColor Cyan
+    Write-Host "  .\git-smart-commit.ps1 -CommitMessage 'Ajout de nouvelles fonctionnalitÃ©s'" -ForegroundColor Cyan
     Write-Host "  .\git-smart-commit.ps1 -AtomicCommit -SkipPush" -ForegroundColor Cyan
 }

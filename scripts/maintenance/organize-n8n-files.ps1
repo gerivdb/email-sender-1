@@ -1,11 +1,11 @@
-# Script pour organiser les fichiers n8n
+﻿# Script pour organiser les fichiers n8n
 # Ce script organise les fichiers finaux indispensables au projet Email Sender
 
-# Création des répertoires s'ils n'existent pas
+# CrÃ©ation des rÃ©pertoires s'ils n'existent pas
 $directories = @("workflows", "credentials", "config", "mcp")
 foreach ($dir in $directories) {
     if (-not (Test-Path -Path $dir)) {
-        Write-Host "Création du répertoire $dir..."
+        Write-Host "CrÃ©ation du rÃ©pertoire $dir..."
         New-Item -Path $dir -ItemType Directory -Force | Out-Null
     }
 }
@@ -26,9 +26,9 @@ Copy-Item -Path ".\.n8n\credentials\*.json" -Destination ".\credentials\" -Force
 Write-Host "Copie du fichier de configuration n8n..."
 Copy-Item -Path ".\.n8n\config" -Destination ".\config\n8n-config.txt" -Force
 
-Write-Host "Organisation des fichiers terminée avec succès!"
+Write-Host "Organisation des fichiers terminÃ©e avec succÃ¨s!"
 Write-Host ""
-Write-Host "Structure des répertoires :"
+Write-Host "Structure des rÃ©pertoires :"
 Write-Host "- workflows/ : Contient les fichiers de workflow n8n"
 Write-Host "- credentials/ : Contient les informations d'identification"
 Write-Host "- config/ : Contient les fichiers de configuration"

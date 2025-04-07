@@ -1,10 +1,10 @@
-# Script pour lister les workflows existants dans n8n
+﻿# Script pour lister les workflows existants dans n8n
 
 # Configuration
 $n8nUrl = "http://localhost:5678"
 $apiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmNzI5MDhiZC0wYmViLTQ3YzQtOTgzMy0zOGM1ZmRmNjZlZGQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzQzNzkzMzA0fQ.EfYMSbUmk6OLDw70wXNYPl0B-ont0B1WbAnowIQdJbw" # Jeton API AUGMENT
 
-# Vérifier la connexion à n8n
+# VÃ©rifier la connexion Ã  n8n
 Write-Host "Verification de la connexion a n8n ($n8nUrl)..." -NoNewline
 try {
     $headers = @{
@@ -13,14 +13,14 @@ try {
     $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows" -Method Get -Headers $headers
     Write-Host " Connecte!" -ForegroundColor Green
     
-    # Afficher la réponse brute pour le débogage
+    # Afficher la rÃ©ponse brute pour le dÃ©bogage
     Write-Host "`nReponse brute de l'API:"
     $response | ConvertTo-Json -Depth 1
     
-    # Afficher le type de la réponse
+    # Afficher le type de la rÃ©ponse
     Write-Host "`nType de la reponse: $($response.GetType().FullName)"
     
-    # Essayer d'accéder aux propriétés de la réponse
+    # Essayer d'accÃ©der aux propriÃ©tÃ©s de la rÃ©ponse
     if ($response -is [array]) {
         Write-Host "`nLa reponse est un tableau avec $($response.Count) elements."
         

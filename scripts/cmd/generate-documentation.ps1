@@ -1,6 +1,6 @@
-# Script PowerShell pour générer la documentation complète du système de journal de bord RAG
+﻿# Script PowerShell pour gÃ©nÃ©rer la documentation complÃ¨te du systÃ¨me de journal de bord RAG
 
-# Chemin absolu vers le répertoire du projet
+# Chemin absolu vers le rÃ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $PythonScriptsDir = Join-Path $ProjectDir "scripts\python\journal"
 $DocsDir = Join-Path $ProjectDir "docs\documentation"
@@ -17,12 +17,12 @@ function Write-Section {
 }
 
 # Afficher un message d'introduction
-Write-Host "Génération de la documentation du système de journal de bord RAG" -ForegroundColor Magenta
+Write-Host "GÃ©nÃ©ration de la documentation du systÃ¨me de journal de bord RAG" -ForegroundColor Magenta
 Write-Host "=========================================================" -ForegroundColor Magenta
 Write-Host ""
 
-# 1. Vérifier que les répertoires nécessaires existent
-Write-Section "Vérification des répertoires"
+# 1. VÃ©rifier que les rÃ©pertoires nÃ©cessaires existent
+Write-Section "VÃ©rification des rÃ©pertoires"
 
 $TechniqueDir = Join-Path $DocsDir "technique"
 $WorkflowDir = Join-Path $DocsDir "workflow"
@@ -31,37 +31,37 @@ $InsightsDir = Join-Path $DocsDir "journal_insights"
 
 if (-not (Test-Path $TechniqueDir)) {
     New-Item -ItemType Directory -Path $TechniqueDir -Force | Out-Null
-    Write-Host "Répertoire technique créé: $TechniqueDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire technique crÃ©Ã©: $TechniqueDir" -ForegroundColor Green
 }
 
 if (-not (Test-Path $WorkflowDir)) {
     New-Item -ItemType Directory -Path $WorkflowDir -Force | Out-Null
-    Write-Host "Répertoire workflow créé: $WorkflowDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire workflow crÃ©Ã©: $WorkflowDir" -ForegroundColor Green
 }
 
 if (-not (Test-Path $ApiDir)) {
     New-Item -ItemType Directory -Path $ApiDir -Force | Out-Null
-    Write-Host "Répertoire api créé: $ApiDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire api crÃ©Ã©: $ApiDir" -ForegroundColor Green
 }
 
 if (-not (Test-Path $InsightsDir)) {
     New-Item -ItemType Directory -Path $InsightsDir -Force | Out-Null
-    Write-Host "Répertoire journal_insights créé: $InsightsDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire journal_insights crÃ©Ã©: $InsightsDir" -ForegroundColor Green
 }
 
 # 2. Extraire les insights du journal
 Write-Section "Extraction des insights du journal"
 
-# Vérifier si le script docs_integration.py existe
+# VÃ©rifier si le script docs_integration.py existe
 $DocsIntegrationScript = Join-Path $PythonScriptsDir "docs_integration.py"
 
 if (Test-Path $DocsIntegrationScript) {
-    Write-Host "Exécution de l'extraction des insights..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution de l'extraction des insights..." -ForegroundColor Cyan
     python "$DocsIntegrationScript" extract
 } else {
-    Write-Host "Script docs_integration.py non trouvé. Création d'un script minimal..." -ForegroundColor Yellow
+    Write-Host "Script docs_integration.py non trouvÃ©. CrÃ©ation d'un script minimal..." -ForegroundColor Yellow
     
-    # Créer un script minimal pour extraire les insights
+    # CrÃ©er un script minimal pour extraire les insights
     $MinimalScript = @"
 import os
 import re
@@ -77,13 +77,13 @@ class DocsJournalIntegration:
         
     def extract_technical_insights(self):
         """Extrait les enseignements techniques du journal pour la documentation."""
-        # Créer les répertoires nécessaires
+        # CrÃ©er les rÃ©pertoires nÃ©cessaires
         (self.docs_dir / "technique").mkdir(exist_ok=True, parents=True)
         (self.docs_dir / "workflow").mkdir(exist_ok=True, parents=True)
         (self.docs_dir / "api").mkdir(exist_ok=True, parents=True)
         (self.docs_dir / "journal_insights").mkdir(exist_ok=True, parents=True)
         
-        # Créer un fichier d'insights minimal
+        # CrÃ©er un fichier d'insights minimal
         insights = {
             "system": [],
             "code": [],
@@ -97,7 +97,7 @@ class DocsJournalIntegration:
         with open(insights_file, 'w', encoding='utf-8') as f:
             json.dump(insights, f, ensure_ascii=False, indent=2)
         
-        print(f"Insights extraits et sauvegardés dans {insights_file}")
+        print(f"Insights extraits et sauvegardÃ©s dans {insights_file}")
         return insights
 
 if __name__ == "__main__":
@@ -112,30 +112,30 @@ if __name__ == "__main__":
     $MinimalScriptPath = Join-Path $PythonScriptsDir "docs_integration.py"
     Set-Content -Path $MinimalScriptPath -Value $MinimalScript -Encoding UTF8
     
-    Write-Host "Script minimal créé: $MinimalScriptPath" -ForegroundColor Green
-    Write-Host "Exécution de l'extraction des insights..." -ForegroundColor Cyan
+    Write-Host "Script minimal crÃ©Ã©: $MinimalScriptPath" -ForegroundColor Green
+    Write-Host "ExÃ©cution de l'extraction des insights..." -ForegroundColor Cyan
     python "$MinimalScriptPath" extract
 }
 
-# 3. Générer les fichiers de documentation manquants
-Write-Section "Génération des fichiers de documentation manquants"
+# 3. GÃ©nÃ©rer les fichiers de documentation manquants
+Write-Section "GÃ©nÃ©ration des fichiers de documentation manquants"
 
-# Liste des fichiers de documentation à vérifier
+# Liste des fichiers de documentation Ã  vÃ©rifier
 $DocFiles = @(
-    @{Path = "technique/dependencies.md"; Title = "Dépendances du système"},
-    @{Path = "technique/data_schema.md"; Title = "Schéma des données du journal"},
-    @{Path = "technique/logs.md"; Title = "Logs du système"},
-    @{Path = "workflow/configuration.md"; Title = "Configuration du système"},
+    @{Path = "technique/dependencies.md"; Title = "DÃ©pendances du systÃ¨me"},
+    @{Path = "technique/data_schema.md"; Title = "SchÃ©ma des donnÃ©es du journal"},
+    @{Path = "technique/logs.md"; Title = "Logs du systÃ¨me"},
+    @{Path = "workflow/configuration.md"; Title = "Configuration du systÃ¨me"},
     @{Path = "workflow/search_and_rag.md"; Title = "Recherche et RAG"},
     @{Path = "workflow/analysis.md"; Title = "Analyse du journal"},
-    @{Path = "workflow/github_integration.md"; Title = "Intégration GitHub"},
+    @{Path = "workflow/github_integration.md"; Title = "IntÃ©gration GitHub"},
     @{Path = "workflow/web_interface.md"; Title = "Interface web"},
     @{Path = "workflow/automation.md"; Title = "Automatisation"},
-    @{Path = "workflow/troubleshooting.md"; Title = "Dépannage"},
+    @{Path = "workflow/troubleshooting.md"; Title = "DÃ©pannage"},
     @{Path = "api/api_reference.md"; Title = "API Reference"},
     @{Path = "api/github_api.md"; Title = "GitHub API"},
-    @{Path = "journal_insights/term_frequency.md"; Title = "Fréquence des termes"},
-    @{Path = "journal_insights/tag_evolution.md"; Title = "Évolution des tags"},
+    @{Path = "journal_insights/term_frequency.md"; Title = "FrÃ©quence des termes"},
+    @{Path = "journal_insights/tag_evolution.md"; Title = "Ã‰volution des tags"},
     @{Path = "journal_insights/topic_trends.md"; Title = "Tendances des sujets"},
     @{Path = "journal_insights/clustering.md"; Title = "Clustering"}
 )
@@ -144,71 +144,71 @@ foreach ($DocFile in $DocFiles) {
     $FilePath = Join-Path $DocsDir $DocFile.Path
     
     if (-not (Test-Path $FilePath)) {
-        Write-Host "Création du fichier de documentation: $($DocFile.Path)" -ForegroundColor Cyan
+        Write-Host "CrÃ©ation du fichier de documentation: $($DocFile.Path)" -ForegroundColor Cyan
         
-        # Créer le répertoire parent si nécessaire
+        # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
         $ParentDir = Split-Path -Parent $FilePath
         if (-not (Test-Path $ParentDir)) {
             New-Item -ItemType Directory -Path $ParentDir -Force | Out-Null
         }
         
-        # Créer un contenu minimal pour le fichier
+        # CrÃ©er un contenu minimal pour le fichier
         $Content = @"
 # $($DocFile.Title)
 
-*Ce document fait partie de la documentation du système de journal de bord RAG.*
+*Ce document fait partie de la documentation du systÃ¨me de journal de bord RAG.*
 
-*Généré le $(Get-Date -Format "yyyy-MM-dd") à $(Get-Date -Format "HH:mm")*
+*GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd") Ã  $(Get-Date -Format "HH:mm")*
 
 ## Vue d'ensemble
 
-Cette documentation détaille $($DocFile.Title.ToLower()) du système de journal de bord RAG.
+Cette documentation dÃ©taille $($DocFile.Title.ToLower()) du systÃ¨me de journal de bord RAG.
 
 ## Contenu
 
-*Cette section sera complétée lors de la prochaine mise à jour de la documentation.*
+*Cette section sera complÃ©tÃ©e lors de la prochaine mise Ã  jour de la documentation.*
 
-## Références
+## RÃ©fÃ©rences
 
 - [Index de la documentation](../index.md)
 - [README](../README.md)
 "@
         
         Set-Content -Path $FilePath -Value $Content -Encoding UTF8
-        Write-Host "Fichier créé: $FilePath" -ForegroundColor Green
+        Write-Host "Fichier crÃ©Ã©: $FilePath" -ForegroundColor Green
     }
 }
 
-# 4. Mettre à jour l'index de la documentation
-Write-Section "Mise à jour de l'index de la documentation"
+# 4. Mettre Ã  jour l'index de la documentation
+Write-Section "Mise Ã  jour de l'index de la documentation"
 
 $IndexPath = Join-Path $DocsDir "index.md"
 $IndexContent = Get-Content -Path $IndexPath -Encoding UTF8 -Raw
 
-# Mettre à jour la date de dernière mise à jour
-$UpdatedIndexContent = $IndexContent -replace "Cette documentation a été générée le .* à .*\.", "Cette documentation a été générée le $(Get-Date -Format "yyyy-MM-dd") à $(Get-Date -Format "HH:mm")."
+# Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
+$UpdatedIndexContent = $IndexContent -replace "Cette documentation a Ã©tÃ© gÃ©nÃ©rÃ©e le .* Ã  .*\.", "Cette documentation a Ã©tÃ© gÃ©nÃ©rÃ©e le $(Get-Date -Format "yyyy-MM-dd") Ã  $(Get-Date -Format "HH:mm")."
 
 Set-Content -Path $IndexPath -Value $UpdatedIndexContent -Encoding UTF8
-Write-Host "Index mis à jour: $IndexPath" -ForegroundColor Green
+Write-Host "Index mis Ã  jour: $IndexPath" -ForegroundColor Green
 
-# 5. Générer un rapport de documentation
-Write-Section "Génération du rapport de documentation"
+# 5. GÃ©nÃ©rer un rapport de documentation
+Write-Section "GÃ©nÃ©ration du rapport de documentation"
 
 $ReportPath = Join-Path $DocsDir "documentation_report.md"
 $ReportContent = @"
-# Rapport de documentation du système de journal de bord RAG
+# Rapport de documentation du systÃ¨me de journal de bord RAG
 
-*Généré le $(Get-Date -Format "yyyy-MM-dd") à $(Get-Date -Format "HH:mm")*
+*GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd") Ã  $(Get-Date -Format "HH:mm")*
 
-## État de la documentation
+## Ã‰tat de la documentation
 
 ### Fichiers de documentation
 
-| Catégorie | Fichier | État |
+| CatÃ©gorie | Fichier | Ã‰tat |
 |-----------|---------|------|
 "@
 
-# Vérifier l'état de chaque fichier de documentation
+# VÃ©rifier l'Ã©tat de chaque fichier de documentation
 $AllDocFiles = @(
     "README.md",
     "index.md",
@@ -244,7 +244,7 @@ foreach ($DocFile in $AllDocFiles) {
     $FilePath = Join-Path $DocsDir $DocFile
     $Category = ($DocFile -split "/")[0]
     if ($Category -eq $DocFile) {
-        $Category = "Général"
+        $Category = "GÃ©nÃ©ral"
     }
     
     if (Test-Path $FilePath) {
@@ -252,14 +252,14 @@ foreach ($DocFile in $AllDocFiles) {
         $WordCount = ($Content -split '\s+').Count
         
         if ($WordCount -lt 100) {
-            $Status = "⚠️ Minimal"
+            $Status = "âš ï¸ Minimal"
         } elseif ($WordCount -lt 500) {
-            $Status = "✅ Basique"
+            $Status = "âœ… Basique"
         } else {
-            $Status = "✅✅ Complet"
+            $Status = "âœ…âœ… Complet"
         }
     } else {
-        $Status = "❌ Manquant"
+        $Status = "âŒ Manquant"
     }
     
     $ReportContent += "`n| $Category | $DocFile | $Status |"
@@ -273,26 +273,26 @@ $ReportContent += @"
 - **Fichiers existants**: $(($AllDocFiles | ForEach-Object { Join-Path $DocsDir $_ } | Where-Object { Test-Path $_ }).Count)
 - **Fichiers manquants**: $(($AllDocFiles | ForEach-Object { Join-Path $DocsDir $_ } | Where-Object { -not (Test-Path $_) }).Count)
 
-## Prochaines étapes
+## Prochaines Ã©tapes
 
-1. Compléter les fichiers de documentation manquants
+1. ComplÃ©ter les fichiers de documentation manquants
 2. Enrichir les fichiers de documentation minimaux
-3. Mettre à jour la documentation avec les dernières fonctionnalités
-4. Ajouter des exemples et des captures d'écran
+3. Mettre Ã  jour la documentation avec les derniÃ¨res fonctionnalitÃ©s
+4. Ajouter des exemples et des captures d'Ã©cran
 
 ## Notes
 
-Cette documentation est générée automatiquement par le script `generate-documentation.ps1`.
+Cette documentation est gÃ©nÃ©rÃ©e automatiquement par le script `generate-documentation.ps1`.
 "@
 
 Set-Content -Path $ReportPath -Value $ReportContent -Encoding UTF8
-Write-Host "Rapport de documentation généré: $ReportPath" -ForegroundColor Green
+Write-Host "Rapport de documentation gÃ©nÃ©rÃ©: $ReportPath" -ForegroundColor Green
 
 # Afficher un message de conclusion
-Write-Section "Documentation générée"
-Write-Host "La documentation du système de journal de bord RAG a été générée avec succès!" -ForegroundColor Green
+Write-Section "Documentation gÃ©nÃ©rÃ©e"
+Write-Host "La documentation du systÃ¨me de journal de bord RAG a Ã©tÃ© gÃ©nÃ©rÃ©e avec succÃ¨s!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Résumé:"
+Write-Host "RÃ©sumÃ©:"
 Write-Host "- Documentation principale: $DocsDir"
 Write-Host "- Rapport de documentation: $ReportPath"
 Write-Host ""

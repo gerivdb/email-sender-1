@@ -1,4 +1,4 @@
-# Script pour corriger les problemes d'encodage dans les scripts PowerShell
+﻿# Script pour corriger les problemes d'encodage dans les scripts PowerShell
 # Ce script remplace les caracteres accentues par leurs equivalents non accentues
 
 Write-Host "=== Correction des problemes d'encodage dans les scripts PowerShell ===" -ForegroundColor Cyan
@@ -20,12 +20,12 @@ foreach ($file in $scriptFiles) {
                           -replace "o", "o" -replace "o", "o" `
                           -replace "u", "u" -replace "u", "u" -replace "u", "u" `
                           -replace "c", "c" `
-                          -replace "É", "E" -replace "È", "E" -replace "Ê", "E" -replace "Ë", "E" `
-                          -replace "À", "A" -replace "Â", "A" -replace "Ä", "A" `
-                          -replace "Î", "I" -replace "Ï", "I" `
-                          -replace "Ô", "O" -replace "Ö", "O" `
-                          -replace "Ù", "U" -replace "Û", "U" -replace "Ü", "U" `
-                          -replace "Ç", "C"
+                          -replace "Ã‰", "E" -replace "Ãˆ", "E" -replace "ÃŠ", "E" -replace "Ã‹", "E" `
+                          -replace "Ã€", "A" -replace "Ã‚", "A" -replace "Ã„", "A" `
+                          -replace "ÃŽ", "I" -replace "Ã", "I" `
+                          -replace "Ã”", "O" -replace "Ã–", "O" `
+                          -replace "Ã™", "U" -replace "Ã›", "U" -replace "Ãœ", "U" `
+                          -replace "Ã‡", "C"
     
     # Verifier si le contenu a ete modifie
     if ($newContent -ne $content) {
@@ -55,12 +55,12 @@ foreach ($file in $batchFiles) {
                           -replace "o", "o" -replace "o", "o" `
                           -replace "u", "u" -replace "u", "u" -replace "u", "u" `
                           -replace "c", "c" `
-                          -replace "É", "E" -replace "È", "E" -replace "Ê", "E" -replace "Ë", "E" `
-                          -replace "À", "A" -replace "Â", "A" -replace "Ä", "A" `
-                          -replace "Î", "I" -replace "Ï", "I" `
-                          -replace "Ô", "O" -replace "Ö", "O" `
-                          -replace "Ù", "U" -replace "Û", "U" -replace "Ü", "U" `
-                          -replace "Ç", "C"
+                          -replace "Ã‰", "E" -replace "Ãˆ", "E" -replace "ÃŠ", "E" -replace "Ã‹", "E" `
+                          -replace "Ã€", "A" -replace "Ã‚", "A" -replace "Ã„", "A" `
+                          -replace "ÃŽ", "I" -replace "Ã", "I" `
+                          -replace "Ã”", "O" -replace "Ã–", "O" `
+                          -replace "Ã™", "U" -replace "Ã›", "U" -replace "Ãœ", "U" `
+                          -replace "Ã‡", "C"
     
     # Verifier si le contenu a ete modifie
     if ($newContent -ne $content) {
