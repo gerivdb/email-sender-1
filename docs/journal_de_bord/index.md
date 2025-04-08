@@ -1,5 +1,6 @@
 # Index du Journal de Bord
 
+- [2023-12-06] [Innovations en IA et apprentissage automatique pour la gestion de code](entries/2023-12-06-innovations-ia-et-apprentissage-automatique.md)
 - [2023-12-05] [Réorganisation majeure et ajout de nouveaux modules](entries/2023-12-05-reorganisation-majeure-et-nouveaux-modules.md)
 - [2023-11-30] [Analyse des patterns d'erreurs dans les scripts PowerShell](entries/2023-11-30-analyse-erreurs-powershell.md)
 - [2025-04-05] [Vérification avant push](entries/2025-04-05-v-rification-avant-push.md)
