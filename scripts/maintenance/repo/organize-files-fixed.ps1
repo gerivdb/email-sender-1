@@ -1,4 +1,4 @@
-﻿# Script simplifie pour organiser les fichiers
+# Script simplifie pour organiser les fichiers
 # Ce script organise les fichiers dans des sous-dossiers appropries
 
 # Organiser les fichiers dans le dossier scripts
@@ -97,7 +97,7 @@ foreach ($file in $cmdFiles) {
 }
 
 # Creer un fichier README dans le dossier cmd
-$readmePath = "scripts\cmd\README.md"
+$readmePath = "repo\README.md"
 $readmeContent = "# Scripts CMD
 
 Ce dossier contient les scripts CMD utilises dans le projet Email Sender.
@@ -132,3 +132,4 @@ Set-Content -Path $readmePath -Value $readmeContent
 Write-Host "Fichier README.md cree dans le dossier scripts\cmd" -ForegroundColor Green
 
 Write-Host "`nOrganisation des fichiers terminee avec succes!" -ForegroundColor Green
+

@@ -1,4 +1,4 @@
-﻿# Script pour organiser le repo selon les bonnes pratiques
+# Script pour organiser le repo selon les bonnes pratiques
 # Cree une structure de dossiers logique et deplace les fichiers dans les bons repertoires
 
 Write-Host "=== Reorganisation du repo selon les bonnes pratiques ===" -ForegroundColor Cyan
@@ -27,9 +27,9 @@ $folders = @(
 foreach ($folder in $folders) {
     if (-not (Test-Path ".\$folder")) {
         New-Item -ItemType Directory -Path ".\$folder" | Out-Null
-        Write-Host "âœ… Dossier $folder cree" -ForegroundColor Green
+        Write-Host "✅ Dossier $folder cree" -ForegroundColor Green
     } else {
-        Write-Host "âœ… Dossier $folder existe deja" -ForegroundColor Green
+        Write-Host "✅ Dossier $folder existe deja" -ForegroundColor Green
     }
 }
 
@@ -75,22 +75,22 @@ function Move-FileWithConfirmation {
     if (Test-Path $destinationPath) {
         if ($Force) {
             Move-Item -Path $SourcePath -Destination $destinationPath -Force
-            Write-Host "  âœ… $fileName deplace vers $DestinationFolder (remplace)" -ForegroundColor Green
+            Write-Host "  ✅ $fileName deplace vers $DestinationFolder (remplace)" -ForegroundColor Green
         } else {
-            Write-Host "  âš ï¸ $fileName existe deja dans $DestinationFolder" -ForegroundColor Yellow
+            Write-Host "  ⚠️ $fileName existe deja dans $DestinationFolder" -ForegroundColor Yellow
             Write-Host "  Voulez-vous le remplacer ? (O/N)" -ForegroundColor Yellow
             $confirmation = Read-Host
             
             if ($confirmation -eq "O" -or $confirmation -eq "o") {
                 Move-Item -Path $SourcePath -Destination $destinationPath -Force
-                Write-Host "  âœ… $fileName deplace vers $DestinationFolder (remplace)" -ForegroundColor Green
+                Write-Host "  ✅ $fileName deplace vers $DestinationFolder (remplace)" -ForegroundColor Green
             } else {
-                Write-Host "  âŒ $fileName conserve a son emplacement actuel" -ForegroundColor Red
+                Write-Host "  ❌ $fileName conserve a son emplacement actuel" -ForegroundColor Red
             }
         }
     } else {
         Move-Item -Path $SourcePath -Destination $destinationPath
-        Write-Host "  âœ… $fileName deplace vers $DestinationFolder" -ForegroundColor Green
+        Write-Host "  ✅ $fileName deplace vers $DestinationFolder" -ForegroundColor Green
     }
 }
 
@@ -115,7 +115,7 @@ foreach ($rule in $fileRules) {
         foreach ($file in $files) {
             # Ne pas deplacer le README.md principal s'il est a la racine et que la destination n'est pas la racine
             if ($file.Name -eq "README.md" -and $destination -ne ".") {
-                Write-Host "  â„¹ï¸ README.md conserve a la racine" -ForegroundColor Blue
+                Write-Host "  ℹ️ README.md conserve a la racine" -ForegroundColor Blue
                 continue
             }
             
@@ -167,9 +167,9 @@ node_modules/
 Thumbs.db
 "@
     Set-Content -Path $gitignorePath -Value $gitignoreContent
-    Write-Host "`nâœ… Fichier .gitignore cree" -ForegroundColor Green
+    Write-Host "`n✅ Fichier .gitignore cree" -ForegroundColor Green
 } else {
-    Write-Host "`nâœ… Fichier .gitignore existe deja" -ForegroundColor Green
+    Write-Host "`n✅ Fichier .gitignore existe deja" -ForegroundColor Green
 }
 
 # Creer un README.md principal s'il n'existe pas ou le mettre a jour
@@ -182,22 +182,22 @@ Ce projet contient des workflows n8n et des outils pour automatiser l'envoi d'em
 ## Structure du projet
 
 \`\`\`
-â”œâ”€â”€ src/                  # Code source principal
-â”‚   â”œâ”€â”€ workflows/        # Workflows n8n
-â”‚   â””â”€â”€ mcp/              # Fichiers MCP (Model Context Protocol)
-â”‚       â”œâ”€â”€ batch/        # Fichiers batch pour MCP
-â”‚       â””â”€â”€ config/       # Configurations MCP
-â”œâ”€â”€ scripts/              # Scripts utilitaires
-â”‚   â”œâ”€â”€ setup/            # Scripts d'installation
-â”‚   â””â”€â”€ maintenance/      # Scripts de maintenance
-â”œâ”€â”€ config/               # Fichiers de configuration
-â”œâ”€â”€ logs/                 # Fichiers de logs
-â”œâ”€â”€ docs/                 # Documentation
-â”‚   â”œâ”€â”€ guides/           # Guides d'utilisation
-â”‚   â””â”€â”€ api/              # Documentation API
-â”œâ”€â”€ tests/                # Tests
-â”œâ”€â”€ tools/                # Outils divers
-â””â”€â”€ assets/               # Ressources statiques
+├── src/                  # Code source principal
+│   ├── workflows/        # Workflows n8n
+│   └── mcp/              # Fichiers MCP (Model Context Protocol)
+│       ├── batch/        # Fichiers batch pour MCP
+│       └── config/       # Configurations MCP
+├── scripts/              # Scripts utilitaires
+│   ├── setup/            # Scripts d'installation
+│   └── maintenance/      # Scripts de maintenance
+├── config/               # Fichiers de configuration
+├── logs/                 # Fichiers de logs
+├── docs/                 # Documentation
+│   ├── guides/           # Guides d'utilisation
+│   └── api/              # Documentation API
+├── tests/                # Tests
+├── tools/                # Outils divers
+└── assets/               # Ressources statiques
 \`\`\`
 
 ## Installation
@@ -240,25 +240,25 @@ Des scripts de maintenance sont disponibles dans le dossier \`scripts/maintenanc
 
 if (-not (Test-Path $readmePath)) {
     Set-Content -Path $readmePath -Value $readmeContent
-    Write-Host "âœ… Fichier README.md cree" -ForegroundColor Green
+    Write-Host "✅ Fichier README.md cree" -ForegroundColor Green
 } else {
-    Write-Host "âš ï¸ Un fichier README.md existe deja" -ForegroundColor Yellow
+    Write-Host "⚠️ Un fichier README.md existe deja" -ForegroundColor Yellow
     Write-Host "Voulez-vous le remplacer par un README standardise ? (O/N)" -ForegroundColor Yellow
     $confirmation = Read-Host
     
     if ($confirmation -eq "O" -or $confirmation -eq "o") {
         Set-Content -Path $readmePath -Value $readmeContent
-        Write-Host "âœ… Fichier README.md mis a jour" -ForegroundColor Green
+        Write-Host "✅ Fichier README.md mis a jour" -ForegroundColor Green
     } else {
-        Write-Host "âŒ README.md conserve tel quel" -ForegroundColor Red
+        Write-Host "❌ README.md conserve tel quel" -ForegroundColor Red
     }
 }
 
 # Creer un script pour generer automatiquement les nouveaux fichiers dans les bons dossiers
-$newFilePath = ".\scripts\maintenance\new-file.ps1"
+$newFilePath = "..\..\D"
 $newFileContent = @"
 # Script pour creer de nouveaux fichiers dans les bons dossiers
-# Usage: .\scripts\maintenance\new-file.ps1 -Type <type> -Name <nom>
+# Usage: ..\..\D -Type <type> -Name <nom>
 
 param (
     [Parameter(Mandatory=`$true)]
@@ -276,26 +276,26 @@ function Create-File {
     )
     
     if (Test-Path `$Path) {
-        Write-Host "âš ï¸ Le fichier `$Path existe deja" -ForegroundColor Yellow
+        Write-Host "⚠️ Le fichier `$Path existe deja" -ForegroundColor Yellow
         Write-Host "Voulez-vous le remplacer ? (O/N)" -ForegroundColor Yellow
         `$confirmation = Read-Host
         
         if (`$confirmation -eq "O" -or `$confirmation -eq "o") {
             Set-Content -Path `$Path -Value `$Content
-            Write-Host "âœ… Fichier `$Path cree (remplace)" -ForegroundColor Green
+            Write-Host "✅ Fichier `$Path cree (remplace)" -ForegroundColor Green
         } else {
-            Write-Host "âŒ Operation annulee" -ForegroundColor Red
+            Write-Host "❌ Operation annulee" -ForegroundColor Red
         }
     } else {
         # Creer le dossier parent s'il n'existe pas
         `$folder = Split-Path `$Path -Parent
         if (-not (Test-Path `$folder)) {
             New-Item -ItemType Directory -Path `$folder | Out-Null
-            Write-Host "âœ… Dossier `$folder cree" -ForegroundColor Green
+            Write-Host "✅ Dossier `$folder cree" -ForegroundColor Green
         }
         
         Set-Content -Path `$Path -Value `$Content
-        Write-Host "âœ… Fichier `$Path cree" -ForegroundColor Green
+        Write-Host "✅ Fichier `$Path cree" -ForegroundColor Green
     }
 }
 
@@ -403,14 +403,15 @@ if (-not (Test-Path $newFilePath)) {
     }
     
     Set-Content -Path $newFilePath -Value $newFileContent
-    Write-Host "âœ… Script new-file.ps1 cree" -ForegroundColor Green
+    Write-Host "✅ Script new-file.ps1 cree" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Script new-file.ps1 existe deja" -ForegroundColor Green
+    Write-Host "✅ Script new-file.ps1 existe deja" -ForegroundColor Green
 }
 
 Write-Host "`n=== Reorganisation terminee ===" -ForegroundColor Cyan
 Write-Host "Le repo a ete reorganise selon les bonnes pratiques."
 Write-Host "Pour creer de nouveaux fichiers dans les bons dossiers, utilisez:"
-Write-Host "  .\scripts\maintenance\new-file.ps1 -Type <type> -Name <nom>"
+Write-Host "  ..\..\D -Type <type> -Name <nom>"
 Write-Host "Types disponibles: workflow, script, doc, config, mcp, test"
+
 

@@ -1,37 +1,37 @@
-﻿# Script pour organiser les fichiers MCP
+# Script pour organiser les fichiers MCP
 
 Write-Host "=== Organisation des fichiers MCP ===" -ForegroundColor Cyan
 
 # Creer le dossier mcp s'il n'existe pas
 if (-not (Test-Path ".\mcp")) {
     New-Item -ItemType Directory -Path ".\mcp" | Out-Null
-    Write-Host "âœ… Dossier mcp cree" -ForegroundColor Green
+    Write-Host "✅ Dossier mcp cree" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Dossier mcp existe deja" -ForegroundColor Green
+    Write-Host "✅ Dossier mcp existe deja" -ForegroundColor Green
 }
 
 # Creer le dossier mcp\batch s'il n'existe pas
 if (-not (Test-Path ".\mcp\batch")) {
     New-Item -ItemType Directory -Path ".\mcp\batch" | Out-Null
-    Write-Host "âœ… Dossier mcp\batch cree" -ForegroundColor Green
+    Write-Host "✅ Dossier mcp\batch cree" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Dossier mcp\batch existe deja" -ForegroundColor Green
+    Write-Host "✅ Dossier mcp\batch existe deja" -ForegroundColor Green
 }
 
 # Creer le dossier mcp\config s'il n'existe pas
 if (-not (Test-Path ".\mcp\config")) {
     New-Item -ItemType Directory -Path ".\mcp\config" | Out-Null
-    Write-Host "âœ… Dossier mcp\config cree" -ForegroundColor Green
+    Write-Host "✅ Dossier mcp\config cree" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Dossier mcp\config existe deja" -ForegroundColor Green
+    Write-Host "✅ Dossier mcp\config existe deja" -ForegroundColor Green
 }
 
 # Creer le dossier mcp\workflows s'il n'existe pas
 if (-not (Test-Path ".\mcp\workflows")) {
     New-Item -ItemType Directory -Path ".\mcp\workflows" | Out-Null
-    Write-Host "âœ… Dossier mcp\workflows cree" -ForegroundColor Green
+    Write-Host "✅ Dossier mcp\workflows cree" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Dossier mcp\workflows existe deja" -ForegroundColor Green
+    Write-Host "✅ Dossier mcp\workflows existe deja" -ForegroundColor Green
 }
 
 # Deplacer les fichiers batch MCP
@@ -45,9 +45,9 @@ $batchFiles = @(
 foreach ($file in $batchFiles) {
     if (Test-Path ".\$file") {
         Copy-Item ".\$file" ".\mcp\batch\$file"
-        Write-Host "âœ… Fichier $file copie dans mcp\batch" -ForegroundColor Green
+        Write-Host "✅ Fichier $file copie dans mcp\batch" -ForegroundColor Green
     } else {
-        Write-Host "âŒ Fichier $file non trouve" -ForegroundColor Red
+        Write-Host "❌ Fichier $file non trouve" -ForegroundColor Red
     }
 }
 
@@ -61,9 +61,9 @@ $configFiles = @(
 foreach ($file in $configFiles) {
     if (Test-Path ".\$file") {
         Copy-Item ".\$file" ".\mcp\config\$file"
-        Write-Host "âœ… Fichier $file copie dans mcp\config" -ForegroundColor Green
+        Write-Host "✅ Fichier $file copie dans mcp\config" -ForegroundColor Green
     } else {
-        Write-Host "âŒ Fichier $file non trouve" -ForegroundColor Red
+        Write-Host "❌ Fichier $file non trouve" -ForegroundColor Red
     }
 }
 
@@ -76,14 +76,14 @@ $workflowFiles = @(
 foreach ($file in $workflowFiles) {
     if (Test-Path ".\$file") {
         Copy-Item ".\$file" ".\mcp\workflows\$file"
-        Write-Host "âœ… Fichier $file copie dans mcp\workflows" -ForegroundColor Green
+        Write-Host "✅ Fichier $file copie dans mcp\workflows" -ForegroundColor Green
     } else {
-        Write-Host "âŒ Fichier $file non trouve" -ForegroundColor Red
+        Write-Host "❌ Fichier $file non trouve" -ForegroundColor Red
     }
 }
 
 # Creer un fichier README.md dans le dossier mcp
-$readmePath = ".\mcp\README.md"
+$readmePath = "repo\README.md"
 $readmeContent = @"
 # Configuration MCP pour n8n
 
@@ -118,10 +118,10 @@ Pour plus d'informations, consultez les guides suivants :
 "@
 
 Set-Content -Path $readmePath -Value $readmeContent
-Write-Host "âœ… Fichier README.md cree dans le dossier mcp" -ForegroundColor Green
+Write-Host "✅ Fichier README.md cree dans le dossier mcp" -ForegroundColor Green
 
 # Creer un script pour utiliser les MCP depuis le dossier mcp
-$scriptPath = ".\mcp\use-mcp.ps1"
+$scriptPath = "..\..\D"
 $scriptContent = @"
 # Script pour utiliser les MCP depuis le dossier mcp
 
@@ -142,19 +142,19 @@ function Execute-MCP {
     switch (`$MCP) {
         "standard" {
             Write-Host "Execution du MCP Standard..." -ForegroundColor Cyan
-            & ".\batch\mcp-standard.cmd" `$Args
+            & "..\..\D" `$Args
         }
         "notion" {
             Write-Host "Execution du MCP Notion..." -ForegroundColor Cyan
-            & ".\batch\mcp-notion.cmd" `$Args
+            & "..\..\D" `$Args
         }
         "gateway" {
             Write-Host "Execution du MCP Gateway..." -ForegroundColor Cyan
-            & ".\batch\gateway.exe.cmd" `$Args
+            & "..\email\gateway.exe.cmd" `$Args
         }
         "git-ingest" {
             Write-Host "Execution du MCP Git Ingest..." -ForegroundColor Cyan
-            & ".\batch\mcp-git-ingest.cmd" `$Args
+            & "..\..\D" `$Args
         }
         default {
             Write-Host "MCP non reconnu : `$MCP" -ForegroundColor Red
@@ -178,9 +178,10 @@ Execute-MCP -MCP `$mcpName -Args `$mcpArgs
 "@
 
 Set-Content -Path $scriptPath -Value $scriptContent
-Write-Host "âœ… Script use-mcp.ps1 cree dans le dossier mcp" -ForegroundColor Green
+Write-Host "✅ Script use-mcp.ps1 cree dans le dossier mcp" -ForegroundColor Green
 
 Write-Host "`n=== Organisation terminee ===" -ForegroundColor Cyan
 Write-Host "Les fichiers MCP ont ete organises dans le dossier mcp."
 Write-Host "Vous pouvez maintenant utiliser les MCP depuis ce dossier."
+
 

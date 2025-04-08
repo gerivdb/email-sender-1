@@ -1,4 +1,4 @@
-﻿# Script pour verifier l'integrite de la structure du projet
+# Script pour verifier l'integrite de la structure du projet
 
 Write-Host "=== Verification de l'integrite de la structure du projet ===" -ForegroundColor Cyan
 
@@ -52,13 +52,13 @@ if ($missingFolders.Count -eq 0) {
 # Fichiers essentiels a verifier
 $essentialFiles = @(
     @{Path = ".\README.md"; Description = "Fichier README principal"},
-    @{Path = ".\src\mcp\batch\mcp-standard.cmd"; Description = "Fichier batch MCP Standard"},
-    @{Path = ".\src\mcp\batch\mcp-notion.cmd"; Description = "Fichier batch MCP Notion"},
-    @{Path = ".\src\mcp\batch\gateway.exe.cmd"; Description = "Fichier batch MCP Gateway"},
-    @{Path = ".\src\mcp\batch\mcp-git-ingest.cmd"; Description = "Fichier batch MCP Git Ingest"},
-    @{Path = ".\tools\start-n8n-mcp.cmd"; Description = "Script de demarrage n8n"},
-    @{Path = ".\scripts\maintenance\auto-organize.ps1"; Description = "Script d'organisation automatique"},
-    @{Path = ".\scripts\maintenance\new-file.ps1"; Description = "Script de creation de fichiers"}
+    @{Path = "..\..\D"; Description = "Fichier batch MCP Standard"},
+    @{Path = "..\..\D"; Description = "Fichier batch MCP Notion"},
+    @{Path = "..\mcp\gateway.exe.cmd"; Description = "Fichier batch MCP Gateway"},
+    @{Path = "..\..\D"; Description = "Fichier batch MCP Git Ingest"},
+    @{Path = "..\..\D"; Description = "Script de demarrage n8n"},
+    @{Path = "..\..\D"; Description = "Script d'organisation automatique"},
+    @{Path = "..\..\D"; Description = "Script de creation de fichiers"}
 )
 
 # Verifier si les fichiers essentiels existent
@@ -109,8 +109,9 @@ if ($rootFiles -ne $null -and $rootFiles.Count -gt 0) {
     $organizeFiles = Read-Host
     
     if ($organizeFiles -eq "O" -or $organizeFiles -eq "o") {
-        & ".\scripts\maintenance\auto-organize.ps1"
+        & "..\..\D"
     }
 }
 
 Write-Host "`n=== Verification terminee ===" -ForegroundColor Cyan
+

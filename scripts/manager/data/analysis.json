@@ -1,14 +1,14 @@
 {
-    "Timestamp":  "2025-04-08 00:06:01",
-    "TotalScripts":  769,
+    "Timestamp":  "2025-04-08 17:34:08",
+    "TotalScripts":  789,
     "ScriptsByCategory":  [
                               {
                                   "Category":  "Email",
-                                  "Count":  49
+                                  "Count":  53
                               },
                               {
                                   "Category":  "Documentation",
-                                  "Count":  18
+                                  "Count":  20
                               },
                               {
                                   "Category":  "Git",
@@ -16,23 +16,23 @@
                               },
                               {
                                   "Category":  "Journal",
-                                  "Count":  60
+                                  "Count":  61
                               },
                               {
                                   "Category":  "Roadmap",
-                                  "Count":  84
+                                  "Count":  85
                               },
                               {
                                   "Category":  "Setup",
-                                  "Count":  35
+                                  "Count":  36
                               },
                               {
                                   "Category":  "Utils",
-                                  "Count":  17
+                                  "Count":  18
                               },
                               {
                                   "Category":  "Testing",
-                                  "Count":  33
+                                  "Count":  40
                               },
                               {
                                   "Category":  "Workflow",
@@ -40,11 +40,11 @@
                               },
                               {
                                   "Category":  "Encoding",
-                                  "Count":  25
+                                  "Count":  26
                               },
                               {
                                   "Category":  "Database",
-                                  "Count":  2
+                                  "Count":  4
                               },
                               {
                                   "Category":  "N8N",
@@ -71,12 +71,12 @@
                                  {
                                      "Category":  "Email",
                                      "SubCategory":  "General",
-                                     "Count":  49
+                                     "Count":  53
                                  },
                                  {
                                      "Category":  "Documentation",
                                      "SubCategory":  "General",
-                                     "Count":  18
+                                     "Count":  20
                                  },
                                  {
                                      "Category":  "Git",
@@ -86,27 +86,27 @@
                                  {
                                      "Category":  "Journal",
                                      "SubCategory":  "General",
-                                     "Count":  60
+                                     "Count":  61
                                  },
                                  {
                                      "Category":  "Roadmap",
                                      "SubCategory":  "General",
-                                     "Count":  84
+                                     "Count":  85
                                  },
                                  {
                                      "Category":  "Setup",
                                      "SubCategory":  "Environment",
-                                     "Count":  24
+                                     "Count":  25
                                  },
                                  {
                                      "Category":  "Utils",
                                      "SubCategory":  "JSON",
-                                     "Count":  13
+                                     "Count":  14
                                  },
                                  {
                                      "Category":  "Testing",
                                      "SubCategory":  "General",
-                                     "Count":  33
+                                     "Count":  40
                                  },
                                  {
                                      "Category":  "Workflow",
@@ -126,7 +126,7 @@
                                  {
                                      "Category":  "Encoding",
                                      "SubCategory":  "General",
-                                     "Count":  25
+                                     "Count":  26
                                  },
                                  {
                                      "Category":  "Utils",
@@ -136,7 +136,7 @@
                                  {
                                      "Category":  "Database",
                                      "SubCategory":  "General",
-                                     "Count":  2
+                                     "Count":  4
                                  },
                                  {
                                      "Category":  "N8N",
@@ -209,7 +209,7 @@
                                      "Count":  6
                                  }
                              ],
-    "ScriptsToMove":  769,
+    "ScriptsToMove":  789,
     "Scripts":  [
                     {
                         "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\Fix-VoidError.ps1",
@@ -325,9 +325,9 @@
                         "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\ErrorManagement\\AnalysisImprovements\\EnhancedErrorPatterns.ps1",
                         "Name":  "EnhancedErrorPatterns.ps1",
                         "Type":  "PowerShell",
-                        "Category":  "Setup",
-                        "SubCategory":  "Environment",
-                        "TargetFolder":  "scripts/setup/environment",
+                        "Category":  "Utils",
+                        "SubCategory":  "JSON",
+                        "TargetFolder":  "scripts/utils/json",
                         "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\ErrorManagement\\AnalysisImprovements",
                         "NeedsMove":  true
                     },
@@ -4752,6 +4752,16 @@
                         "NeedsMove":  true
                     },
                     {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\powershell\\fix-workflow-names_temp.ps1",
+                        "Name":  "fix-workflow-names_temp.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Email",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/email",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\powershell",
+                        "NeedsMove":  true
+                    },
+                    {
                         "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\powershell\\get-workflows.ps1",
                         "Name":  "get-workflows.ps1",
                         "Type":  "PowerShell",
@@ -5022,12 +5032,52 @@
                         "NeedsMove":  true
                     },
                     {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Analyze-Scripts.ps1",
+                        "Name":  "Analyze-Scripts.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Testing",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "NeedsMove":  true
+                    },
+                    {
                         "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Inventory-Scripts.ps1",
                         "Name":  "Inventory-Scripts.ps1",
                         "Type":  "PowerShell",
                         "Category":  "Security",
                         "SubCategory":  "General",
                         "TargetFolder":  "scripts/security",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Organize-Scripts.ps1",
+                        "Name":  "Organize-Scripts.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Email",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/email",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Phase2-AnalyzeAndOrganize.ps1",
+                        "Name":  "Phase2-AnalyzeAndOrganize.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Testing",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Phase3-DocumentAndMonitor.ps1",
+                        "Name":  "Phase3-DocumentAndMonitor.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Documentation",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/documentation",
                         "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
                         "NeedsMove":  true
                     },
@@ -5039,6 +5089,76 @@
                         "SubCategory":  "JSON",
                         "TargetFolder":  "scripts/utils/json",
                         "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Start-ScriptOptimization.ps1",
+                        "Name":  "Start-ScriptOptimization.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Journal",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/journal",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Update-Roadmap.ps1",
+                        "Name":  "Update-Roadmap.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Roadmap",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/roadmap",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-AnalysisModule.ps1",
+                        "Name":  "Test-AnalysisModule.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Testing",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-DocumentationModule.ps1",
+                        "Name":  "Test-DocumentationModule.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Testing",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-MonitoringModule.ps1",
+                        "Name":  "Test-MonitoringModule.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Testing",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-OptimizationModule.ps1",
+                        "Name":  "Test-OptimizationModule.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Testing",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-OrganizationModule.ps1",
+                        "Name":  "Test-OrganizationModule.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Testing",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
                         "NeedsMove":  true
                     },
                     {
@@ -6442,6 +6562,16 @@
                         "NeedsMove":  true
                     },
                     {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\detect_redundancies.py",
+                        "Name":  "detect_redundancies.py",
+                        "Type":  "Python",
+                        "Category":  "Email",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/python/email",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "NeedsMove":  true
+                    },
+                    {
                         "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\file_manager.py",
                         "Name":  "file_manager.py",
                         "Type":  "Python",
@@ -6458,6 +6588,16 @@
                         "Category":  "Workflow",
                         "SubCategory":  "Testing",
                         "TargetFolder":  "scripts/python/workflow/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\fix_encoding.ps1",
+                        "Name":  "fix_encoding.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Encoding",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/encoding",
                         "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
                         "NeedsMove":  true
                     },
@@ -6498,6 +6638,16 @@
                         "Category":  "Workflow",
                         "SubCategory":  "Testing",
                         "TargetFolder":  "scripts/python/workflow/testing",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\generate_documentation.py",
+                        "Name":  "generate_documentation.py",
+                        "Type":  "Python",
+                        "Category":  "Documentation",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/python/documentation",
                         "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
                         "NeedsMove":  true
                     },
@@ -6548,6 +6698,56 @@
                         "Category":  "Maintenance",
                         "SubCategory":  "Cleanup",
                         "TargetFolder":  "scripts/python/maintenance/cleanup",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_config.ps1",
+                        "Name":  "script_config.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Setup",
+                        "SubCategory":  "Environment",
+                        "TargetFolder":  "scripts/setup/environment",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_database.py",
+                        "Name":  "script_database.py",
+                        "Type":  "Python",
+                        "Category":  "Database",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/python/database",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_inventory.py",
+                        "Name":  "script_inventory.py",
+                        "Type":  "Python",
+                        "Category":  "Database",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/python/database",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_manager.ps1",
+                        "Name":  "script_manager.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Setup",
+                        "SubCategory":  "Environment",
+                        "TargetFolder":  "scripts/setup/environment",
+                        "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "NeedsMove":  true
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_manager_fixed.ps1",
+                        "Name":  "script_manager_fixed.ps1",
+                        "Type":  "PowerShell",
+                        "Category":  "Email",
+                        "SubCategory":  "General",
+                        "TargetFolder":  "scripts/email",
                         "CurrentFolder":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
                         "NeedsMove":  true
                     },

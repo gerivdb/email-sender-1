@@ -1,5 +1,5 @@
-﻿# Script pour organiser automatiquement les dossiers contenant trop de fichiers
-# Ce script vÃ©rifie si un dossier contient trop de fichiers et les organise en sous-dossiers
+# Script pour organiser automatiquement les dossiers contenant trop de fichiers
+# Ce script vérifie si un dossier contient trop de fichiers et les organise en sous-dossiers
 
 param (
     [string]$FolderPath = ".",
@@ -45,7 +45,7 @@ function Get-FileType {
     }
 }
 
-# Fonction pour obtenir le dossier de destination basÃ© sur la date
+# Fonction pour obtenir le dossier de destination basé sur la date
 function Get-DateFolder {
     param (
         [System.IO.FileInfo]$File
@@ -57,7 +57,7 @@ function Get-DateFolder {
     return "$year-$month"
 }
 
-# Fonction pour obtenir le dossier alphabÃ©tique
+# Fonction pour obtenir le dossier alphabétique
 function Get-AlphaFolder {
     param (
         [System.IO.FileInfo]$File
@@ -74,7 +74,7 @@ function Get-AlphaFolder {
     }
 }
 
-# Fonction pour obtenir le dossier basÃ© sur la taille
+# Fonction pour obtenir le dossier basé sur la taille
 function Get-SizeFolder {
     param (
         [System.IO.FileInfo]$File
@@ -103,25 +103,25 @@ function Organize-Folder {
         [string]$OrganizationMethod
     )
 
-    # VÃ©rifier si le dossier existe
+    # Vérifier si le dossier existe
     if (-not (Test-Path -Path $FolderPath -PathType Container)) {
         Write-Host "Le dossier '$FolderPath' n'existe pas." -ForegroundColor Red
         return
     }
 
-    # Obtenir tous les fichiers dans le dossier (non rÃ©cursif)
+    # Obtenir tous les fichiers dans le dossier (non récursif)
     $files = Get-ChildItem -Path $FolderPath -File
 
-    # VÃ©rifier s'il y a trop de fichiers
+    # Vérifier s'il y a trop de fichiers
     if ($files.Count -le $MaxFilesPerFolder) {
-        Write-Host "Le dossier '$FolderPath' contient $($files.Count) fichiers, ce qui est infÃ©rieur ou Ã©gal au maximum de $MaxFilesPerFolder." -ForegroundColor Green
+        Write-Host "Le dossier '$FolderPath' contient $($files.Count) fichiers, ce qui est inférieur ou égal au maximum de $MaxFilesPerFolder." -ForegroundColor Green
         return
     }
 
-    Write-Host "Le dossier '$FolderPath' contient $($files.Count) fichiers, ce qui dÃ©passe le maximum de $MaxFilesPerFolder." -ForegroundColor Yellow
-    Write-Host "Organisation des fichiers par mÃ©thode: $OrganizationMethod" -ForegroundColor Cyan
+    Write-Host "Le dossier '$FolderPath' contient $($files.Count) fichiers, ce qui dépasse le maximum de $MaxFilesPerFolder." -ForegroundColor Yellow
+    Write-Host "Organisation des fichiers par méthode: $OrganizationMethod" -ForegroundColor Cyan
 
-    # Organiser les fichiers selon la mÃ©thode choisie
+    # Organiser les fichiers selon la méthode choisie
     foreach ($file in $files) {
         $subFolder = ""
 
@@ -145,37 +145,37 @@ function Organize-Folder {
 
         $subFolderPath = Join-Path -Path $FolderPath -ChildPath $subFolder
 
-        # CrÃ©er le sous-dossier s'il n'existe pas
+        # Créer le sous-dossier s'il n'existe pas
         if (-not (Test-Path -Path $subFolderPath -PathType Container)) {
-            Write-Host "CrÃ©ation du sous-dossier: $subFolderPath" -ForegroundColor Yellow
+            Write-Host "Création du sous-dossier: $subFolderPath" -ForegroundColor Yellow
             New-Item -Path $subFolderPath -ItemType Directory -Force | Out-Null
         }
 
-        # DÃ©placer le fichier dans le sous-dossier
+        # Déplacer le fichier dans le sous-dossier
         $destinationPath = Join-Path -Path $subFolderPath -ChildPath $file.Name
 
         if (-not (Test-Path -Path $destinationPath)) {
-            Write-Host "DÃ©placement de $($file.Name) vers $subFolder/" -ForegroundColor Yellow
+            Write-Host "Déplacement de $($file.Name) vers $subFolder/" -ForegroundColor Yellow
             Move-Item -Path $file.FullName -Destination $destinationPath -Force
         } else {
-            Write-Host "Le fichier $($file.Name) existe dÃ©jÃ  dans $subFolder/" -ForegroundColor Red
+            Write-Host "Le fichier $($file.Name) existe déjà dans $subFolder/" -ForegroundColor Red
         }
     }
 
-    Write-Host "Organisation du dossier '$FolderPath' terminÃ©e." -ForegroundColor Green
+    Write-Host "Organisation du dossier '$FolderPath' terminée." -ForegroundColor Green
 
-    # VÃ©rifier rÃ©cursivement les sous-dossiers crÃ©Ã©s
+    # Vérifier récursivement les sous-dossiers créés
     $subFolders = Get-ChildItem -Path $FolderPath -Directory
     foreach ($subFolder in $subFolders) {
         $subFiles = Get-ChildItem -Path $subFolder.FullName -File
 
         if ($subFiles.Count -gt $MaxFilesPerFolder) {
-            Write-Host "`nLe sous-dossier '$($subFolder.FullName)' contient $($subFiles.Count) fichiers, ce qui dÃ©passe le maximum." -ForegroundColor Yellow
+            Write-Host "`nLe sous-dossier '$($subFolder.FullName)' contient $($subFiles.Count) fichiers, ce qui dépasse le maximum." -ForegroundColor Yellow
 
-            # DÃ©terminer la mÃ©thode d'organisation pour les sous-dossiers
+            # Déterminer la méthode d'organisation pour les sous-dossiers
             $subMethod = if ($OrganizationMethod -eq "type") { "alpha" } else { "type" }
 
-            Write-Host "Organisation rÃ©cursive avec la mÃ©thode: $subMethod" -ForegroundColor Cyan
+            Write-Host "Organisation récursive avec la méthode: $subMethod" -ForegroundColor Cyan
             Organize-Folder -FolderPath $subFolder.FullName -MaxFilesPerFolder $MaxFilesPerFolder -OrganizationMethod $subMethod
         }
     }
@@ -198,9 +198,9 @@ function Organize-AllFolders {
 
     foreach ($folder in $foldersToCheck) {
         if (Test-Path -Path $folder -PathType Container) {
-            Write-Host "`n=== VÃ©rification du dossier: $folder ===" -ForegroundColor Cyan
+            Write-Host "`n=== Vérification du dossier: $folder ===" -ForegroundColor Cyan
 
-            # DÃ©terminer la mÃ©thode d'organisation en fonction du type de dossier
+            # Déterminer la méthode d'organisation en fonction du type de dossier
             $method = switch ($folder) {
                 "scripts" { "type" }
                 "workflows" { "type" }
@@ -219,7 +219,7 @@ function Organize-AllFolders {
 # Fonction pour organiser les documents
 function Organize-Documents {
     # Verifier si le script d'organisation des documents existe
-    $organizeDocsScript = "scripts\utils\automation\organize-docs-fixed.ps1"
+    $organizeDocsScript = "..\..\D"
 
     if (Test-Path -Path $organizeDocsScript) {
         Write-Host "Organisation des documents..." -ForegroundColor Cyan
@@ -229,7 +229,7 @@ function Organize-Documents {
     }
 }
 
-# ExÃ©cution principale
+# Exécution principale
 if ($FolderPath -eq ".") {
     # Mode global: organiser tous les dossiers du projet
     Organize-AllFolders -MaxFilesPerFolder $MaxFilesPerFolder
@@ -237,7 +237,7 @@ if ($FolderPath -eq ".") {
     # Organiser les documents
     Organize-Documents
 } else {
-    # Mode spÃ©cifique: organiser un dossier particulier
+    # Mode spécifique: organiser un dossier particulier
     Organize-Folder -FolderPath $FolderPath -MaxFilesPerFolder $MaxFilesPerFolder -OrganizationMethod $OrganizationMethod
 
     # Si le dossier est docs, organiser les documents
@@ -245,3 +245,4 @@ if ($FolderPath -eq ".") {
         Organize-Documents
     }
 }
+

@@ -1,0 +1,23 @@
+{
+    "general": {
+        "defaultCommand": "help",
+        "scanPath": ".",
+        "dbPath": "scripts_db.json",
+        "verbose": false
+    },
+    "inventory": {
+        "includeExtensions": [".ps1", ".py", ".cmd"],
+        "excludeFolders": ["node_modules", ".git"],
+        "maxDepth": 10
+    },
+    "analyze": {
+        "detailedOutput": true,
+        "generateReport": false,
+        "reportPath": "reports"
+    },
+    "organize": {
+        "dryRun": true,
+        "backupBeforeChanges": true,
+        "backupPath": "backups"
+    }
+}

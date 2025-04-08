@@ -1,40 +1,59 @@
 <#
 .SYNOPSIS
-    Script Manager - Gestion proactive des scripts du projet
+    Script Manager - Système centralisé de gestion des scripts
 .DESCRIPTION
-    Système centralisé pour inventorier, analyser, organiser et optimiser
-    tous les scripts du projet.
+    Système centralisé pour inventorier, analyser, standardiser, optimiser et documenter
+    tous les scripts du projet. Intègre les fonctionnalités des phases 1 à 3.
 .PARAMETER Action
-    Action à effectuer: inventory, analyze, map, organize, document, monitor, optimize
-.PARAMETER Target
-    Cible spécifique (dossier ou script)
+    Action à effectuer:
+    - inventory: Inventaire des scripts
+    - analyze: Analyse des scripts
+    - standardize: Standardisation des scripts
+    - deduplicate: Élimination des duplications
+    - document: Documentation des scripts
+    - dashboard: Affichage du tableau de bord
+    - all: Exécute toutes les actions
+.PARAMETER Path
+    Chemin du dossier contenant les scripts à traiter
+.PARAMETER ScriptType
+    Type de script à traiter (All, PowerShell, Python, Batch, Shell)
 .PARAMETER AutoApply
-    Applique automatiquement les recommandations
+    Applique automatiquement les modifications
 .PARAMETER Format
-    Format de sortie (JSON, Markdown, HTML)
-.PARAMETER Verbose
+    Format de sortie (JSON, HTML, Markdown)
+.PARAMETER UsePython
+    Utilise les scripts Python pour les opérations avancées
+.PARAMETER ShowDetails
     Affiche des informations détaillées
 .EXAMPLE
-    .\ScriptManager.ps1 -Action inventory
-    Effectue un inventaire complet des scripts
+    .\ScriptManager.ps1 -Action inventory -Path scripts
+    Effectue un inventaire des scripts dans le dossier "scripts"
 .EXAMPLE
-    .\ScriptManager.ps1 -Action organize -AutoApply
-    Organise automatiquement les scripts selon les règles définies
+    .\ScriptManager.ps1 -Action analyze -Path scripts -ScriptType PowerShell -UsePython
+    Analyse les scripts PowerShell en utilisant les modules Python avancés
+.EXAMPLE
+    .\ScriptManager.ps1 -Action all -Path scripts -AutoApply
+    Exécute toutes les actions sur les scripts et applique automatiquement les modifications
 #>
 
 param (
     [Parameter(Mandatory=$true)]
-    [ValidateSet("inventory", "analyze", "map", "organize", "document", "monitor", "optimize")]
+    [ValidateSet("inventory", "analyze", "standardize", "deduplicate", "document", "dashboard", "all")]
     [string]$Action,
     
-    [string]$Target = ".",
+    [string]$Path = "scripts",
+    
+    [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")]
+    [string]$ScriptType = "All",
     
     [switch]$AutoApply,
     
-    [ValidateSet("JSON", "Markdown", "HTML")]
-    [string]$Format = "JSON",
+    [ValidateSet("JSON", "HTML", "Markdown")]
+    [string]$Format = "HTML",
     
-    [switch]$Verbose
+    [switch]$UsePython,
+    
+    [switch]$ShowDetails
 )
 
 # Définition des chemins
@@ -42,32 +61,23 @@ $ScriptRoot = $PSScriptRoot
 $ModulesPath = Join-Path -Path $ScriptRoot -ChildPath "modules"
 $ConfigPath = Join-Path -Path $ScriptRoot -ChildPath "config"
 $DataPath = Join-Path -Path $ScriptRoot -ChildPath "data"
-
-# Création des dossiers s'ils n'existent pas
-$FoldersToCreate = @($ModulesPath, $ConfigPath, $DataPath)
-foreach ($Folder in $FoldersToCreate) {
-    if (-not (Test-Path -Path $Folder)) {
-        New-Item -ItemType Directory -Path $Folder -Force | Out-Null
-        if ($Verbose) {
-            Write-Host "Dossier créé: $Folder" -ForegroundColor Green
-        }
-    }
-}
+$DocsPath = Join-Path -Path $ScriptRoot -ChildPath "docs"
 
 # Fonction pour écrire des messages de log
 function Write-Log {
     param (
         [string]$Message,
-        [ValidateSet("INFO", "SUCCESS", "WARNING", "ERROR")]
+        [ValidateSet("INFO", "SUCCESS", "WARNING", "ERROR", "TITLE")]
         [string]$Level = "INFO"
     )
     
     $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $ColorMap = @{
-        "INFO" = "Cyan"
+        "INFO" = "White"
         "SUCCESS" = "Green"
         "WARNING" = "Yellow"
         "ERROR" = "Red"
+        "TITLE" = "Cyan"
     }
     
     $Color = $ColorMap[$Level]
@@ -75,391 +85,12 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Si verbose, écrire dans un fichier de log
-    if ($Verbose) {
-        $LogFile = Join-Path -Path $DataPath -ChildPath "ScriptManager.log"
-        Add-Content -Path $LogFile -Value $FormattedMessage
-    }
+    # Écrire dans un fichier de log
+    $LogFile = Join-Path -Path $DataPath -ChildPath "script_manager.log"
+    Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
-# Fonction pour créer le module d'inventaire
-function Create-InventoryModule {
-    $ModulePath = Join-Path -Path $ModulesPath -ChildPath "Inventory.psm1"
-    
-    if (-not (Test-Path -Path $ModulePath)) {
-        $ModuleContent = @'
-# Module d'inventaire des scripts
-# Ce module permet de scanner récursivement les répertoires pour trouver tous les scripts
-# et extraire leurs métadonnées
-
-function Invoke-ScriptInventory {
-    param (
-        [string]$Path = ".",
-        [string]$OutputPath = "inventory.json",
-        [switch]$Verbose
-    )
-    
-    Write-Host "Démarrage de l'inventaire des scripts dans: $Path" -ForegroundColor Cyan
-    
-    # Liste des extensions de scripts à rechercher
-    $ScriptExtensions = @(
-        ".ps1",  # PowerShell
-        ".py",   # Python
-        ".cmd",  # Batch Windows
-        ".bat",  # Batch Windows
-        ".sh"    # Shell Unix
-    )
-    
-    # Récupérer tous les fichiers avec les extensions spécifiées
-    $AllFiles = Get-ChildItem -Path $Path -Recurse -File | Where-Object {
-        $_.Extension -in $ScriptExtensions
-    }
-    
-    Write-Host "Nombre de scripts trouvés: $($AllFiles.Count)" -ForegroundColor Cyan
-    
-    # Créer un tableau pour stocker les informations sur les scripts
-    $ScriptsInfo = @()
-    
-    # Traiter chaque fichier
-    foreach ($File in $AllFiles) {
-        if ($Verbose) {
-            Write-Host "Traitement du fichier: $($File.FullName)" -ForegroundColor Cyan
-        }
-        
-        # Déterminer le type de script en fonction de l'extension
-        $ScriptType = switch ($File.Extension) {
-            ".ps1" { "PowerShell" }
-            ".py"  { "Python" }
-            ".cmd" { "Batch" }
-            ".bat" { "Batch" }
-            ".sh"  { "Shell" }
-            default { "Unknown" }
-        }
-        
-        # Extraire les métadonnées du script
-        $Metadata = Get-ScriptMetadata -FilePath $File.FullName -ScriptType $ScriptType
-        
-        # Créer un objet avec les informations du script
-        $ScriptInfo = [PSCustomObject]@{
-            Path = $File.FullName
-            Name = $File.Name
-            Directory = $File.DirectoryName
-            Extension = $File.Extension
-            Type = $ScriptType
-            Size = $File.Length
-            CreationTime = $File.CreationTime
-            LastWriteTime = $File.LastWriteTime
-            Metadata = $Metadata
-        }
-        
-        # Ajouter l'objet au tableau
-        $ScriptsInfo += $ScriptInfo
-    }
-    
-    # Créer un objet avec les informations de l'inventaire
-    $Inventory = [PSCustomObject]@{
-        Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-        TotalScripts = $ScriptsInfo.Count
-        ScriptsByType = $ScriptsInfo | Group-Object -Property Type | ForEach-Object {
-            [PSCustomObject]@{
-                Type = $_.Name
-                Count = $_.Count
-            }
-        }
-        Scripts = $ScriptsInfo
-    }
-    
-    # Convertir l'objet en JSON et l'enregistrer dans un fichier
-    $Inventory | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
-    
-    Write-Host "Inventaire terminé. Résultats enregistrés dans: $OutputPath" -ForegroundColor Green
-    
-    return $Inventory
-}
-
-function Get-ScriptMetadata {
-    param (
-        [string]$FilePath,
-        [string]$ScriptType
-    )
-    
-    # Lire le contenu du fichier
-    $Content = Get-Content -Path $FilePath -Raw
-    
-    # Initialiser l'objet de métadonnées
-    $Metadata = @{
-        Author = ""
-        Description = ""
-        Version = ""
-        Tags = @()
-        Dependencies = @()
-    }
-    
-    # Extraire les métadonnées en fonction du type de script
-    switch ($ScriptType) {
-        "PowerShell" {
-            # Extraire l'auteur (commentaire avec Author ou par)
-            if ($Content -match '(?m)^#\s*Author\s*:\s*(.+?)$|^#\s*par\s*:\s*(.+?)$') {
-                $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
-            }
-            
-            # Extraire la description (première ligne de commentaire ou bloc de commentaires)
-            if ($Content -match '(?m)^#\s*(.+?)$') {
-                $Metadata.Description = $matches[1].Trim()
-            }
-            
-            # Extraire la version
-            if ($Content -match '(?m)^#\s*Version\s*:\s*(.+?)$') {
-                $Metadata.Version = $matches[1].Trim()
-            }
-            
-            # Extraire les tags (commentaires avec Tags ou Mots-clés)
-            if ($Content -match '(?m)^#\s*Tags\s*:\s*(.+?)$|^#\s*Mots-clés\s*:\s*(.+?)$') {
-                $TagsString = if ($matches[1]) { $matches[1] } else { $matches[2] }
-                $Metadata.Tags = $TagsString -split ',' | ForEach-Object { $_.Trim() }
-            }
-            
-            # Extraire les dépendances (Import-Module, . source, etc.)
-            $ImportMatches = [regex]::Matches($Content, '(?m)^Import-Module\s+(.+?)$|^\.\s+(.+?)$')
-            foreach ($Match in $ImportMatches) {
-                $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[2].Value }
-                $Metadata.Dependencies += $Dependency.Trim()
-            }
-        }
-        "Python" {
-            # Extraire l'auteur (commentaire avec Author ou par)
-            if ($Content -match '(?m)^#\s*Author\s*:\s*(.+?)$|^#\s*par\s*:\s*(.+?)$') {
-                $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
-            }
-            
-            # Extraire la description (docstring ou première ligne de commentaire)
-            if ($Content -match '"""(.+?)"""' -or $Content -match "'''(.+?)'''") {
-                $Metadata.Description = $matches[1].Trim()
-            }
-            elseif ($Content -match '(?m)^#\s*(.+?)$') {
-                $Metadata.Description = $matches[1].Trim()
-            }
-            
-            # Extraire la version
-            if ($Content -match '(?m)^#\s*Version\s*:\s*(.+?)$|^__version__\s*=\s*[''"](.+?)[''"]') {
-                $Metadata.Version = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
-            }
-            
-            # Extraire les tags
-            if ($Content -match '(?m)^#\s*Tags\s*:\s*(.+?)$') {
-                $TagsString = $matches[1]
-                $Metadata.Tags = $TagsString -split ',' | ForEach-Object { $_.Trim() }
-            }
-            
-            # Extraire les dépendances (import, from ... import)
-            $ImportMatches = [regex]::Matches($Content, '(?m)^import\s+(.+?)$|^from\s+(.+?)\s+import')
-            foreach ($Match in $ImportMatches) {
-                $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[2].Value }
-                $Metadata.Dependencies += $Dependency.Trim()
-            }
-        }
-        "Batch" {
-            # Extraire l'auteur (commentaire avec Author ou par)
-            if ($Content -match '(?m)^rem\s*Author\s*:\s*(.+?)$|^rem\s*par\s*:\s*(.+?)$') {
-                $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
-            }
-            
-            # Extraire la description (première ligne de commentaire)
-            if ($Content -match '(?m)^rem\s*(.+?)$|^::\s*(.+?)$') {
-                $Metadata.Description = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
-            }
-            
-            # Extraire la version
-            if ($Content -match '(?m)^rem\s*Version\s*:\s*(.+?)$|^::\s*Version\s*:\s*(.+?)$') {
-                $Metadata.Version = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
-            }
-        }
-        "Shell" {
-            # Extraire l'auteur (commentaire avec Author ou par)
-            if ($Content -match '(?m)^#\s*Author\s*:\s*(.+?)$|^#\s*par\s*:\s*(.+?)$') {
-                $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
-            }
-            
-            # Extraire la description (première ligne de commentaire)
-            if ($Content -match '(?m)^#\s*(.+?)$') {
-                $Metadata.Description = $matches[1].Trim()
-            }
-            
-            # Extraire la version
-            if ($Content -match '(?m)^#\s*Version\s*:\s*(.+?)$') {
-                $Metadata.Version = $matches[1].Trim()
-            }
-            
-            # Extraire les dépendances (source, ., etc.)
-            $ImportMatches = [regex]::Matches($Content, '(?m)^source\s+(.+?)$|^\.\s+(.+?)$')
-            foreach ($Match in $ImportMatches) {
-                $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[2].Value }
-                $Metadata.Dependencies += $Dependency.Trim()
-            }
-        }
-    }
-    
-    return $Metadata
-}
-
-Export-ModuleMember -Function Invoke-ScriptInventory, Get-ScriptMetadata
-'@
-        
-        Set-Content -Path $ModulePath -Value $ModuleContent
-        Write-Log "Module d'inventaire créé: $ModulePath" -Level "SUCCESS"
-    }
-}
-
-# Fonction pour créer le module de base de données
-function Create-DatabaseModule {
-    $ModulePath = Join-Path -Path $ModulesPath -ChildPath "Database.psm1"
-    
-    if (-not (Test-Path -Path $ModulePath)) {
-        $ModuleContent = @'
-# Module de base de données pour le Script Manager
-# Ce module gère la sauvegarde et le chargement des données
-
-function Initialize-Database {
-    param (
-        [string]$DataPath = "data"
-    )
-    
-    # Vérifier si le dossier de données existe, sinon le créer
-    if (-not (Test-Path -Path $DataPath)) {
-        New-Item -ItemType Directory -Path $DataPath -Force | Out-Null
-        Write-Host "Dossier de données créé: $DataPath" -ForegroundColor Green
-    }
-    
-    # Créer les fichiers de base de données s'ils n'existent pas
-    $DatabaseFiles = @(
-        "inventory.json",
-        "analysis.json",
-        "mapping.json",
-        "organization.json",
-        "metrics.json"
-    )
-    
-    foreach ($File in $DatabaseFiles) {
-        $FilePath = Join-Path -Path $DataPath -ChildPath $File
-        if (-not (Test-Path -Path $FilePath)) {
-            $EmptyData = @{
-                Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                Data = @()
-            } | ConvertTo-Json
-            Set-Content -Path $FilePath -Value $EmptyData
-            Write-Host "Fichier de base de données créé: $FilePath" -ForegroundColor Green
-        }
-    }
-    
-    Write-Host "Base de données initialisée" -ForegroundColor Green
-}
-
-function Save-Data {
-    param (
-        [Parameter(Mandatory=$true)]
-        [object]$Data,
-        
-        [Parameter(Mandatory=$true)]
-        [string]$FilePath,
-        
-        [switch]$Append
-    )
-    
-    # Vérifier si le fichier existe et si on doit ajouter les données
-    if ($Append -and (Test-Path -Path $FilePath)) {
-        # Charger les données existantes
-        $ExistingData = Get-Content -Path $FilePath -Raw | ConvertFrom-Json
-        
-        # Ajouter les nouvelles données
-        if ($ExistingData.Data -is [array]) {
-            $ExistingData.Data += $Data
-        } else {
-            $ExistingData.Data = @($ExistingData.Data, $Data)
-        }
-        
-        # Mettre à jour le timestamp
-        $ExistingData.Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-        
-        # Enregistrer les données mises à jour
-        $ExistingData | ConvertTo-Json -Depth 10 | Set-Content -Path $FilePath
-    } else {
-        # Créer un nouvel objet avec les données
-        $NewData = @{
-            Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-            Data = $Data
-        } | ConvertTo-Json -Depth 10
-        
-        # Enregistrer les données
-        Set-Content -Path $FilePath -Value $NewData
-    }
-    
-    Write-Host "Données enregistrées dans: $FilePath" -ForegroundColor Green
-}
-
-function Load-Data {
-    param (
-        [Parameter(Mandatory=$true)]
-        [string]$FilePath
-    )
-    
-    # Vérifier si le fichier existe
-    if (-not (Test-Path -Path $FilePath)) {
-        Write-Host "Fichier non trouvé: $FilePath" -ForegroundColor Red
-        return $null
-    }
-    
-    # Charger les données
-    $Data = Get-Content -Path $FilePath -Raw | ConvertFrom-Json
-    
-    Write-Host "Données chargées depuis: $FilePath" -ForegroundColor Cyan
-    
-    return $Data
-}
-
-Export-ModuleMember -Function Initialize-Database, Save-Data, Load-Data
-'@
-        
-        Set-Content -Path $ModulePath -Value $ModuleContent
-        Write-Log "Module de base de données créé: $ModulePath" -Level "SUCCESS"
-    }
-}
-
-# Fonction pour créer le module d'interface en ligne de commande
-function Create-CLIModule {
-    $ModulePath = Join-Path -Path $ModulesPath -ChildPath "CLI.psm1"
-    
-    if (-not (Test-Path -Path $ModulePath)) {
-        $ModuleContent = @'
-# Module d'interface en ligne de commande pour le Script Manager
-# Ce module gère l'interface utilisateur en ligne de commande
-
-function Show-Help {
-    Write-Host "Script Manager - Aide" -ForegroundColor Cyan
-    Write-Host "======================" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "Actions disponibles:" -ForegroundColor Yellow
-    Write-Host "  inventory  - Effectue un inventaire des scripts"
-    Write-Host "  analyze    - Analyse les scripts"
-    Write-Host "  map        - Génère une cartographie des scripts"
-    Write-Host "  organize   - Organise les scripts"
-    Write-Host "  document   - Génère la documentation des scripts"
-    Write-Host "  monitor    - Surveille les modifications des scripts"
-    Write-Host "  optimize   - Optimise les scripts"
-    Write-Host ""
-    Write-Host "Options:" -ForegroundColor Yellow
-    Write-Host "  -Target     - Cible spécifique (dossier ou script)"
-    Write-Host "  -AutoApply  - Applique automatiquement les recommandations"
-    Write-Host "  -Format     - Format de sortie (JSON, Markdown, HTML)"
-    Write-Host "  -Verbose    - Affiche des informations détaillées"
-    Write-Host ""
-    Write-Host "Exemples:" -ForegroundColor Yellow
-    Write-Host "  .\ScriptManager.ps1 -Action inventory"
-    Write-Host "  .\ScriptManager.ps1 -Action analyze -Target scripts\maintenance"
-    Write-Host "  .\ScriptManager.ps1 -Action organize -AutoApply"
-    Write-Host "  .\ScriptManager.ps1 -Action document -Format Markdown"
-    Write-Host ""
-}
-
+# Fonction pour afficher la bannière
 function Show-Banner {
     $Banner = @"
  _____           _       _     __  __                                   
@@ -473,118 +104,451 @@ function Show-Banner {
 "@
     
     Write-Host $Banner -ForegroundColor Cyan
-    Write-Host "Version 1.0.0" -ForegroundColor Yellow
-    Write-Host "Système de gestion proactive des scripts" -ForegroundColor Yellow
+    Write-Host "Version 2.0.0" -ForegroundColor Yellow
+    Write-Host "Système centralisé de gestion des scripts" -ForegroundColor Yellow
     Write-Host ""
 }
 
-function Show-ActionStart {
+# Fonction pour vérifier les dépendances Python
+function Test-PythonDependencies {
+    if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
+        Write-Log "Python n'est pas installé ou n'est pas dans le PATH" -Level "ERROR"
+        return $false
+    }
+    
+    $RequiredModules = @("pandas", "graphviz")
+    $MissingModules = @()
+    
+    foreach ($Module in $RequiredModules) {
+        $ModuleCheck = python -c "try: import $Module; print('OK'); except ImportError: print('MISSING')"
+        if ($ModuleCheck -eq "MISSING") {
+            $MissingModules += $Module
+        }
+    }
+    
+    if ($MissingModules.Count -gt 0) {
+        Write-Log "Modules Python manquants: $($MissingModules -join ', ')" -Level "WARNING"
+        Write-Log "Installez-les avec: pip install $($MissingModules -join ' ')" -Level "INFO"
+        return $false
+    }
+    
+    return $true
+}
+
+# Fonction pour effectuer l'inventaire des scripts
+function Invoke-ScriptInventory {
     param (
-        [string]$Action,
-        [string]$Target
+        [string]$Path,
+        [string]$ScriptType,
+        [switch]$UsePython,
+        [switch]$ShowDetails
     )
     
-    $ActionMap = @{
-        "inventory" = "Inventaire des scripts"
-        "analyze" = "Analyse des scripts"
-        "map" = "Cartographie des scripts"
-        "organize" = "Organisation des scripts"
-        "document" = "Documentation des scripts"
-        "monitor" = "Surveillance des scripts"
-        "optimize" = "Optimisation des scripts"
-    }
+    Write-Log "Démarrage de l'inventaire des scripts..." -Level "TITLE"
+    Write-Log "Dossier: $Path" -Level "INFO"
+    Write-Log "Type de script: $ScriptType" -Level "INFO"
     
-    $ActionName = $ActionMap[$Action]
+    $OutputPath = Join-Path -Path $DataPath -ChildPath "inventory.json"
     
-    Write-Host "=== $ActionName ===" -ForegroundColor Cyan
-    Write-Host "Cible: $Target" -ForegroundColor Yellow
-    Write-Host ""
-}
-
-function Show-ActionEnd {
-    param (
-        [string]$Action,
-        [string]$OutputPath
-    )
-    
-    $ActionMap = @{
-        "inventory" = "Inventaire des scripts"
-        "analyze" = "Analyse des scripts"
-        "map" = "Cartographie des scripts"
-        "organize" = "Organisation des scripts"
-        "document" = "Documentation des scripts"
-        "monitor" = "Surveillance des scripts"
-        "optimize" = "Optimisation des scripts"
-    }
-    
-    $ActionName = $ActionMap[$Action]
-    
-    Write-Host ""
-    Write-Host "=== $ActionName terminé ===" -ForegroundColor Green
-    
-    if ($OutputPath) {
-        Write-Host "Résultats enregistrés dans: $OutputPath" -ForegroundColor Yellow
-    }
-}
-
-Export-ModuleMember -Function Show-Help, Show-Banner, Show-ActionStart, Show-ActionEnd
-'@
+    if ($UsePython -and (Test-PythonDependencies)) {
+        $PythonScript = Join-Path -Path $ModulesPath -ChildPath "Analysis\ScriptAnalyzer.py"
         
-        Set-Content -Path $ModulePath -Value $ModuleContent
-        Write-Log "Module d'interface en ligne de commande créé: $ModulePath" -Level "SUCCESS"
+        if (Test-Path -Path $PythonScript) {
+            $Command = "python `"$PythonScript`" `"$Path`" --report `"$OutputPath`""
+            
+            if ($ShowDetails) {
+                Write-Log "Exécution de la commande: $Command" -Level "INFO"
+            }
+            
+            try {
+                Invoke-Expression $Command
+                Write-Log "Inventaire terminé avec succès" -Level "SUCCESS"
+                Write-Log "Résultats enregistrés dans: $OutputPath" -Level "INFO"
+                return $true
+            } catch {
+                Write-Log "Erreur lors de l'exécution de l'inventaire Python: $_" -Level "ERROR"
+                return $false
+            }
+        } else {
+            Write-Log "Script Python d'analyse non trouvé: $PythonScript" -Level "ERROR"
+            return $false
+        }
+    } else {
+        # Utiliser le module PowerShell d'inventaire
+        $InventoryModule = Join-Path -Path $ModulesPath -ChildPath "Inventory\InventoryModule.psm1"
+        
+        if (Test-Path -Path $InventoryModule) {
+            Import-Module $InventoryModule -Force
+            
+            $ScriptExtensions = switch ($ScriptType) {
+                "PowerShell" { @("*.ps1", "*.psm1", "*.psd1") }
+                "Python" { @("*.py") }
+                "Batch" { @("*.cmd", "*.bat") }
+                "Shell" { @("*.sh") }
+                default { @("*.ps1", "*.psm1", "*.psd1", "*.py", "*.cmd", "*.bat", "*.sh") }
+            }
+            
+            try {
+                $Result = Invoke-ScriptInventory -Path $Path -OutputPath $OutputPath -Extensions $ScriptExtensions -Verbose:$ShowDetails
+                Write-Log "Inventaire terminé avec succès" -Level "SUCCESS"
+                Write-Log "Nombre de scripts trouvés: $($Result.TotalScripts)" -Level "INFO"
+                Write-Log "Résultats enregistrés dans: $OutputPath" -Level "INFO"
+                return $true
+            } catch {
+                Write-Log "Erreur lors de l'exécution de l'inventaire PowerShell: $_" -Level "ERROR"
+                return $false
+            }
+        } else {
+            Write-Log "Module PowerShell d'inventaire non trouvé: $InventoryModule" -Level "ERROR"
+            return $false
+        }
     }
 }
 
-# Créer les modules
-Create-InventoryModule
-Create-DatabaseModule
-Create-CLIModule
-
-# Importer les modules
-Import-Module (Join-Path -Path $ModulesPath -ChildPath "Inventory.psm1") -Force
-Import-Module (Join-Path -Path $ModulesPath -ChildPath "Database.psm1") -Force
-Import-Module (Join-Path -Path $ModulesPath -ChildPath "CLI.psm1") -Force
-
-# Initialiser la base de données
-Initialize-Database -DataPath $DataPath
-
-# Afficher la bannière
-Show-Banner
-
-# Exécuter l'action demandée
-Show-ActionStart -Action $Action -Target $Target
-
-switch ($Action) {
-    "inventory" {
-        $OutputPath = Join-Path -Path $DataPath -ChildPath "inventory.json"
-        Invoke-ScriptInventory -Path $Target -OutputPath $OutputPath -Verbose:$Verbose
-        Show-ActionEnd -Action $Action -OutputPath $OutputPath
-    }
-    "analyze" {
-        Write-Log "Analyse des scripts non implémentée" -Level "WARNING"
-        Show-ActionEnd -Action $Action
-    }
-    "map" {
-        Write-Log "Cartographie des scripts non implémentée" -Level "WARNING"
-        Show-ActionEnd -Action $Action
-    }
-    "organize" {
-        Write-Log "Organisation des scripts non implémentée" -Level "WARNING"
-        Show-ActionEnd -Action $Action
-    }
-    "document" {
-        Write-Log "Documentation des scripts non implémentée" -Level "WARNING"
-        Show-ActionEnd -Action $Action
-    }
-    "monitor" {
-        Write-Log "Surveillance des scripts non implémentée" -Level "WARNING"
-        Show-ActionEnd -Action $Action
-    }
-    "optimize" {
-        Write-Log "Optimisation des scripts non implémentée" -Level "WARNING"
-        Show-ActionEnd -Action $Action
-    }
-    default {
-        Show-Help
+# Fonction pour analyser les scripts
+function Invoke-ScriptAnalysis {
+    param (
+        [string]$Path,
+        [string]$ScriptType,
+        [switch]$UsePython,
+        [switch]$ShowDetails
+    )
+    
+    Write-Log "Démarrage de l'analyse des scripts..." -Level "TITLE"
+    Write-Log "Dossier: $Path" -Level "INFO"
+    Write-Log "Type de script: $ScriptType" -Level "INFO"
+    
+    $OutputPath = Join-Path -Path $DataPath -ChildPath "analysis"
+    
+    if ($UsePython -and (Test-PythonDependencies)) {
+        $PythonScript = Join-Path -Path $ModulesPath -ChildPath "Analysis\ScriptAnalyzer.py"
+        
+        if (Test-Path -Path $PythonScript) {
+            $Command = "python `"$PythonScript`" `"$Path`" --report `"$OutputPath`" --viz `"$OutputPath`_dependencies`" --dupes"
+            
+            if ($ShowDetails) {
+                Write-Log "Exécution de la commande: $Command" -Level "INFO"
+            }
+            
+            try {
+                Invoke-Expression $Command
+                Write-Log "Analyse terminée avec succès" -Level "SUCCESS"
+                Write-Log "Résultats enregistrés dans: $OutputPath.json" -Level "INFO"
+                Write-Log "Visualisation des dépendances: $OutputPath`_dependencies.svg" -Level "INFO"
+                return $true
+            } catch {
+                Write-Log "Erreur lors de l'exécution de l'analyse Python: $_" -Level "ERROR"
+                return $false
+            }
+        } else {
+            Write-Log "Script Python d'analyse non trouvé: $PythonScript" -Level "ERROR"
+            return $false
+        }
+    } else {
+        # Utiliser le module PowerShell d'analyse
+        $AnalysisModule = Join-Path -Path $ModulesPath -ChildPath "Analysis\AnalysisModule.psm1"
+        
+        if (Test-Path -Path $AnalysisModule) {
+            Import-Module $AnalysisModule -Force
+            
+            try {
+                $Result = Start-ScriptAnalysis -Path $Path -ScriptType $ScriptType -OutputPath "$OutputPath.json" -Verbose:$ShowDetails
+                Write-Log "Analyse terminée avec succès" -Level "SUCCESS"
+                Write-Log "Résultats enregistrés dans: $OutputPath.json" -Level "INFO"
+                return $true
+            } catch {
+                Write-Log "Erreur lors de l'exécution de l'analyse PowerShell: $_" -Level "ERROR"
+                return $false
+            }
+        } else {
+            Write-Log "Module PowerShell d'analyse non trouvé: $AnalysisModule" -Level "ERROR"
+            return $false
+        }
     }
 }
+
+# Fonction pour standardiser les scripts
+function Invoke-ScriptStandardization {
+    param (
+        [string]$Path,
+        [string]$ScriptType,
+        [switch]$AutoApply,
+        [switch]$ShowDetails
+    )
+    
+    Write-Log "Démarrage de la standardisation des scripts..." -Level "TITLE"
+    Write-Log "Dossier: $Path" -Level "INFO"
+    Write-Log "Type de script: $ScriptType" -Level "INFO"
+    Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
+    
+    $StandardsScript = Join-Path -Path (Split-Path -Path $ScriptRoot -Parent) -ChildPath "maintenance\standards\Manage-Standards-v2.ps1"
+    
+    if (Test-Path -Path $StandardsScript) {
+        $Action = "analyze"
+        if ($AutoApply) {
+            $Action = "all"
+        }
+        
+        $Command = "& '$StandardsScript' -Action $Action -Path '$Path' -ScriptType '$ScriptType'"
+        
+        if ($AutoApply) {
+            $Command += " -AutoApply"
+        }
+        
+        if ($ShowDetails) {
+            $Command += " -ShowDetails"
+            Write-Log "Exécution de la commande: $Command" -Level "INFO"
+        }
+        
+        try {
+            Invoke-Expression $Command
+            Write-Log "Standardisation terminée avec succès" -Level "SUCCESS"
+            return $true
+        } catch {
+            Write-Log "Erreur lors de l'exécution de la standardisation: $_" -Level "ERROR"
+            return $false
+        }
+    } else {
+        Write-Log "Script de standardisation non trouvé: $StandardsScript" -Level "ERROR"
+        return $false
+    }
+}
+
+# Fonction pour éliminer les duplications
+function Invoke-ScriptDeduplication {
+    param (
+        [string]$Path,
+        [string]$ScriptType,
+        [switch]$AutoApply,
+        [switch]$UsePython,
+        [switch]$ShowDetails
+    )
+    
+    Write-Log "Démarrage de l'élimination des duplications..." -Level "TITLE"
+    Write-Log "Dossier: $Path" -Level "INFO"
+    Write-Log "Type de script: $ScriptType" -Level "INFO"
+    Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
+    
+    $DeduplicationScript = Join-Path -Path (Split-Path -Path $ScriptRoot -Parent) -ChildPath "maintenance\duplication\Manage-Duplications.ps1"
+    
+    if (Test-Path -Path $DeduplicationScript) {
+        $Action = "detect"
+        if ($AutoApply) {
+            $Action = "all"
+        }
+        
+        $Command = "& '$DeduplicationScript' -Action $Action -Path '$Path' -ScriptType '$ScriptType'"
+        
+        if ($AutoApply) {
+            $Command += " -AutoApply"
+        }
+        
+        if ($UsePython) {
+            $Command += " -UsePython"
+        }
+        
+        if ($ShowDetails) {
+            $Command += " -ShowDetails"
+            Write-Log "Exécution de la commande: $Command" -Level "INFO"
+        }
+        
+        try {
+            Invoke-Expression $Command
+            Write-Log "Élimination des duplications terminée avec succès" -Level "SUCCESS"
+            return $true
+        } catch {
+            Write-Log "Erreur lors de l'exécution de l'élimination des duplications: $_" -Level "ERROR"
+            return $false
+        }
+    } else {
+        Write-Log "Script d'élimination des duplications non trouvé: $DeduplicationScript" -Level "ERROR"
+        return $false
+    }
+}
+
+# Fonction pour générer la documentation
+function Invoke-ScriptDocumentation {
+    param (
+        [string]$Path,
+        [string]$ScriptType,
+        [string]$Format,
+        [switch]$ShowDetails
+    )
+    
+    Write-Log "Démarrage de la génération de la documentation..." -Level "TITLE"
+    Write-Log "Dossier: $Path" -Level "INFO"
+    Write-Log "Type de script: $ScriptType" -Level "INFO"
+    Write-Log "Format: $Format" -Level "INFO"
+    
+    $DocumentationModule = Join-Path -Path $ModulesPath -ChildPath "Documentation\DocumentationModule.psm1"
+    
+    if (Test-Path -Path $DocumentationModule) {
+        Import-Module $DocumentationModule -Force
+        
+        $OutputPath = Join-Path -Path $DocsPath -ChildPath "script_documentation.$($Format.ToLower())"
+        
+        try {
+            $Result = Generate-ScriptDocumentation -Path $Path -ScriptType $ScriptType -Format $Format -OutputPath $OutputPath -Verbose:$ShowDetails
+            Write-Log "Documentation générée avec succès" -Level "SUCCESS"
+            Write-Log "Résultats enregistrés dans: $OutputPath" -Level "INFO"
+            return $true
+        } catch {
+            Write-Log "Erreur lors de la génération de la documentation: $_" -Level "ERROR"
+            return $false
+        }
+    } else {
+        Write-Log "Module de documentation non trouvé: $DocumentationModule" -Level "ERROR"
+        return $false
+    }
+}
+
+# Fonction pour afficher le tableau de bord
+function Show-ScriptDashboard {
+    param (
+        [switch]$ShowDetails
+    )
+    
+    Write-Log "Génération du tableau de bord..." -Level "TITLE"
+    
+    # Charger les données d'inventaire
+    $InventoryPath = Join-Path -Path $DataPath -ChildPath "inventory.json"
+    if (Test-Path -Path $InventoryPath) {
+        try {
+            $Inventory = Get-Content -Path $InventoryPath -Raw | ConvertFrom-Json
+            $ScriptCount = $Inventory.TotalScripts
+            $ScriptsByType = $Inventory.ScriptsByType
+        } catch {
+            Write-Log "Erreur lors du chargement de l'inventaire: $_" -Level "ERROR"
+            $ScriptCount = 0
+            $ScriptsByType = @()
+        }
+    } else {
+        Write-Log "Fichier d'inventaire non trouvé: $InventoryPath" -Level "WARNING"
+        $ScriptCount = 0
+        $ScriptsByType = @()
+    }
+    
+    # Charger les données d'analyse
+    $AnalysisPath = Join-Path -Path $DataPath -ChildPath "analysis.json"
+    if (Test-Path -Path $AnalysisPath) {
+        try {
+            $Analysis = Get-Content -Path $AnalysisPath -Raw | ConvertFrom-Json
+            $IssueCount = $Analysis.TotalIssues
+        } catch {
+            Write-Log "Erreur lors du chargement de l'analyse: $_" -Level "ERROR"
+            $IssueCount = 0
+        }
+    } else {
+        Write-Log "Fichier d'analyse non trouvé: $AnalysisPath" -Level "WARNING"
+        $IssueCount = 0
+    }
+    
+    # Afficher le tableau de bord
+    Write-Host ""
+    Write-Host "=== TABLEAU DE BORD DES SCRIPTS ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Nombre total de scripts: $ScriptCount" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Répartition par type:" -ForegroundColor Yellow
+    foreach ($Type in $ScriptsByType) {
+        Write-Host "  $($Type.Type): $($Type.Count)" -ForegroundColor White
+    }
+    Write-Host ""
+    Write-Host "Problèmes détectés: $IssueCount" -ForegroundColor $(if ($IssueCount -gt 0) { "Yellow" } else { "Green" })
+    Write-Host ""
+    Write-Host "=== ACTIONS DISPONIBLES ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  inventory    : Inventaire des scripts" -ForegroundColor White
+    Write-Host "  analyze      : Analyse des scripts" -ForegroundColor White
+    Write-Host "  standardize  : Standardisation des scripts" -ForegroundColor White
+    Write-Host "  deduplicate  : Élimination des duplications" -ForegroundColor White
+    Write-Host "  document     : Documentation des scripts" -ForegroundColor White
+    Write-Host "  dashboard    : Affichage du tableau de bord" -ForegroundColor White
+    Write-Host "  all          : Exécute toutes les actions" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Exemple: .\ScriptManager.ps1 -Action analyze -Path scripts" -ForegroundColor Yellow
+    Write-Host ""
+    
+    return $true
+}
+
+# Fonction principale
+function Start-ScriptManager {
+    param (
+        [string]$Action,
+        [string]$Path,
+        [string]$ScriptType,
+        [switch]$AutoApply,
+        [string]$Format,
+        [switch]$UsePython,
+        [switch]$ShowDetails
+    )
+    
+    # Créer les dossiers s'ils n'existent pas
+    $FoldersToCreate = @($ModulesPath, $ConfigPath, $DataPath, $DocsPath)
+    foreach ($Folder in $FoldersToCreate) {
+        if (-not (Test-Path -Path $Folder)) {
+            New-Item -ItemType Directory -Path $Folder -Force | Out-Null
+            Write-Log "Dossier créé: $Folder" -Level "SUCCESS"
+        }
+    }
+    
+    # Afficher la bannière
+    Show-Banner
+    
+    # Exécuter l'action demandée
+    $Success = $true
+    
+    switch ($Action) {
+        "inventory" {
+            $Success = Invoke-ScriptInventory -Path $Path -ScriptType $ScriptType -UsePython:$UsePython -ShowDetails:$ShowDetails
+        }
+        "analyze" {
+            $Success = Invoke-ScriptAnalysis -Path $Path -ScriptType $ScriptType -UsePython:$UsePython -ShowDetails:$ShowDetails
+        }
+        "standardize" {
+            $Success = Invoke-ScriptStandardization -Path $Path -ScriptType $ScriptType -AutoApply:$AutoApply -ShowDetails:$ShowDetails
+        }
+        "deduplicate" {
+            $Success = Invoke-ScriptDeduplication -Path $Path -ScriptType $ScriptType -AutoApply:$AutoApply -UsePython:$UsePython -ShowDetails:$ShowDetails
+        }
+        "document" {
+            $Success = Invoke-ScriptDocumentation -Path $Path -ScriptType $ScriptType -Format $Format -ShowDetails:$ShowDetails
+        }
+        "dashboard" {
+            $Success = Show-ScriptDashboard -ShowDetails:$ShowDetails
+        }
+        "all" {
+            Write-Log "Exécution de toutes les actions..." -Level "TITLE"
+            
+            $Success = Invoke-ScriptInventory -Path $Path -ScriptType $ScriptType -UsePython:$UsePython -ShowDetails:$ShowDetails
+            if ($Success) {
+                $Success = Invoke-ScriptAnalysis -Path $Path -ScriptType $ScriptType -UsePython:$UsePython -ShowDetails:$ShowDetails
+            }
+            if ($Success) {
+                $Success = Invoke-ScriptStandardization -Path $Path -ScriptType $ScriptType -AutoApply:$AutoApply -ShowDetails:$ShowDetails
+            }
+            if ($Success) {
+                $Success = Invoke-ScriptDeduplication -Path $Path -ScriptType $ScriptType -AutoApply:$AutoApply -UsePython:$UsePython -ShowDetails:$ShowDetails
+            }
+            if ($Success) {
+                $Success = Invoke-ScriptDocumentation -Path $Path -ScriptType $ScriptType -Format $Format -ShowDetails:$ShowDetails
+            }
+            if ($Success) {
+                $Success = Show-ScriptDashboard -ShowDetails:$ShowDetails
+            }
+        }
+    }
+    
+    # Afficher un message de résultat
+    if ($Success) {
+        Write-Log "Opération terminée avec succès" -Level "SUCCESS"
+    } else {
+        Write-Log "Opération terminée avec des erreurs" -Level "ERROR"
+    }
+    
+    return $Success
+}
+
+# Exécuter la fonction principale
+Start-ScriptManager -Action $Action -Path $Path -ScriptType $ScriptType -AutoApply:$AutoApply -Format $Format -UsePython:$UsePython -ShowDetails:$ShowDetails

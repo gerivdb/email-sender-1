@@ -1,10 +1,10 @@
 {
-    "Timestamp":  "2025-04-08 00:03:28",
-    "TotalScripts":  769,
+    "Timestamp":  "2025-04-08 17:33:35",
+    "TotalScripts":  789,
     "ScriptsByType":  [
                           {
                               "Type":  "PowerShell",
-                              "Count":  475
+                              "Count":  491
                           },
                           {
                               "Type":  "Batch",
@@ -12,7 +12,7 @@
                           },
                           {
                               "Type":  "Python",
-                              "Count":  90
+                              "Count":  94
                           },
                           {
                               "Type":  "Shell",
@@ -257,11 +257,11 @@
                         "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\ErrorManagement\\AnalysisImprovements",
                         "Extension":  ".ps1",
                         "Type":  "PowerShell",
-                        "Size":  23391,
+                        "Size":  6924,
                         "CreationTime":  "\/Date(1744012476327)\/",
-                        "LastWriteTime":  "\/Date(1744012476729)\/",
+                        "LastWriteTime":  "\/Date(1744092382410)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour améliorer la détection des patterns d\u0027erreur",
+                                         "Description":  "Script simplifié pour la détection des patterns d\u0027erreur PowerShell",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1202,9 +1202,9 @@
                         "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\ErrorManagement\\Tracking",
                         "Extension":  ".ps1",
                         "Type":  "PowerShell",
-                        "Size":  8481,
+                        "Size":  8588,
                         "CreationTime":  "\/Date(1744014310654)\/",
-                        "LastWriteTime":  "\/Date(1744014310654)\/",
+                        "LastWriteTime":  "\/Date(1744081233511)\/",
                         "Metadata":  {
                                          "Description":  "Script pour collecter les données d\u0027erreurs",
                                          "Version":  "",
@@ -9563,11 +9563,11 @@
                         "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\powershell",
                         "Extension":  ".ps1",
                         "Type":  "PowerShell",
-                        "Size":  2660,
-                        "CreationTime":  "\/Date(1743796870740)\/",
-                        "LastWriteTime":  "\/Date(1743993078822)\/",
+                        "Size":  3151,
+                        "CreationTime":  "\/Date(1744124792015)\/",
+                        "LastWriteTime":  "\/Date(1744124883552)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger les noms des workflows en remplaçant les caractères accentués",
+                                         "Description":  "Script pour corriger les noms des workflows en remplacant les caracteres accentues",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9576,6 +9576,27 @@
                                          "Dependencies":  [
 
                                                           ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\powershell\\fix-workflow-names_temp.ps1",
+                        "Name":  "fix-workflow-names_temp.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\powershell",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  0,
+                        "CreationTime":  "\/Date(1744124082841)\/",
+                        "LastWriteTime":  "\/Date(1744124082841)\/",
+                        "Metadata":  {
+                                         "Description":  "",
+                                         "Dependencies":  [
+
+                                                          ],
+                                         "Author":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Version":  ""
                                      }
                     },
                     {
@@ -10157,6 +10178,27 @@
                                      }
                     },
                     {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Analyze-Scripts.ps1",
+                        "Name":  "Analyze-Scripts.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  11232,
+                        "CreationTime":  "\/Date(1744063460756)\/",
+                        "LastWriteTime":  "\/Date(1744063521911)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+
+                                                          ]
+                                     }
+                    },
+                    {
                         "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Inventory-Scripts.ps1",
                         "Name":  "Inventory-Scripts.ps1",
                         "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
@@ -10174,6 +10216,72 @@
                                          "Author":  "",
                                          "Dependencies":  [
 
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Organize-Scripts.ps1",
+                        "Name":  "Organize-Scripts.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  5732,
+                        "CreationTime":  "\/Date(1744063487461)\/",
+                        "LastWriteTime":  "\/Date(1744063487463)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Phase2-AnalyzeAndOrganize.ps1",
+                        "Name":  "Phase2-AnalyzeAndOrganize.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  5756,
+                        "CreationTime":  "\/Date(1744067546218)\/",
+                        "LastWriteTime":  "\/Date(1744067546220)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "$AnalysisModulePath -Force",
+                                                              "$OrganizationModulePath -Force"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Phase3-DocumentAndMonitor.ps1",
+                        "Name":  "Phase3-DocumentAndMonitor.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  15887,
+                        "CreationTime":  "\/Date(1744069286137)\/",
+                        "LastWriteTime":  "\/Date(1744069286138)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "$DocumentationModulePath -Force",
+                                                              "$MonitoringModulePath -Force",
+                                                              "`$MonitoringModulePath -Force"
                                                           ]
                                      }
                     },
@@ -10197,6 +10305,170 @@
                                                               "(Join-Path -Path $ModulesPath -ChildPath \"Inventory.psm1\") -Force",
                                                               "(Join-Path -Path $ModulesPath -ChildPath \"Database.psm1\") -Force",
                                                               "(Join-Path -Path $ModulesPath -ChildPath \"CLI.psm1\") -Force"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Start-ScriptOptimization.ps1",
+                        "Name":  "Start-ScriptOptimization.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  4292,
+                        "CreationTime":  "\/Date(1744073008913)\/",
+                        "LastWriteTime":  "\/Date(1744073008934)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "$ModulePath -Force"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Update-Roadmap.ps1",
+                        "Name":  "Update-Roadmap.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  6636,
+                        "CreationTime":  "\/Date(1744067850833)\/",
+                        "LastWriteTime":  "\/Date(1744073228386)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-AnalysisModule.ps1",
+                        "Name":  "Test-AnalysisModule.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  6327,
+                        "CreationTime":  "\/Date(1744067577794)\/",
+                        "LastWriteTime":  "\/Date(1744067577796)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "1.0",
+                                         "Tags":  [
+                                                      "test",
+                                                      "unit",
+                                                      "powershell"
+                                                  ],
+                                         "Author":  "Test User",
+                                         "Dependencies":  [
+                                                              "Pester -Force",
+                                                              "$ModulePath -Force",
+                                                              "PSReadLine",
+                                                              ".\\helper.ps1"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-DocumentationModule.ps1",
+                        "Name":  "Test-DocumentationModule.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  9930,
+                        "CreationTime":  "\/Date(1744069326909)\/",
+                        "LastWriteTime":  "\/Date(1744069326911)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "1.0",
+                                         "Tags":  [
+                                                      "test",
+                                                      "unit",
+                                                      "powershell"
+                                                  ],
+                                         "Author":  "Test User",
+                                         "Dependencies":  [
+                                                              "Pester -Force",
+                                                              "$ModulePath -Force",
+                                                              "PSReadLine",
+                                                              ".\\helper.ps1"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-MonitoringModule.ps1",
+                        "Name":  "Test-MonitoringModule.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  7250,
+                        "CreationTime":  "\/Date(1744069357777)\/",
+                        "LastWriteTime":  "\/Date(1744069357779)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "1.0",
+                                         "Tags":  [
+                                                      "test",
+                                                      "unit",
+                                                      "powershell"
+                                                  ],
+                                         "Author":  "Test User",
+                                         "Dependencies":  [
+                                                              "Pester -Force",
+                                                              "$ModulePath -Force",
+                                                              "PSReadLine",
+                                                              ".\\helper.ps1"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-OptimizationModule.ps1",
+                        "Name":  "Test-OptimizationModule.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  10748,
+                        "CreationTime":  "\/Date(1744072986894)\/",
+                        "LastWriteTime":  "\/Date(1744072986896)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "1.0",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "Test User",
+                                         "Dependencies":  [
+                                                              "Pester -Force",
+                                                              "$ModulePath -Force"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests\\Test-OrganizationModule.ps1",
+                        "Name":  "Test-OrganizationModule.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\tests",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  9791,
+                        "CreationTime":  "\/Date(1744067614384)\/",
+                        "LastWriteTime":  "\/Date(1744067614386)\/",
+                        "Metadata":  {
+                                         "Description":  "\u003e",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "Pester -Force",
+                                                              "$ModulePath -Force"
                                                           ]
                                      }
                     },
@@ -13388,6 +13660,28 @@
                                      }
                     },
                     {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\detect_redundancies.py",
+                        "Name":  "detect_redundancies.py",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "Extension":  ".py",
+                        "Type":  "Python",
+                        "Size":  1122,
+                        "CreationTime":  "\/Date(1744079841845)\/",
+                        "LastWriteTime":  "\/Date(1744079850458)\/",
+                        "Metadata":  {
+                                         "Description":  "",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "os",
+                                                              "difflib"
+                                                          ]
+                                     }
+                    },
+                    {
                         "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\file_manager.py",
                         "Name":  "file_manager.py",
                         "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
@@ -13436,6 +13730,27 @@
                                                               "os",
                                                               "json",
                                                               "re"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\fix_encoding.ps1",
+                        "Name":  "fix_encoding.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  423,
+                        "CreationTime":  "\/Date(1744078518771)\/",
+                        "LastWriteTime":  "\/Date(1744078518771)\/",
+                        "Metadata":  {
+                                         "Description":  "Script pour corriger l\u0027encodage des fichiers PowerShell",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+
                                                           ]
                                      }
                     },
@@ -13531,6 +13846,28 @@
                                                               "os",
                                                               "json",
                                                               "re"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\generate_documentation.py",
+                        "Name":  "generate_documentation.py",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "Extension":  ".py",
+                        "Type":  "Python",
+                        "Size":  1042,
+                        "CreationTime":  "\/Date(1744079644590)\/",
+                        "LastWriteTime":  "\/Date(1744079648718)\/",
+                        "Metadata":  {
+                                         "Description":  "",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "os",
+                                                              "script_database"
                                                           ]
                                      }
                     },
@@ -13654,6 +13991,112 @@
                                                               "collections",
                                                               "pathlib",
                                                               "typing"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_config.ps1",
+                        "Name":  "script_config.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  3176,
+                        "CreationTime":  "\/Date(1744078371781)\/",
+                        "LastWriteTime":  "\/Date(1744078524323)\/",
+                        "Metadata":  {
+                                         "Description":  "Module de gestion de la configuration pour le Script Manager",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_database.py",
+                        "Name":  "script_database.py",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "Extension":  ".py",
+                        "Type":  "Python",
+                        "Size":  1306,
+                        "CreationTime":  "\/Date(1744076467514)\/",
+                        "LastWriteTime":  "\/Date(1744076473082)\/",
+                        "Metadata":  {
+                                         "Description":  "",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "json"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_inventory.py",
+                        "Name":  "script_inventory.py",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "Extension":  ".py",
+                        "Type":  "Python",
+                        "Size":  4758,
+                        "CreationTime":  "\/Date(1744076165251)\/",
+                        "LastWriteTime":  "\/Date(1744079034503)\/",
+                        "Metadata":  {
+                                         "Description":  "",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "os",
+                                                              "argparse"
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_manager.ps1",
+                        "Name":  "script_manager.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  7832,
+                        "CreationTime":  "\/Date(1744077654890)\/",
+                        "LastWriteTime":  "\/Date(1744079279036)\/",
+                        "Metadata":  {
+                                         "Description":  "Script Manager PowerShell",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+                                                              "\"$PSScriptRoot/script_config.ps1\""
+                                                          ]
+                                     }
+                    },
+                    {
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src\\script_manager_fixed.ps1",
+                        "Name":  "script_manager_fixed.ps1",
+                        "Directory":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\src",
+                        "Extension":  ".ps1",
+                        "Type":  "PowerShell",
+                        "Size":  803,
+                        "CreationTime":  "\/Date(1744077603653)\/",
+                        "LastWriteTime":  "\/Date(1744077603655)\/",
+                        "Metadata":  {
+                                         "Description":  "Script Manager PowerShell",
+                                         "Version":  "",
+                                         "Tags":  [
+
+                                                  ],
+                                         "Author":  "",
+                                         "Dependencies":  [
+
                                                           ]
                                      }
                     },

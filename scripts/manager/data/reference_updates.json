@@ -1,0 +1,1430 @@
+{
+    "TotalReferences":  1425,
+    "Timestamp":  "2025-04-08 18:12:15",
+    "Updates":  [
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\monitoring\\check-workflow-results.ps1",
+                        "OldPath":  ".\\mcp-standard.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            16
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\monitoring\\check-workflow-results.ps1",
+                        "OldPath":  ".\\mcp-notion.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\monitoring\\check-workflow-results.ps1",
+                        "OldPath":  ".\\gateway.exe.cmd",
+                        "NewPath":  "..\\email\\gateway.exe.cmd",
+                        "LineNumbers":  [
+                                            18
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\config\\configure-mcp-git-ingest.ps1",
+                        "OldPath":  ".\\mcp-git-ingest.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            16
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\mcp\\organize-n8n-files.ps1",
+                        "OldPath":  ".\\src\\mcp\\config\\*.json",
+                        "NewPath":  "..\\manager\\config\\categories.json",
+                        "LineNumbers":  [
+                                            19
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\mcp\\organize-n8n-files.ps1",
+                        "OldPath":  ".\\.n8n\\credentials\\*.json",
+                        "NewPath":  "..\\manager\\config\\categories.json",
+                        "LineNumbers":  [
+                                            23
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-tools.ps1",
+                        "OldPath":  "scripts\\maintenance\\auto-organize-silent-improved.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            39,
+                                            120,
+                                            193
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-tools.ps1",
+                        "OldPath":  "scripts\\utils\\git\\git-smart-commit.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            40,
+                                            190
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-tools.ps1",
+                        "OldPath":  "scripts\\utils\\git\\git-atomic-commit.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            41,
+                                            191
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-tools.ps1",
+                        "OldPath":  "scripts\\utils\\git\\git-pre-push-check.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            42,
+                                            148,
+                                            192
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-tools.ps1",
+                        "OldPath":  "$projectRoot\\scripts\\utils\\git\\git-smart-commit.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            190
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-tools.ps1",
+                        "OldPath":  "$projectRoot\\scripts\\utils\\git\\git-atomic-commit.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            191
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-tools.ps1",
+                        "OldPath":  "$projectRoot\\scripts\\utils\\git\\git-pre-push-check.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            148,
+                                            192
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-tools.ps1",
+                        "OldPath":  "$projectRoot\\scripts\\maintenance\\auto-organize-silent-improved.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            120,
+                                            193
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\email\\deploy-real.ps1",
+                        "OldPath":  "scripts\\ci\\run-ci-checks.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            147
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\email\\deploy.ps1",
+                        "OldPath":  "scripts\\ci\\run-ci-checks.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            77
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\DeploymentTest.ps1",
+                        "OldPath":  "scripts\\ci\\deploy.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            10
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Test-AnalysisModule.ps1",
+                        "OldPath":  "..\\modules\\Analysis\\AnalysisModule.psm1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\OrganizeRoadmapScripts.ps1",
+                        "OldPath":  "$roadmapFolder\\README.md",
+                        "NewPath":  "docs\\README.md",
+                        "LineNumbers":  [
+                                            373,
+                                            374
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\env\\ErrorTrendAnalysis.ps1",
+                        "OldPath":  "..\\Tracking\\ErrorDataCollector.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            4
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Reorganize-Scripts.ps1",
+                        "OldPath":  "scripts\\manager\\data\\analysis.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            9,
+                                            23
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Reorganize-Scripts.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reorganization.log",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            61
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\manager\\Reorganize-Scripts.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reorganization.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            639
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\testing\\test-workflows.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\mcp-standard.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\testing\\test-workflows.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\mcp-notion.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            18
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\testing\\test-workflows.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\gateway.exe.cmd",
+                        "NewPath":  "..\\mcp\\gateway.exe.cmd",
+                        "LineNumbers":  [
+                                            19
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\testing\\test-workflows.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\mcp-git-ingest.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            20
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\testing\\test-workflows.ps1",
+                        "OldPath":  ".\\tools\\start-n8n-mcp.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            68,
+                                            79,
+                                            81
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix-all-encodings.ps1",
+                        "OldPath":  "scripts\\maintenance\\fix-all-encodings.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            69
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\journal\\ErrorPrediction.ps1",
+                        "OldPath":  "..\\Tracking\\ErrorDataCollector.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            4
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\git-smart-commit.ps1",
+                        "OldPath":  "$projectRoot\\scripts\\maintenance\\auto-organize-silent-improved.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            75
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\config\\configure-mcp-github.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\mcp-github.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            16
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\pre-commit.ps1",
+                        "OldPath":  "scripts\\maintenance\\auto-organize-silent-improved.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            32
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-files-simple.ps1",
+                        "OldPath":  "scripts\\cmd\\README.md",
+                        "NewPath":  "repo\\README.md",
+                        "LineNumbers":  [
+                                            100
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_management.log",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            62
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
+                        "OldPath":  "scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            74
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
+                        "OldPath":  "scripts\\manager\\data\\broken_references.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            75,
+                                            120
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
+                        "OldPath":  "scripts\\maintenance\\encoding\\Update-BrokenReferences-Fixed.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            119
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_updates.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            121
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\CleanupRoadmapFiles.ps1",
+                        "OldPath":  ".\\Roadmap\\RoadmapManager.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            149
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\monitoring\\verify-mcp-status.ps1",
+                        "OldPath":  ".\\mcp-standard.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            16
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\monitoring\\verify-mcp-status.ps1",
+                        "OldPath":  ".\\mcp-notion.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\monitoring\\verify-mcp-status.ps1",
+                        "OldPath":  ".\\gateway.exe.cmd",
+                        "NewPath":  "..\\email\\gateway.exe.cmd",
+                        "LineNumbers":  [
+                                            18
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\env\\ErrorTrends.ps1",
+                        "OldPath":  "..\\Tracking\\ErrorDataCollector.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            4
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\git\\GitHooksTest.ps1",
+                        "OldPath":  "scripts\\utils\\git\\hooks\\pre-commit.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            10
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\git\\GitHooksTest.ps1",
+                        "OldPath":  "scripts\\utils\\git\\hooks\\pre-push.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            11
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\git\\GitHooksTest.ps1",
+                        "OldPath":  "scripts\\setup\\install-git-hooks.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            12
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\test-path-utils-improved.ps1",
+                        "OldPath":  "scripts\\utils\\path-utils.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            14,
+                                            97,
+                                            102,
+                                            107,
+                                            110,
+                                            117,
+                                            124,
+                                            128,
+                                            203
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\test-path-utils-improved.ps1",
+                        "OldPath":  "scripts\\utilites_test\\path-utils.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            152
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-all-files.ps1",
+                        "OldPath":  "scripts\\cmd\\README.md",
+                        "NewPath":  "repo\\README.md",
+                        "LineNumbers":  [
+                                            91
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-all-files.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\auto-organize-folders.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            131
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-all-files.ps1",
+                        "OldPath":  "scripts\\maintenance\\repo\\organize-all-files.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            143
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\setup-auto-watch.ps1",
+                        "OldPath":  ".\\scripts\\maintenance\\watch-and-organize.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            7
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\update-vscode-settings.ps1",
+                        "OldPath":  "scripts\\cmd\\augment\\augment-mcp-git-ingest.cmd",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            48
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
+                        "OldPath":  "scripts\\manager\\data\\broken_references.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            11,
+                                            24
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_detection.log",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            51
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\journal\\web\\setup-journal-sync-task.ps1",
+                        "OldPath":  "scripts\\cmd\\sync-journal-ecosystem.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            14
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\install-git-hooks.ps1",
+                        "OldPath":  "scripts\\utils\\git\\hooks\\pre-commit-wrapper.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            134
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\install-git-hooks.ps1",
+                        "OldPath":  "scripts\\utils\\git\\hooks\\pre-push-wrapper.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            163
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\mcp-git-ingest.cmd",
+                        "OldPath":  "..\\..\\..\\scripts\\python\\run_mcp_git_ingest.py",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            8
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\Phase3-DocumentAndMonitor.ps1",
+                        "OldPath":  "scripts\\manager\\data\\inventory.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            9,
+                                            29,
+                                            154,
+                                            158
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
+                        "OldPath":  "scripts\\manager\\data\\broken_references.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            11,
+                                            24
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_detection.log",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            51
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_management.log",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            62
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
+                        "OldPath":  "scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            74
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
+                        "OldPath":  "scripts\\manager\\data\\broken_references.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            75,
+                                            120
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
+                        "OldPath":  "scripts\\maintenance\\encoding\\Update-BrokenReferences.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            119
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_updates.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            121
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\mcp-diagnostic.ps1",
+                        "OldPath":  "gateway.exe.cmd",
+                        "NewPath":  "email\\gateway.exe.cmd",
+                        "LineNumbers":  [
+                                            66,
+                                            67,
+                                            71,
+                                            72,
+                                            74,
+                                            78,
+                                            79
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\workflow\\mcp-diagnostic.ps1",
+                        "OldPath":  "gateway.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            81,
+                                            84,
+                                            85,
+                                            87,
+                                            88
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\core\\Inventory-Scripts.ps1",
+                        "OldPath":  "scripts\\manager\\data\\inventory.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            23
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Analyze-Scripts.ps1",
+                        "OldPath":  "scripts\\manager\\data\\inventory.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            8,
+                                            22
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Analyze-Scripts.ps1",
+                        "OldPath":  "scripts\\manager\\data\\analysis.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            10,
+                                            23
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\use-mcp.ps1",
+                        "OldPath":  ".\\batch\\mcp-standard.cmd",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            20
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\use-mcp.ps1",
+                        "OldPath":  ".\\batch\\mcp-notion.cmd",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            24
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\use-mcp.ps1",
+                        "OldPath":  ".\\batch\\gateway.exe.cmd",
+                        "NewPath":  "mcp\\gateway.exe.cmd",
+                        "LineNumbers":  [
+                                            28
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\use-mcp.ps1",
+                        "OldPath":  ".\\batch\\mcp-git-ingest.cmd",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            32
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\use-mcp.ps1",
+                        "OldPath":  ".\\batch\\mcp-bifrost.cmd",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            36
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\setup-all-auto-organize.ps1",
+                        "OldPath":  ".\\scripts\\maintenance\\auto-organize-silent.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            16
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\setup-all-auto-organize.ps1",
+                        "OldPath":  ".\\scripts\\maintenance\\watch-and-organize.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            45
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\setup-all-auto-organize.ps1",
+                        "OldPath":  "$projectRoot\\scripts\\maintenance\\auto-organize-silent.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            102,
+                                            125
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\automation\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\organize-scripts.ps1",
+                        "NewPath":  "..\\email\\Organize-Scripts.ps1",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\automation\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\auto-organize-folders.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            18
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\automation\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\manage-logs.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            19
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\automation\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\organize-docs-fixed.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            20
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\OrganizeRoadmapScriptsBasic.ps1",
+                        "OldPath":  "$roadmapFolder\\README.md",
+                        "NewPath":  "docs\\README.md",
+                        "LineNumbers":  [
+                                            79,
+                                            80
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\Normalize-Path.ps1",
+                        "OldPath":  "scripts\\utils\\path-utils.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            15
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Test-MonitoringModule.ps1",
+                        "OldPath":  "..\\modules\\Monitoring\\MonitoringModule.psm1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\test_path_utils.py",
+                        "OldPath":  "scripts\\\\utils\\\\path-utils.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            55
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\test-path-utils.ps1",
+                        "OldPath":  "scripts\\utils\\path-utils.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            14,
+                                            31,
+                                            43,
+                                            47,
+                                            59
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\test-path-utils.ps1",
+                        "OldPath":  "scripts\\utilites_test\\path-utils.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            98
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\config\\configure-bifrost-mcp.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\mcp-bifrost.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            14
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\StartRoadmap.ps1",
+                        "OldPath":  ".\\Roadmap\\RoadmapManager.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            5
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\Fix-RoadmapAdminIssues.ps1",
+                        "OldPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\RoadmapAdmin.ps1",
+                        "NewPath":  "D",
+                        "LineNumbers":  [
+                                            6
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\Find-Files.ps1",
+                        "OldPath":  "scripts\\utils\\path-utils.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            15
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences-Fixed.ps1",
+                        "OldPath":  "scripts\\manager\\data\\broken_references.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            10,
+                                            27
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences-Fixed.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_updates.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            13,
+                                            28
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences-Fixed.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_update.log",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            56
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\setup-auto-organize-task.ps1",
+                        "OldPath":  ".\\scripts\\maintenance\\auto-organize.ps1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            6
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\env\\script_manager.ps1",
+                        "OldPath":  "$PSScriptRoot/script_config.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            5
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\OrganizeRoadmapScriptsSimple.ps1",
+                        "OldPath":  "$roadmapFolder\\README.md",
+                        "NewPath":  "docs\\README.md",
+                        "LineNumbers":  [
+                                            78,
+                                            79
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\journal\\web\\install-journal-system.ps1",
+                        "OldPath":  "$CmdScriptsDir\\setup-github-integration.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            78
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\journal\\web\\install-journal-system.ps1",
+                        "OldPath":  "$CmdScriptsDir\\setup-journal-analysis.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            89
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\journal\\web\\install-journal-system.ps1",
+                        "OldPath":  "$CmdScriptsDir\\setup-journal-tasks.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            102
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\journal\\web\\install-journal-system.ps1",
+                        "OldPath":  "$CmdScriptsDir\\setup-journal-sync-task.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            103
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-repo.ps1",
+                        "OldPath":  ".\\scripts\\maintenance\\new-file.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            258,
+                                            261,
+                                            414
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\Fix-RoadmapAdminSimple.ps1",
+                        "OldPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\Roadmap\\RoadmapAdmin.ps1",
+                        "NewPath":  "D",
+                        "LineNumbers":  [
+                                            3
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\config\\configure-n8n-mcp.ps1",
+                        "OldPath":  ".\\mcp-standard.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            16
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\config\\configure-n8n-mcp.ps1",
+                        "OldPath":  ".\\mcp-notion.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\config\\configure-n8n-mcp.ps1",
+                        "OldPath":  ".\\gateway.exe.cmd",
+                        "NewPath":  "..\\email\\gateway.exe.cmd",
+                        "LineNumbers":  [
+                                            18
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\Update-Roadmap-ASCII.ps1",
+                        "OldPath":  "@\n\nforeach ($category in $roadmapData.categories) {\n    # Calculer le pourcentage de progression\n    $totalTasks = $category.tasks.Count\n    $completedTasks = ($category.tasks | Where-Object { $_.completed -eq $true }).Count\n    $category.progress = [math]::Round(($completedTasks / $totalTasks) * 100)\n\n    $complexity = $category.complexity -replace ",
+                        "NewPath":  "docs\\Add-FormattedTextToRoadmap.ps1",
+                        "LineNumbers":  [
+
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\docs\\Fix-RoadmapAdminScript.ps1",
+                        "OldPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\Roadmap\\RoadmapAdmin.ps1",
+                        "NewPath":  "D",
+                        "LineNumbers":  [
+                                            3
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\email\\Organize-Scripts.ps1",
+                        "OldPath":  "scripts\\manager\\data\\analysis.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            8,
+                                            22
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\email\\Organize-Scripts.ps1",
+                        "OldPath":  "scripts\\manager\\data\\organization.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            129
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-files-fixed.ps1",
+                        "OldPath":  "scripts\\cmd\\README.md",
+                        "NewPath":  "repo\\README.md",
+                        "LineNumbers":  [
+                                            100
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Test-OrganizationModule.ps1",
+                        "OldPath":  "..\\modules\\Organization\\OrganizationModule.psm1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\env\\setup-environment.ps1",
+                        "OldPath":  ".\\tools\\start-n8n.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            177,
+                                            268
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\check-structure.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\mcp-standard.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            55
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\check-structure.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\mcp-notion.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            56
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\check-structure.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\gateway.exe.cmd",
+                        "NewPath":  "..\\mcp\\gateway.exe.cmd",
+                        "LineNumbers":  [
+                                            57
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\check-structure.ps1",
+                        "OldPath":  ".\\src\\mcp\\batch\\mcp-git-ingest.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            58
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\check-structure.ps1",
+                        "OldPath":  ".\\tools\\start-n8n-mcp.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            59
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\check-structure.ps1",
+                        "OldPath":  ".\\scripts\\maintenance\\auto-organize.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            60,
+                                            112
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\check-structure.ps1",
+                        "OldPath":  ".\\scripts\\maintenance\\new-file.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            61
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-hooks.ps1",
+                        "OldPath":  "scripts\\utils\\git\\hooks\\pre-commit-wrapper.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            110
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\git\\setup-git-hooks.ps1",
+                        "OldPath":  "scripts\\utils\\git\\hooks\\pre-push-wrapper.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            181
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\git\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\maintenance\\repo\\organize-repo-structure.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\git\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\auto-organize-folders.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            18
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\git\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\auto-organize-watcher.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            19
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\git\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\organize-docs-fixed.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            20
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\git\\setup-auto-organization.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\manage-logs.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            21
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\json\\Integration-Test.ps1",
+                        "OldPath":  "scripts\\utils\\path-utils.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            24,
+                                            37,
+                                            42,
+                                            55,
+                                            68,
+                                            76,
+                                            102
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\journal\\web\\start-journal-mcp.ps1",
+                        "OldPath":  "scripts\\mcp\\config.js",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            5
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\server\\start-mcp-git-ingest-server.cmd",
+                        "OldPath":  "..\\python\\run_mcp_git_ingest.py",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            8
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\mcp\\augment-mcp-git-ingest.cmd",
+                        "OldPath":  "..\\..\\python\\run_mcp_git_ingest.py",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            8
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\utils\\automation\\auto-organize-folders.ps1",
+                        "OldPath":  "scripts\\utils\\automation\\organize-docs-fixed.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            222
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-mcp-files.ps1",
+                        "OldPath":  ".\\mcp\\README.md",
+                        "NewPath":  "repo\\README.md",
+                        "LineNumbers":  [
+                                            86
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-mcp-files.ps1",
+                        "OldPath":  ".\\mcp\\use-mcp.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            124
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-mcp-files.ps1",
+                        "OldPath":  ".\\batch\\mcp-standard.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            145
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-mcp-files.ps1",
+                        "OldPath":  ".\\batch\\mcp-notion.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            149
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-mcp-files.ps1",
+                        "OldPath":  ".\\batch\\gateway.exe.cmd",
+                        "NewPath":  "..\\email\\gateway.exe.cmd",
+                        "LineNumbers":  [
+                                            153
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-mcp-files.ps1",
+                        "OldPath":  ".\\batch\\mcp-git-ingest.cmd",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            157
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Test-DocumentationModule.ps1",
+                        "OldPath":  "..\\modules\\Documentation\\DocumentationModule.psm1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Test-OptimizationModule.ps1",
+                        "OldPath":  "..\\modules\\Optimization\\OptimizationModule.psm1",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            17
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences.ps1",
+                        "OldPath":  "scripts\\manager\\data\\broken_references.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            10,
+                                            27
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_updates.json",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            13,
+                                            28
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences.ps1",
+                        "OldPath":  "scripts\\manager\\data\\reference_update.log",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            56
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\setup\\env\\test-hooks-clean-env.ps1",
+                        "OldPath":  "scripts\\setup\\install-git-hooks.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            81
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Phase2-AnalyzeAndOrganize.ps1",
+                        "OldPath":  "scripts\\manager\\data\\inventory.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            9,
+                                            25
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\testing\\Phase2-AnalyzeAndOrganize.ps1",
+                        "OldPath":  "scripts\\manager\\config\\rules.json",
+                        "NewPath":  "..\\D",
+                        "LineNumbers":  [
+                                            11,
+                                            26
+                                        ],
+                        "Applied":  true
+                    },
+                    {
+                        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\repo\\organize-repo-fixed.ps1",
+                        "OldPath":  ".\\scripts\\maintenance\\new-file.ps1",
+                        "NewPath":  "..\\..\\D",
+                        "LineNumbers":  [
+                                            258,
+                                            261,
+                                            414
+                                        ],
+                        "Applied":  true
+                    }
+                ]
+}

@@ -1,0 +1,42 @@
+{
+    "ScriptType":  "PowerShell",
+    "Timestamp":  "2025-04-08 18:57:51",
+    "AppliedChangeCount":  0,
+    "TotalFiles":  3,
+    "TotalChangeCount":  0,
+    "ScriptResults":  [
+                          {
+                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Find-CodeDuplication.ps1",
+                              "ScriptType":  "PowerShell",
+                              "ChangeCount":  0,
+                              "Changes":  [
+
+                                          ],
+                              "Applied":  {
+                                              "IsPresent":  false
+                                          }
+                          },
+                          {
+                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Manage-Duplications.ps1",
+                              "ScriptType":  "PowerShell",
+                              "ChangeCount":  0,
+                              "Changes":  [
+
+                                          ],
+                              "Applied":  {
+                                              "IsPresent":  false
+                                          }
+                          },
+                          {
+                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Merge-SimilarScripts.ps1",
+                              "ScriptType":  "PowerShell",
+                              "ChangeCount":  0,
+                              "Changes":  [
+
+                                          ],
+                              "Applied":  {
+                                              "IsPresent":  false
+                                          }
+                          }
+                      ]
+}
