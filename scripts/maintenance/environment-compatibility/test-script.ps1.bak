@@ -1,0 +1,44 @@
+<#
+.SYNOPSIS
+    Script de test pour l'amélioration de la compatibilité.
+
+.DESCRIPTION
+    Ce script contient des problèmes de compatibilité à corriger.
+
+.NOTES
+    Version:        1.0
+    Auteur:         Augment Agent
+    Date création:  09/04/2025
+#>
+
+# Chemins codés en dur
+$logPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\logs"
+$configPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\config"
+
+# Utilisation de séparateurs de chemin spécifiques à Windows
+$scriptPath = "scripts\\utils\\path-utils.ps1"
+
+# Commandes spécifiques à Windows
+$result = cmd.exe /c "dir /b"
+
+# Variables d'environnement spécifiques à Windows
+$userProfile = $env:USERPROFILE
+$appData = $env:APPDATA
+$programFiles = $env:ProgramFiles
+$systemRoot = $env:SystemRoot
+
+# Fonctions spécifiques à PowerShell Windows
+$processes = Get-WmiObject -Class Win32_Process
+$logs = Get-EventLog -LogName Application -Newest 10
+
+# Afficher les résultats
+Write-Host "Log Path: $logPath"
+Write-Host "Config Path: $configPath"
+Write-Host "Script Path: $scriptPath"
+Write-Host "Result: $result"
+Write-Host "User Profile: $userProfile"
+Write-Host "App Data: $appData"
+Write-Host "Program Files: $programFiles"
+Write-Host "System Root: $systemRoot"
+Write-Host "Processes: $($processes.Count)"
+Write-Host "Logs: $($logs.Count)"
