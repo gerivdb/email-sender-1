@@ -28,4 +28,7 @@ Describe "Tests simples" {
 }
 
 # Ne pas exécuter les tests automatiquement pour éviter la récursion infinie
-# Invoke-Pester -Path $PSCommandPath -Output Detailed
+# # # # # Invoke-Pester -Path $PSCommandPath -Output Detailed # Commenté pour éviter la récursion infinie # Commenté pour éviter la récursion infinie # Commenté pour éviter la récursion infinie # Commenté pour éviter la récursion infinie
+
+
+
