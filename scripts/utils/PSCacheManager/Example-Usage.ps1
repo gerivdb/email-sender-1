@@ -1,281 +1,316 @@
 <#
 .SYNOPSIS
-    Exemple d'utilisation du module PSCacheManager.
+    Demonstrates usage of the improved PSCacheManager module v2.0.
 .DESCRIPTION
-    Ce script montre comment utiliser le module PSCacheManager pour améliorer
-    les performances des scripts PowerShell en mettant en cache les résultats
-    d'opérations coûteuses.
+    Shows how to create caches with different configurations (LRU/LFU, TTL),
+    use Get-PSCacheItem with -GenerateValue for costly operations,
+    utilize tags, remove items, and view statistics.
 .EXAMPLE
-    .\Example-Usage.ps1
+    .\Example-Usage.ps1 -Verbose
 .NOTES
-    Auteur: Augment Agent
-    Version: 1.0
+    Author: Augment Agent (Improved by AI)
+    Version: 2.0
+    Requires: PSCacheManager.psm1 (v2.0+) in the same directory or PowerShell module path.
     Compatibilité: PowerShell 5.1 et supérieur
 #>
 
-# Importer le module
-Import-Module "$PSScriptRoot\PSCacheManager.psd1" -Force
+param(
+    [switch]$RunWithVerbose # Add switch to easily enable verbose output from cache module
+)
 
-# Créer un gestionnaire de cache pour l'analyse de scripts
-$scriptCache = New-PSCache -Name "ScriptAnalysis" -MaxItems 500 -DefaultTTLSeconds 1800
+# Construct the path to the module file relative to this script
+$modulePath = Join-Path -Path $PSScriptRoot -ChildPath "PSCacheManager.psm1"
 
-# Fonction pour analyser un script PowerShell avec mise en cache
+# Import the module
+try {
+    Write-Host "Importing PSCacheManager module from '$modulePath'..." -ForegroundColor Gray
+    Import-Module $modulePath -Force -ErrorAction Stop
+    Write-Host "Module imported successfully." -ForegroundColor Gray
+}
+catch {
+    Write-Error "Failed to import PSCacheManager module at '$modulePath'. Please ensure the file exists. Error: $($_.Exception.Message)"
+    exit 1
+}
+
+# --- Cache Initialization ---
+Write-Host "`nInitializing Caches..." -ForegroundColor Cyan
+
+# Cache for script analysis results (LRU, 1 hour TTL)
+$scriptCache = New-PSCache -Name "ScriptAnalysis" -MaxMemoryItems 50 -DefaultTTLSeconds 3600 # Smaller size for demo
+
+# Cache for encoding detection results (LFU, long TTL, extends on access)
+$encodingCache = New-PSCache -Name "EncodingDetection" -MaxMemoryItems 100 -DefaultTTLSeconds 86400 -EvictionPolicy LFU -ExtendTtlOnAccess:$true
+
+if (-not $scriptCache -or -not $encodingCache) {
+    Write-Error "Failed to initialize one or more caches. Exiting."
+    exit 1
+}
+
+Write-Host "Caches '$($scriptCache.Name)' and '$($encodingCache.Name)' initialized." -ForegroundColor Green
+
+# --- Helper Functions Using Cache ---
+
+# Function to analyze a script PowerShell using cache
 function Test-ScriptWithCache {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
+        [CacheManager]$CacheInstance,
+
+        [Parameter(Mandatory = $true)]
         [string]$ScriptPath
     )
 
-    # Vérifier si le fichier existe
-    if (-not (Test-Path -Path $ScriptPath)) {
-        Write-Error "Le script n'existe pas: $ScriptPath"
+    # Validate input file
+    $scriptFileInfo = Get-Item -Path $ScriptPath -ErrorAction SilentlyContinue
+    if (-not $scriptFileInfo) {
+        Write-Error "Script file not found: $ScriptPath"
         return $null
     }
 
-    # Générer une clé de cache basée sur le chemin et la date de modification
-    $scriptInfo = Get-Item -Path $ScriptPath
-    $cacheKey = "Analysis_$($scriptInfo.FullName)_$($scriptInfo.LastWriteTime.Ticks)"
+    # Cache key incorporates file path and last write time for automatic invalidation on change
+    $cacheKey = "ScriptAnalysis:$($scriptFileInfo.FullName):$($scriptFileInfo.LastWriteTimeUtc.Ticks)"
+    $cacheArgs = @{
+        Cache = $CacheInstance
+        Key   = $cacheKey
+        GenerateValue = {
+            param($Path, $FileInfo) # Pass parameters to scriptblock for clarity
 
-    # Tenter de récupérer du cache, sinon générer
-    $analysis = Get-PSCacheItem -Cache $scriptCache -Key $cacheKey -GenerateValue {
-        Write-Verbose "Cache miss - Analyzing script $ScriptPath"
+            # Use Write-Host or Write-Verbose inside GenerateValue for feedback
+            Write-Host " -> Generating analysis for '$($FileInfo.Name)' (Cache Miss)..." -ForegroundColor Yellow
+            # Simulate expensive operation
+            Start-Sleep -Milliseconds (Get-Random -Minimum 200 -Maximum 600)
 
-        # Simuler une opération coûteuse
-        Start-Sleep -Milliseconds 500
+            $content = Get-Content -Path $Path -Raw -ErrorAction SilentlyContinue
+            if ($null -eq $content) { return $null } # Handle read error
 
-        # Lire le contenu du script
-        $content = Get-Content -Path $ScriptPath -Raw
+            $tokens = $null
+            $parseErrors = $null
+            $ast = [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$tokens, [ref]$parseErrors)
 
-        # Analyser le script avec l'AST (Abstract Syntax Tree)
-        $tokens = $null
-        $parseErrors = $null
-        $ast = [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$tokens, [ref]$parseErrors)
+            $commands = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.CommandAst] }, $true)
+            $variables = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.VariableExpressionAst] }, $true)
+            $functions = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
 
-        # Compter les différents types d'éléments
-        $commands = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.CommandAst] }, $true)
-        $variables = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.VariableExpressionAst] }, $true)
-        $functions = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
-        $parameters = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.ParameterAst] }, $true)
-
-        # Créer l'objet d'analyse
-        $result = [PSCustomObject]@{
-            ScriptPath = $ScriptPath
-            ScriptName = $scriptInfo.Name
-            LastModified = $scriptInfo.LastWriteTime
-            SizeBytes = $scriptInfo.Length
-            LineCount = ($content -split "`n").Count
-            CommandCount = $commands.Count
-            VariableCount = $variables.Count
-            FunctionCount = $functions.Count
-            ParameterCount = $parameters.Count
-            Functions = $functions | ForEach-Object { $_.Name }
-            HasParseErrors = $parseErrors.Count -gt 0
-            ParseErrors = $parseErrors
-            AnalysisTimestamp = Get-Date
+            return [PSCustomObject]@{
+                ScriptPath      = $Path
+                ScriptName      = $FileInfo.Name
+                LastModifiedUtc = $FileInfo.LastWriteTimeUtc
+                SizeBytes       = $FileInfo.Length
+                LineCount       = ($content -split "`r?`n").Count # Robust line count
+                CommandCount    = $commands.Count
+                VariableCount   = $variables.Count
+                FunctionCount   = $functions.Count
+                HasParseErrors  = $parseErrors.Count -gt 0
+                ParseErrors     = if ($parseErrors.Count -gt 0) { $parseErrors } else { $null }
+                AnalysisTime    = Get-Date
+            }
         }
+        # Pass arguments to the scriptblock
+        GenerateValueArgumentList = @($ScriptPath, $scriptFileInfo)
+        # Override default TTL for this specific item if needed
+        # TTLSeconds = 7200
+        Tags = @("Analysis", "Script", $scriptFileInfo.Extension) # Add relevant tags
+    }
+    # Add Verbose preference if the main script was called with -Verbose
+    if($PSBoundParameters['RunWithVerbose']) { $cacheArgs.Verbose = $true }
 
-        return $result
-    } -TTLSeconds 3600 -Tags @("ScriptAnalysis", $scriptInfo.Extension)
+    $analysisResult = Get-PSCacheItem @cacheArgs
 
-    return $analysis
+    if ($null -ne $analysisResult) {
+         Write-Host " -> Analysis retrieved for '$($scriptFileInfo.Name)' (Cache Hit)" -ForegroundColor Green
+    }
+
+    return $analysisResult
 }
 
-# Fonction pour détecter l'encodage d'un fichier avec mise en cache
+# Function to detect file encoding using cache
 function Get-FileEncodingWithCache {
-    [CmdletBinding()]
+     [CmdletBinding()]
     param (
+        [Parameter(Mandatory = $true)]
+        [CacheManager]$CacheInstance,
+
         [Parameter(Mandatory = $true)]
         [string]$FilePath
     )
 
-    # Vérifier si le fichier existe
-    if (-not (Test-Path -Path $FilePath)) {
-        Write-Error "Le fichier n'existe pas: $FilePath"
+     # Validate input file
+    $fileInfo = Get-Item -Path $FilePath -ErrorAction SilentlyContinue
+    if (-not $fileInfo) {
+        Write-Error "File not found: $FilePath"
         return $null
     }
 
-    # Créer un gestionnaire de cache pour la détection d'encodage si nécessaire
-    if (-not (Get-Variable -Name "encodingCache" -Scope Script -ErrorAction SilentlyContinue)) {
-        $script:encodingCache = New-PSCache -Name "EncodingDetection" -MaxItems 1000 -DefaultTTLSeconds 86400
+    # Cache key based on path and modification time
+    $cacheKey = "EncodingDetection:$($fileInfo.FullName):$($fileInfo.LastWriteTimeUtc.Ticks)"
+    $cacheArgs = @{
+        Cache = $CacheInstance
+        Key   = $cacheKey
+        GenerateValue = {
+            param($Path, $FileInfo)
+
+            Write-Host " -> Detecting encoding for '$($FileInfo.Name)' (Cache Miss)..." -ForegroundColor Yellow
+            # Simulate detection time
+            Start-Sleep -Milliseconds (Get-Random -Minimum 50 -Maximum 250)
+
+            $encoding = [System.Text.Encoding]::Default # Start with a default
+            $hasBOM = $false
+            try {
+                 # Use StreamReader for robust detection (handles BOMs automatically)
+                 $reader = [System.IO.StreamReader]::new($Path, $true) # $true detects encoding from BOM
+                 $encoding = $reader.CurrentEncoding
+                 # Check if BOM was actually present
+                 $bomBytes = $encoding.GetPreamble()
+                 if ($bomBytes.Length -gt 0) {
+                     $fileBytes = [System.IO.File]::ReadAllBytes($Path)
+                     if ($fileBytes.Length -ge $bomBytes.Length) {
+                         $prefix = $fileBytes[0..($bomBytes.Length - 1)]
+                         if ([System.Linq.Enumerable]::SequenceEqual($prefix, $bomBytes)) {
+                             $hasBOM = $true
+                         }
+                     }
+                 }
+                 $reader.Dispose()
+            } catch {
+                 Write-Warning "Error reading file '$Path' for encoding detection: $($_.Exception.Message)"
+                 # Fallback or return error? Let's return unknown.
+                 return [PSCustomObject]@{
+                    FilePath         = $Path
+                    FileName         = $FileInfo.Name
+                    EncodingName     = "Error Reading File"
+                    EncodingCodepage = -1
+                    HasBOM           = $false
+                    DetectionTime    = Get-Date
+                 }
+            }
+
+             return [PSCustomObject]@{
+                FilePath         = $Path
+                FileName         = $FileInfo.Name
+                EncodingName     = $encoding.EncodingName
+                EncodingCodepage = $encoding.CodePage
+                HasBOM           = $hasBOM
+                DetectionTime    = Get-Date
+            }
+        }
+        GenerateValueArgumentList = @($FilePath, $fileInfo)
+        Tags = @("Encoding", "FileMeta", $fileInfo.Extension)
+    }
+    if($PSBoundParameters['RunWithVerbose']) { $cacheArgs.Verbose = $true }
+
+    $encodingResult = Get-PSCacheItem @cacheArgs
+
+     if ($null -ne $encodingResult -and $encodingResult.EncodingCodepage -ne -1) {
+         Write-Host " -> Encoding retrieved for '$($fileInfo.Name)' (Cache Hit)" -ForegroundColor Green
     }
 
-    # Générer une clé de cache basée sur le chemin et la date de modification
-    $fileInfo = Get-Item -Path $FilePath
-    $cacheKey = "Encoding_$($fileInfo.FullName)_$($fileInfo.LastWriteTime.Ticks)"
-
-    # Tenter de récupérer du cache, sinon générer
-    $encodingInfo = Get-PSCacheItem -Cache $script:encodingCache -Key $cacheKey -GenerateValue {
-        Write-Verbose "Cache miss - Detecting encoding for $FilePath"
-
-        # Simuler une opération coûteuse
-        Start-Sleep -Milliseconds 200
-
-        # Lire les premiers octets du fichier pour détecter l'encodage
-        $bytes = [System.IO.File]::ReadAllBytes($FilePath)
-
-        # Détecter l'encodage
-        $encoding = "Unknown"
-        $hasBOM = $false
-
-        if ($bytes.Length -ge 2) {
-            # Vérifier les BOM (Byte Order Mark)
-            if ($bytes.Length -ge 4 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE -and $bytes[2] -eq 0x00 -and $bytes[3] -eq 0x00) {
-                $encoding = "UTF-32 LE"
-                $hasBOM = $true
-            }
-            elseif ($bytes.Length -ge 4 -and $bytes[0] -eq 0x00 -and $bytes[1] -eq 0x00 -and $bytes[2] -eq 0xFE -and $bytes[3] -eq 0xFF) {
-                $encoding = "UTF-32 BE"
-                $hasBOM = $true
-            }
-            elseif ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
-                $encoding = "UTF-8"
-                $hasBOM = $true
-            }
-            elseif ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
-                $encoding = "UTF-16 BE"
-                $hasBOM = $true
-            }
-            elseif ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
-                $encoding = "UTF-16 LE"
-                $hasBOM = $true
-            }
-            else {
-                # Analyse heuristique pour UTF-8 sans BOM
-                $isUtf8 = $true
-                $utf8Sequences = 0
-
-                for ($i = 0; $i -lt [Math]::Min($bytes.Length, 1000); $i++) {
-                    if ($bytes[$i] -ge 0x80) {
-                        # Vérifier les séquences UTF-8 valides
-                        if ($bytes[$i] -ge 0xC0 -and $bytes[$i] -le 0xDF -and $i + 1 -lt $bytes.Length -and $bytes[$i + 1] -ge 0x80 -and $bytes[$i + 1] -le 0xBF) {
-                            $i++
-                            $utf8Sequences++
-                        }
-                        elseif ($bytes[$i] -ge 0xE0 -and $bytes[$i] -le 0xEF -and $i + 2 -lt $bytes.Length -and $bytes[$i + 1] -ge 0x80 -and $bytes[$i + 1] -le 0xBF -and $bytes[$i + 2] -ge 0x80 -and $bytes[$i + 2] -le 0xBF) {
-                            $i += 2
-                            $utf8Sequences++
-                        }
-                        elseif ($bytes[$i] -ge 0xF0 -and $bytes[$i] -le 0xF7 -and $i + 3 -lt $bytes.Length -and $bytes[$i + 1] -ge 0x80 -and $bytes[$i + 1] -le 0xBF -and $bytes[$i + 2] -ge 0x80 -and $bytes[$i + 2] -le 0xBF -and $bytes[$i + 3] -ge 0x80 -and $bytes[$i + 3] -le 0xBF) {
-                            $i += 3
-                            $utf8Sequences++
-                        }
-                        else {
-                            $isUtf8 = $false
-                            break
-                        }
-                    }
-                }
-
-                if ($isUtf8 -and $utf8Sequences -gt 0) {
-                    $encoding = "UTF-8"
-                    $hasBOM = $false
-                }
-                else {
-                    # Par défaut, supposer ASCII ou ANSI
-                    $encoding = "ASCII/ANSI"
-                    $hasBOM = $false
-                }
-            }
-        }
-
-        # Créer l'objet d'information d'encodage
-        $result = [PSCustomObject]@{
-            FilePath = $FilePath
-            FileName = $fileInfo.Name
-            Encoding = $encoding
-            HasBOM = $hasBOM
-            SizeBytes = $fileInfo.Length
-            LastModified = $fileInfo.LastWriteTime
-            DetectionTimestamp = Get-Date
-        }
-
-        return $result
-    } -TTLSeconds 86400 -Tags @("EncodingDetection", $fileInfo.Extension)
-
-    return $encodingInfo
+    return $encodingResult
 }
 
-# Démonstration d'utilisation
-Write-Host "Démonstration du module PSCacheManager" -ForegroundColor Cyan
-Write-Host "------------------------------------" -ForegroundColor Cyan
+# --- Demonstration ---
+Write-Host "`n--- PSCacheManager Demonstration ---" -ForegroundColor Cyan
 
-# Analyser le module lui-même
-$modulePath = "$PSScriptRoot\PSCacheManager.psm1"
-Write-Host "`nAnalyse du script: $modulePath" -ForegroundColor Yellow
+# Target file for tests (use the module itself)
+$testFilePath = $modulePath
 
-# Premier appel (cache miss)
-Write-Host "`nPremier appel (devrait être un cache miss):" -ForegroundColor Green
-$sw = [System.Diagnostics.Stopwatch]::StartNew()
-$analysis1 = Test-ScriptWithCache -ScriptPath $modulePath -Verbose
-$sw.Stop()
-Write-Host "Temps d'exécution: $($sw.ElapsedMilliseconds) ms" -ForegroundColor Green
+# == Script Analysis Demo ==
+Write-Host "`n1. Script Analysis Caching (Cache: $($scriptCache.Name))" -ForegroundColor Yellow
 
-# Afficher quelques informations
-Write-Host "`nInformations sur le script:"
-Write-Host "  Nom: $($analysis1.ScriptName)"
-Write-Host "  Taille: $([Math]::Round($analysis1.SizeBytes / 1KB, 2)) KB"
-Write-Host "  Lignes: $($analysis1.LineCount)"
-Write-Host "  Fonctions: $($analysis1.FunctionCount)"
-Write-Host "  Variables: $($analysis1.VariableCount)"
-Write-Host "  Commandes: $($analysis1.CommandCount)"
+# First call (Miss)
+Write-Host "`n[Call 1 - Expect Cache Miss]"
+$sw1 = [System.Diagnostics.Stopwatch]::StartNew()
+$analysis1 = Test-ScriptWithCache -CacheInstance $scriptCache -ScriptPath $testFilePath
+$sw1.Stop()
+Write-Host "Execution Time: $($sw1.ElapsedMilliseconds) ms"
 
-# Deuxième appel (cache hit)
-Write-Host "`nDeuxième appel (devrait être un cache hit):" -ForegroundColor Green
-$sw = [System.Diagnostics.Stopwatch]::StartNew()
-$analysis2 = Test-ScriptWithCache -ScriptPath $modulePath -Verbose
-$sw.Stop()
-Write-Host "Temps d'exécution: $($sw.ElapsedMilliseconds) ms" -ForegroundColor Green
+# Second call (Hit)
+Write-Host "`n[Call 2 - Expect Cache Hit]"
+$sw2 = [System.Diagnostics.Stopwatch]::StartNew()
+$analysis2 = Test-ScriptWithCache -CacheInstance $scriptCache -ScriptPath $testFilePath
 
-# Vérifier que les deux analyses sont identiques
-Write-Host "`nVérification de la cohérence des résultats:"
-Write-Host "  Analyses identiques: $(($analysis1.CommandCount -eq $analysis2.CommandCount) -and ($analysis1.VariableCount -eq $analysis2.VariableCount))"
+# Compare results to verify cache consistency
+Write-Host "Verification: Results identical? $($analysis1.CommandCount -eq $analysis2.CommandCount -and $analysis1.VariableCount -eq $analysis2.VariableCount)"
+$sw2.Stop()
+Write-Host "Execution Time: $($sw2.ElapsedMilliseconds) ms"
 
-# Détecter l'encodage
-Write-Host "`nDétection de l'encodage du fichier: $modulePath" -ForegroundColor Yellow
+# Display some analysis results
+if ($analysis1) {
+    Write-Host "`nSample Analysis Results ('$($analysis1.ScriptName)'):"
+    Write-Host "  Commands: $($analysis1.CommandCount)"
+    Write-Host "  Functions: $($analysis1.FunctionCount)"
+    Write-Host "  Variables: $($analysis1.VariableCount)"
+    Write-Host "  Last Modified (UTC): $($analysis1.LastModifiedUtc)"
+} else { Write-Warning "Analysis failed." }
 
-# Premier appel (cache miss)
-Write-Host "`nPremier appel (devrait être un cache miss):" -ForegroundColor Green
-$sw = [System.Diagnostics.Stopwatch]::StartNew()
-$encoding1 = Get-FileEncodingWithCache -FilePath $modulePath -Verbose
-$sw.Stop()
-Write-Host "Temps d'exécution: $($sw.ElapsedMilliseconds) ms" -ForegroundColor Green
+# == Encoding Detection Demo ==
+Write-Host "`n2. Encoding Detection Caching (Cache: $($encodingCache.Name))" -ForegroundColor Yellow
 
-# Afficher les informations d'encodage
-Write-Host "`nInformations d'encodage:"
-Write-Host "  Encodage: $($encoding1.Encoding)"
-Write-Host "  BOM: $($encoding1.HasBOM)"
+# First call (Miss)
+Write-Host "`n[Call 1 - Expect Cache Miss]"
+$sw3 = [System.Diagnostics.Stopwatch]::StartNew()
+$encoding1 = Get-FileEncodingWithCache -CacheInstance $encodingCache -FilePath $testFilePath
+$sw3.Stop()
+Write-Host "Execution Time: $($sw3.ElapsedMilliseconds) ms"
 
-# Deuxième appel (cache hit)
-Write-Host "`nDeuxième appel (devrait être un cache hit):" -ForegroundColor Green
-$sw = [System.Diagnostics.Stopwatch]::StartNew()
-$encoding2 = Get-FileEncodingWithCache -FilePath $modulePath -Verbose
-$sw.Stop()
-Write-Host "Temps d'exécution: $($sw.ElapsedMilliseconds) ms" -ForegroundColor Green
+# Second call (Hit)
+Write-Host "`n[Call 2 - Expect Cache Hit]"
+$sw4 = [System.Diagnostics.Stopwatch]::StartNew()
+$encoding2 = Get-FileEncodingWithCache -CacheInstance $encodingCache -FilePath $testFilePath
 
-# Vérifier que les deux résultats d'encodage sont identiques
-Write-Host "`nVérification de la cohérence des résultats d'encodage:"
-Write-Host "  Encodages identiques: $($encoding1.Encoding -eq $encoding2.Encoding)"
+# Compare results to verify cache consistency
+Write-Host "Verification: Encodings identical? $($encoding1.Encoding -eq $encoding2.Encoding -and $encoding1.HasBOM -eq $encoding2.HasBOM)"
+$sw4.Stop()
+Write-Host "Execution Time: $($sw4.ElapsedMilliseconds) ms"
 
-# Afficher les statistiques du cache
-Write-Host "`nStatistiques du cache d'analyse de scripts:" -ForegroundColor Yellow
-$scriptCacheStats = Get-PSCacheStatistics -Cache $scriptCache
-Write-Host "  Nom: $($scriptCacheStats.Name)"
-Write-Host "  Éléments: $($scriptCacheStats.ItemCount)"
-Write-Host "  Taille totale: $([Math]::Round($scriptCacheStats.TotalSize / 1KB, 2)) KB"
-Write-Host "  Hits: $($scriptCacheStats.Hits)"
-Write-Host "  Misses: $($scriptCacheStats.Misses)"
-Write-Host "  Ratio de hits: $([Math]::Round($scriptCacheStats.HitRatio * 100, 2))%"
+# Display encoding results
+if ($encoding1) {
+    Write-Host "`nSample Encoding Results ('$($encoding1.FileName)'):"
+    Write-Host "  Encoding Name: $($encoding1.EncodingName)"
+    Write-Host "  CodePage: $($encoding1.EncodingCodepage)"
+    Write-Host "  Has BOM: $($encoding1.HasBOM)"
+} else { Write-Warning "Encoding detection failed." }
 
-Write-Host "`nStatistiques du cache de détection d'encodage:" -ForegroundColor Yellow
-$encodingCacheStats = Get-PSCacheStatistics -Cache $script:encodingCache
-Write-Host "  Nom: $($encodingCacheStats.Name)"
-Write-Host "  Éléments: $($encodingCacheStats.ItemCount)"
-Write-Host "  Taille totale: $([Math]::Round($encodingCacheStats.TotalSize / 1KB, 2)) KB"
-Write-Host "  Hits: $($encodingCacheStats.Hits)"
-Write-Host "  Misses: $($encodingCacheStats.Misses)"
-Write-Host "  Ratio de hits: $([Math]::Round($encodingCacheStats.HitRatio * 100, 2))%"
+# == Test-PSCacheItem Demo ==
+Write-Host "`n3. Testing Cache Key Existence" -ForegroundColor Yellow
+$testKey = "TestKey_$(Get-Random)"
+Write-Host "Testing if key '$testKey' exists before adding it..."
+$existsBefore = Test-PSCacheItem -Cache $scriptCache -Key $testKey
+Write-Host "Key '$testKey' exists before adding: $existsBefore"
 
-# Nettoyer les caches (optionnel)
+Write-Host "Adding item with key '$testKey'..."
+Set-PSCacheItem -Cache $scriptCache -Key $testKey -Value "Test value" -TTLSeconds 60 -Tags "Test", "Demo" -Verbose:$RunWithVerbose
+
+Write-Host "Testing if key '$testKey' exists after adding it..."
+$existsAfter = Test-PSCacheItem -Cache $scriptCache -Key $testKey
+Write-Host "Key '$testKey' exists after adding: $existsAfter"
+
+# == Tag Removal Demo ==
+Write-Host "`n4. Tag-Based Removal Demo" -ForegroundColor Yellow
+$tempDataKey = "TempData_$(Get-Random)"
+Write-Host "Adding temporary item with tag 'Temporary': $tempDataKey"
+Set-PSCacheItem -Cache $scriptCache -Key $tempDataKey -Value "This is temporary" -TTLSeconds 60 -Tags "Temporary", "Demo" -Verbose:$RunWithVerbose
+Write-Host "Item count before removal: $((Get-PSCacheStatistics -Cache $scriptCache).MemoryItemCount)"
+Write-Host "Removing items with tag 'Temporary'..."
+Remove-PSCacheItem -Cache $scriptCache -Tag "Temporary" -Confirm:$false # Use -Confirm:$false for automation
+Write-Host "Item count after removal: $((Get-PSCacheStatistics -Cache $scriptCache).MemoryItemCount)"
+
+
+# == Statistics Display ==
+Write-Host "`n5. Cache Statistics" -ForegroundColor Cyan
+Write-Host "`n--- $($scriptCache.Name) Statistics ---" -ForegroundColor Yellow
+Get-PSCacheStatistics -Cache $scriptCache | Format-List
+Write-Host "`n--- $($encodingCache.Name) Statistics ---" -ForegroundColor Yellow
+Get-PSCacheStatistics -Cache $encodingCache | Format-List
+
+
+# == Cleanup (Optional) ==
+# Write-Host "`nClearing expired items..."
 # Clear-PSCache -Cache $scriptCache -ExpiredOnly
-# Clear-PSCache -Cache $script:encodingCache -ExpiredOnly
+# Clear-PSCache -Cache $encodingCache -ExpiredOnly
+
+# Write-Host "`nCompletely clearing caches..."
+# Clear-PSCache -Cache $scriptCache
+# Clear-PSCache -Cache $encodingCache
+
+Write-Host "`n--- Demonstration Complete ---" -ForegroundColor Cyan
