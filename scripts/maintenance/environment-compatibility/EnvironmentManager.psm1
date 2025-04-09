@@ -303,6 +303,7 @@ function ConvertTo-CrossPlatformPath {
     [OutputType([string])]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowEmptyString()]
         [string]$Path,
 
         [Parameter(Mandatory = $false)]
@@ -369,6 +370,7 @@ function Test-CrossPlatformPath {
     [OutputType([bool])]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowEmptyString()]
         [string]$Path,
 
         [Parameter(Mandatory = $false)]
@@ -431,6 +433,7 @@ function Join-CrossPlatformPath {
     [OutputType([string])]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowEmptyString()]
         [string]$Path,
 
         [Parameter(Mandatory = $true, Position = 1)]
@@ -589,6 +592,7 @@ function Get-CrossPlatformContent {
     [OutputType([string])]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowEmptyString()]
         [string]$Path,
 
         [Parameter(Mandatory = $false)]
@@ -666,6 +670,7 @@ function Set-CrossPlatformContent {
     [OutputType([bool])]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowEmptyString()]
         [string]$Path,
 
         [Parameter(Mandatory = $true, Position = 1)]
