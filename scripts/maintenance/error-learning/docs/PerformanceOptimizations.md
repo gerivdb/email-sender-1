@@ -213,7 +213,80 @@ Les optimisations apportées ont permis d'améliorer significativement les perfo
 | Enregistrement de 100 erreurs | ~20 secondes | ~5 secondes | ~75% |
 | Utilisation mémoire | ~100 MB | ~50 MB | ~50% |
 
-## 5. Recommandations pour les futures optimisations
+## 5. Parallélisation avec Jobs PowerShell (PowerShell 5.1)
+
+### 5.1. Analyse parallèle des scripts avec Jobs
+
+#### Problème identifié
+La fonctionnalité `ForEach-Object -Parallel` n'est disponible qu'à partir de PowerShell 7.0, ce qui limite l'utilisation des scripts de parallélisation sur les systèmes utilisant PowerShell 5.1.
+
+#### Solution implémentée
+- Création d'un script `Analyze-ScriptsWithJobs.ps1` qui utilise des Jobs PowerShell pour analyser plusieurs scripts simultanément
+- Utilisation d'un paramètre `MaxJobs` pour contrôler le nombre maximum de jobs exécutés en parallèle
+- Génération de rapports consolidés pour faciliter l'analyse des résultats
+
+```powershell
+# Créer un script block pour l'analyse d'un script
+$scriptBlock = {
+    param($scriptPath, $patterns)
+
+    # Analyse du script...
+}
+
+# Traiter les scripts par lots
+while ($scriptIndex -lt $validPaths.Count) {
+    # Vérifier le nombre de jobs en cours d'exécution
+    $runningJobs = $jobs | Where-Object { $_.State -eq "Running" }
+
+    # Si nous avons atteint le nombre maximum de jobs, attendre qu'un job se termine
+    while ($runningJobs.Count -ge $MaxJobs) {
+        Start-Sleep -Seconds 1
+        $runningJobs = $jobs | Where-Object { $_.State -eq "Running" }
+    }
+
+    # Démarrer un nouveau job
+    $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $scriptPath, $compiledPatterns
+    $jobs += $job
+
+    $scriptIndex++
+}
+```
+
+### 5.2. Correction parallèle des scripts avec Jobs
+
+#### Problème identifié
+La fonctionnalité `ForEach-Object -Parallel` n'est disponible qu'à partir de PowerShell 7.0, ce qui limite l'utilisation des scripts de parallélisation sur les systèmes utilisant PowerShell 5.1.
+
+#### Solution implémentée
+- Création d'un script `Auto-CorrectErrorsWithJobs.ps1` qui utilise des Jobs PowerShell pour corriger plusieurs scripts simultanément
+- Utilisation d'un paramètre `MaxJobs` pour contrôler le nombre maximum de jobs exécutés en parallèle
+- Support du mode `WhatIf` pour simuler les corrections sans les appliquer réellement
+- Génération de rapports consolidés pour faciliter l'analyse des résultats
+
+```powershell
+# Créer un script block pour la correction d'un script
+$scriptBlock = {
+    param($scriptPath, $patterns, $whatIf)
+
+    # Correction du script...
+}
+
+# Démarrer un nouveau job
+$job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $scriptPath, $compiledPatterns, $WhatIfPreference
+```
+
+### 5.3. Comparaison entre ForEach-Object -Parallel et Jobs PowerShell
+
+| Fonctionnalité | ForEach-Object -Parallel | Jobs PowerShell |
+|----------------|--------------------------|----------------|
+| Version PowerShell requise | 7.0+ | 2.0+ |
+| Partage de variables | Via `$using:` | Via paramètres |
+| Isolation | Partielle | Complète |
+| Performances | Meilleures | Bonnes |
+| Consommation mémoire | Plus faible | Plus élevée |
+| Facilité d'utilisation | Plus simple | Plus complexe |
+
+## 6. Recommandations pour les futures optimisations
 
 Pour continuer à améliorer les performances du système d'apprentissage des erreurs, voici quelques recommandations :
 
@@ -221,5 +294,5 @@ Pour continuer à améliorer les performances du système d'apprentissage des er
 2. **Mise en cache des résultats d'analyse** : Mettre en cache les résultats d'analyse pour éviter de réanalyser les scripts qui n'ont pas changé.
 3. **Compression des fichiers de logs** : Compresser les fichiers de logs pour réduire l'espace disque utilisé.
 4. **Nettoyage périodique de la base de données** : Supprimer les erreurs anciennes ou peu fréquentes pour maintenir une base de données de taille raisonnable.
-5. **Utilisation de Jobs PowerShell** : Utiliser des Jobs PowerShell pour les opérations de longue durée qui peuvent être exécutées en arrière-plan.
-6. **Optimisation des expressions régulières** : Utiliser des expressions régulières plus efficaces et spécifiques pour réduire le temps d'analyse.
+5. **Optimisation des expressions régulières** : Utiliser des expressions régulières plus efficaces et spécifiques pour réduire le temps d'analyse.
+6. **Utilisation de Runspaces** : Utiliser des Runspaces PowerShell pour une parallélisation encore plus efficace et un meilleur contrôle des threads.
