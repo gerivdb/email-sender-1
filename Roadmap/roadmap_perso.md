@@ -67,6 +67,12 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
   - [x] Implémenter une stratégie d'invalidation appropriée
   - [x] Intégrer ce cache dans les scripts existants
 
+
+Intégrer le module dans les scripts existants pour améliorer leurs performances
+Développer des tests unitaires plus complets
+Optimiser la gestion des chemins de fichiers dans le cache disque
+
+
 ## 1.2 Réorganisation des scripts
 **Complexité**: Moyenne à élevée
 **Temps estimé**: 10-15 jours
