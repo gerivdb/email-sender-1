@@ -116,7 +116,7 @@ foreach ($testFile in $testFiles) {
         $testConfig.TestResult.OutputFormat = "NUnitXml"
     }
 
-    $result = Invoke-Pester -Configuration $testConfig -PassThru
+    $result = Invoke-Pester -Configuration $testConfig
 
     # Mettre à jour les résultats
     $totalTests += $result.TotalCount
