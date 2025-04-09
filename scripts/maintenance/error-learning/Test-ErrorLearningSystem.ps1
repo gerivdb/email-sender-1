@@ -9,7 +9,7 @@
 param (
     [Parameter(Mandatory = $false)]
     [int]$NumErrors = 5,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$GenerateDashboard
 )
@@ -28,7 +28,7 @@ function Generate-Error {
         [Parameter(Mandatory = $true)]
         [int]$ErrorType
     )
-    
+
     switch ($ErrorType) {
         1 {
             # Division par zéro
@@ -136,7 +136,7 @@ for ($i = 1; $i -le $NumErrors; $i++) {
 Write-Host "Génération d'erreurs terminée." -ForegroundColor Green
 
 # Analyser les erreurs
-$analysisResult = Analyze-PowerShellErrors -IncludeStatistics
+$analysisResult = Get-PowerShellErrorAnalysis -IncludeStatistics
 $totalErrors = $analysisResult.Statistics.TotalErrors
 $categories = $analysisResult.Statistics.CategorizedErrors
 
@@ -153,7 +153,7 @@ foreach ($category in $categories.Keys) {
 # Générer le tableau de bord si demandé
 if ($GenerateDashboard) {
     $dashboardPath = Join-Path -Path $PSScriptRoot -ChildPath "dashboard\error-dashboard.html"
-    
+
     # Générer le tableau de bord
     & (Join-Path -Path $PSScriptRoot -ChildPath "Generate-ErrorDashboard.ps1") -OutputPath $dashboardPath -OpenInBrowser
 }

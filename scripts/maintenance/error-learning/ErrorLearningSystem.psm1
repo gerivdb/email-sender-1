@@ -59,7 +59,7 @@ function Initialize-ErrorLearningSystem {
                 LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             }
         }
-        
+
         # Sauvegarder la base de données vide
         $script:ErrorDatabase | ConvertTo-Json -Depth 10 | Set-Content -Path $script:ErrorDatabasePath -Force
         Write-Verbose "Nouvelle base de données des erreurs créée."
@@ -75,16 +75,16 @@ function Register-PowerShellError {
     param (
         [Parameter(Mandatory = $true)]
         [System.Management.Automation.ErrorRecord]$ErrorRecord,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$Source = "Unknown",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$Category = "Uncategorized",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$Solution = "",
-        
+
         [Parameter(Mandatory = $false)]
         [hashtable]$AdditionalInfo = @{}
     )
@@ -128,7 +128,7 @@ function Register-PowerShellError {
     # Journaliser l'erreur
     $logFileName = "error-log-$(Get-Date -Format 'yyyy-MM-dd').json"
     $logFilePath = Join-Path -Path $script:ErrorLogsPath -ChildPath $logFileName
-    
+
     $errorObject | ConvertTo-Json -Depth 10 | Out-File -FilePath $logFilePath -Append -Encoding utf8
 
     Write-Verbose "Erreur enregistrée avec l'ID : $($errorObject.Id)"
@@ -136,15 +136,15 @@ function Register-PowerShellError {
 }
 
 # Fonction pour analyser les erreurs
-function Analyze-PowerShellErrors {
+function Get-PowerShellErrorAnalysis {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
         [string]$Category = "",
-        
+
         [Parameter(Mandatory = $false)]
         [int]$MaxResults = 10,
-        
+
         [Parameter(Mandatory = $false)]
         [switch]$IncludeStatistics
     )
@@ -221,4 +221,4 @@ function Get-ErrorSuggestions {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Initialize-ErrorLearningSystem, Register-PowerShellError, Analyze-PowerShellErrors, Get-ErrorSuggestions
+Export-ModuleMember -Function Initialize-ErrorLearningSystem, Register-PowerShellError, Get-PowerShellErrorAnalysis, Get-ErrorSuggestions

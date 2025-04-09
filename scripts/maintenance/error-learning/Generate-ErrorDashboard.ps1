@@ -9,7 +9,7 @@
 param (
     [Parameter(Mandatory = $false)]
     [string]$OutputPath = "",
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$OpenInBrowser
 )
@@ -33,7 +33,7 @@ if (-not (Test-Path -Path $dashboardDir)) {
 }
 
 # Analyser les erreurs
-$analysisResult = Analyze-PowerShellErrors -IncludeStatistics -MaxResults 100
+$analysisResult = Get-PowerShellErrorAnalysis -IncludeStatistics -MaxResults 100
 $totalErrors = $analysisResult.Statistics.TotalErrors
 $categories = $analysisResult.Statistics.CategorizedErrors
 $lastUpdate = $analysisResult.Statistics.LastUpdate
@@ -165,7 +165,7 @@ $htmlContent = @"
             <h1>Tableau de bord des erreurs PowerShell</h1>
             <p>Dernière mise à jour : $lastUpdate</p>
         </div>
-        
+
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-value">$totalErrors</div>
@@ -180,14 +180,14 @@ $htmlContent = @"
                 <div class="stat-label">Erreurs récentes</div>
             </div>
         </div>
-        
+
         <div class="card">
             <h2 class="card-title">Répartition des erreurs par catégorie</h2>
             <div class="chart-container">
                 <canvas id="categoryChart"></canvas>
             </div>
         </div>
-        
+
         <div class="card">
             <h2 class="card-title">Erreurs récentes</h2>
             <table>
@@ -204,12 +204,12 @@ $htmlContent = @"
                 </tbody>
             </table>
         </div>
-        
+
         <div class="footer">
             <p>Généré par le système d'apprentissage des erreurs PowerShell</p>
         </div>
     </div>
-    
+
     <script>
         // Graphique des catégories
         const categoryCtx = document.getElementById('categoryChart').getContext('2d');

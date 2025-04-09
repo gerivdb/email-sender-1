@@ -32,7 +32,7 @@ if (Test-Path -Path $testRoot) {
 New-Item -Path $testRoot -ItemType Directory -Force | Out-Null
 
 # Variable globale pour le chemin du modèle (accessible dans tous les tests)
-$Global:TestModelPath = Join-Path -Path $testRoot -ChildPath "correction-model.json"
+$Global:TestModelPath = Join-Path -Path $env:TEMP -ChildPath "correction-model.json"
 
 # Définir les tests Pester
 Describe "Script Adaptive-ErrorCorrection" {
