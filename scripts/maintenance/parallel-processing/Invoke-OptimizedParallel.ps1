@@ -136,8 +136,7 @@ function Invoke-OptimizedParallel {
 
         # Initial Session State pour partager les variables et potentiellement des modules/types
         $iss = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault2() # PS 5.1+ friendly
-        # Configuration pour utiliser les flux de sortie du thread principal
-        $iss.UseDefaultThreadOptions = $true # Important pour Write-Verbose etc.
+        # Note: UseDefaultThreadOptions n'est pas disponible dans PowerShell 5.1
 
         # Ajouter les variables partagées accessibles via $using:
         foreach ($key in $SharedVariables.Keys) {
@@ -239,10 +238,21 @@ function Invoke-OptimizedParallel {
             while ($tasks.Count -ge $ThrottleLimit) {
                 Write-Verbose "Limite d'étranglement ($ThrottleLimit tâches actives) atteinte. Attente de la fin d'une tâche..."
                 # Attend qu'AU MOINS une tâche se termine
-                $waitHandles = $tasks.Handle # Obtenir les handles des tâches en cours
-                $completedIndex = [System.Threading.WaitHandle]::WaitAny($waitHandles, [timespan]::FromSeconds(5)) # Timeout pour rester réactif
+                # Vérifier si des tâches sont terminées
+                $completedIndex = -1
+                for ($i = 0; $i -lt $tasks.Count; $i++) {
+                    if ($tasks[$i].Handle.IsCompleted) {
+                        $completedIndex = $i
+                        break
+                    }
+                }
 
-                if ($completedIndex -ne [System.Threading.WaitHandle]::WaitTimeout) {
+                # Si aucune tâche n'est terminée, attendre un peu
+                if ($completedIndex -eq -1) {
+                    Start-Sleep -Milliseconds 100
+                }
+
+                if ($completedIndex -ne -1) {
                     $completedTaskInfo = $tasks[$completedIndex]
                     Write-Verbose "Tâche à l'index $completedIndex terminée. Traitement des résultats..."
                     # Traiter la tâche terminée
@@ -266,11 +276,7 @@ function Invoke-OptimizedParallel {
                 param($__InputItem_Param, $__ScriptBlock_Param) # Noms uniques pour éviter collisions
 
                 # Définir les préférences d'action héritées
-                $VerbosePreference = $using:VerbosePreference
-                $DebugPreference = $using:DebugPreference
-                $ErrorActionPreference = $using:ErrorActionPreference
-                $WarningPreference = $using:WarningPreference
-                # InformationPreference n'est pas directement utilisable avec $using
+                # Les préférences ne sont pas directement utilisables avec $using dans PowerShell 5.1
 
                 # Exécuter le scriptblock fourni par l'utilisateur avec l'élément courant
                 & $__ScriptBlock_Param $__InputItem_Param
@@ -304,11 +310,22 @@ function Invoke-OptimizedParallel {
 
         # Attendre la fin de toutes les tâches restantes
         while ($tasks.Count -gt 0) {
-            $waitHandles = $tasks.Handle
-            # Attendre plus longtemps ici car on sait qu'on doit attendre la fin
-            $completedIndex = [System.Threading.WaitHandle]::WaitAny($waitHandles, [timespan]::FromMinutes(1)) # Timeout long mais évite blocage infini
+            # Vérifier si des tâches sont terminées
+            $completedIndex = -1
+            for ($i = 0; $i -lt $tasks.Count; $i++) {
+                if ($tasks[$i].Handle.IsCompleted) {
+                    $completedIndex = $i
+                    break
+                }
+            }
 
-            if ($completedIndex -ne [System.Threading.WaitHandle]::WaitTimeout) {
+            # Si aucune tâche n'est terminée, attendre un peu
+            if ($completedIndex -eq -1) {
+                Start-Sleep -Milliseconds 100
+                continue
+            }
+
+            if ($completedIndex -ne -1) {
                 $completedTaskInfo = $tasks[$completedIndex]
                 Write-Verbose "Tâche restante à l'index $completedIndex terminée. Traitement..."
                 # Traiter la tâche terminée
@@ -321,11 +338,6 @@ function Invoke-OptimizedParallel {
                     $percent = [math]::Round(($totalCompleted / $totalInputItems) * 100)
                     Write-Progress -Activity "Exécution Parallèle" -Status "$totalCompleted/$totalInputItems Éléments traités" -PercentComplete $percent -Id 1
                  }
-            } else {
-                 # Timeout atteint - que faire ? Signale un problème potentiel (tâche bloquée ?)
-                 Write-Warning "Timeout d'attente long atteint ($($tasks.Count) tâches restantes). Une tâche est peut-être bloquée."
-                 # On pourrait choisir de continuer à attendre ou d'arrêter après plusieurs timeouts
-                 # Pour l'instant, on continue d'attendre
             }
         } # Fin while tasks.Count > 0
 

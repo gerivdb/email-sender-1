@@ -10,26 +10,46 @@
     Le nombre de fichiers de test à créer.
 .PARAMETER TestIterations
     Le nombre d'itérations à exécuter pour chaque méthode.
+.PARAMETER ModulePath
+    Chemin optionnel vers le module ParallelProcessing. Si non spécifié, utilise le module dans le même répertoire.
 .EXAMPLE
     .\Test-ParallelPerformance.ps1 -TestFileCount 20 -TestIterations 3
+.EXAMPLE
+    .\Test-ParallelPerformance.ps1 -ModulePath "C:\Modules\ParallelProcessing"
 .NOTES
     Auteur: Augment Agent
-    Version: 1.0
+    Version: 2.0
     Compatibilité: PowerShell 5.1 et supérieur
 #>
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $false)]
     [int]$TestFileCount = 10,
-    
+
     [Parameter(Mandatory = $false)]
-    [int]$TestIterations = 2
+    [int]$TestIterations = 2,
+
+    [Parameter(Mandatory = $false)]
+    [string]$ModulePath = ""
 )
 
 # Importer la fonction Invoke-OptimizedParallel
 $scriptPath = $PSScriptRoot
-$modulePath = Join-Path -Path $scriptPath -ChildPath "Invoke-OptimizedParallel.ps1"
-. $modulePath
+if ([string]::IsNullOrEmpty($ModulePath)) {
+    $modulePath = Join-Path -Path $scriptPath -ChildPath "Invoke-OptimizedParallel-Simple.ps1"
+    Write-Verbose "Utilisation du module local: $modulePath"
+} else {
+    $modulePath = Join-Path -Path $ModulePath -ChildPath "Invoke-OptimizedParallel-Simple.ps1"
+    Write-Verbose "Utilisation du module spécifié: $modulePath"
+}
+
+if (Test-Path -Path $modulePath) {
+    . $modulePath
+    Write-Verbose "Module Invoke-OptimizedParallel chargé avec succès."
+} else {
+    Write-Error "Module Invoke-OptimizedParallel introuvable à l'emplacement: $modulePath"
+    exit 1
+}
 
 # Créer un répertoire temporaire pour les fichiers de test
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ParallelPerformanceTest_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
@@ -40,15 +60,15 @@ Write-Host "Création de $TestFileCount fichiers de test dans $testDir..."
 # Créer des fichiers de test avec du contenu aléatoire
 for ($i = 1; $i -le $TestFileCount; $i++) {
     $filePath = Join-Path -Path $testDir -ChildPath "TestFile$i.txt"
-    
+
     # Générer du contenu aléatoire (entre 100 et 1000 lignes)
     $lineCount = Get-Random -Minimum 100 -Maximum 1000
     $content = ""
-    
+
     for ($j = 1; $j -le $lineCount; $j++) {
         $content += "Ligne $j : " + [Guid]::NewGuid().ToString() + "`r`n"
     }
-    
+
     Set-Content -Path $filePath -Value $content -Force
 }
 
@@ -57,9 +77,9 @@ Write-Host "Fichiers de test créés avec succès."
 # Fonction pour tester le traitement séquentiel
 function Test-SequentialProcessing {
     param($files)
-    
+
     $results = @()
-    
+
     foreach ($file in $files) {
         $result = @{
             FilePath = $file
@@ -67,93 +87,112 @@ function Test-SequentialProcessing {
             WordCount = 0
             CharCount = 0
         }
-        
+
         # Lire le contenu du fichier
         $content = Get-Content -Path $file -Raw
-        
+
         # Compter les lignes, mots et caractères
         $result.LineCount = ($content -split "`r`n|\r|\n").Count
         $result.WordCount = ($content -split '\s+').Count
         $result.CharCount = $content.Length
-        
+
         $results += [PSCustomObject]$result
     }
-    
+
     return $results
 }
 
 # Fonction pour tester le traitement avec Jobs PowerShell
 function Test-JobsProcessing {
     param($files)
-    
+
     $jobs = @()
-    
+
     # Créer un job pour chaque fichier
     foreach ($file in $files) {
         $job = Start-Job -ScriptBlock {
             param($filePath)
-            
+
             $result = @{
                 FilePath = $filePath
                 LineCount = 0
                 WordCount = 0
                 CharCount = 0
             }
-            
+
             # Lire le contenu du fichier
             $content = Get-Content -Path $filePath -Raw
-            
+
             # Compter les lignes, mots et caractères
             $result.LineCount = ($content -split "`r`n|\r|\n").Count
             $result.WordCount = ($content -split '\s+').Count
             $result.CharCount = $content.Length
-            
+
             return [PSCustomObject]$result
         } -ArgumentList $file
-        
+
         $jobs += $job
     }
-    
+
     # Attendre que tous les jobs soient terminés
     $jobs | Wait-Job | Out-Null
-    
+
     # Récupérer les résultats
     $results = $jobs | Receive-Job
-    
+
     # Nettoyer les jobs
     $jobs | Remove-Job
-    
+
     return $results
 }
 
 # Fonction pour tester le traitement avec Invoke-OptimizedParallel
 function Test-RunspacePoolProcessing {
     param($files)
-    
+
     $scriptBlock = {
         param($filePath)
-        
+
         $result = @{
             FilePath = $filePath
             LineCount = 0
             WordCount = 0
             CharCount = 0
         }
-        
+
         # Lire le contenu du fichier
         $content = Get-Content -Path $filePath -Raw
-        
+
         # Compter les lignes, mots et caractères
         $result.LineCount = ($content -split "`r`n|\r|\n").Count
         $result.WordCount = ($content -split '\s+').Count
         $result.CharCount = $content.Length
-        
+
         return [PSCustomObject]$result
     }
-    
+
     # Utiliser Invoke-OptimizedParallel pour traiter les fichiers
-    $results = $files | Invoke-OptimizedParallel -ScriptBlock $scriptBlock
-    
+    $parallelResults = $files | Invoke-OptimizedParallel -ScriptBlock $scriptBlock -Verbose:$VerbosePreference
+
+    # Extraire les résultats réels des objets retournés (nouvelle structure)
+    $results = $parallelResults | Where-Object { $_.Success } | ForEach-Object {
+        # Ajouter la propriété FilePath qui est dans InputObject
+        $result = $_.Result
+        if ($result -and -not $result.PSObject.Properties.Name.Contains('FilePath')) {
+            $result | Add-Member -MemberType NoteProperty -Name 'FilePath' -Value $_.InputObject -Force
+        }
+        $result
+    }
+
+    # Afficher les erreurs éventuelles
+    $errors = $parallelResults | Where-Object { -not $_.Success }
+    if ($errors.Count -gt 0) {
+        Write-Warning "Des erreurs se sont produites lors du traitement parallèle:"
+        foreach ($error in $errors) {
+            Write-Warning "Erreur pour $($error.InputObject): $($error.ErrorRecord.Exception.Message)"
+        }
+    }
+
     return $results
 }
 
@@ -167,14 +206,14 @@ Write-Host "`nExécution des tests de performance..."
 
 for ($i = 1; $i -le $TestIterations; $i++) {
     Write-Host "`nItération $i de $TestIterations"
-    
+
     # Test du traitement séquentiel
     Write-Host "Test du traitement séquentiel..."
     $startTime = Get-Date
     $sequentialResults = Test-SequentialProcessing -files $testFiles
     $endTime = Get-Date
     $sequentialDuration = ($endTime - $startTime).TotalSeconds
-    
+
     $results += [PSCustomObject]@{
         Iteration = $i
         Method = "Séquentiel"
@@ -183,16 +222,16 @@ for ($i = 1; $i -le $TestIterations; $i++) {
         TotalLines = ($sequentialResults | Measure-Object -Property LineCount -Sum).Sum
         TotalChars = ($sequentialResults | Measure-Object -Property CharCount -Sum).Sum
     }
-    
+
     Write-Host "Traitement séquentiel terminé en $sequentialDuration secondes."
-    
+
     # Test du traitement avec Jobs PowerShell
     Write-Host "Test du traitement avec Jobs PowerShell..."
     $startTime = Get-Date
     $jobsResults = Test-JobsProcessing -files $testFiles
     $endTime = Get-Date
     $jobsDuration = ($endTime - $startTime).TotalSeconds
-    
+
     $results += [PSCustomObject]@{
         Iteration = $i
         Method = "Jobs PowerShell"
@@ -201,16 +240,16 @@ for ($i = 1; $i -le $TestIterations; $i++) {
         TotalLines = ($jobsResults | Measure-Object -Property LineCount -Sum).Sum
         TotalChars = ($jobsResults | Measure-Object -Property CharCount -Sum).Sum
     }
-    
+
     Write-Host "Traitement avec Jobs PowerShell terminé en $jobsDuration secondes."
-    
+
     # Test du traitement avec Invoke-OptimizedParallel
     Write-Host "Test du traitement avec Runspace Pools..."
     $startTime = Get-Date
     $runspaceResults = Test-RunspacePoolProcessing -files $testFiles
     $endTime = Get-Date
     $runspaceDuration = ($endTime - $startTime).TotalSeconds
-    
+
     $results += [PSCustomObject]@{
         Iteration = $i
         Method = "Runspace Pools"
@@ -219,7 +258,7 @@ for ($i = 1; $i -le $TestIterations; $i++) {
         TotalLines = ($runspaceResults | Measure-Object -Property LineCount -Sum).Sum
         TotalChars = ($runspaceResults | Measure-Object -Property CharCount -Sum).Sum
     }
-    
+
     Write-Host "Traitement avec Runspace Pools terminé en $runspaceDuration secondes."
 }
 
@@ -228,7 +267,7 @@ $averages = $results | Group-Object -Property Method | ForEach-Object {
     $method = $_.Name
     $avgDuration = ($_.Group | Measure-Object -Property Duration -Average).Average
     $speedup = ($results | Where-Object { $_.Method -eq "Séquentiel" -and $_.Iteration -eq 1 }).Duration / $avgDuration
-    
+
     [PSCustomObject]@{
         Method = $method
         AverageDuration = $avgDuration
