@@ -124,7 +124,24 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [ ] Créer un système de score pour déterminer le format le plus probable
 - [ ] Implémenter la détection des encodages de caractères
 
-### 2.1.3 Gestion des cas ambigus
+### 2.1.3 Optimisation de la parallélisation (PowerShell 5.1)
+- [ ] Optimiser les Runspace Pools
+  - [ ] Déterminer le nombre optimal de threads basé sur le nombre de cœurs
+  - [ ] Implémenter la réutilisation des pools pour réduire les frais généraux
+- [ ] Implémenter le traitement par lots (Batch Processing)
+  - [ ] Regrouper les fichiers en lots pour réduire le nombre de threads nécessaires
+  - [ ] Adapter les scripts pour traiter plusieurs fichiers par thread
+- [ ] Optimiser l'utilisation de la mémoire
+  - [ ] Utiliser des structures de données efficaces (List<T>, Dictionary<K,V>)
+  - [ ] Partager les données en lecture seule entre les threads
+- [ ] Implémenter la synchronisation thread-safe
+  - [ ] Utiliser ConcurrentDictionary pour collecter les résultats
+  - [ ] Utiliser SemaphoreSlim pour limiter l'accès aux ressources partagées
+- [ ] Mettre en place des outils de mesure de performance
+  - [ ] Mesurer le temps d'exécution et l'utilisation des ressources
+  - [ ] Identifier et éliminer les goulots d'étranglement
+
+### 2.1.4 Gestion des cas ambigus
 - [ ] Développer un mécanisme pour gérer les cas où plusieurs formats sont possibles
 - [ ] Implémenter un système de confirmation utilisateur pour les cas ambigus
 - [ ] Créer une interface pour afficher les formats détectés avec leur score de confiance
