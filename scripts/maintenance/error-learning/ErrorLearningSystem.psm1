@@ -16,39 +16,92 @@ $script:IsInitialized = $false
 function Initialize-ErrorLearningSystem {
     [CmdletBinding()]
     param (
-        [switch]$Force
+        [switch]$Force,
+
+        [Parameter(Mandatory = $false)]
+        [string]$CustomDatabasePath,
+
+        [Parameter(Mandatory = $false)]
+        [string]$CustomLogsPath,
+
+        [Parameter(Mandatory = $false)]
+        [string]$CustomPatternsPath
     )
+
+    # Journaliser l'initialisation
+    Write-Verbose "Initialisation du système d'apprentissage des erreurs..."
+    Write-Verbose "Force: $Force"
+    Write-Verbose "CustomDatabasePath: $CustomDatabasePath"
+    Write-Verbose "CustomLogsPath: $CustomLogsPath"
+    Write-Verbose "CustomPatternsPath: $CustomPatternsPath"
 
     if ($script:IsInitialized -and -not $Force) {
         Write-Verbose "Le système d'apprentissage des erreurs est déjà initialisé."
         return
     }
 
+    # Définir les chemins personnalisés si spécifiés
+    if ($CustomDatabasePath) {
+        $script:ErrorDatabasePath = $CustomDatabasePath
+        Write-Verbose "Chemin de la base de données personnalisé : $script:ErrorDatabasePath"
+    }
+
+    if ($CustomLogsPath) {
+        $script:ErrorLogsPath = $CustomLogsPath
+        Write-Verbose "Chemin des logs personnalisé : $script:ErrorLogsPath"
+    }
+
+    if ($CustomPatternsPath) {
+        $script:ErrorPatternsPath = $CustomPatternsPath
+        Write-Verbose "Chemin des patterns personnalisé : $script:ErrorPatternsPath"
+    }
+
     # Créer les dossiers nécessaires
     $folders = @(
-        (Join-Path -Path $PSScriptRoot -ChildPath "data"),
+        (Split-Path -Path $script:ErrorDatabasePath -Parent),
         $script:ErrorLogsPath,
         $script:ErrorPatternsPath
     )
 
     foreach ($folder in $folders) {
-        if (-not (Test-Path -Path $folder)) {
-            New-Item -Path $folder -ItemType Directory -Force | Out-Null
-            Write-Verbose "Dossier créé : $folder"
+        try {
+            if (-not (Test-Path -Path $folder)) {
+                New-Item -Path $folder -ItemType Directory -Force -ErrorAction Stop | Out-Null
+                Write-Verbose "Dossier créé : $folder"
+            }
+        }
+        catch {
+            Write-Error "Impossible de créer le dossier '$folder' : $_"
         }
     }
 
     # Charger la base de données des erreurs
+    $databaseLoaded = $false
+
     if (Test-Path -Path $script:ErrorDatabasePath) {
         try {
+            Write-Verbose "Chargement de la base de données des erreurs : $script:ErrorDatabasePath"
+
+            # Vérifier si le fichier est vide
+            $fileInfo = Get-Item -Path $script:ErrorDatabasePath
+            if ($fileInfo.Length -eq 0) {
+                Write-Warning "Le fichier de base de données existe mais est vide. Une nouvelle base de données sera créée."
+                throw "Fichier de base de données vide"
+            }
+
             # Vérifier la version de PowerShell pour utiliser -AsHashtable si disponible
             if ($PSVersionTable.PSVersion.Major -ge 6) {
-                $script:ErrorDatabase = Get-Content -Path $script:ErrorDatabasePath -Raw | ConvertFrom-Json -AsHashtable
+                Write-Verbose "Utilisation de ConvertFrom-Json avec -AsHashtable (PowerShell 6+)"
+                $script:ErrorDatabase = Get-Content -Path $script:ErrorDatabasePath -Raw -ErrorAction Stop | ConvertFrom-Json -AsHashtable -ErrorAction Stop
             } else {
+                Write-Verbose "Utilisation de ConvertFrom-Json sans -AsHashtable (PowerShell 5.1 ou antérieur)"
                 # Pour PowerShell 5.1 et versions antérieures
-                $jsonContent = Get-Content -Path $script:ErrorDatabasePath -Raw | ConvertFrom-Json
+                $jsonContent = Get-Content -Path $script:ErrorDatabasePath -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+
+                # Initialiser la structure de base
                 $script:ErrorDatabase = @{
                     Errors = @()
+                    Patterns = @()
                     Statistics = @{
                         TotalErrors = 0
                         CategorizedErrors = @{}
@@ -57,43 +110,72 @@ function Initialize-ErrorLearningSystem {
                 }
 
                 # Convertir manuellement l'objet JSON en hashtable
-                if ($jsonContent.Errors) {
+                if ($jsonContent.PSObject.Properties.Name -contains "Errors") {
+                    Write-Verbose "Conversion des erreurs"
                     $script:ErrorDatabase.Errors = $jsonContent.Errors
                 }
 
-                if ($jsonContent.Statistics) {
-                    if ($jsonContent.Statistics.TotalErrors) {
+                if ($jsonContent.PSObject.Properties.Name -contains "Patterns") {
+                    Write-Verbose "Conversion des patterns"
+                    $script:ErrorDatabase.Patterns = $jsonContent.Patterns
+                }
+
+                if ($jsonContent.PSObject.Properties.Name -contains "Statistics") {
+                    Write-Verbose "Conversion des statistiques"
+
+                    if ($jsonContent.Statistics.PSObject.Properties.Name -contains "TotalErrors") {
                         $script:ErrorDatabase.Statistics.TotalErrors = $jsonContent.Statistics.TotalErrors
                     }
 
-                    if ($jsonContent.Statistics.CategorizedErrors) {
+                    if ($jsonContent.Statistics.PSObject.Properties.Name -contains "CategorizedErrors") {
                         $script:ErrorDatabase.Statistics.CategorizedErrors = @{}
                         foreach ($key in $jsonContent.Statistics.CategorizedErrors.PSObject.Properties.Name) {
                             $script:ErrorDatabase.Statistics.CategorizedErrors[$key] = $jsonContent.Statistics.CategorizedErrors.$key
                         }
                     }
 
-                    if ($jsonContent.Statistics.LastUpdate) {
+                    if ($jsonContent.Statistics.PSObject.Properties.Name -contains "LastUpdate") {
                         $script:ErrorDatabase.Statistics.LastUpdate = $jsonContent.Statistics.LastUpdate
                     }
                 }
             }
-            Write-Verbose "Base de données des erreurs chargée."
-        }
-        catch {
-            Write-Warning "Impossible de charger la base de données des erreurs : $_"
-            $script:ErrorDatabase = @{
-                Errors = @()
-                Patterns = @()
-                Statistics = @{
+
+            # Vérifier que la structure est correcte
+            if (-not $script:ErrorDatabase.ContainsKey("Errors")) {
+                Write-Warning "La base de données ne contient pas la clé 'Errors'. Ajout de la clé."
+                $script:ErrorDatabase.Errors = @()
+            }
+
+            if (-not $script:ErrorDatabase.ContainsKey("Patterns")) {
+                Write-Warning "La base de données ne contient pas la clé 'Patterns'. Ajout de la clé."
+                $script:ErrorDatabase.Patterns = @()
+            }
+
+            if (-not $script:ErrorDatabase.ContainsKey("Statistics")) {
+                Write-Warning "La base de données ne contient pas la clé 'Statistics'. Ajout de la clé."
+                $script:ErrorDatabase.Statistics = @{
                     TotalErrors = 0
                     CategorizedErrors = @{}
                     LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 }
+            } elseif (-not $script:ErrorDatabase.Statistics.ContainsKey("CategorizedErrors")) {
+                Write-Warning "La base de données ne contient pas la clé 'Statistics.CategorizedErrors'. Ajout de la clé."
+                $script:ErrorDatabase.Statistics.CategorizedErrors = @{}
             }
+
+            Write-Verbose "Base de données des erreurs chargée avec succès."
+            $databaseLoaded = $true
+        }
+        catch {
+            Write-Warning "Impossible de charger la base de données des erreurs : $_"
+            Write-Warning "Une nouvelle base de données sera créée."
         }
     }
-    else {
+
+    # Si la base de données n'a pas été chargée, en créer une nouvelle
+    if (-not $databaseLoaded) {
+        Write-Verbose "Création d'une nouvelle base de données des erreurs."
+
         $script:ErrorDatabase = @{
             Errors = @()
             Patterns = @()
@@ -104,9 +186,15 @@ function Initialize-ErrorLearningSystem {
             }
         }
 
-        # Sauvegarder la base de données vide
-        $script:ErrorDatabase | ConvertTo-Json -Depth 10 | Set-Content -Path $script:ErrorDatabasePath -Force
-        Write-Verbose "Nouvelle base de données des erreurs créée."
+        # Enregistrer la base de données vide
+        try {
+            $json = $script:ErrorDatabase | ConvertTo-Json -Depth 4 -ErrorAction Stop
+            Set-Content -Path $script:ErrorDatabasePath -Value $json -Force -ErrorAction Stop
+            Write-Verbose "Nouvelle base de données des erreurs initialisée et enregistrée."
+        }
+        catch {
+            Write-Error "Impossible d'initialiser et d'enregistrer la base de données des erreurs : $_"
+        }
     }
 
     $script:IsInitialized = $true
@@ -130,74 +218,134 @@ function Register-PowerShellError {
         [string]$Solution = "",
 
         [Parameter(Mandatory = $false)]
-        [hashtable]$AdditionalInfo = @{}
+        [hashtable]$AdditionalInfo = @{},
+
+        [Parameter(Mandatory = $false)]
+        [switch]$NoSave
     )
 
-    # Vérifier si le système est initialisé
-    if (-not $script:IsInitialized) {
-        Initialize-ErrorLearningSystem
-    }
-
-    # Créer un objet d'erreur
-    $errorObject = @{
-        Id = [guid]::NewGuid().ToString()
-        Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-        Source = $Source
-        Category = $Category
-        ErrorMessage = $ErrorRecord.Exception.Message
-        ErrorType = $ErrorRecord.Exception.GetType().FullName
-        ScriptStackTrace = $ErrorRecord.ScriptStackTrace
-        PositionMessage = $ErrorRecord.InvocationInfo.PositionMessage
-        Line = $ErrorRecord.InvocationInfo.Line
-        Solution = $Solution
-        AdditionalInfo = $AdditionalInfo
-    }
-
-    # Ajouter l'erreur à la base de données
-    if (-not $script:ErrorDatabase.Errors) {
-        $script:ErrorDatabase.Errors = @()
-    }
-    $script:ErrorDatabase.Errors += $errorObject
-
-    # Mettre à jour les statistiques
-    if (-not $script:ErrorDatabase.Statistics) {
-        $script:ErrorDatabase.Statistics = @{
-            TotalErrors = 0
-            CategorizedErrors = @{}
-            LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    try {
+        # Vérifier si le système est initialisé
+        if (-not $script:IsInitialized) {
+            Write-Verbose "Le système n'est pas initialisé. Initialisation en cours..."
+            Initialize-ErrorLearningSystem
         }
+
+        # Créer un objet d'erreur
+        $errorId = [guid]::NewGuid().ToString()
+        $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+        Write-Verbose "Création d'un nouvel objet d'erreur avec ID: $errorId"
+        Write-Verbose "Source: $Source, Catégorie: $Category"
+
+        $errorObject = @{
+            Id = $errorId
+            Timestamp = $timestamp
+            Source = $Source
+            Category = $Category
+            ErrorMessage = $ErrorRecord.Exception.Message
+            ErrorType = $ErrorRecord.Exception.GetType().FullName
+            ScriptStackTrace = $ErrorRecord.ScriptStackTrace
+            PositionMessage = $ErrorRecord.InvocationInfo.PositionMessage
+            Line = $ErrorRecord.InvocationInfo.Line
+            Solution = $Solution
+            AdditionalInfo = $AdditionalInfo
+        }
+
+        # Vérifier que la base de données est initialisée
+        if (-not $script:ErrorDatabase) {
+            Write-Warning "La base de données n'est pas initialisée. Réinitialisation..."
+            Initialize-ErrorLearningSystem -Force
+        }
+
+        # Ajouter l'erreur à la base de données
+        if (-not $script:ErrorDatabase.ContainsKey("Errors")) {
+            Write-Verbose "La clé 'Errors' n'existe pas dans la base de données. Création de la clé."
+            $script:ErrorDatabase.Errors = @()
+        }
+
+        $script:ErrorDatabase.Errors += $errorObject
+        Write-Verbose "Erreur ajoutée à la base de données. Total: $($script:ErrorDatabase.Errors.Count)"
+
+        # Mettre à jour les statistiques
+        if (-not $script:ErrorDatabase.ContainsKey("Statistics")) {
+            Write-Verbose "La clé 'Statistics' n'existe pas dans la base de données. Création de la clé."
+            $script:ErrorDatabase.Statistics = @{
+                TotalErrors = 0
+                CategorizedErrors = @{}
+                LastUpdate = $timestamp
+            }
+        }
+
+        # Incrémenter le compteur d'erreurs
+        if (-not $script:ErrorDatabase.Statistics.ContainsKey("TotalErrors")) {
+            Write-Verbose "La clé 'TotalErrors' n'existe pas dans les statistiques. Création de la clé."
+            $script:ErrorDatabase.Statistics.TotalErrors = 0
+        }
+
+        $script:ErrorDatabase.Statistics.TotalErrors++
+        Write-Verbose "Compteur d'erreurs incrémenté. Total: $($script:ErrorDatabase.Statistics.TotalErrors)"
+
+        # Mettre à jour les statistiques par catégorie
+        if (-not $script:ErrorDatabase.Statistics.ContainsKey("CategorizedErrors")) {
+            Write-Verbose "La clé 'CategorizedErrors' n'existe pas dans les statistiques. Création de la clé."
+            $script:ErrorDatabase.Statistics.CategorizedErrors = @{}
+        }
+
+        if (-not $script:ErrorDatabase.Statistics.CategorizedErrors.ContainsKey($Category)) {
+            Write-Verbose "La catégorie '$Category' n'existe pas dans les statistiques. Création de la catégorie."
+            $script:ErrorDatabase.Statistics.CategorizedErrors[$Category] = 0
+        }
+
+        $script:ErrorDatabase.Statistics.CategorizedErrors[$Category]++
+        Write-Verbose "Compteur de la catégorie '$Category' incrémenté. Total: $($script:ErrorDatabase.Statistics.CategorizedErrors[$Category])"
+
+        # Mettre à jour la date de dernière mise à jour
+        $script:ErrorDatabase.Statistics.LastUpdate = $timestamp
+
+        # Sauvegarder la base de données si demandé
+        if (-not $NoSave) {
+            try {
+                Write-Verbose "Sauvegarde de la base de données..."
+                $json = $script:ErrorDatabase | ConvertTo-Json -Depth 10 -ErrorAction Stop
+                Set-Content -Path $script:ErrorDatabasePath -Value $json -Force -ErrorAction Stop
+                Write-Verbose "Base de données sauvegardée avec succès."
+            }
+            catch {
+                Write-Warning "Impossible de sauvegarder la base de données : $_"
+            }
+
+            # Journaliser l'erreur
+            try {
+                Write-Verbose "Journalisation de l'erreur..."
+                $logFileName = "error-log-$(Get-Date -Format 'yyyy-MM-dd').json"
+                $logFilePath = Join-Path -Path $script:ErrorLogsPath -ChildPath $logFileName
+
+                # Créer le répertoire des logs s'il n'existe pas
+                $logDir = Split-Path -Path $logFilePath -Parent
+                if (-not (Test-Path -Path $logDir)) {
+                    New-Item -Path $logDir -ItemType Directory -Force -ErrorAction Stop | Out-Null
+                }
+
+                $errorJson = $errorObject | ConvertTo-Json -Depth 10 -ErrorAction Stop
+                Add-Content -Path $logFilePath -Value $errorJson -Encoding UTF8 -ErrorAction Stop
+                Write-Verbose "Erreur journalisée avec succès dans le fichier : $logFilePath"
+            }
+            catch {
+                Write-Warning "Impossible de journaliser l'erreur : $_"
+            }
+        }
+        else {
+            Write-Verbose "Option NoSave spécifiée. La base de données n'a pas été sauvegardée."
+        }
+
+        Write-Verbose "Erreur enregistrée avec succès. ID: $errorId"
+        return $errorId
     }
-
-    # Incrémenter le compteur d'erreurs
-    if (-not $script:ErrorDatabase.Statistics.TotalErrors) {
-        $script:ErrorDatabase.Statistics.TotalErrors = 0
+    catch {
+        Write-Error "Erreur lors de l'enregistrement de l'erreur : $_"
+        return $null
     }
-    $script:ErrorDatabase.Statistics.TotalErrors++
-
-    # Mettre à jour les statistiques par catégorie
-    if (-not $script:ErrorDatabase.Statistics.CategorizedErrors) {
-        $script:ErrorDatabase.Statistics.CategorizedErrors = @{}
-    }
-
-    if (-not $script:ErrorDatabase.Statistics.CategorizedErrors.ContainsKey($Category)) {
-        $script:ErrorDatabase.Statistics.CategorizedErrors[$Category] = 0
-    }
-    $script:ErrorDatabase.Statistics.CategorizedErrors[$Category]++
-
-    # Mettre à jour la date de dernière mise à jour
-    $script:ErrorDatabase.Statistics.LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-
-    # Sauvegarder la base de données
-    $script:ErrorDatabase | ConvertTo-Json -Depth 10 | Set-Content -Path $script:ErrorDatabasePath -Force
-
-    # Journaliser l'erreur
-    $logFileName = "error-log-$(Get-Date -Format 'yyyy-MM-dd').json"
-    $logFilePath = Join-Path -Path $script:ErrorLogsPath -ChildPath $logFileName
-
-    $errorObject | ConvertTo-Json -Depth 10 | Out-File -FilePath $logFilePath -Append -Encoding utf8
-
-    Write-Verbose "Erreur enregistrée avec l'ID : $($errorObject.Id)"
-    return $errorObject.Id
 }
 
 # Fonction pour analyser les erreurs

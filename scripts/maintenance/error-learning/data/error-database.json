@@ -1,12 +1,7 @@
 {
-    "Statistics":  {
-                       "TotalErrors":  18,
-                       "CategorizedErrors":  {
-                                                 "TestCategory":  12,
-                                                 "TestCategory2":  6
-                                             },
-                       "LastUpdate":  "2025-04-09 09:31:06"
-                   },
+    "Patterns":  [
+
+                 ],
     "Errors":  [
                    {
                        "Source":  "IntegrationTest",
@@ -277,6 +272,59 @@
                        "Solution":  "Voici la solution à l\u0027erreur.",
                        "ScriptStackTrace":  null,
                        "PositionMessage":  null
+                   },
+                   {
+                       "Source":  "IntegrationTest",
+                       "Id":  "d24088ac-1d19-4cbd-beb0-9fe74716bfcc",
+                       "AdditionalInfo":  {
+
+                                          },
+                       "Category":  "TestCategory",
+                       "ErrorType":  "System.Exception",
+                       "Line":  null,
+                       "Timestamp":  "2025-04-09 09:36:05",
+                       "ErrorMessage":  "Erreur de test",
+                       "Solution":  "",
+                       "ScriptStackTrace":  null,
+                       "PositionMessage":  null
+                   },
+                   {
+                       "Source":  "IntegrationTest",
+                       "Id":  "4cfd967e-588b-4747-95d1-e27403df5e67",
+                       "AdditionalInfo":  {
+
+                                          },
+                       "Category":  "TestCategory2",
+                       "ErrorType":  "System.Exception",
+                       "Line":  null,
+                       "Timestamp":  "2025-04-09 09:36:05",
+                       "ErrorMessage":  "Erreur de test 2",
+                       "Solution":  "",
+                       "ScriptStackTrace":  null,
+                       "PositionMessage":  null
+                   },
+                   {
+                       "Source":  "IntegrationTest",
+                       "Id":  "5fa15c1e-6c56-429d-81fa-fbd7e068d0e4",
+                       "AdditionalInfo":  {
+
+                                          },
+                       "Category":  "TestCategory",
+                       "ErrorType":  "System.Exception",
+                       "Line":  null,
+                       "Timestamp":  "2025-04-09 09:36:05",
+                       "ErrorMessage":  "Erreur de test avec solution",
+                       "Solution":  "Voici la solution à l\u0027erreur.",
+                       "ScriptStackTrace":  null,
+                       "PositionMessage":  null
                    }
-               ]
+               ],
+    "Statistics":  {
+                       "TotalErrors":  21,
+                       "CategorizedErrors":  {
+                                                 "TestCategory":  14,
+                                                 "TestCategory2":  7
+                                             },
+                       "LastUpdate":  "2025-04-09 09:36:05"
+                   }
 }
