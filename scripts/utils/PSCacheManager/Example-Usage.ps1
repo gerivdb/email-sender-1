@@ -55,7 +55,7 @@ function Test-ScriptWithCache {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [CacheManager]$CacheInstance,
+        [object]$CacheInstance, # Should be a CacheManager object
 
         [Parameter(Mandatory = $true)]
         [string]$ScriptPath
@@ -129,7 +129,7 @@ function Get-FileEncodingWithCache {
      [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [CacheManager]$CacheInstance,
+        [object]$CacheInstance, # Should be a CacheManager object
 
         [Parameter(Mandatory = $true)]
         [string]$FilePath

@@ -716,8 +716,8 @@ function Set-PSCacheItem {
         [ValidateNotNullOrEmpty()]
         [string]$Key,
 
-        [Parameter(Mandatory = $true, AllowNull = $true)] # Explicitly allow caching $null
-        [object]$Value,
+        [Parameter(Mandatory = $true)]
+        [object]$Value, # Can be $null - we explicitly allow caching null values
 
         [Parameter(Mandatory = $false)]
         [int]$TTLSeconds = $null, # Use null to signal using cache default
