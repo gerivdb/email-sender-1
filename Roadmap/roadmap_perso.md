@@ -1,10 +1,10 @@
 # Roadmap personnelle d'amélioration du projet
 
 ## État d'avancement global
-- **Tâches prioritaires**: 100% terminées
+- **Tâches prioritaires**: 50% terminées
 - **Tâches de priorité moyenne**: 5% terminées
-- **Tâches terminées**: 6/9 (67%)
-- **Progression globale**: 45%
+- **Tâches terminées**: 6/10 (60%)
+- **Progression globale**: 40%
 
 ## Vue d'ensemble des tâches par priorité et complexité
 
@@ -12,14 +12,69 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 
 # 1. TÂCHES PRIORITAIRES ACTUELLES
 
-## 1.1 Réorganisation des scripts
+## 1.1 Optimisation de la gestion des caches
+**Complexité**: Moyenne à élevée
+**Temps estimé**: 7-10 jours
+**Progression**: 0% - *Mise à jour le 09/04/2025*
+**Date de début**: 09/04/2025
+**Date d'achèvement prévue**: 19/04/2025
+
+### 1.1.1 Stratégies de mise en cache avancées
+- [ ] Implémenter une architecture de cache à plusieurs niveaux
+  - [ ] Développer un cache mémoire rapide (ConcurrentDictionary)
+  - [ ] Créer un système de cache disque persistant
+  - [ ] Évaluer l'intégration d'un cache distribué si nécessaire
+- [ ] Concevoir des politiques d'expiration intelligentes
+  - [ ] Implémenter l'expiration TTL adaptative
+  - [ ] Intégrer des mécanismes d'éviction LRU/LFU
+  - [ ] Développer l'expiration sélective via tags/métadonnées
+- [ ] Mettre en place le préchargement et l'invalidation proactive
+  - [ ] Développer un mécanisme de préchargement des données critiques
+  - [ ] Implémenter l'invalidation ciblée lors des modifications
+  - [ ] Créer un système de régénération en arrière-plan
+
+### 1.1.2 Optimisations techniques
+- [ ] Améliorer la compression et la sérialisation
+  - [ ] Intégrer la compression GZip pour les données volumineuses
+  - [ ] Optimiser la sérialisation JSON ou implémenter des formats binaires
+  - [ ] Évaluer le stockage différentiel pour les données versionnées
+- [ ] Implémenter le partitionnement si nécessaire
+  - [ ] Concevoir une stratégie de partitionnement par clé
+  - [ ] Isoler les caches de données critiques
+- [ ] Optimiser la gestion de la mémoire
+  - [ ] Mettre en place des limites de taille configurables
+  - [ ] Développer un processus de nettoyage périodique
+  - [ ] Intégrer la surveillance des métriques du cache
+
+### 1.1.3 Implémentation en PowerShell
+- [ ] Concevoir une structure de cache PowerShell efficace
+  - [ ] Définir un objet CacheItem standard avec métadonnées
+  - [ ] Établir des conventions de nommage pour les clés
+- [ ] Développer un module PowerShell dédié (PSCacheManager)
+  - [ ] Créer les cmdlets pour les opérations CRUD sur le cache
+  - [ ] Intégrer la gestion des différents niveaux de cache
+  - [ ] Implémenter les politiques d'expiration et d'éviction
+- [ ] Documenter le module et fournir des exemples
+
+### 1.1.4 Optimisations spécifiques au système
+- [ ] Implémenter le cache de résultats d'analyse de scripts (AST)
+  - [ ] Mettre en cache les objets AST générés
+  - [ ] Utiliser le chemin et timestamp comme clé de cache
+  - [ ] Développer l'invalidation automatique lors des modifications
+  - [ ] Intégrer le préchargement des AST pour les scripts critiques
+- [ ] Créer un cache de détection d'encodage
+  - [ ] Mettre en cache les résultats de détection d'encodage
+  - [ ] Implémenter une stratégie d'invalidation appropriée
+  - [ ] Intégrer ce cache dans les scripts existants
+
+## 1.2 Réorganisation des scripts
 **Complexité**: Moyenne à élevée
 **Temps estimé**: 10-15 jours
 **Progression**: 100% - *Mise à jour le 08/04/2025*
 **Date de début**: 01/04/2025
 **Date d'achèvement**: 08/04/2025
 
-### 1.1.1 Mise à jour des références (3-5 jours) - *Terminé le 08/04/2025*
+### 1.2.1 Mise à jour des références (3-5 jours) - *Terminé le 08/04/2025*
 - [x] Développer un outil de détection des références brisées (1-2 jours)
   - Créer un scanner pour identifier les chemins de fichiers dans les scripts
   - Implémenter la détection des références qui ne correspondent plus à la nouvelle structure
