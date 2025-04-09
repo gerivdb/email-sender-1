@@ -1,0 +1,29 @@
+{
+    "Patterns":  [
+
+                 ],
+    "Errors":  [
+                   {
+                       "Source":  "IntegrationTest",
+                       "Id":  "16549850-ecdc-44dd-beee-6560b8e6353f",
+                       "AdditionalInfo":  {
+
+                                          },
+                       "Category":  "TestCategory",
+                       "ErrorType":  "System.Exception",
+                       "Line":  null,
+                       "Timestamp":  "2025-04-09 08:34:38",
+                       "ErrorMessage":  "Erreur de test",
+                       "Solution":  "",
+                       "ScriptStackTrace":  null,
+                       "PositionMessage":  null
+                   }
+               ],
+    "Statistics":  {
+                       "TotalErrors":  1,
+                       "CategorizedErrors":  {
+                                                 "TestCategory":  1
+                                             },
+                       "LastUpdate":  "2025-04-09 08:34:38"
+                   }
+}
