@@ -41,7 +41,11 @@ class CacheItem {
         $this.Value = $itemValue
         $this.Created = Get-Date
         $this.LastAccess = $this.Created
-        $this.Expiration = ($ttlSeconds -gt 0) ? $this.Created.AddSeconds($ttlSeconds) : [datetime]::MaxValue # No expiration if TTL <= 0
+        if ($ttlSeconds -gt 0) {
+            $this.Expiration = $this.Created.AddSeconds($ttlSeconds)
+        } else {
+            $this.Expiration = [datetime]::MaxValue # No expiration if TTL <= 0
+        }
         $this.AccessCount = 0
         $this.Tags = @()
     }
