@@ -1,7 +1,7 @@
-{
+﻿{
   "mcpServers": {
     "gdrive": {
-      "command": "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1/mcp-gdrive/gdrive-mcp.cmd",
+      "command": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1/mcp-gdrive/gdrive-mcp.cmd",
       "args": [],
       "environments": {
         "N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE": "true"

@@ -1,8 +1,14 @@
+﻿<#
+.SYNOPSIS
+    SystÃ¨me de verrouillage de versions pour les dÃ©pendances.
+.DESCRIPTION
+    Permet de verrouiller les versions des dÃ©pendances pour assurer la reproductibilitÃ©.
+
 <#
 .SYNOPSIS
-    Système de verrouillage de versions pour les dépendances.
+    SystÃ¨me de verrouillage de versions pour les dÃ©pendances.
 .DESCRIPTION
-    Permet de verrouiller les versions des dépendances pour assurer la reproductibilité.
+    Permet de verrouiller les versions des dÃ©pendances pour assurer la reproductibilitÃ©.
 #>
 
 # Configuration du verrouillage de versions
@@ -11,12 +17,54 @@ $script:VersionLockConfig = @{
     LockedVersions = @{}
 }
 
-# Initialiser le système de verrouillage
+# Initialiser le systÃ¨me de verrouillage
 function Initialize-VersionLock {
     [CmdletBinding()]
     param (
         [string]$LockFilePath
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     if ($LockFilePath) { $script:VersionLockConfig.LockFilePath = $LockFilePath }
     
@@ -46,7 +94,7 @@ function Lock-Version {
     
     $script:VersionLockConfig.LockedVersions[$Name] = $Version
     
-    # Mettre à jour le fichier de verrouillage
+    # Mettre Ã  jour le fichier de verrouillage
     $lockContent = @{
         dependencies = @()
     }
@@ -64,7 +112,7 @@ function Lock-Version {
     return $true
 }
 
-# Obtenir une version verrouillée
+# Obtenir une version verrouillÃ©e
 function Get-LockedVersion {
     [CmdletBinding()]
     param (
@@ -80,7 +128,7 @@ function Get-LockedVersion {
     }
 }
 
-# Vérifier si une version est compatible
+# VÃ©rifier si une version est compatible
 function Test-VersionCompatibility {
     [CmdletBinding()]
     param (
@@ -100,7 +148,7 @@ function Test-VersionCompatibility {
     return [version]$Version -eq [version]$lockedVersion
 }
 
-# Obtenir toutes les versions verrouillées
+# Obtenir toutes les versions verrouillÃ©es
 function Get-AllLockedVersions {
     [CmdletBinding()]
     param ()
@@ -117,7 +165,7 @@ function Get-AllLockedVersions {
     return $result
 }
 
-# Déverrouiller une version
+# DÃ©verrouiller une version
 function Unlock-Version {
     [CmdletBinding()]
     param (
@@ -128,7 +176,7 @@ function Unlock-Version {
     if ($script:VersionLockConfig.LockedVersions.ContainsKey($Name)) {
         $script:VersionLockConfig.LockedVersions.Remove($Name)
         
-        # Mettre à jour le fichier de verrouillage
+        # Mettre Ã  jour le fichier de verrouillage
         $lockContent = @{
             dependencies = @()
         }
@@ -146,10 +194,20 @@ function Unlock-Version {
         return $true
     }
     else {
-        Write-Warning "La dépendance $Name n'est pas verrouillée."
+        Write-Warning "La dÃ©pendance $Name n'est pas verrouillÃ©e."
         return $false
     }
 }
 
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-VersionLock, Lock-Version, Get-LockedVersion, Test-VersionCompatibility, Get-AllLockedVersions, Unlock-Version
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

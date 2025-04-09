@@ -1,21 +1,79 @@
-# Script pour comparer les erreurs entre différentes versions
+﻿# Script pour comparer les erreurs entre diffÃ©rentes versions
 
 # Configuration
 $ComparisonConfig = @{
     # Dossier de sortie des rapports
     OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorComparison"
     
-    # Dossier des données d'erreurs
+    # Dossier des donnÃ©es d'erreurs
     DataFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorData"
     
-    # Seuil de différence significative (en pourcentage)
+    # Seuil de diffÃ©rence significative (en pourcentage)
+    DifferenceThreshold = 20
+}
+
+# Fonction pour initialiser l'analyse comparative
+
+# Script pour comparer les erreurs entre diffÃ©rentes versions
+
+# Configuration
+$ComparisonConfig = @{
+    # Dossier de sortie des rapports
+    OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorComparison"
+    
+    # Dossier des donnÃ©es d'erreurs
+    DataFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorData"
+    
+    # Seuil de diffÃ©rence significative (en pourcentage)
     DifferenceThreshold = 20
 }
 
 # Fonction pour initialiser l'analyse comparative
 function Initialize-ErrorComparison {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$OutputFolder = "",
         
         [Parameter(Mandatory = $false)]
@@ -25,7 +83,7 @@ function Initialize-ErrorComparison {
         [int]$DifferenceThreshold = 0
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $ComparisonConfig.OutputFolder = $OutputFolder
     }
@@ -38,7 +96,7 @@ function Initialize-ErrorComparison {
         $ComparisonConfig.DifferenceThreshold = $DifferenceThreshold
     }
     
-    # Créer les dossiers s'ils n'existent pas
+    # CrÃ©er les dossiers s'ils n'existent pas
     foreach ($folder in @($ComparisonConfig.OutputFolder, $ComparisonConfig.DataFolder)) {
         if (-not (Test-Path -Path $folder)) {
             New-Item -Path $folder -ItemType Directory -Force | Out-Null
@@ -48,7 +106,7 @@ function Initialize-ErrorComparison {
     return $ComparisonConfig
 }
 
-# Fonction pour capturer les données d'erreurs d'une version
+# Fonction pour capturer les donnÃ©es d'erreurs d'une version
 function Save-VersionErrorData {
     param (
         [Parameter(Mandatory = $true)]
@@ -64,13 +122,13 @@ function Save-VersionErrorData {
         [hashtable]$Metadata = @{}
     )
     
-    # Créer le dossier de version s'il n'existe pas
+    # CrÃ©er le dossier de version s'il n'existe pas
     $versionFolder = Join-Path -Path $ComparisonConfig.DataFolder -ChildPath $Version
     if (-not (Test-Path -Path $versionFolder)) {
         New-Item -Path $versionFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Préparer les données
+    # PrÃ©parer les donnÃ©es
     $data = @{
         Version = $Version
         Description = $Description
@@ -101,28 +159,28 @@ function Save-VersionErrorData {
         $data.ErrorsBySource[$source.Name] = $source.Count
     }
     
-    # Enregistrer les données
+    # Enregistrer les donnÃ©es
     $dataPath = Join-Path -Path $versionFolder -ChildPath "error-data.json"
     $data | ConvertTo-Json -Depth 5 | Set-Content -Path $dataPath
     
     return $data
 }
 
-# Fonction pour charger les données d'erreurs d'une version
+# Fonction pour charger les donnÃ©es d'erreurs d'une version
 function Get-VersionErrorData {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Version
     )
     
-    # Vérifier si les données existent
+    # VÃ©rifier si les donnÃ©es existent
     $dataPath = Join-Path -Path $ComparisonConfig.DataFolder -ChildPath "$Version\error-data.json"
     if (-not (Test-Path -Path $dataPath)) {
-        Write-Error "Les données d'erreurs pour la version '$Version' n'existent pas."
+        Write-Error "Les donnÃ©es d'erreurs pour la version '$Version' n'existent pas."
         return $null
     }
     
-    # Charger les données
+    # Charger les donnÃ©es
     $data = Get-Content -Path $dataPath -Raw | ConvertFrom-Json
     
     return $data
@@ -141,12 +199,12 @@ function Compare-VersionErrors {
         [int]$DifferenceThreshold = 0
     )
     
-    # Utiliser le seuil par défaut si non spécifié
+    # Utiliser le seuil par dÃ©faut si non spÃ©cifiÃ©
     if ($DifferenceThreshold -le 0) {
         $DifferenceThreshold = $ComparisonConfig.DifferenceThreshold
     }
     
-    # Charger les données des deux versions
+    # Charger les donnÃ©es des deux versions
     $data1 = Get-VersionErrorData -Version $Version1
     $data2 = Get-VersionErrorData -Version $Version2
     
@@ -154,35 +212,35 @@ function Compare-VersionErrors {
         return $null
     }
     
-    # Calculer les différences
+    # Calculer les diffÃ©rences
     $comparison = @{
         Version1 = $Version1
         Version2 = $Version2
         Timestamp = Get-Date -Format "o"
         
-        # Statistiques générales
+        # Statistiques gÃ©nÃ©rales
         ErrorCount1 = $data1.ErrorCount
         ErrorCount2 = $data2.ErrorCount
         ErrorCountDifference = $data2.ErrorCount - $data1.ErrorCount
         
-        # Différences par sévérité
+        # DiffÃ©rences par sÃ©vÃ©ritÃ©
         SeverityDifferences = @{}
         
-        # Différences par catégorie
+        # DiffÃ©rences par catÃ©gorie
         CategoryDifferences = @{}
         
-        # Différences par source
+        # DiffÃ©rences par source
         SourceDifferences = @{}
         
-        # Erreurs nouvelles et résolues
+        # Erreurs nouvelles et rÃ©solues
         NewErrors = @()
         ResolvedErrors = @()
         
-        # Différences significatives
+        # DiffÃ©rences significatives
         SignificantDifferences = @()
     }
     
-    # Calculer le pourcentage de différence
+    # Calculer le pourcentage de diffÃ©rence
     if ($data1.ErrorCount -gt 0) {
         $comparison.ErrorCountPercentage = [Math]::Round(($data2.ErrorCount - $data1.ErrorCount) / $data1.ErrorCount * 100, 2)
     }
@@ -190,7 +248,7 @@ function Compare-VersionErrors {
         $comparison.ErrorCountPercentage = if ($data2.ErrorCount -gt 0) { 100 } else { 0 }
     }
     
-    # Calculer les différences par sévérité
+    # Calculer les diffÃ©rences par sÃ©vÃ©ritÃ©
     $allSeverities = @($data1.ErrorsBySeverity.PSObject.Properties.Name) + @($data2.ErrorsBySeverity.PSObject.Properties.Name) | Select-Object -Unique
     
     foreach ($severity in $allSeverities) {
@@ -212,7 +270,7 @@ function Compare-VersionErrors {
             Percentage = $percentageDifference
         }
         
-        # Vérifier si la différence est significative
+        # VÃ©rifier si la diffÃ©rence est significative
         if ([Math]::Abs($percentageDifference) -ge $DifferenceThreshold) {
             $comparison.SignificantDifferences += [PSCustomObject]@{
                 Type = "Severity"
@@ -225,7 +283,7 @@ function Compare-VersionErrors {
         }
     }
     
-    # Calculer les différences par catégorie
+    # Calculer les diffÃ©rences par catÃ©gorie
     $allCategories = @($data1.ErrorsByCategory.PSObject.Properties.Name) + @($data2.ErrorsByCategory.PSObject.Properties.Name) | Select-Object -Unique
     
     foreach ($category in $allCategories) {
@@ -247,7 +305,7 @@ function Compare-VersionErrors {
             Percentage = $percentageDifference
         }
         
-        # Vérifier si la différence est significative
+        # VÃ©rifier si la diffÃ©rence est significative
         if ([Math]::Abs($percentageDifference) -ge $DifferenceThreshold) {
             $comparison.SignificantDifferences += [PSCustomObject]@{
                 Type = "Category"
@@ -260,14 +318,14 @@ function Compare-VersionErrors {
         }
     }
     
-    # Identifier les erreurs nouvelles et résolues
-    # Note: Cette partie est simplifiée car nous ne pouvons pas comparer directement les erreurs individuelles
-    # sans un identifiant unique. Dans une implémentation réelle, il faudrait un moyen de comparer les erreurs.
+    # Identifier les erreurs nouvelles et rÃ©solues
+    # Note: Cette partie est simplifiÃ©e car nous ne pouvons pas comparer directement les erreurs individuelles
+    # sans un identifiant unique. Dans une implÃ©mentation rÃ©elle, il faudrait un moyen de comparer les erreurs.
     
     return $comparison
 }
 
-# Fonction pour générer un rapport de comparaison
+# Fonction pour gÃ©nÃ©rer un rapport de comparaison
 function New-ErrorComparisonReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -296,14 +354,14 @@ function New-ErrorComparisonReport {
         return $null
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "ErrorComparison-$Version1-$Version2-$timestamp.html"
         $OutputPath = Join-Path -Path $ComparisonConfig.OutputFolder -ChildPath $fileName
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -425,7 +483,7 @@ function New-ErrorComparisonReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
@@ -443,7 +501,7 @@ function New-ErrorComparisonReport {
             </div>
             
             <div class="summary-card">
-                <h3>Différence</h3>
+                <h3>DiffÃ©rence</h3>
                 <div class="summary-value $($comparison.ErrorCountDifference -lt 0 ? 'positive' : ($comparison.ErrorCountDifference -gt 0 ? 'negative' : ''))">
                     $($comparison.ErrorCountDifference -ge 0 ? '+' : '')$($comparison.ErrorCountDifference) ($($comparison.ErrorCountPercentage)%)
                 </div>
@@ -452,17 +510,17 @@ function New-ErrorComparisonReport {
         
         <div class="charts-container">
             <div class="chart-card">
-                <h3>Comparaison par sévérité</h3>
+                <h3>Comparaison par sÃ©vÃ©ritÃ©</h3>
                 <canvas id="severity-chart"></canvas>
             </div>
             
             <div class="chart-card">
-                <h3>Comparaison par catégorie</h3>
+                <h3>Comparaison par catÃ©gorie</h3>
                 <canvas id="category-chart"></canvas>
             </div>
         </div>
         
-        <h2>Différences significatives</h2>
+        <h2>DiffÃ©rences significatives</h2>
         
         <table>
             <thead>
@@ -471,7 +529,7 @@ function New-ErrorComparisonReport {
                     <th>Nom</th>
                     <th>Version 1</th>
                     <th>Version 2</th>
-                    <th>Différence</th>
+                    <th>DiffÃ©rence</th>
                     <th>Pourcentage</th>
                 </tr>
             </thead>
@@ -493,12 +551,12 @@ function New-ErrorComparisonReport {
         </table>
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | Seuil de différence significative: $($DifferenceThreshold)%</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | Seuil de diffÃ©rence significative: $($DifferenceThreshold)%</p>
         </div>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const severityData = {
             labels: [$(foreach ($key in $comparison.SeverityDifferences.Keys) { "'$key', " })],
             datasets: [
@@ -539,7 +597,7 @@ function New-ErrorComparisonReport {
             ]
         };
         
-        // Graphique par sévérité
+        // Graphique par sÃ©vÃ©ritÃ©
         const severityCtx = document.getElementById('severity-chart').getContext('2d');
         new Chart(severityCtx, {
             type: 'bar',
@@ -554,7 +612,7 @@ function New-ErrorComparisonReport {
             }
         });
         
-        // Graphique par catégorie
+        // Graphique par catÃ©gorie
         const categoryCtx = document.getElementById('category-chart').getContext('2d');
         new Chart(categoryCtx, {
             type: 'bar',
@@ -576,7 +634,7 @@ function New-ErrorComparisonReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -586,3 +644,13 @@ function New-ErrorComparisonReport {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ErrorComparison, Save-VersionErrorData, Get-VersionErrorData, Compare-VersionErrors, New-ErrorComparisonReport
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

@@ -1,5 +1,5 @@
-﻿# Update-Markdown.ps1
-# Script pour mettre Ã  jour directement le fichier Markdown
+# Update-Markdown.ps1
+# Script pour mettre à jour directement le fichier Markdown
 
 param (
     [Parameter(Mandatory = $false)]
@@ -17,18 +17,18 @@ param (
 
 # Chemins des fichiers
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$roadmapPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "roadmap_perso.md"
+$roadmapPath = "Roadmap\roadmap_perso.md"""
 
-# VÃ©rifier si le fichier existe
+# Vérifier si le fichier existe
 if (-not (Test-Path -Path $roadmapPath)) {
-    Write-Error "Fichier roadmap non trouvÃ©: $roadmapPath"
+    Write-Error "Fichier roadmap non trouvé: $roadmapPath"
     exit 1
 }
 
 # Lire le contenu du fichier Markdown
 $content = Get-Content -Path $roadmapPath -Encoding UTF8
 
-# Si un ID de tÃ¢che est spÃ©cifiÃ©, mettre Ã  jour cette tÃ¢che
+# Si un ID de tâche est spécifié, mettre à jour cette tâche
 if ($TaskId) {
     $taskPattern = "- \[([ x])\] (.+?) \((.+?)\)"
     $taskFound = $false
@@ -38,13 +38,13 @@ if ($TaskId) {
             $taskDescription = $matches[2]
             $taskEstimation = $matches[3]
             
-            # Extraire l'ID de la tÃ¢che Ã  partir de la description
+            # Extraire l'ID de la tâche à partir de la description
             $taskIdFromDesc = ""
             if ($taskDescription -match "^(\d+\.\d+)") {
                 $taskIdFromDesc = $matches[1]
             }
             else {
-                # Essayer de dÃ©terminer l'ID de la tÃ¢che Ã  partir du contexte
+                # Essayer de déterminer l'ID de la tâche à partir du contexte
                 for ($j = $i - 1; $j -ge 0; $j--) {
                     if ($content[$j] -match "^## (\d+)\.") {
                         $sectionNumber = $matches[1]
@@ -68,12 +68,12 @@ if ($TaskId) {
                     if (-not ($content[$i] -match " - \*Termine le ")) {
                         $content[$i] = $content[$i] + " - *Termine le $(Get-Date -Format 'dd/MM/yyyy')*"
                     }
-                    Write-Host "TÃ¢che $TaskId marquÃ©e comme terminÃ©e."
+                    Write-Host "Tâche $TaskId marquée comme terminée."
                 }
                 
                 if ($Start -and -not ($content[$i] -match " - \*Demarre le ") -and -not ($content[$i] -match " - \*Termine le ")) {
                     $content[$i] = $content[$i] + " - *Demarre le $(Get-Date -Format 'dd/MM/yyyy')*"
-                    Write-Host "TÃ¢che $TaskId marquÃ©e comme dÃ©marrÃ©e."
+                    Write-Host "Tâche $TaskId marquée comme démarrée."
                 }
                 
                 if ($Note) {
@@ -86,17 +86,17 @@ if ($TaskId) {
                     if (-not $noteFound) {
                         $content = $content[0..$i] + "  > *Note: $Note*" + $content[($i + 1)..($content.Length - 1)]
                     }
-                    Write-Host "Note ajoutÃ©e Ã  la tÃ¢che $TaskId."
+                    Write-Host "Note ajoutée à la tâche $TaskId."
                 }
                 
-                # Mettre Ã  jour le pourcentage de progression de la section
+                # Mettre à jour le pourcentage de progression de la section
                 for ($j = $i - 1; $j -ge 0; $j--) {
                     if ($content[$j] -match "^## (\d+)\.") {
                         $sectionNumber = $matches[1]
                         $totalTasks = 0
                         $completedTasks = 0
                         
-                        # Compter les tÃ¢ches dans cette section
+                        # Compter les tâches dans cette section
                         for ($k = $j + 1; $k -lt $content.Length; $k++) {
                             if ($content[$k] -match "^## ") {
                                 break
@@ -110,7 +110,7 @@ if ($TaskId) {
                             }
                         }
                         
-                        # Mettre Ã  jour le pourcentage
+                        # Mettre à jour le pourcentage
                         if ($totalTasks -gt 0) {
                             $progress = [math]::Round(($completedTasks / $totalTasks) * 100)
                             
@@ -133,12 +133,12 @@ if ($TaskId) {
     }
     
     if (-not $taskFound) {
-        Write-Error "TÃ¢che avec ID '$TaskId' non trouvÃ©e."
+        Write-Error "Tâche avec ID '$TaskId' non trouvée."
         exit 1
     }
 }
 
-# Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
+# Mettre à jour la date de dernière mise à jour
 $dateUpdated = $false
 for ($i = 0; $i -lt $content.Length; $i++) {
     if ($content[$i] -match "\*Derniere mise a jour:") {
@@ -156,4 +156,4 @@ if (-not $dateUpdated) {
 # Sauvegarder le fichier Markdown
 $content | Out-File -FilePath $roadmapPath -Encoding ascii
 
-Write-Host "Roadmap mise Ã  jour avec succÃ¨s."
+Write-Host "Roadmap mise à jour avec succès."

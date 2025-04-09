@@ -1,12 +1,12 @@
-# Script simplifié pour l'analyse prédictive des erreurs
+﻿# Script simplifiÃ© pour l'analyse prÃ©dictive des erreurs
 
-# Importer le module de collecte de données
+# Importer le module de collecte de donnÃ©es
 $collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "..\D"
 if (Test-Path -Path $collectorPath) {
     . $collectorPath
 }
 else {
-    Write-Error "Le module de collecte de données est introuvable: $collectorPath"
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
     return
 }
 
@@ -15,23 +15,97 @@ $PredictionConfig = @{
     # Dossier de sortie des rapports
     OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorPrediction"
     
-    # Période d'historique par défaut (en jours)
+    # PÃ©riode d'historique par dÃ©faut (en jours)
     DefaultHistoryDays = 30
     
-    # Période de prédiction par défaut (en jours)
+    # PÃ©riode de prÃ©diction par dÃ©faut (en jours)
     DefaultPredictionDays = 7
     
-    # Méthode de prédiction par défaut
+    # MÃ©thode de prÃ©diction par dÃ©faut
     DefaultMethod = "LinearRegression"
     
-    # Seuil d'alerte pour les prédictions (en pourcentage)
+    # Seuil d'alerte pour les prÃ©dictions (en pourcentage)
     AlertThreshold = 20
 }
 
-# Fonction pour initialiser l'analyse prédictive
+# Fonction pour initialiser l'analyse prÃ©dictive
+
+# Script simplifiÃ© pour l'analyse prÃ©dictive des erreurs
+
+# Importer le module de collecte de donnÃ©es
+$collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "..\D"
+if (Test-Path -Path $collectorPath) {
+    . $collectorPath
+}
+else {
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
+    return
+}
+
+# Configuration
+$PredictionConfig = @{
+    # Dossier de sortie des rapports
+    OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorPrediction"
+    
+    # PÃ©riode d'historique par dÃ©faut (en jours)
+    DefaultHistoryDays = 30
+    
+    # PÃ©riode de prÃ©diction par dÃ©faut (en jours)
+    DefaultPredictionDays = 7
+    
+    # MÃ©thode de prÃ©diction par dÃ©faut
+    DefaultMethod = "LinearRegression"
+    
+    # Seuil d'alerte pour les prÃ©dictions (en pourcentage)
+    AlertThreshold = 20
+}
+
+# Fonction pour initialiser l'analyse prÃ©dictive
 function Initialize-ErrorPrediction {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$OutputFolder = "",
         
         [Parameter(Mandatory = $false)]
@@ -45,7 +119,7 @@ function Initialize-ErrorPrediction {
         [string]$Method = ""
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $PredictionConfig.OutputFolder = $OutputFolder
     }
@@ -62,18 +136,18 @@ function Initialize-ErrorPrediction {
         $PredictionConfig.DefaultMethod = $Method
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $PredictionConfig.OutputFolder)) {
         New-Item -Path $PredictionConfig.OutputFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Initialiser le collecteur de données
+    # Initialiser le collecteur de donnÃ©es
     Initialize-ErrorDataCollector
     
     return $PredictionConfig
 }
 
-# Fonction pour prédire les erreurs futures
+# Fonction pour prÃ©dire les erreurs futures
 function Get-ErrorPrediction {
     param (
         [Parameter(Mandatory = $false)]
@@ -93,7 +167,7 @@ function Get-ErrorPrediction {
         [string]$Severity = ""
     )
     
-    # Utiliser les valeurs par défaut si non spécifiées
+    # Utiliser les valeurs par dÃ©faut si non spÃ©cifiÃ©es
     if ($HistoryDays -le 0) {
         $HistoryDays = $PredictionConfig.DefaultHistoryDays
     }
@@ -106,14 +180,14 @@ function Get-ErrorPrediction {
         $Method = $PredictionConfig.DefaultMethod
     }
     
-    # Obtenir les données historiques
+    # Obtenir les donnÃ©es historiques
     $errors = Get-ErrorData -Days $HistoryDays -Category $Category -Severity $Severity
     
-    # Agréger les erreurs par jour
+    # AgrÃ©ger les erreurs par jour
     $dailyErrors = @{}
     $now = Get-Date
     
-    # Initialiser tous les jours à 0
+    # Initialiser tous les jours Ã  0
     for ($i = 0; $i -lt $HistoryDays; $i++) {
         $day = $now.AddDays(-$i).ToString("yyyy-MM-dd")
         $dailyErrors[$day] = 0
@@ -142,7 +216,7 @@ function Get-ErrorPrediction {
         }
     }
     
-    # Effectuer la prédiction selon la méthode choisie
+    # Effectuer la prÃ©diction selon la mÃ©thode choisie
     $predictions = switch ($Method) {
         "LinearRegression" {
             Get-LinearRegressionPrediction -DataPoints $dataPoints -PredictionDays $PredictionDays
@@ -181,7 +255,7 @@ function Get-ErrorPrediction {
         $stats.HistoricalTrend = if ($lastWeekAvg -gt 0) { 100 } else { 0 }
     }
     
-    # Calculer la tendance prédite
+    # Calculer la tendance prÃ©dite
     $currentAvg = ($dataPoints | Where-Object { $_.DayNumber -gt ($HistoryDays - 7) } | Measure-Object -Property Count -Average).Average
     $predictedAvg = ($predictions | Measure-Object -Property PredictedCount -Average).Average
     
@@ -195,7 +269,7 @@ function Get-ErrorPrediction {
     return $stats
 }
 
-# Fonction pour la prédiction par régression linéaire
+# Fonction pour la prÃ©diction par rÃ©gression linÃ©aire
 function Get-LinearRegressionPrediction {
     param (
         [Parameter(Mandatory = $true)]
@@ -205,7 +279,7 @@ function Get-LinearRegressionPrediction {
         [int]$PredictionDays
     )
     
-    # Calculer la régression linéaire
+    # Calculer la rÃ©gression linÃ©aire
     $n = $DataPoints.Count
     $sumX = ($DataPoints | Measure-Object -Property DayNumber -Sum).Sum
     $sumY = ($DataPoints | Measure-Object -Property Count -Sum).Sum
@@ -222,7 +296,7 @@ function Get-LinearRegressionPrediction {
     
     $intercept = ($sumY - $slope * $sumX) / $n
     
-    # Générer les prédictions
+    # GÃ©nÃ©rer les prÃ©dictions
     $predictions = @()
     $lastDay = [DateTime]::Parse($DataPoints[-1].Day)
     
@@ -241,7 +315,7 @@ function Get-LinearRegressionPrediction {
     return $predictions
 }
 
-# Fonction pour la prédiction par moyenne mobile
+# Fonction pour la prÃ©diction par moyenne mobile
 function Get-MovingAveragePrediction {
     param (
         [Parameter(Mandatory = $true)]
@@ -254,14 +328,14 @@ function Get-MovingAveragePrediction {
         [int]$WindowSize = 7
     )
     
-    # Ajuster la taille de la fenêtre si nécessaire
+    # Ajuster la taille de la fenÃªtre si nÃ©cessaire
     $WindowSize = [Math]::Min($WindowSize, $DataPoints.Count)
     
     # Calculer la moyenne mobile
     $lastValues = $DataPoints | Select-Object -Last $WindowSize
     $average = ($lastValues | Measure-Object -Property Count -Average).Average
     
-    # Générer les prédictions
+    # GÃ©nÃ©rer les prÃ©dictions
     $predictions = @()
     $lastDay = [DateTime]::Parse($DataPoints[-1].Day)
     
@@ -280,7 +354,7 @@ function Get-MovingAveragePrediction {
     return $predictions
 }
 
-# Fonction pour la prédiction par lissage exponentiel
+# Fonction pour la prÃ©diction par lissage exponentiel
 function Get-ExponentialSmoothingPrediction {
     param (
         [Parameter(Mandatory = $true)]
@@ -297,13 +371,13 @@ function Get-ExponentialSmoothingPrediction {
     $lastValue = $DataPoints[-1].Count
     $previousSmoothed = $lastValue
     
-    # Appliquer le lissage exponentiel aux données historiques
+    # Appliquer le lissage exponentiel aux donnÃ©es historiques
     for ($i = $DataPoints.Count - 2; $i -ge 0; $i--) {
         $currentValue = $DataPoints[$i].Count
         $previousSmoothed = $Alpha * $currentValue + (1 - $Alpha) * $previousSmoothed
     }
     
-    # Générer les prédictions
+    # GÃ©nÃ©rer les prÃ©dictions
     $predictions = @()
     $lastDay = [DateTime]::Parse($DataPoints[-1].Day)
     
@@ -322,11 +396,11 @@ function Get-ExponentialSmoothingPrediction {
     return $predictions
 }
 
-# Fonction pour générer un rapport de prédiction
+# Fonction pour gÃ©nÃ©rer un rapport de prÃ©diction
 function New-ErrorPredictionReport {
     param (
         [Parameter(Mandatory = $false)]
-        [string]$Title = "Rapport de prédiction d'erreurs",
+        [string]$Title = "Rapport de prÃ©diction d'erreurs",
         
         [Parameter(Mandatory = $false)]
         [int]$HistoryDays = 0,
@@ -351,17 +425,17 @@ function New-ErrorPredictionReport {
         [switch]$OpenOutput
     )
     
-    # Obtenir les prédictions
+    # Obtenir les prÃ©dictions
     $prediction = Get-ErrorPrediction -HistoryDays $HistoryDays -PredictionDays $PredictionDays -Method $Method -Category $Category -Severity $Severity
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "ErrorPrediction-$timestamp.html"
         $OutputPath = Join-Path -Path $PredictionConfig.OutputFolder -ChildPath $fileName
     }
     
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $historicalData = @()
     foreach ($point in $prediction.HistoricalData) {
         $historicalData += @{
@@ -378,7 +452,7 @@ function New-ErrorPredictionReport {
         }
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -464,7 +538,7 @@ function New-ErrorPredictionReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
@@ -477,30 +551,30 @@ function New-ErrorPredictionReport {
             </div>
             
             <div class="summary-card">
-                <h3>Prédiction</h3>
+                <h3>PrÃ©diction</h3>
                 <div class="summary-value">$($prediction.PredictedTotalErrors)</div>
                 <div>Moyenne quotidienne: $($prediction.PredictedAverageDailyErrors)</div>
                 <div>Tendance: <span class="$($prediction.PredictedTrend -lt 0 ? 'positive' : ($prediction.PredictedTrend -gt 0 ? 'negative' : ''))">$($prediction.PredictedTrend)%</span></div>
             </div>
             
             <div class="summary-card">
-                <h3>Méthode</h3>
+                <h3>MÃ©thode</h3>
                 <div class="summary-value">$($prediction.Method)</div>
                 <div>Historique: $($prediction.HistoryDays) jours</div>
-                <div>Prédiction: $($prediction.PredictionDays) jours</div>
+                <div>PrÃ©diction: $($prediction.PredictionDays) jours</div>
             </div>
         </div>
         
-        <h2>Graphique de prédiction</h2>
+        <h2>Graphique de prÃ©diction</h2>
         <div class="chart-container">
             <canvas id="prediction-chart"></canvas>
         </div>
         
-        <h2>Détails des prédictions</h2>
+        <h2>DÃ©tails des prÃ©dictions</h2>
         <table>
             <tr>
                 <th>Date</th>
-                <th>Erreurs prédites</th>
+                <th>Erreurs prÃ©dites</th>
             </tr>
             $(foreach ($point in $prediction.Predictions) {
                 "<tr>
@@ -511,21 +585,21 @@ function New-ErrorPredictionReport {
         </table>
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | Méthode: $($prediction.Method) | Historique: $($prediction.HistoryDays) jours | Prédiction: $($prediction.PredictionDays) jours</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | MÃ©thode: $($prediction.Method) | Historique: $($prediction.HistoryDays) jours | PrÃ©diction: $($prediction.PredictionDays) jours</p>
         </div>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const historicalData = $(ConvertTo-Json -InputObject $historicalData);
         const predictionData = $(ConvertTo-Json -InputObject $predictionData);
         
-        // Combiner les données
+        // Combiner les donnÃ©es
         const labels = [...historicalData.map(d => d.day), ...predictionData.map(d => d.day)];
         const historicalValues = [...historicalData.map(d => d.count), ...Array(predictionData.length).fill(null)];
         const predictionValues = [...Array(historicalData.length).fill(null), ...predictionData.map(d => d.count)];
         
-        // Graphique de prédiction
+        // Graphique de prÃ©diction
         const ctx = document.getElementById('prediction-chart').getContext('2d');
         new Chart(ctx, {
             type: 'line',
@@ -541,7 +615,7 @@ function New-ErrorPredictionReport {
                         tension: 0.1
                     },
                     {
-                        label: 'Prédiction',
+                        label: 'PrÃ©diction',
                         data: predictionValues,
                         borderColor: 'rgb(255, 99, 132)',
                         backgroundColor: 'rgba(255, 99, 132, 0.1)',
@@ -578,7 +652,7 @@ function New-ErrorPredictionReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -589,3 +663,13 @@ function New-ErrorPredictionReport {
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ErrorPrediction, Get-ErrorPrediction, New-ErrorPredictionReport
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

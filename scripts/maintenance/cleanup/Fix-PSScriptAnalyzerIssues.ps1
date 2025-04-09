@@ -1,8 +1,54 @@
-# Script pour corriger automatiquement les problèmes courants détectés par PSScriptAnalyzer
-# Ce script analyse les fichiers PowerShell et corrige automatiquement les problèmes courants
+﻿# Script pour corriger automatiquement les problÃ¨mes courants dÃ©tectÃ©s par PSScriptAnalyzer
+# Ce script analyse les fichiers PowerShell et corrige automatiquement les problÃ¨mes courants
+
+
+# Script pour corriger automatiquement les problÃ¨mes courants dÃ©tectÃ©s par PSScriptAnalyzer
+# Ce script analyse les fichiers PowerShell et corrige automatiquement les problÃ¨mes courants
 
 param (
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
     [string]$Path = ".",
     [Parameter(Mandatory = $false)]
     [string[]]$Include = @("*.ps1"),
@@ -12,16 +58,16 @@ param (
     [switch]$WhatIf
 )
 
-# Vérifier si le module PSScriptAnalyzer est installé
+# VÃ©rifier si le module PSScriptAnalyzer est installÃ©
 if (-not (Get-Module -ListAvailable -Name PSScriptAnalyzer)) {
-    Write-Host "Le module PSScriptAnalyzer n'est pas installé. Installation en cours..." -ForegroundColor Yellow
+    Write-Host "Le module PSScriptAnalyzer n'est pas installÃ©. Installation en cours..." -ForegroundColor Yellow
     Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
 }
 
 # Importer le module PSScriptAnalyzer
 Import-Module PSScriptAnalyzer
 
-# Fonction pour corriger les problèmes de comparaison avec $null
+# Fonction pour corriger les problÃ¨mes de comparaison avec $null
 function Fix-NullComparison {
     param (
         [string]$Content
@@ -35,13 +81,13 @@ function Fix-NullComparison {
     return $newContent
 }
 
-# Fonction pour corriger les verbes non approuvés
+# Fonction pour corriger les verbes non approuvÃ©s
 function Fix-UnapprovedVerbs {
     param (
         [string]$Content
     )
     
-    # Dictionnaire de correspondance entre verbes non approuvés et verbes approuvés
+    # Dictionnaire de correspondance entre verbes non approuvÃ©s et verbes approuvÃ©s
     $verbMapping = @{
         'Parse' = 'Get'
         'Format' = 'Format'
@@ -212,7 +258,7 @@ function Fix-UnapprovedVerbs {
         'Reload' = 'Update'
     }
     
-    # Remplacer les fonctions avec des verbes non approuvés
+    # Remplacer les fonctions avec des verbes non approuvÃ©s
     $pattern = 'function\s+(\w+)-(\w+)'
     $newContent = $Content
     
@@ -226,10 +272,10 @@ function Fix-UnapprovedVerbs {
             $oldFunctionName = "$verb-$noun"
             $newFunctionName = "$approvedVerb-$noun"
             
-            # Remplacer la définition de la fonction
+            # Remplacer la dÃ©finition de la fonction
             $newContent = $newContent -replace "function\s+$oldFunctionName", "function $newFunctionName"
             
-            # Remplacer les appels à la fonction
+            # Remplacer les appels Ã  la fonction
             $newContent = $newContent -replace "(?<!\w)$oldFunctionName(?!\w)", $newFunctionName
         }
     }
@@ -237,22 +283,22 @@ function Fix-UnapprovedVerbs {
     return $newContent
 }
 
-# Fonction pour corriger les paramètres switch avec valeur par défaut
+# Fonction pour corriger les paramÃ¨tres switch avec valeur par dÃ©faut
 function Fix-SwitchDefaultValue {
     param (
         [string]$Content
     )
     
-    # Remplacer les paramètres switch avec valeur par défaut
+    # Remplacer les paramÃ¨tres switch avec valeur par dÃ©faut
     $pattern = '(\[switch\])\$(\w+)\s*=\s*\$true'
     $replacement = '$1$$$2'
     $newContent = $Content -replace $pattern, $replacement
     
-    # Ajouter une vérification pour définir la valeur par défaut
+    # Ajouter une vÃ©rification pour dÃ©finir la valeur par dÃ©faut
     $matches = [regex]::Matches($Content, $pattern)
     foreach ($match in $matches) {
         $paramName = $match.Groups[2].Value
-        $checkCode = "    # Définir la valeur par défaut pour $paramName`n    if (-not `$PSBoundParameters.ContainsKey('$paramName')) {`n        `$$paramName = `$true`n    }"
+        $checkCode = "    # DÃ©finir la valeur par dÃ©faut pour $paramName`n    if (-not `$PSBoundParameters.ContainsKey('$paramName')) {`n        `$$paramName = `$true`n    }"
         
         # Trouver la fin du bloc param
         $paramEndPattern = "param\s*\([^)]*\)\s*"
@@ -266,13 +312,13 @@ function Fix-SwitchDefaultValue {
     return $newContent
 }
 
-# Fonction pour corriger les variables déclarées mais non utilisées
+# Fonction pour corriger les variables dÃ©clarÃ©es mais non utilisÃ©es
 function Fix-UnusedVariables {
     param (
         [string]$Content
     )
     
-    # Remplacer les variables déclarées mais non utilisées
+    # Remplacer les variables dÃ©clarÃ©es mais non utilisÃ©es
     $pattern = '(\$\w+)\s*=\s*([^;]+)(?:;|\r?\n)'
     $matches = [regex]::Matches($Content, $pattern)
     
@@ -281,12 +327,12 @@ function Fix-UnusedVariables {
         $varName = $match.Groups[1].Value
         $varValue = $match.Groups[2].Value.Trim()
         
-        # Vérifier si la variable est utilisée ailleurs dans le code
+        # VÃ©rifier si la variable est utilisÃ©e ailleurs dans le code
         $varUsagePattern = "(?<!\w)$([regex]::Escape($varName))(?!\w)"
         $varUsageMatches = [regex]::Matches($Content, $varUsagePattern)
         
         if ($varUsageMatches.Count -eq 1) {
-            # La variable n'est utilisée qu'une seule fois (lors de sa déclaration)
+            # La variable n'est utilisÃ©e qu'une seule fois (lors de sa dÃ©claration)
             # Remplacer par $null = expression pour supprimer l'avertissement
             $newContent = $newContent -replace [regex]::Escape($match.Value), "`$null = $varValue`n"
         }
@@ -295,7 +341,7 @@ function Fix-UnusedVariables {
     return $newContent
 }
 
-# Fonction pour corriger tous les problèmes dans un fichier
+# Fonction pour corriger tous les problÃ¨mes dans un fichier
 function Fix-PSScriptAnalyzerIssues {
     param (
         [string]$FilePath,
@@ -308,24 +354,24 @@ function Fix-PSScriptAnalyzerIssues {
     $issues = Invoke-ScriptAnalyzer -Path $FilePath
     
     if ($issues.Count -eq 0) {
-        Write-Host "  Aucun problème détecté." -ForegroundColor Green
+        Write-Host "  Aucun problÃ¨me dÃ©tectÃ©." -ForegroundColor Green
         return
     }
     
-    Write-Host "  $($issues.Count) problèmes détectés." -ForegroundColor Yellow
+    Write-Host "  $($issues.Count) problÃ¨mes dÃ©tectÃ©s." -ForegroundColor Yellow
     
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Raw
     $originalContent = $content
     
-    # Corriger les problèmes
+    # Corriger les problÃ¨mes
     $issueTypes = $issues | Group-Object -Property RuleName
     
     foreach ($issueType in $issueTypes) {
         $ruleName = $issueType.Name
         $count = $issueType.Count
         
-        Write-Host "  Correction de $count problèmes de type '$ruleName'..." -ForegroundColor Yellow
+        Write-Host "  Correction de $count problÃ¨mes de type '$ruleName'..." -ForegroundColor Yellow
         
         switch ($ruleName) {
             "PSPossibleIncorrectComparisonWithNull" {
@@ -341,39 +387,39 @@ function Fix-PSScriptAnalyzerIssues {
                 $content = Fix-UnusedVariables -Content $content
             }
             default {
-                Write-Host "    Le type de problème '$ruleName' n'est pas pris en charge pour la correction automatique." -ForegroundColor Yellow
+                Write-Host "    Le type de problÃ¨me '$ruleName' n'est pas pris en charge pour la correction automatique." -ForegroundColor Yellow
             }
         }
     }
     
-    # Vérifier si le contenu a été modifié
+    # VÃ©rifier si le contenu a Ã©tÃ© modifiÃ©
     if ($content -ne $originalContent) {
         if ($WhatIf) {
-            Write-Host "  Le fichier serait modifié (WhatIf)." -ForegroundColor Yellow
+            Write-Host "  Le fichier serait modifiÃ© (WhatIf)." -ForegroundColor Yellow
         }
         else {
             # Enregistrer les modifications
             Set-Content -Path $FilePath -Value $content -Encoding UTF8
-            Write-Host "  Le fichier a été modifié." -ForegroundColor Green
+            Write-Host "  Le fichier a Ã©tÃ© modifiÃ©." -ForegroundColor Green
             
-            # Vérifier si des problèmes subsistent
+            # VÃ©rifier si des problÃ¨mes subsistent
             $remainingIssues = Invoke-ScriptAnalyzer -Path $FilePath
             if ($remainingIssues.Count -gt 0) {
-                Write-Host "  $($remainingIssues.Count) problèmes subsistent après correction." -ForegroundColor Yellow
+                Write-Host "  $($remainingIssues.Count) problÃ¨mes subsistent aprÃ¨s correction." -ForegroundColor Yellow
             }
             else {
-                Write-Host "  Tous les problèmes ont été corrigés." -ForegroundColor Green
+                Write-Host "  Tous les problÃ¨mes ont Ã©tÃ© corrigÃ©s." -ForegroundColor Green
             }
         }
     }
     else {
-        Write-Host "  Aucune modification n'a été apportée au fichier." -ForegroundColor Yellow
+        Write-Host "  Aucune modification n'a Ã©tÃ© apportÃ©e au fichier." -ForegroundColor Yellow
     }
 }
 
 # Fonction principale
 function Start-PSScriptAnalyzerFix {
-    # Obtenir la liste des fichiers à analyser
+    # Obtenir la liste des fichiers Ã  analyser
     $files = Get-ChildItem -Path $Path -Include $Include -Recurse:$Recurse -File
     
     Write-Host "Analyse de $($files.Count) fichiers..." -ForegroundColor Cyan
@@ -382,8 +428,18 @@ function Start-PSScriptAnalyzerFix {
         Fix-PSScriptAnalyzerIssues -FilePath $file.FullName -WhatIf:$WhatIf
     }
     
-    Write-Host "Analyse terminée." -ForegroundColor Green
+    Write-Host "Analyse terminÃ©e." -ForegroundColor Green
 }
 
-# Démarrer l'analyse
+# DÃ©marrer l'analyse
 Start-PSScriptAnalyzerFix
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

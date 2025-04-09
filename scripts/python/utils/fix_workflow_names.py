@@ -1,4 +1,4 @@
-import os
+﻿import os
 import json
 import re
 
@@ -79,7 +79,7 @@ def main():
         print(f"Directory {output_dir} created.")
     
     # Process all JSON files in the reference directory
-    workflows_dir = r"D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\workflows\re-import_pour_analyse"
+    workflows_dir = r"D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\workflows\re-import_pour_analyse"
     if not os.path.exists(workflows_dir):
         print(f"Reference directory does not exist: {workflows_dir}")
         return

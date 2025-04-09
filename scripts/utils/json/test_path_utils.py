@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -112,7 +112,7 @@ class TestPathNormalizer(unittest.TestCase):
         with open(test_file, "w", encoding="utf-8") as f:
             f.write("Test avec des caractères accentués: é à ç\n")
             f.write("Test avec des espaces: test test\n")
-            f.write("Test avec des chemins: D:\\DO\\WEB\\N8N tests\\scripts json à tester\\EMAIL SENDER 1\n")
+            f.write("Test avec des chemins: D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\n")
         
         # Normaliser le fichier
         result = self.path_normalizer.normalize_file_content(test_file, dry_run=True)

@@ -205,7 +205,7 @@ def main():
     parser.add_argument("--complexity", default="Moyenne", help="Complexité de la section.")
     parser.add_argument("--time-estimate", default="3-5 jours", help="Temps estimé pour la section.")
     parser.add_argument("--append-to-roadmap", action="store_true", help="Ajouter le texte formaté à la roadmap.")
-    parser.add_argument("--roadmap-file", default="roadmap_perso.md", help="Fichier roadmap.")
+    parser.add_argument("--roadmap-file", default=""Roadmap\roadmap_perso.md"", help="Fichier roadmap.")
     parser.add_argument("--section-number", type=int, default=0, help="Numéro de section où insérer le texte formaté.")
     parser.add_argument("--dry-run", action="store_true", help="Afficher les modifications sans les appliquer.")
     

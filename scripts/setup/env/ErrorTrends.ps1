@@ -1,12 +1,34 @@
-# Script simplifié pour analyser les tendances d'erreurs
+﻿# Script simplifiÃ© pour analyser les tendances d'erreurs
 
-# Importer le module de collecte de données
+# Importer le module de collecte de donnÃ©es
 $collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "..\..\D"
 if (Test-Path -Path $collectorPath) {
     . $collectorPath
 }
 else {
-    Write-Error "Le module de collecte de données est introuvable: $collectorPath"
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
+    return
+}
+
+# Configuration
+$TrendConfig = @{
+    OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorTrends"
+    DefaultPeriod = 30
+    AnalysisInterval = 1
+    IncreaseThreshold = 20
+}
+
+# Fonction pour initialiser l'analyse
+
+# Script simplifiÃ© pour analyser les tendances d'erreurs
+
+# Importer le module de collecte de donnÃ©es
+$collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "..\..\D"
+if (Test-Path -Path $collectorPath) {
+    . $collectorPath
+}
+else {
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
     return
 }
 
@@ -25,6 +47,48 @@ function Initialize-ErrorTrends {
         [int]$DefaultPeriod = 0,
         [int]$AnalysisInterval = 0
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $TrendConfig.OutputFolder = $OutputFolder
@@ -129,10 +193,10 @@ function Get-ErrorTrends {
     return $trends
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-ErrorTrendReport {
     param (
-        [string]$Title = "Rapport d'évolution des erreurs",
+        [string]$Title = "Rapport d'Ã©volution des erreurs",
         [int]$Days = 0,
         [int]$Interval = 0,
         [string]$Category = "",
@@ -189,19 +253,19 @@ function New-ErrorTrendReport {
 <body>
     <div class="container">
         <h1>$Title</h1>
-        <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | Période: $Days jours | Intervalle: $Interval jours</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | PÃ©riode: $Days jours | Intervalle: $Interval jours</p>
         
         <div class="chart-container">
             <canvas id="errorsChart"></canvas>
         </div>
         
-        <h2>Détails des tendances</h2>
+        <h2>DÃ©tails des tendances</h2>
         <table>
             <tr>
-                <th>Période</th>
+                <th>PÃ©riode</th>
                 <th>Erreurs</th>
                 <th>Variation</th>
-                <th>Détails</th>
+                <th>DÃ©tails</th>
             </tr>
             $(foreach ($trend in ($trends | Sort-Object -Property Interval)) {
                 $startDate = $trend.StartDate.ToString("yyyy-MM-dd")
@@ -211,7 +275,7 @@ function New-ErrorTrendReport {
                 
                 $details = ""
                 if ($trend.SeverityVariations) {
-                    $details += "<strong>Par sévérité:</strong><br>"
+                    $details += "<strong>Par sÃ©vÃ©ritÃ©:</strong><br>"
                     foreach ($severity in $trend.SeverityVariations.Keys) {
                         $count = $trend.ErrorsBySeverity[$severity]
                         $variation = $trend.SeverityVariations[$severity]
@@ -222,7 +286,7 @@ function New-ErrorTrendReport {
                 }
                 
                 "<tr>
-                    <td>$startDate à $endDate</td>
+                    <td>$startDate Ã  $endDate</td>
                     <td>$($trend.TotalErrors)</td>
                     <td class='$variationClass'>$variationSign$($trend.TotalErrorsVariation)%</td>
                     <td>$details</td>
@@ -238,7 +302,7 @@ function New-ErrorTrendReport {
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: trendData.map(d => d.startDate + ' à ' + d.endDate),
+                labels: trendData.map(d => d.startDate + ' Ã  ' + d.endDate),
                 datasets: [{
                     label: 'Nombre d\'erreurs',
                     data: trendData.map(d => d.totalErrors),
@@ -288,7 +352,7 @@ function New-ErrorTrendReport {
     return $OutputPath
 }
 
-# Fonction pour détecter les anomalies
+# Fonction pour dÃ©tecter les anomalies
 function Get-ErrorTrendAnomalies {
     param (
         [int]$Days = 0,
@@ -344,7 +408,7 @@ function Get-ErrorTrendAnomalies {
                         Name = $severity
                         Value = $trend.ErrorsBySeverity[$severity]
                         Variation = $variation
-                        Details = "$type significative des erreurs de sévérité '$severity'"
+                        Details = "$type significative des erreurs de sÃ©vÃ©ritÃ© '$severity'"
                     }
                 }
             }
@@ -357,3 +421,13 @@ function Get-ErrorTrendAnomalies {
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ErrorTrends, Get-ErrorTrends, New-ErrorTrendReport, Get-ErrorTrendAnomalies
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

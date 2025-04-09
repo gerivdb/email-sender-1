@@ -1,3 +1,22 @@
+﻿# Script pour l'analyse des besoins du projet
+
+# Configuration
+$AnalysisConfig = @{
+    # Dossier de stockage des documents d'analyse
+    OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ProjectAnalysis"
+    
+    # Fichier des besoins du projet
+    RequirementsFile = Join-Path -Path $env:TEMP -ChildPath "ProjectAnalysis\requirements.json"
+    
+    # Fichier des contraintes techniques
+    ConstraintsFile = Join-Path -Path $env:TEMP -ChildPath "ProjectAnalysis\constraints.json"
+    
+    # Fichier des critÃ¨res de succÃ¨s
+    SuccessCriteriaFile = Join-Path -Path $env:TEMP -ChildPath "ProjectAnalysis\success_criteria.json"
+}
+
+# Fonction pour initialiser l'analyse des besoins
+
 # Script pour l'analyse des besoins du projet
 
 # Configuration
@@ -11,7 +30,7 @@ $AnalysisConfig = @{
     # Fichier des contraintes techniques
     ConstraintsFile = Join-Path -Path $env:TEMP -ChildPath "ProjectAnalysis\constraints.json"
     
-    # Fichier des critères de succès
+    # Fichier des critÃ¨res de succÃ¨s
     SuccessCriteriaFile = Join-Path -Path $env:TEMP -ChildPath "ProjectAnalysis\success_criteria.json"
 }
 
@@ -23,8 +42,50 @@ function Initialize-RequirementsAnalysis {
         [string]$ConstraintsFile = "",
         [string]$SuccessCriteriaFile = ""
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
     
-    # Mettre à jour la configuration
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
+    
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $AnalysisConfig.OutputFolder = $OutputFolder
     }
@@ -41,12 +102,12 @@ function Initialize-RequirementsAnalysis {
         $AnalysisConfig.SuccessCriteriaFile = $SuccessCriteriaFile
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $AnalysisConfig.OutputFolder)) {
         New-Item -Path $AnalysisConfig.OutputFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Créer les fichiers s'ils n'existent pas
+    # CrÃ©er les fichiers s'ils n'existent pas
     $files = @{
         $AnalysisConfig.RequirementsFile = @{
             Requirements = @()
@@ -98,7 +159,7 @@ function Add-Requirement {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $AnalysisConfig.RequirementsFile)) {
         Initialize-RequirementsAnalysis
     }
@@ -106,15 +167,15 @@ function Add-Requirement {
     # Charger les besoins existants
     $requirementsData = Get-Content -Path $AnalysisConfig.RequirementsFile -Raw | ConvertFrom-Json
     
-    # Vérifier si le besoin existe déjà
+    # VÃ©rifier si le besoin existe dÃ©jÃ 
     $existingRequirement = $requirementsData.Requirements | Where-Object { $_.Name -eq $Name }
     
     if ($existingRequirement) {
-        Write-Warning "Un besoin avec ce nom existe déjà."
+        Write-Warning "Un besoin avec ce nom existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer le besoin
+    # CrÃ©er le besoin
     $requirement = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -163,7 +224,7 @@ function Add-Constraint {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $AnalysisConfig.ConstraintsFile)) {
         Initialize-RequirementsAnalysis
     }
@@ -171,15 +232,15 @@ function Add-Constraint {
     # Charger les contraintes existantes
     $constraintsData = Get-Content -Path $AnalysisConfig.ConstraintsFile -Raw | ConvertFrom-Json
     
-    # Vérifier si la contrainte existe déjà
+    # VÃ©rifier si la contrainte existe dÃ©jÃ 
     $existingConstraint = $constraintsData.Constraints | Where-Object { $_.Name -eq $Name }
     
     if ($existingConstraint) {
-        Write-Warning "Une contrainte avec ce nom existe déjà."
+        Write-Warning "Une contrainte avec ce nom existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer la contrainte
+    # CrÃ©er la contrainte
     $constraint = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -202,7 +263,7 @@ function Add-Constraint {
     return $constraint
 }
 
-# Fonction pour ajouter un critère de succès
+# Fonction pour ajouter un critÃ¨re de succÃ¨s
 function Add-SuccessCriterion {
     param (
         [Parameter(Mandatory = $true)]
@@ -225,23 +286,23 @@ function Add-SuccessCriterion {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $AnalysisConfig.SuccessCriteriaFile)) {
         Initialize-RequirementsAnalysis
     }
     
-    # Charger les critères existants
+    # Charger les critÃ¨res existants
     $criteriaData = Get-Content -Path $AnalysisConfig.SuccessCriteriaFile -Raw | ConvertFrom-Json
     
-    # Vérifier si le critère existe déjà
+    # VÃ©rifier si le critÃ¨re existe dÃ©jÃ 
     $existingCriterion = $criteriaData.SuccessCriteria | Where-Object { $_.Name -eq $Name }
     
     if ($existingCriterion) {
-        Write-Warning "Un critère avec ce nom existe déjà."
+        Write-Warning "Un critÃ¨re avec ce nom existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer le critère
+    # CrÃ©er le critÃ¨re
     $criterion = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -255,17 +316,17 @@ function Add-SuccessCriterion {
         Status = "Proposed"
     }
     
-    # Ajouter le critère
+    # Ajouter le critÃ¨re
     $criteriaData.SuccessCriteria += $criterion
     $criteriaData.LastUpdate = Get-Date -Format "o"
     
-    # Enregistrer les critères
+    # Enregistrer les critÃ¨res
     $criteriaData | ConvertTo-Json -Depth 5 | Set-Content -Path $AnalysisConfig.SuccessCriteriaFile
     
     return $criterion
 }
 
-# Fonction pour générer un rapport d'analyse des besoins
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse des besoins
 function New-RequirementsAnalysisReport {
     param (
         [Parameter(Mandatory = $false)]
@@ -284,7 +345,7 @@ function New-RequirementsAnalysisReport {
         [switch]$OpenOutput
     )
     
-    # Charger les données
+    # Charger les donnÃ©es
     $requirementsData = Get-Content -Path $AnalysisConfig.RequirementsFile -Raw | ConvertFrom-Json
     $requirements = $requirementsData.Requirements
     
@@ -300,14 +361,14 @@ function New-RequirementsAnalysisReport {
         $successCriteria = $criteriaData.SuccessCriteria
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "RequirementsAnalysis-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -408,7 +469,7 @@ function New-RequirementsAnalysisReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
@@ -421,7 +482,7 @@ function New-RequirementsAnalysisReport {
                     <tr>
                         <th>Nom</th>
                         <th>Type</th>
-                        <th>Priorité</th>
+                        <th>PrioritÃ©</th>
                         <th>Description</th>
                         <th>Statut</th>
                     </tr>
@@ -476,14 +537,14 @@ function New-RequirementsAnalysisReport {
         
         $(if ($IncludeSuccessCriteria) {
             "<div class='section'>
-                <h2>Critères de succès</h2>
-                <p>Nombre total de critères: $($successCriteria.Count)</p>
+                <h2>CritÃ¨res de succÃ¨s</h2>
+                <p>Nombre total de critÃ¨res: $($successCriteria.Count)</p>
                 
                 <table>
                     <thead>
                         <tr>
                             <th>Nom</th>
-                            <th>Catégorie</th>
+                            <th>CatÃ©gorie</th>
                             <th>Description</th>
                             <th>Mesure</th>
                             <th>Valeur cible</th>
@@ -505,7 +566,7 @@ function New-RequirementsAnalysisReport {
         })
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </div>
 </body>
@@ -515,7 +576,7 @@ function New-RequirementsAnalysisReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -525,3 +586,13 @@ function New-RequirementsAnalysisReport {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-RequirementsAnalysis, Add-Requirement, Add-Constraint, Add-SuccessCriterion, New-RequirementsAnalysisReport
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

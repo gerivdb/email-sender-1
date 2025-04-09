@@ -1,4 +1,47 @@
-﻿# Script pour rÃ©organiser les dossiers workflows et les fichiers .md et .cmd
+﻿
+
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+# Script pour rÃ©organiser les dossiers workflows et les fichiers .md et .cmd
 # Ce script regroupe tous les dossiers workflows dans un seul dossier avec des sous-dossiers par version
 # et range les fichiers .md et .cmd dans des dossiers dÃ©diÃ©s (sauf les fichiers standards GitHub)
 
@@ -241,3 +284,13 @@ Write-Host "Les dossiers workflows ont Ã©tÃ© regroupÃ©s dans $mainWorkflow
 Write-Host "Les fichiers .md ont Ã©tÃ© dÃ©placÃ©s dans le dossier $mdFolder (sauf les fichiers standards GitHub)."
 Write-Host "Les fichiers .cmd ont Ã©tÃ© dÃ©placÃ©s dans le dossier $cmdFolder (sauf les fichiers spÃ©cifiÃ©s)."
 Write-Host "Les rÃ¨gles d'organisation automatique ont Ã©tÃ© mises Ã  jour pour prendre en compte ces nouveaux dossiers."
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

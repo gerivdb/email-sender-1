@@ -1,0 +1,94 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Project Structure & Organization
+- User changed paths with French accents/spaces to use underscores (e.g. D:\DO\WEB\N8N_tests\scripts_json_a_tester) and needs UTF-8 with BOM encoding for PowerShell files
+- User wants scripts organized in subdirectories by usage in EMAIL_SENDER_1/scripts folder with a script manager to catalog, analyze, map and centralize scripts
+- User wants the EMAIL_SENDER_1/scripts folder to be drastically reorganized as it's currently chaotic
+- User implements modular approach with smaller hierarchically organized files rather than single large documents
+- Scripts and processes related to roadmap should be organized following SOLID, DRY, KISS and Clean Code principles
+- Code should be decomposed into scripts that respect the criteria mentioned in memories
+- User prefers scripts to be decomposed into smaller modules respecting process and responsibility boundaries when they become too large
+- User wants Phase 4 implementation to respect the existing memories about code organization and development practices
+- There are existing Python utility files for script inventory and database at EMAIL_SENDER_1/scripts/python/utils/script_inventory.py and script_database.py that could be reused for inventory functionality
+- The reference detection script is located at 'scripts/maintenance/encoding/Detect-BrokenReferences.ps1' (not Find-BrokenReferences.ps1) and the standards management script is at 'scripts/maintenance/standards/Manage-Standards-v2.ps1'
+- User wants Path-Manager PowerShell module improved with UTF-8 with BOM encoding, explicit initialization pattern, flexible path mappings, better error handling with specific exceptions, path normalization, and comprehensive documentation following PowerShell standards
+- User wants to implement a phased approach for path management including security validation (Phase 1.2), advanced path handling (Phase 2.1), and configuration management (Phase 2.2) with specific features in each phase
+- Do not modify the path of the 'scripts_json_a_tester' directory despite the spaces, as this would cause loss of memory presets for the repository.
+- The correct directory name is 'scripts_json_a_tester' without spaces, not 'scripts_ json_a_ tester' with spaces.
+- User prefers to save and restore project memories during directory structure changes rather than maintaining problematic paths.
+
+# Development Standards & Practices
+- User follows Test-Driven Development with incremental development and continuous validation
+- PowerShell cmdlets must use approved verbs (not 'Extract-', 'Improve' or 'Implement') to follow PowerShell best practices and avoid PSScriptAnalyzer warnings
+- PowerShell cmdlets must use $null on left side of comparisons, no default true for switch parameters, and avoid assigning to automatic variables like 'Matches'
+- PowerShell scripts should use approved verbs (like 'Convert' instead of 'Normalize') to follow PowerShell best practices and avoid PSScriptAnalyzer warnings
+- PowerShell scripts should avoid setting default values for switch parameters to true, as flagged by PSScriptAnalyzer rule PSAvoidDefaultValueSwitchParameter
+- User prefers using Pester framework for PowerShell testing instead of custom test scripts, as it provides better structure, assertions, and integration with CI/CD pipelines
+- 16 fundamental programming bases cover: script distribution, environments, error handling, security, CRUD, users, databases, performance, automation, UI, testing, documentation, deployment, external resources, compatibility
+- For UI: separate HTML/CSS/JS, use atomic components, GPU-optimized CSS properties, clear business/presentation separation
+- User wants error reports and development log entries to be generated when completing tasks
+- User prefers using Python modules like os, shutil, pathlib, glob, sys, and fileinput for file manipulation tasks
+- User prefers using advanced Python modules like multiprocessing, threading, asyncio with aiofiles, mmap, os.sendfile, dask, and pyarrow/fastparquet for efficient file handling in different scenarios
+- For Python file analysis and manipulation, use advanced techniques like AST parsing for structural analysis, Levenshtein/fuzzywuzzy for better similarity detection, multiprocessing for performance, pandas/matplotlib for visualization, and implement safety features like automatic backups and incremental merging with history
+- For Python script analysis, use ast for syntax analysis, pandas/graphviz for reports and visualizations, with features like cache management, dependency detection, script health checks and advanced search
+- User wants important information and lessons learned from development sessions to be documented in a development log and error management system
+- User wants novel error patterns and resulting deductions to be documented in the development log and error management system.
+- User expects utility tests to verify that the implemented phases are working correctly
+- User prefers to run conformity analysis only on problematic files to save time
+- User prefers smaller, more concise inputs and solutions rather than lengthy implementations.
+
+# Tools & Environment
+- Stack includes n8n, crewAI, Notion with plans for ERPNext integration
+- Uses MCP servers (@modelcontextprotocol/server-filesystem, server-github) for code context
+- Has GCP project 'gen-lang-client-0391388747' with GCP-MCP server
+- N8N local API (localhost:5678) provides workflows, executions, tags, users endpoints
+- N8N workflows are JSON structures with id, name, active, nodes, connections, settings, tags
+- User wants guidelines for using Augment in VS Code placed in EMAIL_SENDER_1/docs/guides, including handling input limitations, file management, encoding (especially for PowerShell with UTF-8 with BOM), and VS Code configuration recommendations
+- User prefers specific VS Code settings for Augment: increased memory for large files (4096MB), extended terminal scrollback (10000), UTF-8 encoding for French locale, and GPU acceleration for the terminal
+- The execution environment has issues with PowerShell and other commands that run without producing visible output, requiring alternative approaches for script execution.
+
+# Documentation & Knowledge Management
+- Maintains RAG-based development journal with GitHub integration and web interface (localhost:8080)
+- Journal entries include timestamp (HH-MM), actions and lessons learned sections
+- Journal UI uses 'Wasteland Terminal' style with retro-futuristic green-on-dark theme
+- Roadmap.md tracks all tasks, phases and implementation progress with automatic updates
+- Documentation stored in appropriate docs subdirectories
+- User wants to document important changes in a development log
+- User wants to add the next steps as priorities in the roadmap
+- User prefers roadmap to be organized with priority items at the top, decreasing in priority as you go down, with completed items in a separate section at the bottom
+- User prefers logical organization in roadmap files with incomplete tasks placed above completed tasks.
+- User wants implementation plans organized in sections, phases, tasks and subtasks with priorities clearly defined in the roadmap
+- User expects the roadmap.md file to be updated with new tasks and sections after completing work
+
+# Version Control & Deployment
+- Uses structured Git approach with automation scripts and atomic commits
+- Git hooks should use relative paths and environment variables
+- User email: gerivonderbitsh+dev@gmail.com
+- OAuth2 authentication preferred for Gmail API (scopes: gmail.send, gmail.compose, gmail.modify)
+- GitHub Actions secrets must be manually added to repository settings
+
+# User Preferences
+- Prefers communication in French
+- Combines Augment (Vue.js code generation) with Deepsite (interface optimization)
+- Wants proactive, automated systems that learn from errors and evolve intelligently
+- Prioritizes tasks by complexity (simple to complex) with time estimates
+- Prefers solutions without manual configuration, focusing on API-based functionality
+- Existing memories should be respected during interactions
+- User expects instructions to be followed precisely the first time and becomes frustrated when asked to repeat instructions
+- User expects instructions to be followed precisely according to established memories

@@ -1,13 +1,59 @@
 # Script d'analyse de la roadmap
 # Ce script analyse la roadmap et génère des rapports sur l'avancement
 
+
+# Script d'analyse de la roadmap
+# Ce script analyse la roadmap et génère des rapports sur l'avancement
+
 param (
-    [string]$RoadmapPath = "roadmap_perso.md",
+    [string]$RoadmapPath = ""Roadmap\roadmap_perso.md"",
     [string]$OutputFolder = "Roadmap\Reports",
     [switch]$GenerateHtml = $true,
     [switch]$GenerateJson = $true,
     [switch]$GenerateChart = $true
 )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Écrire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # Créer le répertoire de logs si nécessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'écriture dans le journal
+    }
+}
+try {
+    # Script principal
+
 
 # Configuration
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
@@ -735,3 +781,13 @@ if ($GenerateChart) {
 }
 
 Write-Host "Analyse de la roadmap terminée !" -ForegroundColor Green
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "Exécution du script terminée."
+}

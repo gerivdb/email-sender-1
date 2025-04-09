@@ -4,7 +4,7 @@
 param (
     [Parameter(Mandatory = $true)]
     [string]$Task,
-    [string]$RoadmapPath = "roadmap_perso.md",
+    [string]$RoadmapPath = ""Roadmap\roadmap_perso.md"",
     [switch]$UpdateRoadmap = $true,
     [int]$MaxRetries = 3,
     [int]$RetryDelay = 5

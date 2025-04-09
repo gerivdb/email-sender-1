@@ -44,12 +44,101 @@ foreach ($rule in $autoOrganizeRules) {
 }
 
 # Fonction pour deplacer un fichier automatiquement
+
+# Script pour surveiller et organiser automatiquement les nouveaux fichiers
+# Ce script peut etre execute periodiquement via une tache planifiee
+
+Write-Host "=== Organisation automatique des fichiers ===" -ForegroundColor Cyan
+
+# Regles d'organisation automatique
+$autoOrganizeRules = @(
+    # Format: [pattern, destination, description]
+    @("*.json", "all-workflows/original", "Workflows n8n"),
+    @("*.workflow.json", "all-workflows/original", "Workflows n8n"),
+    @("mcp-*.cmd", "src/mcp/batch", "Fichiers batch MCP"),
+    @("gateway.exe.cmd", "src/mcp/batch", "Fichier batch Gateway"),
+    @("*.yaml", "src/mcp/config", "Fichiers config YAML"),
+    @("mcp-config*.json", "src/mcp/config", "Fichiers config MCP"),
+    @("*.ps1", "scripts", "Scripts PowerShell"),
+    @("configure-*.ps1", "scripts/setup", "Scripts de configuration"),
+    @("setup-*.ps1", "scripts/setup", "Scripts d'installation"),
+    @("update-*.ps1", "scripts/maintenance", "Scripts de mise a jour"),
+    @("cleanup-*.ps1", "scripts/maintenance", "Scripts de nettoyage"),
+    @("check-*.ps1", "scripts/maintenance", "Scripts de verification"),
+    @("organize-*.ps1", "scripts/maintenance", "Scripts d'organisation"),
+    @("GUIDE_*.md", "docs/guides", "Guides d'utilisation"),
+    @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)"),
+    @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)"),
+    @("*.log", "logs", "Fichiers de logs"),
+    @("*.env", "config", "Fichiers d'environnement"),
+    @("*.config", "config", "Fichiers de configuration"),
+    @("start-*.cmd", "tools", "Scripts de demarrage"),
+    @("*.cmd", "cmd", "Fichiers de commande Windows (sauf standards GitHub)"),
+    @("*.py", "src", "Scripts Python")
+)
+
+# Obtenir le chemin racine du projet (ou se trouve ce script)
+$projectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+Set-Location $projectRoot
+
+# Verifier si les dossiers existent, sinon les creer
+foreach ($rule in $autoOrganizeRules) {
+    $destination = $rule[1]
+    if (-not (Test-Path "$projectRoot\$destination")) {
+        New-Item -ItemType Directory -Path "$projectRoot\$destination" -Force | Out-Null
+        Write-Host "Dossier $destination cree" -ForegroundColor Green
+    }
+}
+
+# Fonction pour deplacer un fichier automatiquement
 function Move-FileAutomatically {
     param (
         [string]$SourcePath,
         [string]$DestinationFolder,
         [string]$Description
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
 
     $fileName = Split-Path $SourcePath -Leaf
     $destinationPath = Join-Path $DestinationFolder $fileName
@@ -172,3 +261,13 @@ Write-Host "   powershell -ExecutionPolicy Bypass -File `"$projectRoot\scripts\m
 Write-Host "3. Definissez la frequence souhaitee (par exemple, quotidienne)"
 
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

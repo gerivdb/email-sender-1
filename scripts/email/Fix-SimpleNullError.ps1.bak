@@ -1,0 +1,25 @@
+﻿# Script simple pour corriger l'erreur de token $null à la ligne 435
+
+# Chemin du fichier à corriger
+$filePath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1/Roadmap/RoadmapAdmin.ps1"
+
+# Vérifier si le fichier existe
+if (-not (Test-Path -Path $filePath)) {
+    Write-Host "Le fichier n'existe pas: $filePath" -ForegroundColor Red
+    exit 1
+}
+
+# Lire le contenu du fichier ligne par ligne
+$lines = Get-Content -Path $filePath
+
+# Afficher la ligne problématique (ligne 435)
+Write-Host "Ligne problématique (435): $($lines[434])" -ForegroundColor Yellow
+
+# Remplacer $null par [void] à la ligne 435
+$lines[434] = $lines[434].Replace('$null', '[void]')
+Write-Host "Ligne corrigée: $($lines[434])" -ForegroundColor Green
+
+# Enregistrer les modifications
+Set-Content -Path $filePath -Value $lines -Encoding UTF8
+
+Write-Host "Correction appliquée au fichier: $filePath" -ForegroundColor Green

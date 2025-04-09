@@ -17,7 +17,31 @@ $AugmentConfig = @{
     AugmentLogPath = Join-Path -Path $PSScriptRoot -ChildPath "augment_actions.log"
 
     # Fichier de la roadmap
-    RoadmapPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\roadmap_perso.md"
+    RoadmapPath = "Roadmap\roadmap_perso.md"""
+}
+
+# Fonction pour initialiser l'intégration
+
+# Script pour intégrer Augment avec la mise à jour automatique de la roadmap
+# Ce script permet à Augment de déclarer des tâches terminées et de mettre à jour la roadmap
+
+# Importer le module de mise à jour de la roadmap
+$updaterPath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapUpdater.ps1"
+if (Test-Path -Path $updaterPath) {
+    . $updaterPath
+}
+else {
+    Write-Error "Le module de mise à jour de la roadmap est introuvable: $updaterPath"
+    exit 1
+}
+
+# Configuration
+$AugmentConfig = @{
+    # Fichier de log pour les actions d'Augment
+    AugmentLogPath = Join-Path -Path $PSScriptRoot -ChildPath "augment_actions.log"
+
+    # Fichier de la roadmap
+    RoadmapPath = "Roadmap\roadmap_perso.md"""
 }
 
 # Fonction pour initialiser l'intégration
@@ -38,7 +62,49 @@ function Initialize-AugmentRoadmapIntegration {
 # Fonction pour qu'Augment déclare une tâche terminée
 function Complete-AugmentTask {
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Écrire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # Créer le répertoire de logs si nécessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'écriture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$PhaseTitle,
 
         [Parameter(Mandatory = $true)]
@@ -224,3 +290,13 @@ function Update-RoadmapFromDeclarations {
 # Exporter les fonctions
 # Note: Export-ModuleMember est commenté car ce script n'est pas un module formel
 # Export-ModuleMember -Function Initialize-AugmentRoadmapIntegration, Complete-AugmentTask, Complete-AugmentPhase, Complete-AugmentSubtask, Invoke-AugmentDeclaration, Update-RoadmapFromDeclarations
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "Exécution du script terminée."
+}

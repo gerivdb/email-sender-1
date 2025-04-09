@@ -1,22 +1,42 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste la Phase 1 : Mise à jour des références.
+    Teste la Phase 1 : Mise Ã  jour des rÃ©fÃ©rences.
 .DESCRIPTION
-    Ce script teste spécifiquement la Phase 1 du projet de réorganisation des scripts,
-    qui concerne la mise à jour des références. Il vérifie que les chemins de fichiers
-    dans les scripts sont valides et qu'il n'y a pas de références brisées.
+    Ce script teste spÃ©cifiquement la Phase 1 du projet de rÃ©organisation des scripts,
+    qui concerne la mise Ã  jour des rÃ©fÃ©rences. Il vÃ©rifie que les chemins de fichiers
+    dans les scripts sont valides et qu'il n'y a pas de rÃ©fÃ©rences brisÃ©es.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à tester. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  tester. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport de test. Par défaut: scripts\tests\references_test_report.json
+    Chemin du fichier de sortie pour le rapport de test. Par dÃ©faut: scripts\tests\references_test_report.json
 .PARAMETER Verbose
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Test-Phase1-References.ps1
     Teste la Phase 1 sur tous les scripts du dossier "scripts".
 .EXAMPLE
     .\Test-Phase1-References.ps1 -Path "scripts\maintenance" -Verbose
-    Teste la Phase 1 sur les scripts du dossier "scripts\maintenance" avec des informations détaillées.
+    Teste la Phase 1 sur les scripts du dossier "scripts\maintenance" avec des informations dÃ©taillÃ©es.
+
+<#
+.SYNOPSIS
+    Teste la Phase 1 : Mise Ã  jour des rÃ©fÃ©rences.
+.DESCRIPTION
+    Ce script teste spÃ©cifiquement la Phase 1 du projet de rÃ©organisation des scripts,
+    qui concerne la mise Ã  jour des rÃ©fÃ©rences. Il vÃ©rifie que les chemins de fichiers
+    dans les scripts sont valides et qu'il n'y a pas de rÃ©fÃ©rences brisÃ©es.
+.PARAMETER Path
+    Chemin du dossier contenant les scripts Ã  tester. Par dÃ©faut: scripts
+.PARAMETER OutputPath
+    Chemin du fichier de sortie pour le rapport de test. Par dÃ©faut: scripts\tests\references_test_report.json
+.PARAMETER Verbose
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
+.EXAMPLE
+    .\Test-Phase1-References.ps1
+    Teste la Phase 1 sur tous les scripts du dossier "scripts".
+.EXAMPLE
+    .\Test-Phase1-References.ps1 -Path "scripts\maintenance" -Verbose
+    Teste la Phase 1 sur les scripts du dossier "scripts\maintenance" avec des informations dÃ©taillÃ©es.
 #>
 
 param (
@@ -25,7 +45,49 @@ param (
     [switch]$Verbose
 )
 
-# Fonction pour écrire des messages de log
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
+
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -47,12 +109,12 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\tests\test_results.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
-# Fonction pour trouver les références de fichiers dans un script
+# Fonction pour trouver les rÃ©fÃ©rences de fichiers dans un script
 function Find-FileReferences {
     param (
         [string]$FilePath
@@ -67,7 +129,7 @@ function Find-FileReferences {
         return $References
     }
     
-    # Extraire les références de fichiers selon le type de script
+    # Extraire les rÃ©fÃ©rences de fichiers selon le type de script
     $ScriptType = [System.IO.Path]::GetExtension($FilePath).ToLower()
     
     switch ($ScriptType) {
@@ -85,7 +147,7 @@ function Find-FileReferences {
                 foreach ($Match in $Matches) {
                     $Reference = $Match.Value
                     
-                    # Ignorer les références qui ne sont pas des chemins de fichiers
+                    # Ignorer les rÃ©fÃ©rences qui ne sont pas des chemins de fichiers
                     if ($Reference -match '\.(ps1|py|cmd|bat|sh|txt|csv|json|xml|html|md)$') {
                         $References += $Reference
                     }
@@ -161,14 +223,14 @@ function Find-FileReferences {
     return $References
 }
 
-# Fonction pour vérifier si une référence est valide
+# Fonction pour vÃ©rifier si une rÃ©fÃ©rence est valide
 function Test-Reference {
     param (
         [string]$Reference,
         [string]$BasePath
     )
     
-    # Ignorer les références vides
+    # Ignorer les rÃ©fÃ©rences vides
     if ([string]::IsNullOrEmpty($Reference)) {
         return $true
     }
@@ -179,7 +241,7 @@ function Test-Reference {
         $FullPath = Join-Path -Path $BasePath -ChildPath $Reference
     }
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     return Test-Path -Path $FullPath -ErrorAction SilentlyContinue
 }
 
@@ -191,26 +253,26 @@ function Test-References {
         [switch]$Verbose
     )
     
-    Write-Log "=== Test de la Phase 1 : Mise à jour des références ===" -Level "TITLE"
-    Write-Log "Chemin des scripts à tester: $Path" -Level "INFO"
+    Write-Log "=== Test de la Phase 1 : Mise Ã  jour des rÃ©fÃ©rences ===" -Level "TITLE"
+    Write-Log "Chemin des scripts Ã  tester: $Path" -Level "INFO"
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $OutputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $OutputDir)) {
         New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-        Write-Log "Dossier de sortie créé: $OutputDir" -Level "INFO"
+        Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "INFO"
     }
     
-    # Récupérer tous les fichiers de script
+    # RÃ©cupÃ©rer tous les fichiers de script
     $ScriptExtensions = @("*.ps1", "*.py", "*.cmd", "*.bat", "*.sh")
     $AllFiles = @()
     foreach ($Extension in $ScriptExtensions) {
         $AllFiles += Get-ChildItem -Path $Path -Filter $Extension -Recurse -File
     }
     
-    Write-Log "Nombre de scripts trouvés: $($AllFiles.Count)" -Level "INFO"
+    Write-Log "Nombre de scripts trouvÃ©s: $($AllFiles.Count)" -Level "INFO"
     
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $Results = @{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $AllFiles.Count
@@ -226,7 +288,7 @@ function Test-References {
             Write-Log "Analyse du fichier: $($File.FullName)" -Level "INFO"
         }
         
-        # Trouver les références de fichiers
+        # Trouver les rÃ©fÃ©rences de fichiers
         $References = Find-FileReferences -FilePath $File.FullName
         
         if ($References.Count -gt 0) {
@@ -234,10 +296,10 @@ function Test-References {
             $Results.TotalReferences += $References.Count
             
             if ($Verbose) {
-                Write-Log "  Références trouvées: $($References.Count)" -Level "INFO"
+                Write-Log "  RÃ©fÃ©rences trouvÃ©es: $($References.Count)" -Level "INFO"
             }
             
-            # Vérifier chaque référence
+            # VÃ©rifier chaque rÃ©fÃ©rence
             foreach ($Reference in $References) {
                 $IsValid = Test-Reference -Reference $Reference -BasePath $File.DirectoryName
                 
@@ -251,36 +313,46 @@ function Test-References {
                     $Results.BrokenReferencesCount++
                     
                     if ($Verbose) {
-                        Write-Log "    Référence brisée: $Reference" -Level "WARNING"
+                        Write-Log "    RÃ©fÃ©rence brisÃ©e: $Reference" -Level "WARNING"
                     }
                 }
             }
         }
     }
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $Results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    # Afficher un résumé
-    Write-Log "Analyse terminée" -Level "INFO"
-    Write-Log "Nombre total de scripts analysés: $($Results.TotalScripts)" -Level "INFO"
-    Write-Log "Nombre de scripts avec références: $($Results.ScriptsWithReferences)" -Level "INFO"
-    Write-Log "Nombre total de références: $($Results.TotalReferences)" -Level "INFO"
-    Write-Log "Nombre de références brisées: $($Results.BrokenReferencesCount)" -Level $(if ($Results.BrokenReferencesCount -gt 0) { "WARNING" } else { "SUCCESS" })
+    # Afficher un rÃ©sumÃ©
+    Write-Log "Analyse terminÃ©e" -Level "INFO"
+    Write-Log "Nombre total de scripts analysÃ©s: $($Results.TotalScripts)" -Level "INFO"
+    Write-Log "Nombre de scripts avec rÃ©fÃ©rences: $($Results.ScriptsWithReferences)" -Level "INFO"
+    Write-Log "Nombre total de rÃ©fÃ©rences: $($Results.TotalReferences)" -Level "INFO"
+    Write-Log "Nombre de rÃ©fÃ©rences brisÃ©es: $($Results.BrokenReferencesCount)" -Level $(if ($Results.BrokenReferencesCount -gt 0) { "WARNING" } else { "SUCCESS" })
     
     if ($Results.BrokenReferencesCount -gt 0) {
-        Write-Log "Des références brisées ont été détectées. Consultez le rapport pour plus de détails: $OutputPath" -Level "WARNING"
-        Write-Log "La Phase 1 n'a pas complètement réussi" -Level "WARNING"
+        Write-Log "Des rÃ©fÃ©rences brisÃ©es ont Ã©tÃ© dÃ©tectÃ©es. Consultez le rapport pour plus de dÃ©tails: $OutputPath" -Level "WARNING"
+        Write-Log "La Phase 1 n'a pas complÃ¨tement rÃ©ussi" -Level "WARNING"
         return $false
     } else {
-        Write-Log "Aucune référence brisée détectée" -Level "SUCCESS"
-        Write-Log "La Phase 1 a réussi" -Level "SUCCESS"
+        Write-Log "Aucune rÃ©fÃ©rence brisÃ©e dÃ©tectÃ©e" -Level "SUCCESS"
+        Write-Log "La Phase 1 a rÃ©ussi" -Level "SUCCESS"
         return $true
     }
 }
 
-# Exécuter le test
+# ExÃ©cuter le test
 $Success = Test-References -Path $Path -OutputPath $OutputPath -Verbose:$Verbose
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $Success
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

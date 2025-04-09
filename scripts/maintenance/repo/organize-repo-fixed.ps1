@@ -1,3 +1,66 @@
+﻿# Script pour organiser le repo selon les bonnes pratiques
+# Cree une structure de dossiers logique et deplace les fichiers dans les bons repertoires
+
+Write-Host "=== Reorganisation du repo selon les bonnes pratiques ===" -ForegroundColor Cyan
+
+# Structure de dossiers a creer
+$folders = @(
+    "src",                  # Code source principal
+    "src/workflows",        # Workflows n8n
+    "src/mcp",              # Fichiers MCP
+    "src/mcp/batch",        # Fichiers batch pour MCP
+    "src/mcp/config",       # Configurations MCP
+    "scripts",              # Scripts utilitaires
+    "scripts/setup",        # Scripts d'installation
+    "scripts/maintenance",  # Scripts de maintenance
+    "config",               # Fichiers de configuration
+    "logs",                 # Fichiers de logs
+    "docs",                 # Documentation
+    "docs/guides",          # Guides d'utilisation
+    "docs/api",             # Documentation API
+    "tests",                # Tests
+    "tools",                # Outils divers
+    "assets"                # Ressources statiques
+)
+
+# Creer les dossiers s'ils n'existent pas
+foreach ($folder in $folders) {
+    if (-not (Test-Path ".\$folder")) {
+        New-Item -ItemType Directory -Path ".\$folder" | Out-Null
+        Write-Host "[OK] Dossier $folder cree" -ForegroundColor Green
+    } else {
+        Write-Host "[OK] Dossier $folder existe deja" -ForegroundColor Green
+    }
+}
+
+# Regles de deplacement des fichiers
+$fileRules = @(
+    # Format: [pattern, destination, description]
+    @("*.json", "src/workflows", "Workflows n8n"),
+    @("*.workflow.json", "src/workflows", "Workflows n8n"),
+    @("mcp-*.cmd", "src/mcp/batch", "Fichiers batch MCP"),
+    @("gateway.exe.cmd", "src/mcp/batch", "Fichier batch Gateway"),
+    @("*.yaml", "src/mcp/config", "Fichiers config YAML"),
+    @("mcp-config*.json", "src/mcp/config", "Fichiers config MCP"),
+    @("*.ps1", "scripts", "Scripts PowerShell"),
+    @("configure-*.ps1", "scripts/setup", "Scripts de configuration"),
+    @("setup-*.ps1", "scripts/setup", "Scripts d'installation"),
+    @("update-*.ps1", "scripts/maintenance", "Scripts de mise a jour"),
+    @("cleanup-*.ps1", "scripts/maintenance", "Scripts de nettoyage"),
+    @("check-*.ps1", "scripts/maintenance", "Scripts de verification"),
+    @("organize-*.ps1", "scripts/maintenance", "Scripts d'organisation"),
+    @("*.md", "docs", "Documentation Markdown"),
+    @("GUIDE_*.md", "docs/guides", "Guides d'utilisation"),
+    @("README.md", ".", "Fichier README principal"),
+    @("*.log", "logs", "Fichiers de logs"),
+    @("*.env", "config", "Fichiers d'environnement"),
+    @("*.config", "config", "Fichiers de configuration"),
+    @("start-*.cmd", "tools", "Scripts de demarrage"),
+    @("*.py", "src", "Scripts Python")
+)
+
+# Fonction pour deplacer un fichier avec confirmation si necessaire
+
 # Script pour organiser le repo selon les bonnes pratiques
 # Cree une structure de dossiers logique et deplace les fichiers dans les bons repertoires
 
@@ -67,6 +130,48 @@ function Move-FileWithConfirmation {
         [string]$Description,
         [switch]$Force
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     $fileName = Split-Path $SourcePath -Leaf
     $destinationPath = Join-Path $DestinationFolder $fileName
@@ -182,22 +287,22 @@ Ce projet contient des workflows n8n et des outils pour automatiser l'envoi d'em
 ## Structure du projet
 
 ```
-├── src/                  # Code source principal
-│   ├── workflows/        # Workflows n8n
-│   └── mcp/              # Fichiers MCP (Model Context Protocol)
-│       ├── batch/        # Fichiers batch pour MCP
-│       └── config/       # Configurations MCP
-├── scripts/              # Scripts utilitaires
-│   ├── setup/            # Scripts d'installation
-│   └── maintenance/      # Scripts de maintenance
-├── config/               # Fichiers de configuration
-├── logs/                 # Fichiers de logs
-├── docs/                 # Documentation
-│   ├── guides/           # Guides d'utilisation
-│   └── api/              # Documentation API
-├── tests/                # Tests
-├── tools/                # Outils divers
-└── assets/               # Ressources statiques
+â”œâ”€â”€ src/                  # Code source principal
+â”‚   â”œâ”€â”€ workflows/        # Workflows n8n
+â”‚   â””â”€â”€ mcp/              # Fichiers MCP (Model Context Protocol)
+â”‚       â”œâ”€â”€ batch/        # Fichiers batch pour MCP
+â”‚       â””â”€â”€ config/       # Configurations MCP
+â”œâ”€â”€ scripts/              # Scripts utilitaires
+â”‚   â”œâ”€â”€ setup/            # Scripts d'installation
+â”‚   â””â”€â”€ maintenance/      # Scripts de maintenance
+â”œâ”€â”€ config/               # Fichiers de configuration
+â”œâ”€â”€ logs/                 # Fichiers de logs
+â”œâ”€â”€ docs/                 # Documentation
+â”‚   â”œâ”€â”€ guides/           # Guides d'utilisation
+â”‚   â””â”€â”€ api/              # Documentation API
+â”œâ”€â”€ tests/                # Tests
+â”œâ”€â”€ tools/                # Outils divers
+â””â”€â”€ assets/               # Ressources statiques
 ```
 
 ## Installation
@@ -414,3 +519,13 @@ Write-Host "Pour creer de nouveaux fichiers dans les bons dossiers, utilisez:"
 Write-Host "  ..\..\D -Type workflow -Name mon-workflow"
 Write-Host "Types disponibles: workflow, script, doc, config, mcp, test"
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

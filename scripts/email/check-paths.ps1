@@ -4,15 +4,15 @@
 Write-Host "=== Verification des chemins dans les fichiers de configuration ===" -ForegroundColor Cyan
 
 # Ancien chemin (avec espaces et accents)
-$oldPath = "D:\\DO\\WEB\\N8N tests\\scripts json Ã  tester\\EMAIL SENDER 1"
+$oldPath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 $oldPathVariants = @(
-    "D:\\DO\\WEB\\N8N tests\\scripts json Ã  tester\\EMAIL SENDER 1",
-    "D:/DO/WEB/N8N tests/scripts json Ã  tester/EMAIL SENDER 1",
-    "D:\DO\WEB\N8N tests\scripts json Ã  tester\EMAIL SENDER 1"
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 )
 
 # Nouveau chemin (avec underscores)
-$newPath = "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1"
+$newPath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 
 # Types de fichiers Ã  vÃ©rifier
 $fileTypes = @("*.json", "*.cmd", "*.ps1", "*.yaml", "*.md")

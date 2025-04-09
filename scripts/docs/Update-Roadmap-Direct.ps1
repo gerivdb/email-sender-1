@@ -1,5 +1,5 @@
-﻿# Update-Roadmap-Direct.ps1
-# Script pour mettre Ã  jour directement la roadmap personnelle
+# Update-Roadmap-Direct.ps1
+# Script pour mettre à jour directement la roadmap personnelle
 
 param (
     [Parameter(Mandatory = $false)]
@@ -18,24 +18,24 @@ param (
 # Chemins des fichiers
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dataPath = Join-Path -Path $scriptPath -ChildPath "roadmap-data.json"
-$roadmapPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "roadmap_perso.md"
+$roadmapPath = "Roadmap\roadmap_perso.md"""
 
-# VÃ©rifier si les fichiers existent
+# Vérifier si les fichiers existent
 if (-not (Test-Path -Path $dataPath)) {
-    Write-Error "Fichier de donnÃ©es non trouvÃ©: $dataPath"
+    Write-Error "Fichier de données non trouvé: $dataPath"
     exit 1
 }
 
-# Charger les donnÃ©es JSON
+# Charger les données JSON
 try {
     $roadmapData = Get-Content -Path $dataPath -Raw | ConvertFrom-Json
 }
 catch {
-    Write-Error "Erreur lors du chargement des donnÃ©es JSON: $_"
+    Write-Error "Erreur lors du chargement des données JSON: $_"
     exit 1
 }
 
-# Fonction pour mettre Ã  jour une tÃ¢che
+# Fonction pour mettre à jour une tâche
 function Update-Task {
     param (
         [string]$Id,
@@ -54,20 +54,20 @@ function Update-Task {
                 if ($MarkComplete) {
                     $task.completed = $true
                     $task.completionDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
-                    Write-Host "TÃ¢che $Id marquÃ©e comme terminÃ©e."
+                    Write-Host "Tâche $Id marquée comme terminée."
                 }
                 
                 if ($MarkStart -and -not $task.startDate) {
                     $task.startDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
-                    Write-Host "TÃ¢che $Id marquÃ©e comme dÃ©marrÃ©e."
+                    Write-Host "Tâche $Id marquée comme démarrée."
                 }
                 
                 if ($TaskNote) {
                     $task.notes = $TaskNote
-                    Write-Host "Note ajoutÃ©e Ã  la tÃ¢che $Id."
+                    Write-Host "Note ajoutée à la tâche $Id."
                 }
                 
-                # Mettre Ã  jour le pourcentage de progression de la catÃ©gorie
+                # Mettre à jour le pourcentage de progression de la catégorie
                 $totalTasks = $category.tasks.Count
                 $completedTasks = ($category.tasks | Where-Object { $_.completed -eq $true }).Count
                 $category.progress = [math]::Round(($completedTasks / $totalTasks) * 100)
@@ -76,32 +76,32 @@ function Update-Task {
     }
     
     if (-not $taskFound) {
-        Write-Error "TÃ¢che avec ID '$Id' non trouvÃ©e."
+        Write-Error "Tâche avec ID '$Id' non trouvée."
         return $false
     }
     
     return $true
 }
 
-# Si un ID de tÃ¢che est spÃ©cifiÃ©, mettre Ã  jour cette tÃ¢che
+# Si un ID de tâche est spécifié, mettre à jour cette tâche
 if ($TaskId) {
     $success = Update-Task -Id $TaskId -MarkComplete:$Complete -MarkStart:$Start -TaskNote $Note
     if (-not $success) { exit 1 }
 }
 
-# Mettre Ã  jour la date de derniÃ¨re modification
+# Mettre à jour la date de dernière modification
 $roadmapData.lastUpdated = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
 
-# Sauvegarder les donnÃ©es JSON
+# Sauvegarder les données JSON
 $roadmapData | ConvertTo-Json -Depth 10 | Set-Content -Path $dataPath
 
-# GÃ©nÃ©rer le contenu Markdown
+# Générer le contenu Markdown
 $markdown = @"
-# Roadmap personnelle d'amÃ©lioration du projet
+# Roadmap personnelle d'amélioration du projet
 
-## Vue d'ensemble des tÃ¢ches par prioritÃ© et complexitÃ©
+## Vue d'ensemble des tâches par priorité et complexité
 
-Ce document prÃ©sente une feuille de route organisÃ©e par ordre de complexitÃ© croissante, avec une estimation du temps nÃ©cessaire pour chaque ensemble de tÃ¢ches.
+Ce document présente une feuille de route organisée par ordre de complexité croissante, avec une estimation du temps nécessaire pour chaque ensemble de tâches.
 
 "@
 
@@ -109,8 +109,8 @@ foreach ($category in $roadmapData.categories) {
     $markdown += @"
 
 ## $($category.id). $($category.name)
-**ComplexitÃ©**: $($category.complexity)  
-**Temps estimÃ©**: $($category.estimatedDays) jours
+**Complexité**: $($category.complexity)  
+**Temps estimé**: $($category.estimatedDays) jours
 **Progression**: $($category.progress)%
 
 "@
@@ -121,12 +121,12 @@ foreach ($category in $roadmapData.categories) {
         
         if ($task.startDate -and -not $task.completionDate) {
             $startDate = [DateTime]::Parse($task.startDate)
-            $markdown += " - *DÃ©marrÃ© le $(Get-Date $startDate -Format 'dd/MM/yyyy')*"
+            $markdown += " - *Démarré le $(Get-Date $startDate -Format 'dd/MM/yyyy')*"
         }
         
         if ($task.completionDate) {
             $completionDate = [DateTime]::Parse($task.completionDate)
-            $markdown += " - *TerminÃ© le $(Get-Date $completionDate -Format 'dd/MM/yyyy')*"
+            $markdown += " - *Terminé le $(Get-Date $completionDate -Format 'dd/MM/yyyy')*"
         }
         
         $markdown += "`n"
@@ -139,38 +139,38 @@ foreach ($category in $roadmapData.categories) {
 
 $markdown += @"
 
-## Plan d'implÃ©mentation recommandÃ©
+## Plan d'implémentation recommandé
 
-Pour maximiser l'efficacitÃ© et obtenir des rÃ©sultats tangibles rapidement, voici une approche progressive recommandÃ©e:
+Pour maximiser l'efficacité et obtenir des résultats tangibles rapidement, voici une approche progressive recommandée:
 
 1. **Semaine 1**: 
-   - Documenter les problÃ¨mes actuels et leurs solutions
-   - Commencer l'implÃ©mentation des utilitaires de normalisation des chemins
+   - Documenter les problèmes actuels et leurs solutions
+   - Commencer l'implémentation des utilitaires de normalisation des chemins
 
 2. **Semaine 2-3**:
    - Finaliser les outils de gestion des chemins
-   - Standardiser les scripts pour la compatibilitÃ© multi-terminaux
+   - Standardiser les scripts pour la compatibilité multi-terminaux
 
 3. **Semaine 4-5**:
-   - AmÃ©liorer les hooks Git
+   - Améliorer les hooks Git
    - Commencer la documentation sur l'authentification
 
 4. **Semaine 6-8**:
-   - ImplÃ©menter le systÃ¨me amÃ©liorÃ© d'authentification
+   - Implémenter le système amélioré d'authentification
    - Commencer l'exploration des alternatives MCP
 
 5. **Semaine 9+**:
-   - DÃ©velopper des solutions MCP personnalisÃ©es
+   - Développer des solutions MCP personnalisées
    - Finaliser l'ensemble de la documentation
 
-Cette approche progressive permet d'obtenir des amÃ©liorations visibles rapidement tout en prÃ©parant le terrain pour les tÃ¢ches plus complexes Ã  long terme.
+Cette approche progressive permet d'obtenir des améliorations visibles rapidement tout en préparant le terrain pour les tâches plus complexes à long terme.
 
 ---
-*DerniÃ¨re mise Ã  jour: $(Get-Date -Format 'dd/MM/yyyy HH:mm')*
+*Dernière mise à jour: $(Get-Date -Format 'dd/MM/yyyy HH:mm')*
 "@
 
 # Sauvegarder le fichier Markdown avec encodage UTF-8 avec BOM
 $utf8WithBom = New-Object System.Text.UTF8Encoding $true
 [System.IO.File]::WriteAllText($roadmapPath, $markdown, $utf8WithBom)
 
-Write-Host "Roadmap mise Ã  jour avec succÃ¨s."
+Write-Host "Roadmap mise à jour avec succès."

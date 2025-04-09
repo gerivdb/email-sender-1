@@ -11,6 +11,62 @@ else {
 }
 
 # Fonction pour obtenir le chemin du dépôt Git
+
+
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Écrire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # Créer le répertoire de logs si nécessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'écriture dans le journal
+    }
+}
+try {
+    # Script principal
+# Script pour installer un hook Git qui met à jour automatiquement la roadmap
+
+# Importer le module de mise à jour de la roadmap
+$updaterPath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapUpdater.ps1"
+if (Test-Path -Path $updaterPath) {
+    . $updaterPath
+}
+else {
+    Write-Error "Le module de mise à jour de la roadmap est introuvable: $updaterPath"
+    exit 1
+}
+
+# Fonction pour obtenir le chemin du dépôt Git
 function Get-GitRepositoryPath {
     $currentPath = Get-Location
     
@@ -68,11 +124,11 @@ if [ -f "\$SCRIPT_PATH" ]; then
     powershell.exe -ExecutionPolicy Bypass -File "\$SCRIPT_PATH" -Command "Update-Roadmap"
     
     # Vérifier si la roadmap a été modifiée
-    if git diff --quiet -- roadmap_perso.md; then
+    if git diff --quiet -- "Roadmap\roadmap_perso.md"; then
         echo "Aucune modification de la roadmap."
     else
         echo "La roadmap a été mise à jour. Ajout des modifications au commit..."
-        git add roadmap_perso.md
+        git add "Roadmap\roadmap_perso.md"
     fi
 else
     echo "Script de mise à jour de la roadmap introuvable: \$SCRIPT_PATH"
@@ -129,11 +185,11 @@ if [ -f "\$SCRIPT_PATH" ]; then
     powershell.exe -ExecutionPolicy Bypass -File "\$SCRIPT_PATH" -Command "Update-Roadmap"
     
     # Vérifier si la roadmap a été modifiée
-    if git diff --quiet -- roadmap_perso.md; then
+    if git diff --quiet -- "Roadmap\roadmap_perso.md"; then
         echo "Aucune modification de la roadmap."
     else
         echo "La roadmap a été mise à jour. Création d'un nouveau commit..."
-        git add roadmap_perso.md
+        git add "Roadmap\roadmap_perso.md"
         git commit -m "Mise à jour automatique de la roadmap après fusion"
     fi
 else
@@ -167,4 +223,14 @@ if ($preCommitInstalled -and $postMergeInstalled) {
 }
 else {
     Write-Host "L'installation a échoué."
+}
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "Exécution du script terminée."
 }

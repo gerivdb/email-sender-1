@@ -1,12 +1,58 @@
-﻿# Generate-Journal.ps1
-# Script simplifiÃ© pour gÃ©nÃ©rer une entrÃ©e de journal pour une phase terminÃ©e
+# Generate-Journal.ps1
+# Script simplifié pour générer une entrée de journal pour une phase terminée
+
+
+# Generate-Journal.ps1
+# Script simplifié pour générer une entrée de journal pour une phase terminée
 
 param (
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Écrire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # Créer le répertoire de logs si nécessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'écriture dans le journal
+    }
+}
+try {
+    # Script principal
+]
     [string]$PhaseId,
 
     [Parameter(Mandatory = $false)]
-    [string]$RoadmapPath = ".\roadmap_perso.md",
+    [string]$RoadmapPath = ".\"Roadmap\roadmap_perso.md"",
 
     [Parameter(Mandatory = $false)]
     [string]$JournalPath = ".\journal\journal.md"
@@ -38,7 +84,7 @@ $inProgressTasks = @()
 $pendingTasks = @()
 
 foreach ($line in $lines) {
-    # DÃ©tecter la catÃ©gorie
+    # Détecter la catégorie
     if ($line -match "^## (\d+)\. (.+)") {
         $categoryId = $matches[1]
         $categoryName = $matches[2]
@@ -51,12 +97,12 @@ foreach ($line in $lines) {
         continue
     }
 
-    # Si on n'est pas dans la phase recherchÃ©e, passer Ã  la ligne suivante
+    # Si on n'est pas dans la phase recherchée, passer à la ligne suivante
     if (-not $inPhase) {
         continue
     }
 
-    # DÃ©tecter les tÃ¢ches
+    # Détecter les tâches
     if ($line -match "^- \[([ x])\] (.+?) \((.+?)\)") {
         $completed = ($matches[1] -eq "x")
         $description = $matches[2]
@@ -156,7 +202,7 @@ if ($journalExists) {
     # Lire le contenu du journal
     $journalContent = Get-Content -Path $JournalPath -Raw
 
-    # Ajouter l'entrÃ©e au dÃ©but du journal
+    # Ajouter l'entrée au début du journal
     $updatedContent = "$journalEntry`n`n---`n`n$journalContent"
 
     # Sauvegarder le journal
@@ -170,3 +216,13 @@ if ($journalExists) {
 }
 
 Write-Output "L'analyse de la phase '$phaseName' a ete generee et ajoutee au journal."
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "Exécution du script terminée."
+}

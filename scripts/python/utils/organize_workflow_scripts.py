@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -14,7 +14,7 @@ def organize_workflow_scripts():
     """Organise les scripts workflow en les déplaçant vers les sous-dossiers appropriés."""
     
     # Définir le répertoire racine des scripts workflow
-    workflow_dir = Path("D:/DO/WEB/N8N_tests/scripts_ json_a_ tester/EMAIL_SENDER_1/scripts/workflow")
+    workflow_dir = Path("D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1/scripts/workflow")
     
     # Vérifier que le répertoire existe
     if not workflow_dir.exists():

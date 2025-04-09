@@ -1,9 +1,9 @@
-﻿# Script d'administration de la roadmap
-# Ce script permet d'inspecter la roadmap, vÃ©rifier l'avancement, mettre Ã  jour les tÃ¢ches
-# et enchaÃ®ner automatiquement sur les tÃ¢ches suivantes
+# Script d'administration de la roadmap
+# Ce script permet d'inspecter la roadmap, vérifier l'avancement, mettre à jour les tâches
+# et enchaîner automatiquement sur les tâches suivantes
 
 param (
-    [string]$RoadmapPath = "roadmap_perso.md",
+    [string]$RoadmapPath = ""Roadmap\roadmap_perso.md"",
     [switch]$AutoUpdate = $false,
     [switch]$AutoExecute = $false,
     [int]$MaxRetries = 3,
@@ -15,7 +15,7 @@ $augmentScriptPath = "AugmentExecutor.ps1"
 $backupFolder = "Roadmap_Backups"
 $logFile = "RoadmapAdmin.log"
 
-# Fonction pour Ã©crire dans le journal
+# Fonction pour écrire dans le journal
 function Write-Log {
     param (
         [string]$Message,
@@ -25,7 +25,7 @@ function Write-Log {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] [$Level] $Message"
 
-    # Ã‰crire dans le fichier journal
+    # Écrire dans le fichier journal
     Add-Content -Path $logFile -Value $logEntry
 
     # Afficher dans la console avec couleur
@@ -38,25 +38,25 @@ function Write-Log {
     }
 }
 
-# Fonction pour crÃ©er une sauvegarde de la roadmap
+# Fonction pour créer une sauvegarde de la roadmap
 function Backup-Roadmap {
     param (
         [string]$Path
     )
 
-    # CrÃ©er le dossier de sauvegarde s'il n'existe pas
+    # Créer le dossier de sauvegarde s'il n'existe pas
     if (-not (Test-Path -Path $backupFolder)) {
         New-Item -Path $backupFolder -ItemType Directory -Force | Out-Null
     }
 
-    # GÃ©nÃ©rer un nom de fichier avec horodatage
+    # Générer un nom de fichier avec horodatage
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
     $backupPath = Join-Path -Path $backupFolder -ChildPath "roadmap_$timestamp.md"
 
     # Copier le fichier
     Copy-Item -Path $Path -Destination $backupPath
 
-    Write-Log "Sauvegarde crÃ©Ã©e: $backupPath" "INFO"
+    Write-Log "Sauvegarde créée: $backupPath" "INFO"
 
     return $backupPath
 }
@@ -67,7 +67,7 @@ function Get-RoadmapContent {
         [string]$Path
     )
 
-    # VÃ©rifier si le fichier existe
+    # Vérifier si le fichier existe
     if (-not (Test-Path -Path $Path)) {
         Write-Log "Le fichier roadmap n'existe pas: $Path" "ERROR"
         return $null
@@ -76,7 +76,7 @@ function Get-RoadmapContent {
     # Lire le contenu du fichier
     $content = Get-Content -Path $Path -Raw
 
-    # Structure pour stocker les donnÃ©es de la roadmap
+    # Structure pour stocker les données de la roadmap
     $roadmap = @{
         Title = ""
         Sections = @()
@@ -87,7 +87,7 @@ function Get-RoadmapContent {
         $roadmap.Title = $Matches[1]
     }
 
-    # Analyser les sections, phases et tÃ¢ches
+    # Analyser les sections, phases et tâches
     $lines = $content -split "`n"
     $currentSection = $null
     $currentPhase = $null
@@ -95,7 +95,7 @@ function Get-RoadmapContent {
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
 
-        # DÃ©tecter une section
+        # Détecter une section
         if ($line -match "^## (\d+)\. (.+)$") {
             $sectionId = $Matches[1]
             $sectionTitle = $Matches[2]
@@ -111,7 +111,7 @@ function Get-RoadmapContent {
             $roadmap.Sections += $currentSection
             $currentPhase = $null
 
-            # Extraire les mÃ©tadonnÃ©es de la section
+            # Extraire les métadonnées de la section
             $j = $i + 1
             while ($j -lt $lines.Count -and -not $lines[$j].StartsWith("- ")) {
                 if ($lines[$j] -match "\*\*(.+)\*\*: (.+)") {
@@ -123,7 +123,7 @@ function Get-RoadmapContent {
             }
         }
 
-        # DÃ©tecter une phase
+        # Détecter une phase
         elseif ($line -match "^  - \[([ x])\] \*\*Phase (\d+): (.+)\*\*$" -and $null -ne $currentSection) {
             $isCompleted = $Matches[1] -eq "x"
             $phaseId = $Matches[2]
@@ -140,7 +140,7 @@ function Get-RoadmapContent {
             $currentSection.Phases += $currentPhase
         }
 
-        # DÃ©tecter une tÃ¢che
+        # Détecter une tâche
         elseif ($line -match "^    - \[([ x])\] (.+)$" -and $null -ne $currentPhase) {
             $isCompleted = $Matches[1] -eq "x"
             $taskTitle = $Matches[2]
@@ -155,7 +155,7 @@ function Get-RoadmapContent {
             $currentPhase.Tasks += $task
         }
 
-        # DÃ©tecter une sous-tÃ¢che
+        # Détecter une sous-tâche
         elseif ($line -match "^      - \[([ x])\] (.+)$" -and $null -ne $currentPhase -and $currentPhase.Tasks.Count -gt 0) {
             $isCompleted = $Matches[1] -eq "x"
             $subtaskTitle = $Matches[2]
@@ -173,7 +173,7 @@ function Get-RoadmapContent {
     return $roadmap
 }
 
-# Fonction pour vÃ©rifier l'Ã©tat d'avancement
+# Fonction pour vérifier l'état d'avancement
 function Get-RoadmapProgress {
     param (
         [hashtable]$Roadmap
@@ -258,7 +258,7 @@ function Get-RoadmapProgress {
     return $progress
 }
 
-# Fonction pour trouver la prochaine tÃ¢che Ã  exÃ©cuter
+# Fonction pour trouver la prochaine tâche à exécuter
 function Find-NextTask {
     param (
         [hashtable]$Roadmap
@@ -269,7 +269,7 @@ function Find-NextTask {
             if (-not $phase.IsCompleted) {
                 foreach ($task in $phase.Tasks) {
                     if (-not $task.IsCompleted) {
-                        # VÃ©rifier si au moins une sous-tÃ¢che n'est pas terminÃ©e
+                        # Vérifier si au moins une sous-tâche n'est pas terminée
                         foreach ($subtask in $task.Subtasks) {
                             if (-not $subtask.IsCompleted) {
                                 return @{
@@ -283,7 +283,7 @@ function Find-NextTask {
                             }
                         }
 
-                        # Si toutes les sous-tÃ¢ches sont terminÃ©es ou s'il n'y a pas de sous-tÃ¢ches
+                        # Si toutes les sous-tâches sont terminées ou s'il n'y a pas de sous-tâches
                         return @{
                             Type = "Task"
                             Section = $section
@@ -294,7 +294,7 @@ function Find-NextTask {
                     }
                 }
 
-                # Si toutes les tÃ¢ches sont terminÃ©es mais pas la phase
+                # Si toutes les tâches sont terminées mais pas la phase
                 return @{
                     Type = "Phase"
                     Section = $section
@@ -305,11 +305,11 @@ function Find-NextTask {
         }
     }
 
-    # Si tout est terminÃ©
+    # Si tout est terminé
     return $null
 }
 
-# Fonction pour mettre Ã  jour la roadmap
+# Fonction pour mettre à jour la roadmap
 function Update-Roadmap {
     param (
         [string]$Path,
@@ -317,12 +317,12 @@ function Update-Roadmap {
         [switch]$MarkCompleted
     )
 
-    # DÃ©finir la valeur par dÃ©faut pour MarkCompleted
+    # Définir la valeur par défaut pour MarkCompleted
     if (-not $PSBoundParameters.ContainsKey('MarkCompleted')) {
         $MarkCompleted = $true
     }
 
-    # DÃ©finir la valeur par dÃ©faut pour MarkCompleted
+    # Définir la valeur par défaut pour MarkCompleted
     if (-not $PSBoundParameters.ContainsKey('MarkCompleted')) {
         $MarkCompleted = $true
     }
@@ -330,7 +330,7 @@ function Update-Roadmap {
     # Lire le contenu du fichier
     $content = Get-Content -Path $Path
 
-    # DÃ©terminer la ligne Ã  modifier
+    # Déterminer la ligne à modifier
     $lineNumber = -1
     $lineContent = ""
 
@@ -352,21 +352,21 @@ function Update-Roadmap {
         }
     }
 
-    # Mettre Ã  jour le contenu
+    # Mettre à jour le contenu
     if ($lineNumber -ge 0) {
         $content[$lineNumber] = $newContent
         Set-Content -Path $Path -Value $content
 
-        Write-Log "Roadmap mise Ã  jour: $($Item.Path) marquÃ© comme terminÃ©" "SUCCESS"
+        Write-Log "Roadmap mise à jour: $($Item.Path) marqué comme terminé" "SUCCESS"
         return $true
     }
     else {
-        Write-Log "Impossible de mettre Ã  jour la roadmap: ligne non trouvÃ©e" "ERROR"
+        Write-Log "Impossible de mettre à jour la roadmap: ligne non trouvée" "ERROR"
         return $false
     }
 }
 
-# Fonction pour exÃ©cuter une tÃ¢che avec Augment
+# Fonction pour exécuter une tâche avec Augment
 function Invoke-AugmentTask {
     param (
         [hashtable]$Item
@@ -377,41 +377,41 @@ function Invoke-AugmentTask {
 
     switch ($Item.Type) {
         "Subtask" {
-            $taskDescription = "ExÃ©cuter la sous-tÃ¢che '$($Item.Subtask.Title)' de la tÃ¢che '$($Item.Task.Title)' dans la phase '$($Item.Phase.Title)' de la section '$($Item.Section.Title)'"
+            $taskDescription = "Exécuter la sous-tâche '$($Item.Subtask.Title)' de la tâche '$($Item.Task.Title)' dans la phase '$($Item.Phase.Title)' de la section '$($Item.Section.Title)'"
         }
         "Task" {
-            $taskDescription = "ExÃ©cuter la tÃ¢che '$($Item.Task.Title)' dans la phase '$($Item.Phase.Title)' de la section '$($Item.Section.Title)'"
+            $taskDescription = "Exécuter la tâche '$($Item.Task.Title)' dans la phase '$($Item.Phase.Title)' de la section '$($Item.Section.Title)'"
         }
         "Phase" {
-            $taskDescription = "ExÃ©cuter la phase '$($Item.Phase.Title)' de la section '$($Item.Section.Title)'"
+            $taskDescription = "Exécuter la phase '$($Item.Phase.Title)' de la section '$($Item.Section.Title)'"
         }
     }
 
-    Write-Log "ExÃ©cution de la tÃ¢che: $($Item.Path)" "INFO"
+    Write-Log "Exécution de la tâche: $($Item.Path)" "INFO"
 
-    # VÃ©rifier si le script Augment existe
+    # Vérifier si le script Augment existe
     if (-not (Test-Path -Path $augmentScriptPath)) {
         Write-Log "Le script Augment n'existe pas: $augmentScriptPath" "ERROR"
         return $false
     }
 
-    # ExÃ©cuter le script Augment
+    # Exécuter le script Augment
     $retryCount = 0
     $success = $false
 
     while (-not $success -and $retryCount -lt $MaxRetries) {
         try {
-            Write-Log "Tentative d'exÃ©cution #$($retryCount + 1)" "INFO"
+            Write-Log "Tentative d'exécution #$($retryCount + 1)" "INFO"
 
-            # ExÃ©cuter le script Augment
+            # Exécuter le script Augment
             & $augmentScriptPath -Task $taskDescription
 
             $success = $true
-            Write-Log "ExÃ©cution rÃ©ussie" "SUCCESS"
+            Write-Log "Exécution réussie" "SUCCESS"
         }
         catch {
             $retryCount++
-            Write-Log "Ã‰chec de l'exÃ©cution: $_" "ERROR"
+            Write-Log "Échec de l'exécution: $_" "ERROR"
 
             if ($retryCount -lt $MaxRetries) {
                 Write-Log "Nouvelle tentative dans $RetryDelay secondes..." "WARNING"
@@ -425,13 +425,13 @@ function Invoke-AugmentTask {
 
 # Fonction principale
 function Start-RoadmapAdmin {
-    # VÃ©rifier si le fichier roadmap existe
+    # Vérifier si le fichier roadmap existe
     if (-not (Test-Path -Path $RoadmapPath)) {
         Write-Log "Le fichier roadmap n'existe pas: $RoadmapPath" "ERROR"
         return
     }
 
-    # CrÃ©er une sauvegarde
+    # Créer une sauvegarde
     [void] Backup-Roadmap -Path $RoadmapPath
 
     # Analyser la roadmap
@@ -451,48 +451,48 @@ function Start-RoadmapAdmin {
 
     Write-Log "Progression des sections: $($progress.Sections.Completed)/$($progress.Sections.Total) ($($progress.Sections.Percentage)%)" "INFO"
     Write-Log "Progression des phases: $($progress.Phases.Completed)/$($progress.Phases.Total) ($($progress.Phases.Percentage)%)" "INFO"
-    Write-Log "Progression des tÃ¢ches: $($progress.Tasks.Completed)/$($progress.Tasks.Total) ($($progress.Tasks.Percentage)%)" "INFO"
-    Write-Log "Progression des sous-tÃ¢ches: $($progress.Subtasks.Completed)/$($progress.Subtasks.Total) ($($progress.Subtasks.Percentage)%)" "INFO"
+    Write-Log "Progression des tâches: $($progress.Tasks.Completed)/$($progress.Tasks.Total) ($($progress.Tasks.Percentage)%)" "INFO"
+    Write-Log "Progression des sous-tâches: $($progress.Subtasks.Completed)/$($progress.Subtasks.Total) ($($progress.Subtasks.Percentage)%)" "INFO"
 
-    # Trouver la prochaine tÃ¢che Ã  exÃ©cuter
+    # Trouver la prochaine tâche à exécuter
     $nextItem = Find-NextTask -Roadmap $roadmap
 
     if ($null -eq $nextItem) {
-        Write-Log "Toutes les tÃ¢ches sont terminÃ©es!" "SUCCESS"
+        Write-Log "Toutes les tâches sont terminées!" "SUCCESS"
         return
     }
 
-    Write-Log "Prochaine tÃ¢che Ã  exÃ©cuter: $($nextItem.Path)" "INFO"
+    Write-Log "Prochaine tâche à exécuter: $($nextItem.Path)" "INFO"
 
-    # ExÃ©cuter la tÃ¢che si demandÃ©
+    # Exécuter la tâche si demandé
     if ($AutoExecute) {
         $success = Invoke-AugmentTask -Item $nextItem
 
-        # Mettre Ã  jour la roadmap si demandÃ© et si l'exÃ©cution a rÃ©ussi
+        # Mettre à jour la roadmap si demandé et si l'exécution a réussi
         if ($AutoUpdate -and $success) {
             Update-Roadmap -Path $RoadmapPath -Item $nextItem -MarkCompleted
 
-            # Relancer le script pour la tÃ¢che suivante
-            Write-Log "Relancement du script pour la tÃ¢che suivante..." "INFO"
+            # Relancer le script pour la tâche suivante
+            Write-Log "Relancement du script pour la tâche suivante..." "INFO"
             & $PSCommandPath -RoadmapPath $RoadmapPath -AutoUpdate:$AutoUpdate -AutoExecute:$AutoExecute -MaxRetries $MaxRetries -RetryDelay $RetryDelay
         }
     }
     elseif ($AutoUpdate) {
         # Demander confirmation
-        $confirmation = Read-Host "Voulez-vous marquer cette tÃ¢che comme terminÃ©e? (O/N)"
+        $confirmation = Read-Host "Voulez-vous marquer cette tâche comme terminée? (O/N)"
 
         if ($confirmation -eq "O" -or $confirmation -eq "o") {
             Update-Roadmap -Path $RoadmapPath -Item $nextItem -MarkCompleted
 
-            # Relancer le script pour la tÃ¢che suivante
-            Write-Log "Relancement du script pour la tÃ¢che suivante..." "INFO"
+            # Relancer le script pour la tâche suivante
+            Write-Log "Relancement du script pour la tâche suivante..." "INFO"
             & $PSCommandPath -RoadmapPath $RoadmapPath -AutoUpdate:$AutoUpdate -AutoExecute:$AutoExecute -MaxRetries $MaxRetries -RetryDelay $RetryDelay
         }
     }
 }
 
-# DÃ©marrer le script
-Write-Log "DÃ©marrage du script d'administration de la roadmap" "INFO"
+# Démarrer le script
+Write-Log "Démarrage du script d'administration de la roadmap" "INFO"
 Start-RoadmapAdmin
 Write-Log "Fin du script d'administration de la roadmap" "INFO"
 

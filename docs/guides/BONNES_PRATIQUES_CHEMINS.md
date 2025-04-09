@@ -1,4 +1,4 @@
-# Bonnes pratiques pour la gestion des chemins
+﻿# Bonnes pratiques pour la gestion des chemins
 
 ## Introduction
 
@@ -32,7 +32,7 @@ Initialize-PathManager
 $absolutePath = Get-ProjectPath -RelativePath "scripts\utils\path-utils.ps1"
 
 # Obtenir le chemin relatif à partir d'un chemin absolu
-$relativePath = Get-RelativePath -AbsolutePath "D:\DO\WEB\N8N_tests\scripts_json_a_tester\EMAIL_SENDER_1\scripts\utils\path-utils.ps1"
+$relativePath = Get-RelativePath -AbsolutePath "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\path-utils.ps1"
 
 # Normaliser un chemin
 $normalizedPath = Normalize-Path -Path "scripts/utils/path-utils.ps1"
@@ -53,16 +53,16 @@ Le script `path-utils.ps1` fournit des fonctions utilitaires pour la gestion des
 . ".\scripts\utils\path-utils.ps1"
 
 # Supprimer les accents d'un chemin
-$pathWithoutAccents = Remove-PathAccents -Path "D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1"
+$pathWithoutAccents = Remove-PathAccents -Path "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 
 # Remplacer les espaces par des underscores
 $pathWithoutSpaces = ConvertTo-PathWithoutSpaces -Path "D:\DO\WEB\N8N tests\scripts json a tester\EMAIL SENDER 1"
 
 # Normaliser complètement un chemin
-$normalizedPath = ConvertTo-NormalizedPath -Path "D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1"
+$normalizedPath = ConvertTo-NormalizedPath -Path "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 
 # Vérifier si un chemin contient des accents
-$hasAccents = Test-PathAccents -Path "D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1"
+$hasAccents = Test-PathAccents -Path "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 
 # Vérifier si un chemin contient des espaces
 $hasSpaces = Test-PathSpaces -Path "D:\DO\WEB\N8N tests\scripts json a tester\EMAIL SENDER 1"
@@ -191,7 +191,7 @@ python scripts/maintenance/find_project_files.py --directory scripts --patterns 
 ```powershell
 # PowerShell
 # Mauvaise pratique
-$filePath = "D:\DO\WEB\N8N_tests\scripts_json_a_tester\EMAIL_SENDER_1\scripts\utils\path-utils.ps1"
+$filePath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\path-utils.ps1"
 
 # Bonne pratique
 Import-Module ".\tools\path-utils\Path-Manager.psm1"
@@ -214,21 +214,21 @@ file_path = path_manager.get_project_path("scripts/utils/path-utils.ps1")
 ```powershell
 # PowerShell
 # Mauvaise pratique
-$path = "D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1"
+$path = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 
 # Bonne pratique
 . ".\scripts\utils\path-utils.ps1"
-$path = ConvertTo-NormalizedPath -Path "D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1"
+$path = ConvertTo-NormalizedPath -Path "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 ```
 
 ```python
 # Python
 # Mauvaise pratique
-path = "D:/DO/WEB/N8N tests/scripts json à tester/EMAIL SENDER 1"
+path = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 
 # Bonne pratique
 from src.utils.path_manager import path_manager
-path = path_manager.normalize_path_full("D:/DO/WEB/N8N tests/scripts json à tester/EMAIL SENDER 1")
+path = path_manager.normalize_path_full("D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1")
 ```
 
 ### Exemple 3 : Recherche de fichiers
@@ -264,7 +264,7 @@ files = file_finder.find_files("scripts", "*.py", recurse=True, exclude_director
 
 ```powershell
 # PowerShell
-$pathWithoutAccents = Remove-PathAccents -Path "D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1"
+$pathWithoutAccents = Remove-PathAccents -Path "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 ```
 
 ```python
@@ -313,7 +313,7 @@ normalized_path = path_manager.normalize_path("scripts/utils/path-utils.ps1")
 ```powershell
 # PowerShell
 $absolutePath = Get-ProjectPath -RelativePath "scripts\utils\path-utils.ps1"
-$relativePath = Get-RelativePath -AbsolutePath "D:\DO\WEB\N8N_tests\scripts_json_a_tester\EMAIL_SENDER_1\scripts\utils\path-utils.ps1"
+$relativePath = Get-RelativePath -AbsolutePath "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\path-utils.ps1"
 ```
 
 ```python

@@ -1,12 +1,58 @@
-﻿# Analyze-PhaseCompletion.ps1
-# Script pour analyser la fin d'une phase et mettre Ã  jour le journal
+# Analyze-PhaseCompletion.ps1
+# Script pour analyser la fin d'une phase et mettre à jour le journal
+
+
+# Analyze-PhaseCompletion.ps1
+# Script pour analyser la fin d'une phase et mettre à jour le journal
 
 param (
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Écrire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # Créer le répertoire de logs si nécessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'écriture dans le journal
+    }
+}
+try {
+    # Script principal
+]
     [string]$PhaseId,
 
     [Parameter(Mandatory = $false)]
-    [string]$RoadmapPath = ".\roadmap_perso.md",
+    [string]$RoadmapPath = ".\"Roadmap\roadmap_perso.md"",
 
     [Parameter(Mandatory = $false)]
     [string]$JournalPath = ".\journal\journal.md",
@@ -36,7 +82,7 @@ function Get-PhaseInfo {
     $currentCategory = ""
 
     foreach ($line in $lines) {
-        # DÃ©tecter la catÃ©gorie
+        # Détecter la catégorie
         if ($line -match "^## (\d+)\. (.+)") {
             $categoryId = $matches[1]
             $categoryName = $matches[2]
@@ -45,12 +91,12 @@ function Get-PhaseInfo {
             continue
         }
 
-        # Si on n'est pas dans la phase recherchÃ©e, passer Ã  la ligne suivante
+        # Si on n'est pas dans la phase recherchée, passer à la ligne suivante
         if (-not $inPhase) {
             continue
         }
 
-        # DÃ©tecter les tÃ¢ches
+        # Détecter les tâches
         if ($line -match "^- \[([ x])\] (.+?) \((.+?)\)") {
             $completed = ($matches[1] -eq "x")
             $description = $matches[2]
@@ -76,7 +122,7 @@ function Get-PhaseInfo {
             }
         }
 
-        # DÃ©tecter le nom de la phase
+        # Détecter le nom de la phase
         if ([string]::IsNullOrEmpty($phaseInfo.Name) -and $line -match "^\*\*Complexite\*\*:") {
             $phaseInfo.Name = $currentCategory
         }
@@ -205,7 +251,7 @@ function Update-Journal {
 
 # Fonction principale
 function Main {
-    # VÃ©rifier que le fichier roadmap existe
+    # Vérifier que le fichier roadmap existe
     if (-not (Test-Path -Path $RoadmapPath)) {
         Write-Error "Le fichier roadmap '$RoadmapPath' n'existe pas."
         return
@@ -217,13 +263,13 @@ function Main {
     # Extraire les informations de la phase
     $phaseInfo = Get-PhaseInfo -Content $roadmapContent -PhaseId $PhaseId
 
-    # VÃ©rifier si la phase existe
+    # Vérifier si la phase existe
     if ([string]::IsNullOrEmpty($phaseInfo.Name)) {
-        Write-Error "La phase avec l'ID '$PhaseId' n'a pas Ã©tÃ© trouvÃ©e dans la roadmap."
+        Write-Error "La phase avec l'ID '$PhaseId' n'a pas été trouvée dans la roadmap."
         return
     }
 
-    # VÃ©rifier si la phase est terminÃ©e
+    # Vérifier si la phase est terminée
     $isCompleted = ($phaseInfo.Tasks.Count -gt 0) -and ($phaseInfo.CompletedTasks.Count -eq $phaseInfo.Tasks.Count)
 
     if (-not $isCompleted) {
@@ -234,16 +280,26 @@ function Main {
     # Generer l'analyse de la phase
     $analysis = New-PhaseAnalysis -PhaseInfo $phaseInfo
 
-    # Mettre Ã  jour le journal
+    # Mettre à jour le journal
     $success = Update-Journal -JournalPath $JournalPath -Analysis $analysis -WhatIf:$WhatIf
 
     if (-not $success) {
-        Write-Error "La mise Ã  jour du journal a Ã©chouÃ©."
+        Write-Error "La mise à jour du journal a échoué."
         return
     }
 
-    Write-Output "L'analyse de la phase '$($phaseInfo.Name)' a Ã©tÃ© gÃ©nÃ©rÃ©e et ajoutÃ©e au journal."
+    Write-Output "L'analyse de la phase '$($phaseInfo.Name)' a été générée et ajoutée au journal."
 }
 
-# ExÃ©cuter la fonction principale
+# Exécuter la fonction principale
 Main
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "Exécution du script terminée."
+}

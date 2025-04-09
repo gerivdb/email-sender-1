@@ -1,5 +1,5 @@
-﻿# Update-Roadmap-Simple.ps1
-# Script simplifiÃ© pour mettre Ã  jour la roadmap personnelle
+# Update-Roadmap-Simple.ps1
+# Script simplifié pour mettre à jour la roadmap personnelle
 
 param (
     [Parameter(Mandatory = $false)]
@@ -18,29 +18,29 @@ param (
 # Chemins des fichiers
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dataPath = Join-Path -Path $scriptPath -ChildPath "roadmap-data.json"
-$roadmapPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "roadmap_perso.md"
+$roadmapPath = "Roadmap\roadmap_perso.md"""
 
-# VÃ©rifier si les fichiers existent
+# Vérifier si les fichiers existent
 if (-not (Test-Path -Path $dataPath)) {
-    Write-Error "Fichier de donnÃ©es non trouvÃ©: $dataPath"
+    Write-Error "Fichier de données non trouvé: $dataPath"
     exit 1
 }
 
 if (-not (Test-Path -Path $roadmapPath)) {
-    Write-Error "Fichier roadmap non trouvÃ©: $roadmapPath"
+    Write-Error "Fichier roadmap non trouvé: $roadmapPath"
     exit 1
 }
 
-# Charger les donnÃ©es JSON
+# Charger les données JSON
 try {
     $roadmapData = Get-Content -Path $dataPath -Raw | ConvertFrom-Json
 }
 catch {
-    Write-Error "Erreur lors du chargement des donnÃ©es JSON: $_"
+    Write-Error "Erreur lors du chargement des données JSON: $_"
     exit 1
 }
 
-# Fonction pour mettre Ã  jour une tÃ¢che
+# Fonction pour mettre à jour une tâche
 function Update-Task {
     param (
         [string]$Id,
@@ -59,20 +59,20 @@ function Update-Task {
                 if ($MarkComplete) {
                     $task.completed = $true
                     $task.completionDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
-                    Write-Host "TÃ¢che $Id marquÃ©e comme terminÃ©e."
+                    Write-Host "Tâche $Id marquée comme terminée."
                 }
                 
                 if ($MarkStart -and -not $task.startDate) {
                     $task.startDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
-                    Write-Host "TÃ¢che $Id marquÃ©e comme dÃ©marrÃ©e."
+                    Write-Host "Tâche $Id marquée comme démarrée."
                 }
                 
                 if ($TaskNote) {
                     $task.notes = $TaskNote
-                    Write-Host "Note ajoutÃ©e Ã  la tÃ¢che $Id."
+                    Write-Host "Note ajoutée à la tâche $Id."
                 }
                 
-                # Mettre Ã  jour le pourcentage de progression de la catÃ©gorie
+                # Mettre à jour le pourcentage de progression de la catégorie
                 $totalTasks = $category.tasks.Count
                 $completedTasks = ($category.tasks | Where-Object { $_.completed -eq $true }).Count
                 $category.progress = [math]::Round(($completedTasks / $totalTasks) * 100)
@@ -81,29 +81,29 @@ function Update-Task {
     }
     
     if (-not $taskFound) {
-        Write-Error "TÃ¢che avec ID '$Id' non trouvÃ©e."
+        Write-Error "Tâche avec ID '$Id' non trouvée."
         return $false
     }
     
     return $true
 }
 
-# Si un ID de tÃ¢che est spÃ©cifiÃ©, mettre Ã  jour cette tÃ¢che
+# Si un ID de tâche est spécifié, mettre à jour cette tâche
 if ($TaskId) {
     $success = Update-Task -Id $TaskId -MarkComplete:$Complete -MarkStart:$Start -TaskNote $Note
     if (-not $success) { exit 1 }
 }
 
-# Mettre Ã  jour la date de derniÃ¨re modification
+# Mettre à jour la date de dernière modification
 $roadmapData.lastUpdated = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
 
-# Sauvegarder les donnÃ©es JSON
+# Sauvegarder les données JSON
 $roadmapData | ConvertTo-Json -Depth 10 | Set-Content -Path $dataPath
 
-# Mettre Ã  jour le fichier Markdown avec les informations de progression
+# Mettre à jour le fichier Markdown avec les informations de progression
 $content = Get-Content -Path $roadmapPath -Encoding UTF8
 
-# Ajouter les informations de progression Ã  chaque section
+# Ajouter les informations de progression à chaque section
 for ($i = 0; $i -lt $content.Length; $i++) {
     $line = $content[$i]
     
@@ -113,7 +113,7 @@ for ($i = 0; $i -lt $content.Length; $i++) {
         $category = $roadmapData.categories | Where-Object { $_.id -eq $sectionNumber }
         
         if ($category) {
-            # VÃ©rifier si la ligne suivante contient dÃ©jÃ  "Progression"
+            # Vérifier si la ligne suivante contient déjà "Progression"
             $hasProgressLine = $false
             for ($j = $i + 1; $j -lt [Math]::Min($i + 5, $content.Length); $j++) {
                 if ($content[$j] -match '\*\*Progression\*\*') {
@@ -123,7 +123,7 @@ for ($i = 0; $i -lt $content.Length; $i++) {
                 }
             }
             
-            # Si pas de ligne de progression, l'ajouter aprÃ¨s la ligne de temps estimÃ©
+            # Si pas de ligne de progression, l'ajouter après la ligne de temps estimé
             if (-not $hasProgressLine) {
                 for ($j = $i + 1; $j -lt [Math]::Min($i + 5, $content.Length); $j++) {
                     if ($content[$j] -match '\*\*Temps estim') {
@@ -135,11 +135,11 @@ for ($i = 0; $i -lt $content.Length; $i++) {
         }
     }
     
-    # Mettre Ã  jour les cases Ã  cocher
+    # Mettre à jour les cases à cocher
     if ($line -match '- \[([ x])\] (.+?) \((.+?)\)') {
         $taskDescription = $matches[2]
         
-        # Trouver la tÃ¢che correspondante
+        # Trouver la tâche correspondante
         $taskFound = $false
         foreach ($category in $roadmapData.categories) {
             foreach ($task in $category.tasks) {
@@ -151,12 +151,12 @@ for ($i = 0; $i -lt $content.Length; $i++) {
                     
                     if ($task.startDate -and -not $task.completionDate) {
                         $startDate = [DateTime]::Parse($task.startDate)
-                        $newLine += " - *DÃ©marrÃ© le $(Get-Date $startDate -Format 'dd/MM/yyyy')*"
+                        $newLine += " - *Démarré le $(Get-Date $startDate -Format 'dd/MM/yyyy')*"
                     }
                     
                     if ($task.completionDate) {
                         $completionDate = [DateTime]::Parse($task.completionDate)
-                        $newLine += " - *TerminÃ© le $(Get-Date $completionDate -Format 'dd/MM/yyyy')*"
+                        $newLine += " - *Terminé le $(Get-Date $completionDate -Format 'dd/MM/yyyy')*"
                     }
                     
                     $content[$i] = $newLine
@@ -178,11 +178,11 @@ for ($i = 0; $i -lt $content.Length; $i++) {
     }
 }
 
-# Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
+# Mettre à jour la date de dernière mise à jour
 $dateUpdated = $false
 for ($i = 0; $i -lt $content.Length; $i++) {
     if ($content[$i] -match '\*Derni.+re mise . jour:') {
-        $content[$i] = "*DerniÃ¨re mise Ã  jour: $(Get-Date -Format 'dd/MM/yyyy HH:mm')*"
+        $content[$i] = "*Dernière mise à jour: $(Get-Date -Format 'dd/MM/yyyy HH:mm')*"
         $dateUpdated = $true
         break
     }
@@ -190,11 +190,11 @@ for ($i = 0; $i -lt $content.Length; $i++) {
 
 if (-not $dateUpdated) {
     $content += "---"
-    $content += "*DerniÃ¨re mise Ã  jour: $(Get-Date -Format 'dd/MM/yyyy HH:mm')*"
+    $content += "*Dernière mise à jour: $(Get-Date -Format 'dd/MM/yyyy HH:mm')*"
 }
 
 # Sauvegarder le fichier Markdown
 $utf8WithBom = New-Object System.Text.UTF8Encoding $true
 [System.IO.File]::WriteAllLines($roadmapPath, $content, $utf8WithBom)
 
-Write-Host "Roadmap mise Ã  jour avec succÃ¨s."
+Write-Host "Roadmap mise à jour avec succès."

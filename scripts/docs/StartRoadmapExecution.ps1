@@ -2,7 +2,7 @@
 # Ce script permet de démarrer l'exécution automatique de la roadmap
 
 param (
-    [string]$RoadmapPath = "roadmap_perso.md",
+    [string]$RoadmapPath = ""Roadmap\roadmap_perso.md"",
     [switch]$AutoExecute = $true,
     [switch]$AutoUpdate = $true,
     [int]$MaxRetries = 3,

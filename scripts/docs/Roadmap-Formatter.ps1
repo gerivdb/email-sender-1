@@ -128,9 +128,9 @@ function Add-SectionToRoadmap {
         $timeEstimate = "3-5 jours"
     }
     
-    $roadmapFile = Read-Host "Fichier roadmap (par défaut: roadmap_perso.md)"
+    $roadmapFile = Read-Host "Fichier roadmap (par défaut: "Roadmap\roadmap_perso.md")"
     if ([string]::IsNullOrWhiteSpace($roadmapFile)) {
-        $roadmapFile = "roadmap_perso.md"
+        $roadmapFile = ""Roadmap\roadmap_perso.md""
     }
     
     $formatRoadmapScript = Join-Path -Path $PSScriptRoot -ChildPath "Format-RoadmapText.ps1"
@@ -187,9 +187,9 @@ function Insert-SectionBetweenExisting {
         $timeEstimate = "3-5 jours"
     }
     
-    $roadmapFile = Read-Host "Fichier roadmap (par défaut: roadmap_perso.md)"
+    $roadmapFile = Read-Host "Fichier roadmap (par défaut: "Roadmap\roadmap_perso.md")"
     if ([string]::IsNullOrWhiteSpace($roadmapFile)) {
-        $roadmapFile = "roadmap_perso.md"
+        $roadmapFile = ""Roadmap\roadmap_perso.md""
     }
     
     $sectionNumber = Read-Host "Numéro de section avant laquelle insérer la nouvelle section"

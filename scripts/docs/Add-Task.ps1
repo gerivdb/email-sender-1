@@ -1,5 +1,5 @@
-﻿# Add-Task.ps1
-# Script pour ajouter une nouvelle tÃ¢che Ã  la roadmap
+# Add-Task.ps1
+# Script pour ajouter une nouvelle tâche à la roadmap
 
 param (
     [Parameter(Mandatory = $true)]
@@ -20,18 +20,18 @@ param (
 
 # Chemins des fichiers
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$roadmapPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "roadmap_perso.md"
+$roadmapPath = "Roadmap\roadmap_perso.md"""
 
-# VÃ©rifier si le fichier existe
+# Vérifier si le fichier existe
 if (-not (Test-Path -Path $roadmapPath)) {
-    Write-Error "Fichier roadmap non trouvÃ©: $roadmapPath"
+    Write-Error "Fichier roadmap non trouvé: $roadmapPath"
     exit 1
 }
 
 # Lire le contenu du fichier Markdown
 $content = Get-Content -Path $roadmapPath -Encoding UTF8
 
-# Trouver la section correspondant Ã  la catÃ©gorie
+# Trouver la section correspondant à la catégorie
 $categoryPattern = "^## $CategoryId\. (.+)"
 $categoryFound = $false
 $categoryLine = -1
@@ -47,11 +47,11 @@ for ($i = 0; $i -lt $content.Length; $i++) {
 }
 
 if (-not $categoryFound) {
-    Write-Error "CatÃ©gorie avec ID '$CategoryId' non trouvÃ©e."
+    Write-Error "Catégorie avec ID '$CategoryId' non trouvée."
     exit 1
 }
 
-# Trouver la fin de la section pour insÃ©rer la nouvelle tÃ¢che
+# Trouver la fin de la section pour insérer la nouvelle tâche
 $endOfSection = $content.Length
 for ($i = $categoryLine + 1; $i -lt $content.Length; $i++) {
     if ($content[$i] -match "^## ") {
@@ -60,7 +60,7 @@ for ($i = $categoryLine + 1; $i -lt $content.Length; $i++) {
     }
 }
 
-# Compter les tÃ¢ches existantes dans cette catÃ©gorie pour dÃ©terminer le nouvel ID
+# Compter les tâches existantes dans cette catégorie pour déterminer le nouvel ID
 $taskCount = 0
 $taskPattern = "- \[([ x])\] (.+?) \((.+?)\)"
 for ($i = $categoryLine; $i -lt $endOfSection; $i++) {
@@ -71,13 +71,13 @@ for ($i = $categoryLine; $i -lt $endOfSection; $i++) {
 
 $newTaskId = "$CategoryId.$($taskCount + 1)"
 
-# CrÃ©er la nouvelle tÃ¢che
+# Créer la nouvelle tâche
 $newTask = "- [ ] $Description ($EstimatedDays jours)"
 if ($Start) {
     $newTask += " - *Demarre le $(Get-Date -Format 'dd/MM/yyyy')*"
 }
 
-# InsÃ©rer la nouvelle tÃ¢che Ã  la fin de la section
+# Insérer la nouvelle tâche à la fin de la section
 $insertPosition = $endOfSection
 while ($insertPosition -gt $categoryLine && -not ($content[$insertPosition] -match $taskPattern)) {
     $insertPosition--
@@ -86,13 +86,13 @@ $insertPosition++
 
 $content = $content[0..($insertPosition - 1)] + $newTask + $content[$insertPosition..($content.Length - 1)]
 
-# Ajouter une note si spÃ©cifiÃ©e
+# Ajouter une note si spécifiée
 if ($Note) {
     $content = $content[0..($insertPosition)] + "  > *Note: $Note*" + $content[($insertPosition + 1)..($content.Length - 1)]
     $insertPosition++
 }
 
-# Mettre Ã  jour le pourcentage de progression de la section
+# Mettre à jour le pourcentage de progression de la section
 $totalTasks = $taskCount + 1
 $completedTasks = 0
 for ($i = $categoryLine; $i -lt $endOfSection + 1; $i++) {
@@ -111,7 +111,7 @@ for ($i = $categoryLine + 1; $i -lt $categoryLine + 5; $i++) {
     }
 }
 
-# Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
+# Mettre à jour la date de dernière mise à jour
 $dateUpdated = $false
 for ($i = 0; $i -lt $content.Length; $i++) {
     if ($content[$i] -match "\*Derniere mise a jour:") {
@@ -129,4 +129,4 @@ if (-not $dateUpdated) {
 # Sauvegarder le fichier Markdown
 $content | Out-File -FilePath $roadmapPath -Encoding ascii
 
-Write-Host "TÃ¢che $newTaskId ajoutÃ©e avec succÃ¨s Ã  la catÃ©gorie '$categoryName'."
+Write-Host "Tâche $newTaskId ajoutée avec succès à la catégorie '$categoryName'."

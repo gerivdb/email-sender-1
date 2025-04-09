@@ -1,37 +1,43 @@
+﻿<#
+.SYNOPSIS
+    Tests unitaires pour le module de documentation
+.DESCRIPTION
+    Ce script exÃ©cute des tests unitaires pour le module de documentation du Script Manager
+
 <#
 .SYNOPSIS
     Tests unitaires pour le module de documentation
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour le module de documentation du Script Manager
+    Ce script exÃ©cute des tests unitaires pour le module de documentation du Script Manager
 #>
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installé. Installation..." -ForegroundColor Yellow
+    Write-Host "Le module Pester n'est pas installÃ©. Installation..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\D"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $ModulePath)) {
-    Write-Host "Module de documentation non trouvé: $ModulePath" -ForegroundColor Red
+    Write-Host "Module de documentation non trouvÃ©: $ModulePath" -ForegroundColor Red
     exit 1
 }
 
 # Importer le module
 Import-Module $ModulePath -Force
 
-# Créer un dossier temporaire pour les tests
+# CrÃ©er un dossier temporaire pour les tests
 $TestDir = Join-Path -Path $env:TEMP -ChildPath "ScriptManagerTests"
 if (-not (Test-Path -Path $TestDir)) {
     New-Item -ItemType Directory -Path $TestDir -Force | Out-Null
 }
 
-# Créer un fichier d'analyse de test
+# CrÃ©er un fichier d'analyse de test
 $AnalysisPath = Join-Path -Path $TestDir -ChildPath "analysis.json"
 $Analysis = @{
     Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -213,7 +219,7 @@ $Analysis = @{
 
 Set-Content -Path $AnalysisPath -Value $Analysis
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 $PowerShellTestFile = Join-Path -Path $TestDir -ChildPath "test.ps1"
 $PythonTestFile = Join-Path -Path $TestDir -ChildPath "test.py"
 $BatchTestFile = Join-Path -Path $TestDir -ChildPath "test.cmd"
@@ -229,6 +235,48 @@ function Test-Function {
     param (
         [string]$Parameter
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     if ($Parameter -eq "test") {
         Write-Host "Test successful" -ForegroundColor Green
@@ -292,35 +340,35 @@ CALL helper.cmd
 ENDLOCAL
 '@
 
-# Écrire les fichiers de test
+# Ã‰crire les fichiers de test
 Set-Content -Path $PowerShellTestFile -Value $PowerShellContent
 Set-Content -Path $PythonTestFile -Value $PythonContent
 Set-Content -Path $BatchTestFile -Value $BatchContent
 
-# Définir le chemin de sortie pour la documentation
+# DÃ©finir le chemin de sortie pour la documentation
 $DocsPath = Join-Path -Path $TestDir -ChildPath "docs"
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "Module de documentation" {
     Context "Invoke-ScriptDocumentation" {
-        It "Devrait générer la documentation avec succès" {
+        It "Devrait gÃ©nÃ©rer la documentation avec succÃ¨s" {
             $Documentation = Invoke-ScriptDocumentation -AnalysisPath $AnalysisPath -OutputPath $DocsPath
             $Documentation | Should -Not -BeNullOrEmpty
             $Documentation.TotalScripts | Should -Be 3
         }
         
-        It "Devrait créer les dossiers de documentation" {
+        It "Devrait crÃ©er les dossiers de documentation" {
             Test-Path -Path $DocsPath | Should -Be $true
             Test-Path -Path (Join-Path -Path $DocsPath -ChildPath "scripts") | Should -Be $true
             Test-Path -Path (Join-Path -Path $DocsPath -ChildPath "folders") | Should -Be $true
         }
         
-        It "Devrait générer un index global" {
+        It "Devrait gÃ©nÃ©rer un index global" {
             Test-Path -Path (Join-Path -Path $DocsPath -ChildPath "index.md") | Should -Be $true
             Test-Path -Path (Join-Path -Path $DocsPath -ChildPath "README.md") | Should -Be $true
         }
         
-        It "Devrait générer la documentation pour chaque script" {
+        It "Devrait gÃ©nÃ©rer la documentation pour chaque script" {
             Test-Path -Path (Join-Path -Path $DocsPath -ChildPath "scripts\PowerShell\test.md") | Should -Be $true
             Test-Path -Path (Join-Path -Path $DocsPath -ChildPath "scripts\Python\test.md") | Should -Be $true
             Test-Path -Path (Join-Path -Path $DocsPath -ChildPath "scripts\Batch\test.md") | Should -Be $true
@@ -331,3 +379,13 @@ Describe "Module de documentation" {
 # Nettoyer les fichiers de test
 Remove-Item -Path $TestDir -Recurse -Force
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

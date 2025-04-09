@@ -1,22 +1,70 @@
+﻿<#
+.SYNOPSIS
+    RÃ©solveur de conflits pour les dÃ©pendances.
+.DESCRIPTION
+    DÃ©tecte et rÃ©sout les conflits entre les dÃ©pendances.
+
 <#
 .SYNOPSIS
-    Résolveur de conflits pour les dépendances.
+    RÃ©solveur de conflits pour les dÃ©pendances.
 .DESCRIPTION
-    Détecte et résout les conflits entre les dépendances.
+    DÃ©tecte et rÃ©sout les conflits entre les dÃ©pendances.
 #>
 
-# Configuration du résolveur de conflits
+# Configuration du rÃ©solveur de conflits
 $script:ConflictResolverConfig = @{
     ConflictLog = Join-Path -Path $env:TEMP -ChildPath "dependency-conflicts.log"
     ResolutionStrategies = @{
-        "HighestVersion" = { param($versions) $versions | Sort-Object { [version]$_ } -Descending | Select-Object -First 1 }
+        "HighestVersion" = { param($versions)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+ $versions | Sort-Object { [version]$_ } -Descending | Select-Object -First 1 }
         "LowestVersion" = { param($versions) $versions | Sort-Object { [version]$_ } | Select-Object -First 1 }
         "Specific" = { param($versions, $specific) $specific }
     }
     DefaultStrategy = "HighestVersion"
 }
 
-# Initialiser le résolveur de conflits
+# Initialiser le rÃ©solveur de conflits
 function Initialize-ConflictResolver {
     [CmdletBinding()]
     param (
@@ -30,7 +78,7 @@ function Initialize-ConflictResolver {
     return $true
 }
 
-# Détecter les conflits
+# DÃ©tecter les conflits
 function Find-DependencyConflicts {
     [CmdletBinding()]
     param (
@@ -41,7 +89,7 @@ function Find-DependencyConflicts {
     $conflicts = @{}
     $versions = @{}
     
-    # Regrouper les versions par dépendance
+    # Regrouper les versions par dÃ©pendance
     foreach ($name in $Dependencies.Keys) {
         $version = $Dependencies[$name]
         
@@ -66,7 +114,7 @@ function Find-DependencyConflicts {
     return $conflicts
 }
 
-# Résoudre les conflits
+# RÃ©soudre les conflits
 function Resolve-DependencyConflicts {
     [CmdletBinding()]
     param (
@@ -82,33 +130,33 @@ function Resolve-DependencyConflicts {
     
     $resolutions = @{}
     
-    # Utiliser la stratégie par défaut si non spécifiée
+    # Utiliser la stratÃ©gie par dÃ©faut si non spÃ©cifiÃ©e
     if ([string]::IsNullOrEmpty($Strategy)) {
         $Strategy = $script:ConflictResolverConfig.DefaultStrategy
     }
     
-    # Résoudre chaque conflit
+    # RÃ©soudre chaque conflit
     foreach ($name in $Conflicts.Keys) {
         $versions = $Conflicts[$name]
         
         if ($SpecificVersions.ContainsKey($name)) {
-            # Utiliser une version spécifique
+            # Utiliser une version spÃ©cifique
             $resolutions[$name] = & $script:ConflictResolverConfig.ResolutionStrategies["Specific"] $versions $SpecificVersions[$name]
         }
         else {
-            # Utiliser la stratégie spécifiée
+            # Utiliser la stratÃ©gie spÃ©cifiÃ©e
             $resolutions[$name] = & $script:ConflictResolverConfig.ResolutionStrategies[$Strategy] $versions
         }
         
         # Journaliser le conflit
-        $logEntry = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Conflit résolu pour '$name': Versions en conflit: $($versions -join ', ') -> Version choisie: $($resolutions[$name])"
+        $logEntry = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Conflit rÃ©solu pour '$name': Versions en conflit: $($versions -join ', ') -> Version choisie: $($resolutions[$name])"
         Add-Content -Path $script:ConflictResolverConfig.ConflictLog -Value $logEntry
     }
     
     return $resolutions
 }
 
-# Appliquer les résolutions
+# Appliquer les rÃ©solutions
 function Apply-ConflictResolutions {
     [CmdletBinding()]
     param (
@@ -121,11 +169,11 @@ function Apply-ConflictResolutions {
     
     $resolvedDependencies = $Dependencies.Clone()
     
-    # Appliquer les résolutions
+    # Appliquer les rÃ©solutions
     foreach ($name in $Resolutions.Keys) {
         $resolvedVersion = $Resolutions[$name]
         
-        # Mettre à jour toutes les occurrences de cette dépendance
+        # Mettre Ã  jour toutes les occurrences de cette dÃ©pendance
         foreach ($key in $Dependencies.Keys) {
             if ($key -eq $name) {
                 $resolvedDependencies[$key] = $resolvedVersion
@@ -151,7 +199,7 @@ function Get-ConflictHistory {
     $logEntries = Get-Content -Path $script:ConflictResolverConfig.ConflictLog
     
     if (-not [string]::IsNullOrEmpty($DependencyName)) {
-        $logEntries = $logEntries | Where-Object { $_ -match "Conflit résolu pour '$DependencyName'" }
+        $logEntries = $logEntries | Where-Object { $_ -match "Conflit rÃ©solu pour '$DependencyName'" }
     }
     
     return $logEntries
@@ -159,3 +207,13 @@ function Get-ConflictHistory {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ConflictResolver, Find-DependencyConflicts, Resolve-DependencyConflicts, Apply-ConflictResolutions, Get-ConflictHistory
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

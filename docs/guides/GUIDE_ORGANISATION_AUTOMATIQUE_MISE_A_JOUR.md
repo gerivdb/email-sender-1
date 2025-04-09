@@ -1,4 +1,4 @@
-# Guide d'organisation automatique (mise à jour)
+﻿# Guide d'organisation automatique (mise à jour)
 
 Ce guide explique comment configurer l'organisation automatique du projet après les changements de chemins.
 
@@ -15,7 +15,7 @@ Puisque la configuration automatique nécessite des privilèges d'administrateur
 5. Déclencheur : Hebdomadaire (choisissez le jour qui vous convient)
 6. Action : Démarrer un programme
 7. Programme/script : `powershell.exe`
-8. Arguments : `-ExecutionPolicy Bypass -File "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\utils\automation\auto-organize-folders.ps1" -FolderPath "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts" -MaxFilesPerFolder 15`
+8. Arguments : `-ExecutionPolicy Bypass -File "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\automation\auto-organize-folders.ps1" -FolderPath "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts" -MaxFilesPerFolder 15`
 
 ### 2. Organiser les dossiers (quotidienne)
 
@@ -26,7 +26,7 @@ Puisque la configuration automatique nécessite des privilèges d'administrateur
 5. Déclencheur : Quotidienne
 6. Action : Démarrer un programme
 7. Programme/script : `powershell.exe`
-8. Arguments : `-ExecutionPolicy Bypass -File "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\utils\automation\auto-organize-folders.ps1" -MaxFilesPerFolder 15`
+8. Arguments : `-ExecutionPolicy Bypass -File "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\automation\auto-organize-folders.ps1" -MaxFilesPerFolder 15`
 
 ### 3. Gérer les logs (quotidienne)
 
@@ -37,7 +37,7 @@ Puisque la configuration automatique nécessite des privilèges d'administrateur
 5. Déclencheur : Quotidienne
 6. Action : Démarrer un programme
 7. Programme/script : `powershell.exe`
-8. Arguments : `-ExecutionPolicy Bypass -File "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\utils\automation\manage-logs.ps1" -LogName "n8n" -Category "daily"`
+8. Arguments : `-ExecutionPolicy Bypass -File "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\automation\manage-logs.ps1" -LogName "n8n" -Category "daily"`
 
 ## Configuration automatique (avec privilèges administrateur)
 
@@ -46,7 +46,7 @@ Si vous préférez utiliser le script automatique, suivez ces étapes :
 1. Ouvrez PowerShell en tant qu'administrateur
 2. Naviguez vers le dossier du projet :
    ```powershell
-   cd "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1"
+   cd "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
    ```
 3. Exécutez le script de configuration :
    ```powershell

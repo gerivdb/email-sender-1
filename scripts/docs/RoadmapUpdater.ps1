@@ -4,7 +4,30 @@
 # Configuration
 $RoadmapConfig = @{
     # Chemin du fichier roadmap
-    RoadmapPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\roadmap_perso.md"
+    RoadmapPath = "Roadmap\roadmap_perso.md"""
+
+    # Modèle de case à cocher non cochée
+    UncheckedPattern = "- [ ]"
+
+    # Modèle de case à cocher cochée
+    CheckedPattern = "- [x]"
+
+    # Modèle pour calculer la progression
+    ProgressionPattern = "\*\*Progression\*\*: (\d+)%"
+
+    # Journal des mises à jour
+    UpdateLogPath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap_updates.log"
+}
+
+# Fonction pour initialiser le module
+
+# Script pour mettre à jour automatiquement la roadmap
+# Respecte les principes SOLID, DRY, KISS et Clean Code
+
+# Configuration
+$RoadmapConfig = @{
+    # Chemin du fichier roadmap
+    RoadmapPath = "Roadmap\roadmap_perso.md"""
 
     # Modèle de case à cocher non cochée
     UncheckedPattern = "- [ ]"
@@ -25,6 +48,48 @@ function Initialize-RoadmapUpdater {
         [string]$RoadmapPath = "",
         [string]$UpdateLogPath = ""
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Écrire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # Créer le répertoire de logs si nécessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'écriture dans le journal
+    }
+}
+try {
+    # Script principal
+
 
     # Mettre à jour la configuration
     if (-not [string]::IsNullOrEmpty($RoadmapPath)) {
@@ -353,3 +418,13 @@ function Update-Roadmap {
 # Exporter les fonctions
 # Note: Export-ModuleMember est commenté car ce script n'est pas un module formel
 # Export-ModuleMember -Function Initialize-RoadmapUpdater, Update-Roadmap, Set-TaskCompleted, Set-PhaseCompleted
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "Exécution du script terminée."
+}

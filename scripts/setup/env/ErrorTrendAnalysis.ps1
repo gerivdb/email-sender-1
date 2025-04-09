@@ -1,12 +1,12 @@
-# Script pour analyser l'évolution des erreurs
+﻿# Script pour analyser l'Ã©volution des erreurs
 
-# Importer le module de collecte de données
+# Importer le module de collecte de donnÃ©es
 $collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "..\..\D"
 if (Test-Path -Path $collectorPath) {
     . $collectorPath
 }
 else {
-    Write-Error "Le module de collecte de données est introuvable: $collectorPath"
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
     return
 }
 
@@ -15,23 +15,97 @@ $TrendConfig = @{
     # Dossier de sortie des rapports
     OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorTrends"
     
-    # Période d'analyse par défaut (en jours)
+    # PÃ©riode d'analyse par dÃ©faut (en jours)
     DefaultPeriod = 30
     
     # Intervalle d'analyse (en jours)
     AnalysisInterval = 1
     
-    # Seuil d'alerte pour les tendances à la hausse (en pourcentage)
+    # Seuil d'alerte pour les tendances Ã  la hausse (en pourcentage)
     IncreaseThreshold = 20
     
-    # Seuil d'alerte pour les tendances à la baisse (en pourcentage)
+    # Seuil d'alerte pour les tendances Ã  la baisse (en pourcentage)
+    DecreaseThreshold = 20
+}
+
+# Fonction pour initialiser l'analyse des tendances
+
+# Script pour analyser l'Ã©volution des erreurs
+
+# Importer le module de collecte de donnÃ©es
+$collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "..\..\D"
+if (Test-Path -Path $collectorPath) {
+    . $collectorPath
+}
+else {
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
+    return
+}
+
+# Configuration de l'analyse des tendances
+$TrendConfig = @{
+    # Dossier de sortie des rapports
+    OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorTrends"
+    
+    # PÃ©riode d'analyse par dÃ©faut (en jours)
+    DefaultPeriod = 30
+    
+    # Intervalle d'analyse (en jours)
+    AnalysisInterval = 1
+    
+    # Seuil d'alerte pour les tendances Ã  la hausse (en pourcentage)
+    IncreaseThreshold = 20
+    
+    # Seuil d'alerte pour les tendances Ã  la baisse (en pourcentage)
     DecreaseThreshold = 20
 }
 
 # Fonction pour initialiser l'analyse des tendances
 function Initialize-ErrorTrendAnalysis {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$OutputFolder = "",
         
         [Parameter(Mandatory = $false)]
@@ -47,7 +121,7 @@ function Initialize-ErrorTrendAnalysis {
         [int]$DecreaseThreshold = 0
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $TrendConfig.OutputFolder = $OutputFolder
     }
@@ -68,12 +142,12 @@ function Initialize-ErrorTrendAnalysis {
         $TrendConfig.DecreaseThreshold = $DecreaseThreshold
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $TrendConfig.OutputFolder)) {
         New-Item -Path $TrendConfig.OutputFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Initialiser le collecteur de données
+    # Initialiser le collecteur de donnÃ©es
     Initialize-ErrorDataCollector
     
     return $TrendConfig
@@ -98,7 +172,7 @@ function Get-ErrorTrends {
         [string]$Source = ""
     )
     
-    # Utiliser les valeurs par défaut si non spécifiées
+    # Utiliser les valeurs par dÃ©faut si non spÃ©cifiÃ©es
     if ($Days -le 0) {
         $Days = $TrendConfig.DefaultPeriod
     }
@@ -107,14 +181,14 @@ function Get-ErrorTrends {
         $Interval = $TrendConfig.AnalysisInterval
     }
     
-    # Obtenir les données
+    # Obtenir les donnÃ©es
     $errors = Get-ErrorData -Days $Days -Category $Category -Severity $Severity -Source $Source
     
     # Calculer les tendances
     $trends = @()
     $now = Get-Date
     
-    # Déterminer le nombre d'intervalles
+    # DÃ©terminer le nombre d'intervalles
     $intervalCount = [Math]::Ceiling($Days / $Interval)
     
     for ($i = 0; $i -lt $intervalCount; $i++) {
@@ -138,13 +212,13 @@ function Get-ErrorTrends {
             ErrorsBySource = @{}
         }
         
-        # Calculer les erreurs par sévérité
+        # Calculer les erreurs par sÃ©vÃ©ritÃ©
         $severities = $intervalErrors | Group-Object -Property Severity | Select-Object Name, Count
         foreach ($severity in $severities) {
             $stats.ErrorsBySeverity[$severity.Name] = $severity.Count
         }
         
-        # Calculer les erreurs par catégorie
+        # Calculer les erreurs par catÃ©gorie
         $categories = $intervalErrors | Group-Object -Property Category | Select-Object Name, Count
         foreach ($category in $categories) {
             $stats.ErrorsByCategory[$category.Name] = $category.Count
@@ -172,7 +246,7 @@ function Get-ErrorTrends {
             $current.TotalErrorsVariation = if ($current.TotalErrors -gt 0) { 100 } else { 0 }
         }
         
-        # Variation par sévérité
+        # Variation par sÃ©vÃ©ritÃ©
         $current.SeverityVariations = @{}
         
         foreach ($severity in $current.ErrorsBySeverity.Keys) {
@@ -187,7 +261,7 @@ function Get-ErrorTrends {
             }
         }
         
-        # Variation par catégorie
+        # Variation par catÃ©gorie
         $current.CategoryVariations = @{}
         
         foreach ($category in $current.ErrorsByCategory.Keys) {
@@ -221,11 +295,11 @@ function Get-ErrorTrends {
     return $trends
 }
 
-# Fonction pour générer un rapport de tendances
+# Fonction pour gÃ©nÃ©rer un rapport de tendances
 function New-ErrorTrendReport {
     param (
         [Parameter(Mandatory = $false)]
-        [string]$Title = "Rapport d'évolution des erreurs",
+        [string]$Title = "Rapport d'Ã©volution des erreurs",
         
         [Parameter(Mandatory = $false)]
         [int]$Days = 0,
@@ -253,7 +327,7 @@ function New-ErrorTrendReport {
         [switch]$OpenOutput
     )
     
-    # Utiliser les valeurs par défaut si non spécifiées
+    # Utiliser les valeurs par dÃ©faut si non spÃ©cifiÃ©es
     if ($Days -le 0) {
         $Days = $TrendConfig.DefaultPeriod
     }
@@ -265,14 +339,14 @@ function New-ErrorTrendReport {
     # Obtenir les tendances
     $trends = Get-ErrorTrends -Days $Days -Interval $Interval -Category $Category -Severity $Severity -Source $Source
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "ErrorTrends-$timestamp.$($Format.ToLower())"
         $OutputPath = Join-Path -Path $TrendConfig.OutputFolder -ChildPath $fileName
     }
     
-    # Générer le rapport selon le format
+    # GÃ©nÃ©rer le rapport selon le format
     switch ($Format) {
         "HTML" {
             $html = New-ErrorTrendReportHtml -Title $Title -Trends $trends -Days $Days -Interval $Interval
@@ -317,7 +391,7 @@ function New-ErrorTrendReport {
         }
     }
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -325,7 +399,7 @@ function New-ErrorTrendReport {
     return $OutputPath
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-ErrorTrendReportHtml {
     param (
         [Parameter(Mandatory = $true)]
@@ -341,7 +415,7 @@ function New-ErrorTrendReportHtml {
         [int]$Interval
     )
     
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $trendData = @()
     
     foreach ($trend in ($Trends | Sort-Object -Property Interval)) {
@@ -354,7 +428,7 @@ function New-ErrorTrendReportHtml {
         }
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -451,13 +525,13 @@ function New-ErrorTrendReportHtml {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="charts-container">
             <div class="chart-card">
-                <h3>Évolution du nombre d'erreurs</h3>
+                <h3>Ã‰volution du nombre d'erreurs</h3>
                 <canvas id="errors-chart"></canvas>
             </div>
             
@@ -467,15 +541,15 @@ function New-ErrorTrendReportHtml {
             </div>
         </div>
         
-        <h2>Détails des tendances</h2>
+        <h2>DÃ©tails des tendances</h2>
         
         <table>
             <thead>
                 <tr>
-                    <th>Période</th>
+                    <th>PÃ©riode</th>
                     <th>Erreurs</th>
                     <th>Variation</th>
-                    <th>Détails</th>
+                    <th>DÃ©tails</th>
                 </tr>
             </thead>
             <tbody>
@@ -487,9 +561,9 @@ function New-ErrorTrendReportHtml {
                     
                     $details = ""
                     
-                    # Ajouter les détails par sévérité
+                    # Ajouter les dÃ©tails par sÃ©vÃ©ritÃ©
                     if ($trend.SeverityVariations) {
-                        $details += "<strong>Par sévérité:</strong><br>"
+                        $details += "<strong>Par sÃ©vÃ©ritÃ©:</strong><br>"
                         
                         foreach ($severity in $trend.SeverityVariations.Keys) {
                             $count = $trend.ErrorsBySeverity[$severity]
@@ -502,7 +576,7 @@ function New-ErrorTrendReportHtml {
                     }
                     
                     "<tr>
-                        <td>$startDate à $endDate</td>
+                        <td>$startDate Ã  $endDate</td>
                         <td>$($trend.TotalErrors)</td>
                         <td class='$variationClass'>$variationSign$($trend.TotalErrorsVariation)%</td>
                         <td>$details</td>
@@ -512,20 +586,20 @@ function New-ErrorTrendReportHtml {
         </table>
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | Période: $Days jours | Intervalle: $Interval jours</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | PÃ©riode: $Days jours | Intervalle: $Interval jours</p>
         </div>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const trendData = $(ConvertTo-Json -InputObject $trendData);
         
-        // Graphique d'évolution du nombre d'erreurs
+        // Graphique d'Ã©volution du nombre d'erreurs
         const errorsCtx = document.getElementById('errors-chart').getContext('2d');
         new Chart(errorsCtx, {
             type: 'line',
             data: {
-                labels: trendData.map(d => d.startDate + ' à ' + d.endDate),
+                labels: trendData.map(d => d.startDate + ' Ã  ' + d.endDate),
                 datasets: [{
                     label: 'Nombre d\'erreurs',
                     data: trendData.map(d => d.totalErrors),
@@ -561,7 +635,7 @@ function New-ErrorTrendReportHtml {
         new Chart(variationCtx, {
             type: 'bar',
             data: {
-                labels: trendData.map(d => d.startDate + ' à ' + d.endDate),
+                labels: trendData.map(d => d.startDate + ' Ã  ' + d.endDate),
                 datasets: [{
                     label: 'Variation (%)',
                     data: trendData.map(d => d.variation),
@@ -599,7 +673,7 @@ function New-ErrorTrendReportHtml {
     return $html
 }
 
-# Fonction pour générer un rapport texte
+# Fonction pour gÃ©nÃ©rer un rapport texte
 function New-ErrorTrendReportText {
     param (
         [Parameter(Mandatory = $true)]
@@ -619,23 +693,23 @@ function New-ErrorTrendReportText {
 $Title
 $("=" * $Title.Length)
 
-Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-Période: $Days jours
+GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+PÃ©riode: $Days jours
 Intervalle: $Interval jours
 
-RÉSUMÉ DES TENDANCES
+RÃ‰SUMÃ‰ DES TENDANCES
 -------------------
 $(foreach ($trend in ($Trends | Sort-Object -Property Interval)) {
     $startDate = $trend.StartDate.ToString("yyyy-MM-dd")
     $endDate = $trend.EndDate.ToString("yyyy-MM-dd")
     $variationSign = if ($trend.TotalErrorsVariation -gt 0) { "+" } else { "" }
     
-    "Période: $startDate à $endDate"
+    "PÃ©riode: $startDate Ã  $endDate"
     "Erreurs: $($trend.TotalErrors)"
     "Variation: $variationSign$($trend.TotalErrorsVariation)%"
     
     if ($trend.SeverityVariations) {
-        "`nPar sévérité:"
+        "`nPar sÃ©vÃ©ritÃ©:"
         foreach ($severity in $trend.SeverityVariations.Keys) {
             $count = $trend.ErrorsBySeverity[$severity]
             $variation = $trend.SeverityVariations[$severity]
@@ -646,7 +720,7 @@ $(foreach ($trend in ($Trends | Sort-Object -Property Interval)) {
     }
     
     if ($trend.CategoryVariations) {
-        "`nPar catégorie:"
+        "`nPar catÃ©gorie:"
         foreach ($category in $trend.CategoryVariations.Keys) {
             $count = $trend.ErrorsByCategory[$category]
             $variation = $trend.CategoryVariations[$category]
@@ -664,7 +738,7 @@ $(foreach ($trend in ($Trends | Sort-Object -Property Interval)) {
     return $text
 }
 
-# Fonction pour détecter les anomalies dans les tendances
+# Fonction pour dÃ©tecter les anomalies dans les tendances
 function Get-ErrorTrendAnomalies {
     param (
         [Parameter(Mandatory = $false)]
@@ -680,7 +754,7 @@ function Get-ErrorTrendAnomalies {
         [int]$DecreaseThreshold = 0
     )
     
-    # Utiliser les valeurs par défaut si non spécifiées
+    # Utiliser les valeurs par dÃ©faut si non spÃ©cifiÃ©es
     if ($Days -le 0) {
         $Days = $TrendConfig.DefaultPeriod
     }
@@ -700,7 +774,7 @@ function Get-ErrorTrendAnomalies {
     # Obtenir les tendances
     $trends = Get-ErrorTrends -Days $Days -Interval $Interval
     
-    # Détecter les anomalies
+    # DÃ©tecter les anomalies
     $anomalies = @()
     
     foreach ($trend in $trends) {
@@ -709,7 +783,7 @@ function Get-ErrorTrendAnomalies {
             continue
         }
         
-        # Détecter les augmentations significatives
+        # DÃ©tecter les augmentations significatives
         if ($trend.TotalErrorsVariation -ge $IncreaseThreshold) {
             $anomalies += [PSCustomObject]@{
                 StartDate = $trend.StartDate
@@ -723,7 +797,7 @@ function Get-ErrorTrendAnomalies {
             }
         }
         
-        # Détecter les diminutions significatives
+        # DÃ©tecter les diminutions significatives
         if ($trend.TotalErrorsVariation -le -$DecreaseThreshold) {
             $anomalies += [PSCustomObject]@{
                 StartDate = $trend.StartDate
@@ -737,7 +811,7 @@ function Get-ErrorTrendAnomalies {
             }
         }
         
-        # Détecter les anomalies par sévérité
+        # DÃ©tecter les anomalies par sÃ©vÃ©ritÃ©
         if ($trend.SeverityVariations) {
             foreach ($severity in $trend.SeverityVariations.Keys) {
                 $variation = $trend.SeverityVariations[$severity]
@@ -752,7 +826,7 @@ function Get-ErrorTrendAnomalies {
                         Value = $trend.ErrorsBySeverity[$severity]
                         Variation = $variation
                         Threshold = $IncreaseThreshold
-                        Details = "Augmentation significative des erreurs de sévérité '$severity'"
+                        Details = "Augmentation significative des erreurs de sÃ©vÃ©ritÃ© '$severity'"
                     }
                 }
                 
@@ -766,13 +840,13 @@ function Get-ErrorTrendAnomalies {
                         Value = $trend.ErrorsBySeverity[$severity]
                         Variation = $variation
                         Threshold = $DecreaseThreshold
-                        Details = "Diminution significative des erreurs de sévérité '$severity'"
+                        Details = "Diminution significative des erreurs de sÃ©vÃ©ritÃ© '$severity'"
                     }
                 }
             }
         }
         
-        # Détecter les anomalies par catégorie
+        # DÃ©tecter les anomalies par catÃ©gorie
         if ($trend.CategoryVariations) {
             foreach ($category in $trend.CategoryVariations.Keys) {
                 $variation = $trend.CategoryVariations[$category]
@@ -787,7 +861,7 @@ function Get-ErrorTrendAnomalies {
                         Value = $trend.ErrorsByCategory[$category]
                         Variation = $variation
                         Threshold = $IncreaseThreshold
-                        Details = "Augmentation significative des erreurs de catégorie '$category'"
+                        Details = "Augmentation significative des erreurs de catÃ©gorie '$category'"
                     }
                 }
                 
@@ -801,7 +875,7 @@ function Get-ErrorTrendAnomalies {
                         Value = $trend.ErrorsByCategory[$category]
                         Variation = $variation
                         Threshold = $DecreaseThreshold
-                        Details = "Diminution significative des erreurs de catégorie '$category'"
+                        Details = "Diminution significative des erreurs de catÃ©gorie '$category'"
                     }
                 }
             }
@@ -814,3 +888,13 @@ function Get-ErrorTrendAnomalies {
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ErrorTrendAnalysis, Get-ErrorTrends, New-ErrorTrendReport, Get-ErrorTrendAnomalies
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

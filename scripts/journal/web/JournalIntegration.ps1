@@ -1,4 +1,4 @@
-# Script pour intégrer la documentation des erreurs dans le journal
+﻿# Script pour intÃ©grer la documentation des erreurs dans le journal
 
 # Importer le module de documentation des erreurs
 $docFormatPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "ErrorDocFormat.ps1"
@@ -15,35 +15,114 @@ $JournalConfig = @{
     # Chemin du journal
     JournalPath = Join-Path -Path $env:TEMP -ChildPath "ErrorJournal\journal.md"
     
-    # Dossier des entrées du journal
+    # Dossier des entrÃ©es du journal
     EntriesFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorJournal\entries"
     
-    # Format de date pour les entrées
+    # Format de date pour les entrÃ©es
     DateFormat = "yyyy-MM-dd"
     
-    # Format d'heure pour les entrées
+    # Format d'heure pour les entrÃ©es
     TimeFormat = "HH-mm"
     
     # Sections du journal
     Sections = @(
-        "Erreurs corrigées",
-        "Problèmes en cours",
-        "Améliorations",
-        "Leçons apprises"
+        "Erreurs corrigÃ©es",
+        "ProblÃ¨mes en cours",
+        "AmÃ©liorations",
+        "LeÃ§ons apprises"
     )
 }
 
-# Fonction pour initialiser l'intégration avec le journal
+# Fonction pour initialiser l'intÃ©gration avec le journal
+
+# Script pour intÃ©grer la documentation des erreurs dans le journal
+
+# Importer le module de documentation des erreurs
+$docFormatPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "ErrorDocFormat.ps1"
+if (Test-Path -Path $docFormatPath) {
+    . $docFormatPath
+}
+else {
+    Write-Error "Le module de documentation des erreurs est introuvable: $docFormatPath"
+    return
+}
+
+# Configuration
+$JournalConfig = @{
+    # Chemin du journal
+    JournalPath = Join-Path -Path $env:TEMP -ChildPath "ErrorJournal\journal.md"
+    
+    # Dossier des entrÃ©es du journal
+    EntriesFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorJournal\entries"
+    
+    # Format de date pour les entrÃ©es
+    DateFormat = "yyyy-MM-dd"
+    
+    # Format d'heure pour les entrÃ©es
+    TimeFormat = "HH-mm"
+    
+    # Sections du journal
+    Sections = @(
+        "Erreurs corrigÃ©es",
+        "ProblÃ¨mes en cours",
+        "AmÃ©liorations",
+        "LeÃ§ons apprises"
+    )
+}
+
+# Fonction pour initialiser l'intÃ©gration avec le journal
 function Initialize-ErrorJournal {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$JournalPath = "",
         
         [Parameter(Mandatory = $false)]
         [string]$EntriesFolder = ""
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($JournalPath)) {
         $JournalConfig.JournalPath = $JournalPath
     }
@@ -52,12 +131,12 @@ function Initialize-ErrorJournal {
         $JournalConfig.EntriesFolder = $EntriesFolder
     }
     
-    # Créer le dossier des entrées s'il n'existe pas
+    # CrÃ©er le dossier des entrÃ©es s'il n'existe pas
     if (-not (Test-Path -Path $JournalConfig.EntriesFolder)) {
         New-Item -Path $JournalConfig.EntriesFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Créer le journal s'il n'existe pas
+    # CrÃ©er le journal s'il n'existe pas
     $journalFolder = Split-Path -Path $JournalConfig.JournalPath -Parent
     if (-not (Test-Path -Path $journalFolder)) {
         New-Item -Path $journalFolder -ItemType Directory -Force | Out-Null
@@ -67,22 +146,22 @@ function Initialize-ErrorJournal {
         $initialContent = @"
 # Journal des erreurs
 
-Ce journal contient la documentation des erreurs rencontrées et corrigées.
+Ce journal contient la documentation des erreurs rencontrÃ©es et corrigÃ©es.
 
 ## Sections
 
-- [Erreurs corrigées](#erreurs-corrigées)
-- [Problèmes en cours](#problèmes-en-cours)
-- [Améliorations](#améliorations)
-- [Leçons apprises](#leçons-apprises)
+- [Erreurs corrigÃ©es](#erreurs-corrigÃ©es)
+- [ProblÃ¨mes en cours](#problÃ¨mes-en-cours)
+- [AmÃ©liorations](#amÃ©liorations)
+- [LeÃ§ons apprises](#leÃ§ons-apprises)
 
-## Erreurs corrigées
+## Erreurs corrigÃ©es
 
-## Problèmes en cours
+## ProblÃ¨mes en cours
 
-## Améliorations
+## AmÃ©liorations
 
-## Leçons apprises
+## LeÃ§ons apprises
 
 "@
         
@@ -95,14 +174,14 @@ Ce journal contient la documentation des erreurs rencontrées et corrigées.
     return $JournalConfig
 }
 
-# Fonction pour ajouter une entrée au journal
+# Fonction pour ajouter une entrÃ©e au journal
 function Add-ErrorJournalEntry {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Title,
         
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Erreurs corrigées", "Problèmes en cours", "Améliorations", "Leçons apprises")]
+        [ValidateSet("Erreurs corrigÃ©es", "ProblÃ¨mes en cours", "AmÃ©liorations", "LeÃ§ons apprises")]
         [string]$Section,
         
         [Parameter(Mandatory = $true)]
@@ -124,7 +203,7 @@ function Add-ErrorJournalEntry {
         [hashtable]$Metadata = @{}
     )
     
-    # Utiliser la date et l'heure actuelles si non spécifiées
+    # Utiliser la date et l'heure actuelles si non spÃ©cifiÃ©es
     if ([string]::IsNullOrEmpty($Date)) {
         $Date = Get-Date -Format $JournalConfig.DateFormat
     }
@@ -133,7 +212,7 @@ function Add-ErrorJournalEntry {
         $Time = Get-Date -Format $JournalConfig.TimeFormat
     }
     
-    # Créer l'entrée
+    # CrÃ©er l'entrÃ©e
     $entry = @{
         Title = $Title
         Section = $Section
@@ -146,11 +225,11 @@ function Add-ErrorJournalEntry {
         ID = [Guid]::NewGuid().ToString().Substring(0, 8).ToUpper()
     }
     
-    # Créer le fichier d'entrée
+    # CrÃ©er le fichier d'entrÃ©e
     $entryFileName = "$Date-$Time-$($entry.ID).md"
     $entryPath = Join-Path -Path $JournalConfig.EntriesFolder -ChildPath $entryFileName
     
-    # Générer le contenu de l'entrée
+    # GÃ©nÃ©rer le contenu de l'entrÃ©e
     $entryContent = @"
 # $Title
 
@@ -164,7 +243,7 @@ $(if (-not [string]::IsNullOrEmpty($ErrorDocPath)) { "- **Documentation**: [$Err
 $Content
 
 $(if ($Metadata.Count -gt 0) {
-    $metadataContent = "## Métadonnées`n`n"
+    $metadataContent = "## MÃ©tadonnÃ©es`n`n"
     foreach ($key in $Metadata.Keys) {
         $metadataContent += "- **$key**: $($Metadata[$key])`n"
     }
@@ -172,10 +251,10 @@ $(if ($Metadata.Count -gt 0) {
 } else { "" })
 "@
     
-    # Enregistrer l'entrée
+    # Enregistrer l'entrÃ©e
     $entryContent | Set-Content -Path $entryPath -Encoding UTF8
     
-    # Mettre à jour le journal
+    # Mettre Ã  jour le journal
     Update-ErrorJournal -NewEntryPath $entryPath
     
     return @{
@@ -184,7 +263,7 @@ $(if ($Metadata.Count -gt 0) {
     }
 }
 
-# Fonction pour mettre à jour le journal
+# Fonction pour mettre Ã  jour le journal
 function Update-ErrorJournal {
     param (
         [Parameter(Mandatory = $false)]
@@ -194,12 +273,12 @@ function Update-ErrorJournal {
     # Charger le journal
     $journal = Get-Content -Path $JournalConfig.JournalPath -Raw
     
-    # Obtenir toutes les entrées
+    # Obtenir toutes les entrÃ©es
     $entries = Get-ChildItem -Path $JournalConfig.EntriesFolder -Filter "*.md" | Sort-Object -Property Name -Descending
     
     # Traiter chaque section
     foreach ($section in $JournalConfig.Sections) {
-        # Trouver les entrées pour cette section
+        # Trouver les entrÃ©es pour cette section
         $sectionEntries = @()
         
         foreach ($entryFile in $entries) {
@@ -221,17 +300,17 @@ function Update-ErrorJournal {
             }
         }
         
-        # Trier les entrées par date et heure
+        # Trier les entrÃ©es par date et heure
         $sectionEntries = $sectionEntries | Sort-Object -Property Date, Time -Descending
         
-        # Générer le contenu de la section
+        # GÃ©nÃ©rer le contenu de la section
         $sectionContent = "## $section`n`n"
         
         foreach ($entry in $sectionEntries) {
             $sectionContent += "- [$($entry.Date) $($entry.Time)] [$($entry.Title)]($($entry.Path.Replace('\', '/')))`n"
         }
         
-        # Mettre à jour la section dans le journal
+        # Mettre Ã  jour la section dans le journal
         $sectionPattern = "## $([regex]::Escape($section))\s*\n(.*?)(?=## |$)"
         $journal = if ($journal -match $sectionPattern) {
             $journal -replace $sectionPattern, "$sectionContent`n"
@@ -244,9 +323,9 @@ function Update-ErrorJournal {
     # Enregistrer le journal
     $journal | Set-Content -Path $JournalConfig.JournalPath -Encoding UTF8
     
-    # Mettre en évidence la nouvelle entrée si spécifiée
+    # Mettre en Ã©vidence la nouvelle entrÃ©e si spÃ©cifiÃ©e
     if (-not [string]::IsNullOrEmpty($NewEntryPath)) {
-        Write-Host "Nouvelle entrée ajoutée: $NewEntryPath"
+        Write-Host "Nouvelle entrÃ©e ajoutÃ©e: $NewEntryPath"
     }
     
     return $JournalConfig.JournalPath
@@ -259,7 +338,7 @@ function Search-ErrorJournal {
         [string]$SearchTerm = "",
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Erreurs corrigées", "Problèmes en cours", "Améliorations", "Leçons apprises")]
+        [ValidateSet("Erreurs corrigÃ©es", "ProblÃ¨mes en cours", "AmÃ©liorations", "LeÃ§ons apprises")]
         [string]$Section = "",
         
         [Parameter(Mandatory = $false)]
@@ -272,16 +351,16 @@ function Search-ErrorJournal {
         [DateTime]$EndDate
     )
     
-    # Obtenir toutes les entrées
+    # Obtenir toutes les entrÃ©es
     $entries = Get-ChildItem -Path $JournalConfig.EntriesFolder -Filter "*.md"
     
-    # Filtrer les entrées selon les critères
+    # Filtrer les entrÃ©es selon les critÃ¨res
     $results = @()
     
     foreach ($entryFile in $entries) {
         $entryContent = Get-Content -Path $entryFile.FullName -Raw
         
-        # Vérifier si l'entrée correspond aux critères
+        # VÃ©rifier si l'entrÃ©e correspond aux critÃ¨res
         $match = $true
         
         if (-not [string]::IsNullOrEmpty($SearchTerm) -and $entryContent -notmatch [regex]::Escape($SearchTerm)) {
@@ -292,7 +371,7 @@ function Search-ErrorJournal {
             $match = $false
         }
         
-        # Vérifier les tags
+        # VÃ©rifier les tags
         if ($Tags.Count -gt 0) {
             $entryTags = if ($entryContent -match "Tags:\s*(.+)") { $Matches[1] } else { "" }
             
@@ -309,7 +388,7 @@ function Search-ErrorJournal {
             }
         }
         
-        # Vérifier les dates
+        # VÃ©rifier les dates
         if ($StartDate -ne $null -or $EndDate -ne $null) {
             $entryDate = if ($entryContent -match "Date:\s*(\d{4}-\d{2}-\d{2})") { $Matches[1] } else { "" }
             
@@ -326,7 +405,7 @@ function Search-ErrorJournal {
             }
         }
         
-        # Ajouter l'entrée aux résultats si elle correspond
+        # Ajouter l'entrÃ©e aux rÃ©sultats si elle correspond
         if ($match) {
             $title = if ($entryContent -match "# (.+)") { $Matches[1] } else { $entryFile.BaseName }
             $date = if ($entryContent -match "Date:\s*(.+)") { $Matches[1] } else { "" }
@@ -347,13 +426,13 @@ function Search-ErrorJournal {
         }
     }
     
-    # Trier les résultats par date et heure
+    # Trier les rÃ©sultats par date et heure
     $results = $results | Sort-Object -Property Date, Time -Descending
     
     return $results
 }
 
-# Fonction pour créer une documentation d'erreur et l'ajouter au journal
+# Fonction pour crÃ©er une documentation d'erreur et l'ajouter au journal
 function New-ErrorDocumentationAndJournalEntry {
     param (
         [Parameter(Mandatory = $true)]
@@ -385,8 +464,8 @@ function New-ErrorDocumentationAndJournalEntry {
         [string]$JournalContent = "",
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Erreurs corrigées", "Problèmes en cours", "Améliorations", "Leçons apprises")]
-        [string]$JournalSection = "Erreurs corrigées",
+        [ValidateSet("Erreurs corrigÃ©es", "ProblÃ¨mes en cours", "AmÃ©liorations", "LeÃ§ons apprises")]
+        [string]$JournalSection = "Erreurs corrigÃ©es",
         
         [Parameter(Mandatory = $false)]
         [string[]]$Tags = @(),
@@ -395,15 +474,15 @@ function New-ErrorDocumentationAndJournalEntry {
         [hashtable]$Metadata = @{}
     )
     
-    # Créer la documentation d'erreur
+    # CrÃ©er la documentation d'erreur
     $docResult = New-ErrorDocumentation -Title $Title -Category $Category -Severity $Severity `
         -Description $Description -RootCause $RootCause -Solution $Solution -PreventionSteps $PreventionSteps `
         -Impact $Impact -Format "Markdown"
     
-    # Utiliser le contenu fourni ou générer un contenu par défaut pour l'entrée du journal
+    # Utiliser le contenu fourni ou gÃ©nÃ©rer un contenu par dÃ©faut pour l'entrÃ©e du journal
     if ([string]::IsNullOrEmpty($JournalContent)) {
         $JournalContent = @"
-## Description du problème
+## Description du problÃ¨me
 
 $Description
 
@@ -411,17 +490,17 @@ $Description
 
 $RootCause
 
-## Solution implémentée
+## Solution implÃ©mentÃ©e
 
 $Solution
 
-## Prévention future
+## PrÃ©vention future
 
 $PreventionSteps
 "@
     }
     
-    # Ajouter l'entrée au journal
+    # Ajouter l'entrÃ©e au journal
     $journalResult = Add-ErrorJournalEntry -Title $Title -Section $JournalSection -Content $JournalContent `
         -ErrorDocPath $docResult.Path -Tags $Tags -Metadata $Metadata
     
@@ -431,11 +510,11 @@ $PreventionSteps
     }
 }
 
-# Fonction pour générer un rapport des erreurs documentées
+# Fonction pour gÃ©nÃ©rer un rapport des erreurs documentÃ©es
 function New-ErrorDocumentationReport {
     param (
         [Parameter(Mandatory = $false)]
-        [string]$Title = "Rapport des erreurs documentées",
+        [string]$Title = "Rapport des erreurs documentÃ©es",
         
         [Parameter(Mandatory = $false)]
         [string]$Category = "",
@@ -460,14 +539,14 @@ function New-ErrorDocumentationReport {
     # Rechercher les documentations d'erreurs
     $docs = Find-ErrorDocumentation -Category $Category -Severity $Severity -StartDate $StartDate -EndDate $EndDate
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "ErrorDocReport-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -551,27 +630,27 @@ function New-ErrorDocumentationReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="summary">
-            <p>Nombre total d'erreurs documentées: $($docs.Count)</p>
-            $(if (-not [string]::IsNullOrEmpty($Category)) { "<p>Catégorie: $Category</p>" })
-            $(if (-not [string]::IsNullOrEmpty($Severity)) { "<p>Sévérité: $Severity</p>" })
-            $(if ($StartDate -ne $null) { "<p>Date de début: $($StartDate.ToString('yyyy-MM-dd'))</p>" })
+            <p>Nombre total d'erreurs documentÃ©es: $($docs.Count)</p>
+            $(if (-not [string]::IsNullOrEmpty($Category)) { "<p>CatÃ©gorie: $Category</p>" })
+            $(if (-not [string]::IsNullOrEmpty($Severity)) { "<p>SÃ©vÃ©ritÃ©: $Severity</p>" })
+            $(if ($StartDate -ne $null) { "<p>Date de dÃ©but: $($StartDate.ToString('yyyy-MM-dd'))</p>" })
             $(if ($EndDate -ne $null) { "<p>Date de fin: $($EndDate.ToString('yyyy-MM-dd'))</p>" })
         </div>
         
-        <h2>Liste des erreurs documentées</h2>
+        <h2>Liste des erreurs documentÃ©es</h2>
         
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Titre</th>
-                    <th>Catégorie</th>
-                    <th>Sévérité</th>
+                    <th>CatÃ©gorie</th>
+                    <th>SÃ©vÃ©ritÃ©</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -591,7 +670,7 @@ function New-ErrorDocumentationReport {
         </table>
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </div>
 </body>
@@ -601,7 +680,7 @@ function New-ErrorDocumentationReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -612,3 +691,13 @@ function New-ErrorDocumentationReport {
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ErrorJournal, Add-ErrorJournalEntry, Update-ErrorJournal, Search-ErrorJournal
 Export-ModuleMember -Function New-ErrorDocumentationAndJournalEntry, New-ErrorDocumentationReport
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

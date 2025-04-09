@@ -1,4 +1,4 @@
-# Guide d'utilisation du Model Context Protocol (MCP) Server Filesystem
+﻿# Guide d'utilisation du Model Context Protocol (MCP) Server Filesystem
 
 ## Introduction
 
@@ -44,7 +44,7 @@ mcp-server-filesystem /chemin/vers/repertoire1 /chemin/vers/repertoire2
 
 Par exemple, pour notre projet n8n :
 ```bash
-mcp-server-filesystem "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1"
+mcp-server-filesystem "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 ```
 
 ## Fonctionnalités du MCP Server Filesystem

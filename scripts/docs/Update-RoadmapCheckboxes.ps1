@@ -1,5 +1,5 @@
-﻿# Update-RoadmapCheckboxes.ps1
-# Script pour mettre Ã  jour les cases Ã  cocher de la roadmap et analyser les phases terminÃ©es
+# Update-RoadmapCheckboxes.ps1
+# Script pour mettre à jour les cases à cocher de la roadmap et analyser les phases terminées
 
 param (
     [Parameter(Mandatory = $false)]
@@ -26,34 +26,34 @@ param (
 
 # Chemins des fichiers
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$roadmapPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "roadmap_perso.md"
+$roadmapPath = "Roadmap\roadmap_perso.md"""
 $journalPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "journal\journal.md"
 $updateMarkdownPath = Join-Path -Path $scriptPath -ChildPath "Update-Markdown.ps1"
 $updateStructurePath = Join-Path -Path $scriptPath -ChildPath "Update-RoadmapStructure.ps1"
 $analyzePhaseCompletionPath = Join-Path -Path $scriptPath -ChildPath "Analyze-PhaseCompletion.ps1"
 
-# VÃ©rifier si les fichiers nÃ©cessaires existent
+# Vérifier si les fichiers nécessaires existent
 if (-not (Test-Path -Path $roadmapPath)) {
-    Write-Error "Fichier roadmap non trouvÃ©: $roadmapPath"
+    Write-Error "Fichier roadmap non trouvé: $roadmapPath"
     exit 1
 }
 
 if (-not (Test-Path -Path $updateMarkdownPath)) {
-    Write-Error "Script Update-Markdown.ps1 non trouvÃ©: $updateMarkdownPath"
+    Write-Error "Script Update-Markdown.ps1 non trouvé: $updateMarkdownPath"
     exit 1
 }
 
 if (-not (Test-Path -Path $updateStructurePath)) {
-    Write-Error "Script Update-RoadmapStructure.ps1 non trouvÃ©: $updateStructurePath"
+    Write-Error "Script Update-RoadmapStructure.ps1 non trouvé: $updateStructurePath"
     exit 1
 }
 
 if (-not (Test-Path -Path $analyzePhaseCompletionPath)) {
-    Write-Error "Script Analyze-PhaseCompletion.ps1 non trouvÃ©: $analyzePhaseCompletionPath"
+    Write-Error "Script Analyze-PhaseCompletion.ps1 non trouvé: $analyzePhaseCompletionPath"
     exit 1
 }
 
-# Fonction pour vÃ©rifier si une phase est terminÃ©e
+# Fonction pour vérifier si une phase est terminée
 function Test-PhaseCompletion {
     param (
         [string]$PhaseId
@@ -69,19 +69,19 @@ function Test-PhaseCompletion {
     $completedTasks = 0
     
     foreach ($line in $lines) {
-        # DÃ©tecter la catÃ©gorie
+        # Détecter la catégorie
         if ($line -match "^## (\d+)\. (.+)") {
             $categoryId = $matches[1]
             $inPhase = ($categoryId -eq $PhaseId)
             continue
         }
         
-        # Si on n'est pas dans la phase recherchÃ©e, passer Ã  la ligne suivante
+        # Si on n'est pas dans la phase recherchée, passer à la ligne suivante
         if (-not $inPhase) {
             continue
         }
         
-        # DÃ©tecter les tÃ¢ches
+        # Détecter les tâches
         if ($line -match "^- \[([ x])\] (.+?) \((.+?)\)") {
             $completed = ($matches[1] -eq "x")
             $totalTasks++
@@ -92,7 +92,7 @@ function Test-PhaseCompletion {
         }
     }
     
-    # VÃ©rifier si la phase est terminÃ©e
+    # Vérifier si la phase est terminée
     $isCompleted = ($totalTasks -gt 0) -and ($completedTasks -eq $totalTasks)
     
     return @{
@@ -102,7 +102,7 @@ function Test-PhaseCompletion {
     }
 }
 
-# Fonction pour mettre Ã  jour une tÃ¢che
+# Fonction pour mettre à jour une tâche
 function Update-Task {
     param (
         [string]$TaskId,
@@ -111,7 +111,7 @@ function Update-Task {
         [string]$Note
     )
     
-    # Construire les paramÃ¨tres pour Update-Markdown.ps1
+    # Construire les paramètres pour Update-Markdown.ps1
     $params = @()
     
     if ($TaskId) {
@@ -132,26 +132,26 @@ function Update-Task {
         $params += $Note
     }
     
-    # ExÃ©cuter Update-Markdown.ps1
+    # Exécuter Update-Markdown.ps1
     & $updateMarkdownPath @params
     
-    # VÃ©rifier si la tÃ¢che fait partie d'une phase
+    # Vérifier si la tâche fait partie d'une phase
     if ($TaskId -match "^(\d+)\.") {
         $phaseId = $matches[1]
         $phaseCompletion = Test-PhaseCompletion -PhaseId $phaseId
         
         if ($phaseCompletion.IsCompleted) {
-            Write-Output "La phase $phaseId est terminÃ©e ($($phaseCompletion.CompletedTasks)/$($phaseCompletion.TotalTasks) tÃ¢ches terminÃ©es)."
+            Write-Output "La phase $phaseId est terminée ($($phaseCompletion.CompletedTasks)/$($phaseCompletion.TotalTasks) tâches terminées)."
             
-            # Analyser la phase terminÃ©e
+            # Analyser la phase terminée
             & $analyzePhaseCompletionPath -PhaseId $phaseId -RoadmapPath $roadmapPath -JournalPath $journalPath
         }
     }
 }
 
-# Fonction pour mettre Ã  jour la structure de la roadmap
+# Fonction pour mettre à jour la structure de la roadmap
 function Update-Structure {
-    # ExÃ©cuter Update-RoadmapStructure.ps1
+    # Exécuter Update-RoadmapStructure.ps1
     & $updateStructurePath -RoadmapPath $roadmapPath
 }
 
@@ -161,30 +161,30 @@ function Analyze-Phase {
         [string]$PhaseId
     )
     
-    # ExÃ©cuter Analyze-PhaseCompletion.ps1
+    # Exécuter Analyze-PhaseCompletion.ps1
     & $analyzePhaseCompletionPath -PhaseId $PhaseId -RoadmapPath $roadmapPath -JournalPath $journalPath
 }
 
 # Fonction principale
 function Main {
-    # Mettre Ã  jour la structure si demandÃ©
+    # Mettre à jour la structure si demandé
     if ($UpdateStructure) {
         Update-Structure
         return
     }
     
-    # Analyser une phase si demandÃ©
+    # Analyser une phase si demandé
     if ($AnalyzePhase -and $PhaseId) {
         Analyze-Phase -PhaseId $PhaseId
         return
     }
     
-    # Mettre Ã  jour une tÃ¢che
+    # Mettre à jour une tâche
     if ($TaskId) {
         Update-Task -TaskId $TaskId -Complete:$Complete -Start:$Start -Note $Note
         return
     }
 }
 
-# ExÃ©cuter la fonction principale
+# Exécuter la fonction principale
 Main

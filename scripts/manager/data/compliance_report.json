@@ -1,11 +1,11 @@
-{
+﻿{
     "TotalIssueCount":  33,
     "LowSeverityCount":  30,
     "Timestamp":  "2025-04-08 18:57:35",
     "TotalFiles":  3,
     "ScriptResults":  [
                           {
-                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Find-CodeDuplication.ps1",
+                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Find-CodeDuplication.ps1",
                               "ScriptType":  "PowerShell",
                               "IssueCount":  7,
                               "HighSeverityCount":  0,
@@ -55,7 +55,7 @@
                                          ]
                           },
                           {
-                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Manage-Duplications.ps1",
+                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Manage-Duplications.ps1",
                               "ScriptType":  "PowerShell",
                               "IssueCount":  15,
                               "HighSeverityCount":  0,
@@ -153,7 +153,7 @@
                                          ]
                           },
                           {
-                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Merge-SimilarScripts.ps1",
+                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Merge-SimilarScripts.ps1",
                               "ScriptType":  "PowerShell",
                               "IssueCount":  11,
                               "HighSeverityCount":  0,

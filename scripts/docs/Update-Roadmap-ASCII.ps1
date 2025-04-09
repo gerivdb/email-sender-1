@@ -18,7 +18,7 @@ param (
 # Chemins des fichiers
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dataPath = Join-Path -Path $scriptPath -ChildPath "roadmap-data.json"
-$roadmapPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "roadmap_perso.md"
+$roadmapPath = "Roadmap\roadmap_perso.md"""
 
 # Vérifier si les fichiers existent
 if (-not (Test-Path -Path $dataPath)) {

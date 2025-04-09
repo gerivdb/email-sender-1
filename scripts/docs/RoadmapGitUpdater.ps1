@@ -2,7 +2,7 @@
 # Ce script analyse les commits Git et met à jour la roadmap en conséquence
 
 param (
-    [string]$RoadmapPath = "roadmap_perso.md",
+    [string]$RoadmapPath = ""Roadmap\roadmap_perso.md"",
     [string]$GitRepo = ".",
     [int]$DaysToAnalyze = 7,
     [switch]$AutoUpdate = $false,

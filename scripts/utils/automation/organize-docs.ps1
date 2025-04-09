@@ -60,11 +60,116 @@ $plansRules = @(
 )
 
 # Fonction pour dÃ©placer les fichiers selon les rÃ¨gles
+
+# Script pour organiser les fichiers de documentation
+# Ce script organise les fichiers de documentation dans des sous-dossiers appropriÃ©s
+
+# DÃ©finition des rÃ¨gles de dÃ©placement pour le dossier docs
+$docsRules = @(
+    # Guides
+    @{
+        Pattern = "GUIDE_*.md", "DEMARRER_*.md", "CONFIGURATION_*.md"
+        Destination = "docs\guides"
+    },
+    # Workflows
+    @{
+        Pattern = "WORKFLOW_*.md", "README_EMAIL_SENDER_*.md"
+        Destination = "docs\workflows"
+    },
+    # N8N
+    @{
+        Pattern = "N8N_*.md", "n8n*.md"
+        Destination = "docs\n8n"
+    },
+    # MCP
+    @{
+        Pattern = "*MCP*.md", "RAPPORT_FINAL_MCP.md"
+        Destination = "docs\mcp"
+    },
+    # Reference
+    @{
+        Pattern = "GLOSSAIRE_*.md", "STRUCTURE_*.md", "CHANGEMENTS_*.md"
+        Destination = "docs\reference"
+    }
+)
+
+# DÃ©finition des rÃ¨gles de dÃ©placement pour le dossier docs\plans
+$plansRules = @(
+    # Implementation
+    @{
+        Pattern = "PLAN_IMPLEMENTATION*.md"
+        Destination = "docs\plans\implementation"
+    },
+    # Transition
+    @{
+        Pattern = "PLAN_TRANSITION*.md", "phase*-transi*.md"
+        Destination = "docs\plans\transition"
+    },
+    # Magistral
+    @{
+        Pattern = "Plan Magistral*.md"
+        Destination = "docs\plans\magistral"
+    },
+    # Piliers
+    @{
+        Pattern = "PILIER_*.md"
+        Destination = "docs\plans\piliers"
+    },
+    # Versions restructurÃ©es
+    @{
+        Pattern = "*-restructured.md"
+        Destination = "docs\plans\versions"
+    }
+)
+
+# Fonction pour dÃ©placer les fichiers selon les rÃ¨gles
 function Move-FilesAccordingToRules {
     param (
         [string]$SourceFolder,
         [array]$Rules
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     Write-Host "Organisation des fichiers dans $SourceFolder..." -ForegroundColor Cyan
     
@@ -180,3 +285,13 @@ Organize-PlansSubfolders
 Remove-EmptyFolders -RootFolder "docs"
 
 Write-Host "`nOrganisation des fichiers de documentation terminÃ©e avec succÃ¨s!" -ForegroundColor Green
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

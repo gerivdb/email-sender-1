@@ -1,29 +1,94 @@
-<#
+﻿<#
 .SYNOPSIS
     Script Manager - Gestion proactive des scripts du projet
 .DESCRIPTION
-    Système centralisé pour inventorier, analyser, organiser et optimiser
+    SystÃ¨me centralisÃ© pour inventorier, analyser, organiser et optimiser
     tous les scripts du projet.
 .PARAMETER Action
-    Action à effectuer: inventory, analyze, map, organize, document, monitor, optimize
+    Action Ã  effectuer: inventory, analyze, map, organize, document, monitor, optimize
 .PARAMETER Target
-    Cible spécifique (dossier ou script)
+    Cible spÃ©cifique (dossier ou script)
 .PARAMETER AutoApply
     Applique automatiquement les recommandations
 .PARAMETER Format
     Format de sortie (JSON, Markdown, HTML)
 .PARAMETER Verbose
-    Affiche des informations détaillées
+    Affiche des informations dÃ©taillÃ©es
 .EXAMPLE
     .\ScriptManager.ps1 -Action inventory
     Effectue un inventaire complet des scripts
 .EXAMPLE
     .\ScriptManager.ps1 -Action organize -AutoApply
-    Organise automatiquement les scripts selon les règles définies
+    Organise automatiquement les scripts selon les rÃ¨gles dÃ©finies
+
+<#
+.SYNOPSIS
+    Script Manager - Gestion proactive des scripts du projet
+.DESCRIPTION
+    SystÃ¨me centralisÃ© pour inventorier, analyser, organiser et optimiser
+    tous les scripts du projet.
+.PARAMETER Action
+    Action Ã  effectuer: inventory, analyze, map, organize, document, monitor, optimize
+.PARAMETER Target
+    Cible spÃ©cifique (dossier ou script)
+.PARAMETER AutoApply
+    Applique automatiquement les recommandations
+.PARAMETER Format
+    Format de sortie (JSON, Markdown, HTML)
+.PARAMETER Verbose
+    Affiche des informations dÃ©taillÃ©es
+.EXAMPLE
+    .\ScriptManager.ps1 -Action inventory
+    Effectue un inventaire complet des scripts
+.EXAMPLE
+    .\ScriptManager.ps1 -Action organize -AutoApply
+    Organise automatiquement les scripts selon les rÃ¨gles dÃ©finies
 #>
 
 param (
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$true)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
     [ValidateSet("inventory", "analyze", "map", "organize", "document", "monitor", "optimize")]
     [string]$Action,
     
@@ -37,24 +102,24 @@ param (
     [switch]$Verbose
 )
 
-# Définition des chemins
+# DÃ©finition des chemins
 $ScriptRoot = $PSScriptRoot
 $ModulesPath = Join-Path -Path $ScriptRoot -ChildPath "modules"
 $ConfigPath = Join-Path -Path $ScriptRoot -ChildPath "config"
 $DataPath = Join-Path -Path $ScriptRoot -ChildPath "data"
 
-# Création des dossiers s'ils n'existent pas
+# CrÃ©ation des dossiers s'ils n'existent pas
 $FoldersToCreate = @($ModulesPath, $ConfigPath, $DataPath)
 foreach ($Folder in $FoldersToCreate) {
     if (-not (Test-Path -Path $Folder)) {
         New-Item -ItemType Directory -Path $Folder -Force | Out-Null
         if ($Verbose) {
-            Write-Host "Dossier créé: $Folder" -ForegroundColor Green
+            Write-Host "Dossier crÃ©Ã©: $Folder" -ForegroundColor Green
         }
     }
 }
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -75,22 +140,22 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Si verbose, écrire dans un fichier de log
+    # Si verbose, Ã©crire dans un fichier de log
     if ($Verbose) {
         $LogFile = Join-Path -Path $DataPath -ChildPath "ScriptManager.log"
         Add-Content -Path $LogFile -Value $FormattedMessage
     }
 }
 
-# Fonction pour créer le module d'inventaire
+# Fonction pour crÃ©er le module d'inventaire
 function Create-InventoryModule {
     $ModulePath = Join-Path -Path $ModulesPath -ChildPath "Inventory.psm1"
     
     if (-not (Test-Path -Path $ModulePath)) {
         $ModuleContent = @'
 # Module d'inventaire des scripts
-# Ce module permet de scanner récursivement les répertoires pour trouver tous les scripts
-# et extraire leurs métadonnées
+# Ce module permet de scanner rÃ©cursivement les rÃ©pertoires pour trouver tous les scripts
+# et extraire leurs mÃ©tadonnÃ©es
 
 function Invoke-ScriptInventory {
     param (
@@ -99,9 +164,9 @@ function Invoke-ScriptInventory {
         [switch]$Verbose
     )
     
-    Write-Host "Démarrage de l'inventaire des scripts dans: $Path" -ForegroundColor Cyan
+    Write-Host "DÃ©marrage de l'inventaire des scripts dans: $Path" -ForegroundColor Cyan
     
-    # Liste des extensions de scripts à rechercher
+    # Liste des extensions de scripts Ã  rechercher
     $ScriptExtensions = @(
         ".ps1",  # PowerShell
         ".py",   # Python
@@ -110,14 +175,14 @@ function Invoke-ScriptInventory {
         ".sh"    # Shell Unix
     )
     
-    # Récupérer tous les fichiers avec les extensions spécifiées
+    # RÃ©cupÃ©rer tous les fichiers avec les extensions spÃ©cifiÃ©es
     $AllFiles = Get-ChildItem -Path $Path -Recurse -File | Where-Object {
         $_.Extension -in $ScriptExtensions
     }
     
-    Write-Host "Nombre de scripts trouvés: $($AllFiles.Count)" -ForegroundColor Cyan
+    Write-Host "Nombre de scripts trouvÃ©s: $($AllFiles.Count)" -ForegroundColor Cyan
     
-    # Créer un tableau pour stocker les informations sur les scripts
+    # CrÃ©er un tableau pour stocker les informations sur les scripts
     $ScriptsInfo = @()
     
     # Traiter chaque fichier
@@ -126,7 +191,7 @@ function Invoke-ScriptInventory {
             Write-Host "Traitement du fichier: $($File.FullName)" -ForegroundColor Cyan
         }
         
-        # Déterminer le type de script en fonction de l'extension
+        # DÃ©terminer le type de script en fonction de l'extension
         $ScriptType = switch ($File.Extension) {
             ".ps1" { "PowerShell" }
             ".py"  { "Python" }
@@ -136,10 +201,10 @@ function Invoke-ScriptInventory {
             default { "Unknown" }
         }
         
-        # Extraire les métadonnées du script
+        # Extraire les mÃ©tadonnÃ©es du script
         $Metadata = Get-ScriptMetadata -FilePath $File.FullName -ScriptType $ScriptType
         
-        # Créer un objet avec les informations du script
+        # CrÃ©er un objet avec les informations du script
         $ScriptInfo = [PSCustomObject]@{
             Path = $File.FullName
             Name = $File.Name
@@ -156,7 +221,7 @@ function Invoke-ScriptInventory {
         $ScriptsInfo += $ScriptInfo
     }
     
-    # Créer un objet avec les informations de l'inventaire
+    # CrÃ©er un objet avec les informations de l'inventaire
     $Inventory = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $ScriptsInfo.Count
@@ -172,7 +237,7 @@ function Invoke-ScriptInventory {
     # Convertir l'objet en JSON et l'enregistrer dans un fichier
     $Inventory | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    Write-Host "Inventaire terminé. Résultats enregistrés dans: $OutputPath" -ForegroundColor Green
+    Write-Host "Inventaire terminÃ©. RÃ©sultats enregistrÃ©s dans: $OutputPath" -ForegroundColor Green
     
     return $Inventory
 }
@@ -186,7 +251,7 @@ function Get-ScriptMetadata {
     # Lire le contenu du fichier
     $Content = Get-Content -Path $FilePath -Raw
     
-    # Initialiser l'objet de métadonnées
+    # Initialiser l'objet de mÃ©tadonnÃ©es
     $Metadata = @{
         Author = ""
         Description = ""
@@ -195,7 +260,7 @@ function Get-ScriptMetadata {
         Dependencies = @()
     }
     
-    # Extraire les métadonnées en fonction du type de script
+    # Extraire les mÃ©tadonnÃ©es en fonction du type de script
     switch ($ScriptType) {
         "PowerShell" {
             # Extraire l'auteur (commentaire avec Author ou par)
@@ -203,7 +268,7 @@ function Get-ScriptMetadata {
                 $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
             
-            # Extraire la description (première ligne de commentaire ou bloc de commentaires)
+            # Extraire la description (premiÃ¨re ligne de commentaire ou bloc de commentaires)
             if ($Content -match '(?m)^#\s*(.+?)$') {
                 $Metadata.Description = $matches[1].Trim()
             }
@@ -213,13 +278,13 @@ function Get-ScriptMetadata {
                 $Metadata.Version = $matches[1].Trim()
             }
             
-            # Extraire les tags (commentaires avec Tags ou Mots-clés)
-            if ($Content -match '(?m)^#\s*Tags\s*:\s*(.+?)$|^#\s*Mots-clés\s*:\s*(.+?)$') {
+            # Extraire les tags (commentaires avec Tags ou Mots-clÃ©s)
+            if ($Content -match '(?m)^#\s*Tags\s*:\s*(.+?)$|^#\s*Mots-clÃ©s\s*:\s*(.+?)$') {
                 $TagsString = if ($matches[1]) { $matches[1] } else { $matches[2] }
                 $Metadata.Tags = $TagsString -split ',' | ForEach-Object { $_.Trim() }
             }
             
-            # Extraire les dépendances (Import-Module, . source, etc.)
+            # Extraire les dÃ©pendances (Import-Module, . source, etc.)
             $ImportMatches = [regex]::Matches($Content, '(?m)^Import-Module\s+(.+?)$|^\.\s+(.+?)$')
             foreach ($Match in $ImportMatches) {
                 $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[2].Value }
@@ -232,7 +297,7 @@ function Get-ScriptMetadata {
                 $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
             
-            # Extraire la description (docstring ou première ligne de commentaire)
+            # Extraire la description (docstring ou premiÃ¨re ligne de commentaire)
             if ($Content -match '"""(.+?)"""' -or $Content -match "'''(.+?)'''") {
                 $Metadata.Description = $matches[1].Trim()
             }
@@ -251,7 +316,7 @@ function Get-ScriptMetadata {
                 $Metadata.Tags = $TagsString -split ',' | ForEach-Object { $_.Trim() }
             }
             
-            # Extraire les dépendances (import, from ... import)
+            # Extraire les dÃ©pendances (import, from ... import)
             $ImportMatches = [regex]::Matches($Content, '(?m)^import\s+(.+?)$|^from\s+(.+?)\s+import')
             foreach ($Match in $ImportMatches) {
                 $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[2].Value }
@@ -264,7 +329,7 @@ function Get-ScriptMetadata {
                 $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
             
-            # Extraire la description (première ligne de commentaire)
+            # Extraire la description (premiÃ¨re ligne de commentaire)
             if ($Content -match '(?m)^rem\s*(.+?)$|^::\s*(.+?)$') {
                 $Metadata.Description = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
@@ -280,7 +345,7 @@ function Get-ScriptMetadata {
                 $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
             
-            # Extraire la description (première ligne de commentaire)
+            # Extraire la description (premiÃ¨re ligne de commentaire)
             if ($Content -match '(?m)^#\s*(.+?)$') {
                 $Metadata.Description = $matches[1].Trim()
             }
@@ -290,7 +355,7 @@ function Get-ScriptMetadata {
                 $Metadata.Version = $matches[1].Trim()
             }
             
-            # Extraire les dépendances (source, ., etc.)
+            # Extraire les dÃ©pendances (source, ., etc.)
             $ImportMatches = [regex]::Matches($Content, '(?m)^source\s+(.+?)$|^\.\s+(.+?)$')
             foreach ($Match in $ImportMatches) {
                 $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[2].Value }
@@ -306,31 +371,31 @@ Export-ModuleMember -Function Invoke-ScriptInventory, Get-ScriptMetadata
 '@
         
         Set-Content -Path $ModulePath -Value $ModuleContent
-        Write-Log "Module d'inventaire créé: $ModulePath" -Level "SUCCESS"
+        Write-Log "Module d'inventaire crÃ©Ã©: $ModulePath" -Level "SUCCESS"
     }
 }
 
-# Fonction pour créer le module de base de données
+# Fonction pour crÃ©er le module de base de donnÃ©es
 function Create-DatabaseModule {
     $ModulePath = Join-Path -Path $ModulesPath -ChildPath "Database.psm1"
     
     if (-not (Test-Path -Path $ModulePath)) {
         $ModuleContent = @'
-# Module de base de données pour le Script Manager
-# Ce module gère la sauvegarde et le chargement des données
+# Module de base de donnÃ©es pour le Script Manager
+# Ce module gÃ¨re la sauvegarde et le chargement des donnÃ©es
 
 function Initialize-Database {
     param (
         [string]$DataPath = "data"
     )
     
-    # Vérifier si le dossier de données existe, sinon le créer
+    # VÃ©rifier si le dossier de donnÃ©es existe, sinon le crÃ©er
     if (-not (Test-Path -Path $DataPath)) {
         New-Item -ItemType Directory -Path $DataPath -Force | Out-Null
-        Write-Host "Dossier de données créé: $DataPath" -ForegroundColor Green
+        Write-Host "Dossier de donnÃ©es crÃ©Ã©: $DataPath" -ForegroundColor Green
     }
     
-    # Créer les fichiers de base de données s'ils n'existent pas
+    # CrÃ©er les fichiers de base de donnÃ©es s'ils n'existent pas
     $DatabaseFiles = @(
         "inventory.json",
         "analysis.json",
@@ -347,11 +412,11 @@ function Initialize-Database {
                 Data = @()
             } | ConvertTo-Json
             Set-Content -Path $FilePath -Value $EmptyData
-            Write-Host "Fichier de base de données créé: $FilePath" -ForegroundColor Green
+            Write-Host "Fichier de base de donnÃ©es crÃ©Ã©: $FilePath" -ForegroundColor Green
         }
     }
     
-    Write-Host "Base de données initialisée" -ForegroundColor Green
+    Write-Host "Base de donnÃ©es initialisÃ©e" -ForegroundColor Green
 }
 
 function Save-Data {
@@ -365,35 +430,35 @@ function Save-Data {
         [switch]$Append
     )
     
-    # Vérifier si le fichier existe et si on doit ajouter les données
+    # VÃ©rifier si le fichier existe et si on doit ajouter les donnÃ©es
     if ($Append -and (Test-Path -Path $FilePath)) {
-        # Charger les données existantes
+        # Charger les donnÃ©es existantes
         $ExistingData = Get-Content -Path $FilePath -Raw | ConvertFrom-Json
         
-        # Ajouter les nouvelles données
+        # Ajouter les nouvelles donnÃ©es
         if ($ExistingData.Data -is [array]) {
             $ExistingData.Data += $Data
         } else {
             $ExistingData.Data = @($ExistingData.Data, $Data)
         }
         
-        # Mettre à jour le timestamp
+        # Mettre Ã  jour le timestamp
         $ExistingData.Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         
-        # Enregistrer les données mises à jour
+        # Enregistrer les donnÃ©es mises Ã  jour
         $ExistingData | ConvertTo-Json -Depth 10 | Set-Content -Path $FilePath
     } else {
-        # Créer un nouvel objet avec les données
+        # CrÃ©er un nouvel objet avec les donnÃ©es
         $NewData = @{
             Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             Data = $Data
         } | ConvertTo-Json -Depth 10
         
-        # Enregistrer les données
+        # Enregistrer les donnÃ©es
         Set-Content -Path $FilePath -Value $NewData
     }
     
-    Write-Host "Données enregistrées dans: $FilePath" -ForegroundColor Green
+    Write-Host "DonnÃ©es enregistrÃ©es dans: $FilePath" -ForegroundColor Green
 }
 
 function Load-Data {
@@ -402,16 +467,16 @@ function Load-Data {
         [string]$FilePath
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
-        Write-Host "Fichier non trouvé: $FilePath" -ForegroundColor Red
+        Write-Host "Fichier non trouvÃ©: $FilePath" -ForegroundColor Red
         return $null
     }
     
-    # Charger les données
+    # Charger les donnÃ©es
     $Data = Get-Content -Path $FilePath -Raw | ConvertFrom-Json
     
-    Write-Host "Données chargées depuis: $FilePath" -ForegroundColor Cyan
+    Write-Host "DonnÃ©es chargÃ©es depuis: $FilePath" -ForegroundColor Cyan
     
     return $Data
 }
@@ -420,18 +485,18 @@ Export-ModuleMember -Function Initialize-Database, Save-Data, Load-Data
 '@
         
         Set-Content -Path $ModulePath -Value $ModuleContent
-        Write-Log "Module de base de données créé: $ModulePath" -Level "SUCCESS"
+        Write-Log "Module de base de donnÃ©es crÃ©Ã©: $ModulePath" -Level "SUCCESS"
     }
 }
 
-# Fonction pour créer le module d'interface en ligne de commande
+# Fonction pour crÃ©er le module d'interface en ligne de commande
 function Create-CLIModule {
     $ModulePath = Join-Path -Path $ModulesPath -ChildPath "CLI.psm1"
     
     if (-not (Test-Path -Path $ModulePath)) {
         $ModuleContent = @'
 # Module d'interface en ligne de commande pour le Script Manager
-# Ce module gère l'interface utilisateur en ligne de commande
+# Ce module gÃ¨re l'interface utilisateur en ligne de commande
 
 function Show-Help {
     Write-Host "Script Manager - Aide" -ForegroundColor Cyan
@@ -440,17 +505,17 @@ function Show-Help {
     Write-Host "Actions disponibles:" -ForegroundColor Yellow
     Write-Host "  inventory  - Effectue un inventaire des scripts"
     Write-Host "  analyze    - Analyse les scripts"
-    Write-Host "  map        - Génère une cartographie des scripts"
+    Write-Host "  map        - GÃ©nÃ¨re une cartographie des scripts"
     Write-Host "  organize   - Organise les scripts"
-    Write-Host "  document   - Génère la documentation des scripts"
+    Write-Host "  document   - GÃ©nÃ¨re la documentation des scripts"
     Write-Host "  monitor    - Surveille les modifications des scripts"
     Write-Host "  optimize   - Optimise les scripts"
     Write-Host ""
     Write-Host "Options:" -ForegroundColor Yellow
-    Write-Host "  -Target     - Cible spécifique (dossier ou script)"
+    Write-Host "  -Target     - Cible spÃ©cifique (dossier ou script)"
     Write-Host "  -AutoApply  - Applique automatiquement les recommandations"
     Write-Host "  -Format     - Format de sortie (JSON, Markdown, HTML)"
-    Write-Host "  -Verbose    - Affiche des informations détaillées"
+    Write-Host "  -Verbose    - Affiche des informations dÃ©taillÃ©es"
     Write-Host ""
     Write-Host "Exemples:" -ForegroundColor Yellow
     Write-Host "  .\ScriptManager.ps1 -Action inventory"
@@ -474,7 +539,7 @@ function Show-Banner {
     
     Write-Host $Banner -ForegroundColor Cyan
     Write-Host "Version 1.0.0" -ForegroundColor Yellow
-    Write-Host "Système de gestion proactive des scripts" -ForegroundColor Yellow
+    Write-Host "SystÃ¨me de gestion proactive des scripts" -ForegroundColor Yellow
     Write-Host ""
 }
 
@@ -520,10 +585,10 @@ function Show-ActionEnd {
     $ActionName = $ActionMap[$Action]
     
     Write-Host ""
-    Write-Host "=== $ActionName terminé ===" -ForegroundColor Green
+    Write-Host "=== $ActionName terminÃ© ===" -ForegroundColor Green
     
     if ($OutputPath) {
-        Write-Host "Résultats enregistrés dans: $OutputPath" -ForegroundColor Yellow
+        Write-Host "RÃ©sultats enregistrÃ©s dans: $OutputPath" -ForegroundColor Yellow
     }
 }
 
@@ -531,11 +596,11 @@ Export-ModuleMember -Function Show-Help, Show-Banner, Show-ActionStart, Show-Act
 '@
         
         Set-Content -Path $ModulePath -Value $ModuleContent
-        Write-Log "Module d'interface en ligne de commande créé: $ModulePath" -Level "SUCCESS"
+        Write-Log "Module d'interface en ligne de commande crÃ©Ã©: $ModulePath" -Level "SUCCESS"
     }
 }
 
-# Créer les modules
+# CrÃ©er les modules
 Create-InventoryModule
 Create-DatabaseModule
 Create-CLIModule
@@ -545,13 +610,13 @@ Import-Module (Join-Path -Path $ModulesPath -ChildPath "Inventory.psm1") -Force
 Import-Module (Join-Path -Path $ModulesPath -ChildPath "Database.psm1") -Force
 Import-Module (Join-Path -Path $ModulesPath -ChildPath "CLI.psm1") -Force
 
-# Initialiser la base de données
+# Initialiser la base de donnÃ©es
 Initialize-Database -DataPath $DataPath
 
-# Afficher la bannière
+# Afficher la banniÃ¨re
 Show-Banner
 
-# Exécuter l'action demandée
+# ExÃ©cuter l'action demandÃ©e
 Show-ActionStart -Action $Action -Target $Target
 
 switch ($Action) {
@@ -561,30 +626,40 @@ switch ($Action) {
         Show-ActionEnd -Action $Action -OutputPath $OutputPath
     }
     "analyze" {
-        Write-Log "Analyse des scripts non implémentée" -Level "WARNING"
+        Write-Log "Analyse des scripts non implÃ©mentÃ©e" -Level "WARNING"
         Show-ActionEnd -Action $Action
     }
     "map" {
-        Write-Log "Cartographie des scripts non implémentée" -Level "WARNING"
+        Write-Log "Cartographie des scripts non implÃ©mentÃ©e" -Level "WARNING"
         Show-ActionEnd -Action $Action
     }
     "organize" {
-        Write-Log "Organisation des scripts non implémentée" -Level "WARNING"
+        Write-Log "Organisation des scripts non implÃ©mentÃ©e" -Level "WARNING"
         Show-ActionEnd -Action $Action
     }
     "document" {
-        Write-Log "Documentation des scripts non implémentée" -Level "WARNING"
+        Write-Log "Documentation des scripts non implÃ©mentÃ©e" -Level "WARNING"
         Show-ActionEnd -Action $Action
     }
     "monitor" {
-        Write-Log "Surveillance des scripts non implémentée" -Level "WARNING"
+        Write-Log "Surveillance des scripts non implÃ©mentÃ©e" -Level "WARNING"
         Show-ActionEnd -Action $Action
     }
     "optimize" {
-        Write-Log "Optimisation des scripts non implémentée" -Level "WARNING"
+        Write-Log "Optimisation des scripts non implÃ©mentÃ©e" -Level "WARNING"
         Show-ActionEnd -Action $Action
     }
     default {
         Show-Help
     }
+}
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

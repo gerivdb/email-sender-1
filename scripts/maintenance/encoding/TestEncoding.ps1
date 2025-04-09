@@ -1,15 +1,25 @@
+﻿<#
+.SYNOPSIS
+    Script de test pour les fonctionnalitÃ©s de dÃ©tection et conversion d'encodage.
+.DESCRIPTION
+    Ce script permet de tester les fonctionnalitÃ©s de dÃ©tection et conversion d'encodage
+    avec diffÃ©rents types de fichiers et d'encodages.
+.EXAMPLE
+    . .\TestEncoding.ps1
+    Test-EncodingDetection
+
 <#
 .SYNOPSIS
-    Script de test pour les fonctionnalités de détection et conversion d'encodage.
+    Script de test pour les fonctionnalitÃ©s de dÃ©tection et conversion d'encodage.
 .DESCRIPTION
-    Ce script permet de tester les fonctionnalités de détection et conversion d'encodage
-    avec différents types de fichiers et d'encodages.
+    Ce script permet de tester les fonctionnalitÃ©s de dÃ©tection et conversion d'encodage
+    avec diffÃ©rents types de fichiers et d'encodages.
 .EXAMPLE
     . .\TestEncoding.ps1
     Test-EncodingDetection
 #>
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $detectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "EncodingDetector.ps1"
 $converterPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "EncodingConverter.ps1"
 
@@ -17,7 +27,7 @@ if (Test-Path -Path $detectorPath) {
     . $detectorPath
 }
 else {
-    Write-Error "Le module de détection d'encodage est requis mais introuvable à l'emplacement: $detectorPath"
+    Write-Error "Le module de dÃ©tection d'encodage est requis mais introuvable Ã  l'emplacement: $detectorPath"
     return
 }
 
@@ -25,14 +35,56 @@ if (Test-Path -Path $converterPath) {
     . $converterPath
 }
 else {
-    Write-Error "Le module de conversion d'encodage est requis mais introuvable à l'emplacement: $converterPath"
+    Write-Error "Le module de conversion d'encodage est requis mais introuvable Ã  l'emplacement: $converterPath"
     return
 }
 
 function New-TestFile {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$FilePath,
         
         [Parameter(Mandatory = $true)]
@@ -43,13 +95,13 @@ function New-TestFile {
         [string]$Encoding
     )
     
-    # Créer le dossier parent si nécessaire
+    # CrÃ©er le dossier parent si nÃ©cessaire
     $directory = Split-Path -Path $FilePath -Parent
     if (-not [string]::IsNullOrEmpty($directory) -and -not (Test-Path -Path $directory)) {
         New-Item -Path $directory -ItemType Directory -Force | Out-Null
     }
     
-    # Déterminer l'encodage
+    # DÃ©terminer l'encodage
     $encodingObj = switch ($Encoding) {
         "UTF8" { New-Object System.Text.UTF8Encoding $false }
         "UTF8-BOM" { New-Object System.Text.UTF8Encoding $true }
@@ -61,7 +113,7 @@ function New-TestFile {
         "ANSI" { [System.Text.Encoding]::GetEncoding(1252) }
     }
     
-    # Écrire le fichier
+    # Ã‰crire le fichier
     [System.IO.File]::WriteAllText($FilePath, $Content, $encodingObj)
     
     return $FilePath
@@ -74,23 +126,23 @@ function Test-EncodingDetection {
         [string]$TestDirectory = (Join-Path -Path $env:TEMP -ChildPath "EncodingTests")
     )
     
-    # Créer le répertoire de test
+    # CrÃ©er le rÃ©pertoire de test
     if (-not (Test-Path -Path $TestDirectory)) {
         New-Item -Path $TestDirectory -ItemType Directory -Force | Out-Null
     }
     
-    # Contenu de test avec des caractères spéciaux
+    # Contenu de test avec des caractÃ¨res spÃ©ciaux
     $testContent = @"
-Ceci est un fichier de test avec des caractères spéciaux:
-é è ê ë à â ä ô ö ù û ü ç
-€ £ ¥ © ® ™ ° ± × ÷ µ ¶ § ¿ ¡
-Русский текст (texte russe)
-中文文本 (texte chinois)
-日本語テキスト (texte japonais)
-한국어 텍스트 (texte coréen)
+Ceci est un fichier de test avec des caractÃ¨res spÃ©ciaux:
+Ã© Ã¨ Ãª Ã« Ã  Ã¢ Ã¤ Ã´ Ã¶ Ã¹ Ã» Ã¼ Ã§
+â‚¬ Â£ Â¥ Â© Â® â„¢ Â° Â± Ã— Ã· Âµ Â¶ Â§ Â¿ Â¡
+Ð ÑƒÑÑÐºÐ¸Ð¹ Ñ‚ÐµÐºÑÑ‚ (texte russe)
+ä¸­æ–‡æ–‡æœ¬ (texte chinois)
+æ—¥æœ¬èªžãƒ†ã‚­ã‚¹ãƒˆ (texte japonais)
+í•œêµ­ì–´ í…ìŠ¤íŠ¸ (texte corÃ©en)
 "@
     
-    # Créer des fichiers de test avec différents encodages
+    # CrÃ©er des fichiers de test avec diffÃ©rents encodages
     $testFiles = @(
         @{ Path = Join-Path -Path $TestDirectory -ChildPath "utf8.txt"; Encoding = "UTF8" }
         @{ Path = Join-Path -Path $TestDirectory -ChildPath "utf8-bom.txt"; Encoding = "UTF8-BOM" }
@@ -105,13 +157,13 @@ Ceci est un fichier de test avec des caractères spéciaux:
     $results = @()
     
     foreach ($file in $testFiles) {
-        # Créer le fichier de test
+        # CrÃ©er le fichier de test
         New-TestFile -FilePath $file.Path -Content $testContent -Encoding $file.Encoding
         
-        # Détecter l'encodage
+        # DÃ©tecter l'encodage
         $detectedEncoding = Get-FileEncoding -FilePath $file.Path
         
-        # Ajouter le résultat
+        # Ajouter le rÃ©sultat
         $results += [PSCustomObject]@{
             FilePath = $file.Path
             ExpectedEncoding = $file.Encoding
@@ -132,12 +184,12 @@ Ceci est un fichier de test avec des caractères spéciaux:
         }
     }
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     $successCount = ($results | Where-Object { $_.Success }).Count
     $totalCount = $results.Count
     
-    Write-Host "Résultats des tests de détection d'encodage:"
-    Write-Host "  Réussis: $successCount / $totalCount"
+    Write-Host "RÃ©sultats des tests de dÃ©tection d'encodage:"
+    Write-Host "  RÃ©ussis: $successCount / $totalCount"
     
     $results | Format-Table -Property FilePath, ExpectedEncoding, DetectedEncoding, HasBOM, Confidence, Success
     
@@ -154,23 +206,23 @@ function Test-EncodingConversion {
         [switch]$CleanupAfterTest
     )
     
-    # Créer le répertoire de test
+    # CrÃ©er le rÃ©pertoire de test
     if (-not (Test-Path -Path $TestDirectory)) {
         New-Item -Path $TestDirectory -ItemType Directory -Force | Out-Null
     }
     
-    # Contenu de test avec des caractères spéciaux
+    # Contenu de test avec des caractÃ¨res spÃ©ciaux
     $testContent = @"
-Ceci est un fichier de test avec des caractères spéciaux:
-é è ê ë à â ä ô ö ù û ü ç
-€ £ ¥ © ® ™ ° ± × ÷ µ ¶ § ¿ ¡
-Русский текст (texte russe)
-中文文本 (texte chinois)
-日本語テキスト (texte japonais)
-한국어 텍스트 (texte coréen)
+Ceci est un fichier de test avec des caractÃ¨res spÃ©ciaux:
+Ã© Ã¨ Ãª Ã« Ã  Ã¢ Ã¤ Ã´ Ã¶ Ã¹ Ã» Ã¼ Ã§
+â‚¬ Â£ Â¥ Â© Â® â„¢ Â° Â± Ã— Ã· Âµ Â¶ Â§ Â¿ Â¡
+Ð ÑƒÑÑÐºÐ¸Ð¹ Ñ‚ÐµÐºÑÑ‚ (texte russe)
+ä¸­æ–‡æ–‡æœ¬ (texte chinois)
+æ—¥æœ¬èªžãƒ†ã‚­ã‚¹ãƒˆ (texte japonais)
+í•œêµ­ì–´ í…ìŠ¤íŠ¸ (texte corÃ©en)
 "@
     
-    # Créer des fichiers de test avec différents encodages
+    # CrÃ©er des fichiers de test avec diffÃ©rents encodages
     $testFiles = @(
         @{ Path = Join-Path -Path $TestDirectory -ChildPath "convert-utf8.txt"; Encoding = "UTF8"; Target = "WithBOM" }
         @{ Path = Join-Path -Path $TestDirectory -ChildPath "convert-utf8-bom.txt"; Encoding = "UTF8-BOM"; Target = "WithoutBOM" }
@@ -182,10 +234,10 @@ Ceci est un fichier de test avec des caractères spéciaux:
     $results = @()
     
     foreach ($file in $testFiles) {
-        # Créer le fichier de test
+        # CrÃ©er le fichier de test
         New-TestFile -FilePath $file.Path -Content $testContent -Encoding $file.Encoding
         
-        # Détecter l'encodage initial
+        # DÃ©tecter l'encodage initial
         $initialEncoding = Get-FileEncoding -FilePath $file.Path
         
         # Convertir le fichier
@@ -196,14 +248,14 @@ Ceci est un fichier de test avec des caractères spéciaux:
             Convert-FileToUtf8WithoutBom -FilePath $file.Path
         }
         
-        # Détecter l'encodage après conversion
+        # DÃ©tecter l'encodage aprÃ¨s conversion
         $finalEncoding = Get-FileEncoding -FilePath $file.Path
         
-        # Vérifier si le contenu est préservé
+        # VÃ©rifier si le contenu est prÃ©servÃ©
         $finalContent = [System.IO.File]::ReadAllText($file.Path, $finalEncoding.Encoding)
         $contentPreserved = $finalContent -eq $testContent
         
-        # Ajouter le résultat
+        # Ajouter le rÃ©sultat
         $results += [PSCustomObject]@{
             FilePath = $file.Path
             InitialEncoding = $initialEncoding.EncodingName
@@ -219,16 +271,16 @@ Ceci est un fichier de test avec des caractères spéciaux:
         }
     }
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     $successCount = ($results | Where-Object { $_.Success }).Count
     $totalCount = $results.Count
     
-    Write-Host "Résultats des tests de conversion d'encodage:"
-    Write-Host "  Réussis: $successCount / $totalCount"
+    Write-Host "RÃ©sultats des tests de conversion d'encodage:"
+    Write-Host "  RÃ©ussis: $successCount / $totalCount"
     
     $results | Format-Table -Property FilePath, InitialEncoding, TargetType, FinalEncoding, ConversionSuccess, ContentPreserved, Success
     
-    # Nettoyer les fichiers de test si demandé
+    # Nettoyer les fichiers de test si demandÃ©
     if ($CleanupAfterTest) {
         foreach ($file in $testFiles) {
             if (Test-Path -Path $file.Path) {
@@ -250,12 +302,12 @@ function Test-DirectoryConversion {
         [switch]$CleanupAfterTest
     )
     
-    # Créer le répertoire de test
+    # CrÃ©er le rÃ©pertoire de test
     if (-not (Test-Path -Path $TestDirectory)) {
         New-Item -Path $TestDirectory -ItemType Directory -Force | Out-Null
     }
     
-    # Créer une structure de répertoires de test
+    # CrÃ©er une structure de rÃ©pertoires de test
     $subDirs = @(
         (Join-Path -Path $TestDirectory -ChildPath "scripts"),
         (Join-Path -Path $TestDirectory -ChildPath "data"),
@@ -268,18 +320,18 @@ function Test-DirectoryConversion {
         }
     }
     
-    # Contenu de test avec des caractères spéciaux
+    # Contenu de test avec des caractÃ¨res spÃ©ciaux
     $testContent = @"
-Ceci est un fichier de test avec des caractères spéciaux:
-é è ê ë à â ä ô ö ù û ü ç
-€ £ ¥ © ® ™ ° ± × ÷ µ ¶ § ¿ ¡
-Русский текст (texte russe)
-中文文本 (texte chinois)
-日本語テキスト (texte japonais)
-한국어 텍스트 (texte coréen)
+Ceci est un fichier de test avec des caractÃ¨res spÃ©ciaux:
+Ã© Ã¨ Ãª Ã« Ã  Ã¢ Ã¤ Ã´ Ã¶ Ã¹ Ã» Ã¼ Ã§
+â‚¬ Â£ Â¥ Â© Â® â„¢ Â° Â± Ã— Ã· Âµ Â¶ Â§ Â¿ Â¡
+Ð ÑƒÑÑÐºÐ¸Ð¹ Ñ‚ÐµÐºÑÑ‚ (texte russe)
+ä¸­æ–‡æ–‡æœ¬ (texte chinois)
+æ—¥æœ¬èªžãƒ†ã‚­ã‚¹ãƒˆ (texte japonais)
+í•œêµ­ì–´ í…ìŠ¤íŠ¸ (texte corÃ©en)
 "@
     
-    # Créer des fichiers de test avec différents encodages et extensions
+    # CrÃ©er des fichiers de test avec diffÃ©rents encodages et extensions
     $testFiles = @(
         @{ Path = Join-Path -Path $subDirs[0] -ChildPath "script1.ps1"; Encoding = "UTF8" }
         @{ Path = Join-Path -Path $subDirs[0] -ChildPath "script2.ps1"; Encoding = "ANSI" }
@@ -290,22 +342,22 @@ Ceci est un fichier de test avec des caractères spéciaux:
         @{ Path = Join-Path -Path $subDirs[2] -ChildPath "settings.ini"; Encoding = "UTF8" }
     )
     
-    # Créer les fichiers de test
+    # CrÃ©er les fichiers de test
     foreach ($file in $testFiles) {
         New-TestFile -FilePath $file.Path -Content $testContent -Encoding $file.Encoding
     }
     
-    # Convertir le répertoire
+    # Convertir le rÃ©pertoire
     $conversionResult = Convert-DirectoryEncoding -Path $TestDirectory -Recurse -CreateBackup
     
-    # Vérifier les résultats
+    # VÃ©rifier les rÃ©sultats
     $results = @()
     
     foreach ($file in $testFiles) {
-        # Détecter l'encodage après conversion
+        # DÃ©tecter l'encodage aprÃ¨s conversion
         $finalEncoding = Get-FileEncoding -FilePath $file.Path
         
-        # Déterminer l'encodage attendu en fonction de l'extension
+        # DÃ©terminer l'encodage attendu en fonction de l'extension
         $extension = [System.IO.Path]::GetExtension($file.Path).ToLower()
         $expectedBOM = switch ($extension) {
             ".ps1" { $true }
@@ -316,11 +368,11 @@ Ceci est un fichier de test avec des caractères spéciaux:
             default { $false }
         }
         
-        # Vérifier si le contenu est préservé
+        # VÃ©rifier si le contenu est prÃ©servÃ©
         $finalContent = [System.IO.File]::ReadAllText($file.Path, $finalEncoding.Encoding)
         $contentPreserved = $finalContent -eq $testContent
         
-        # Ajouter le résultat
+        # Ajouter le rÃ©sultat
         $results += [PSCustomObject]@{
             FilePath = $file.Path
             InitialEncoding = $file.Encoding
@@ -332,16 +384,16 @@ Ceci est un fichier de test avec des caractères spéciaux:
         }
     }
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     $successCount = ($results | Where-Object { $_.Success }).Count
     $totalCount = $results.Count
     
-    Write-Host "Résultats des tests de conversion de répertoire:"
-    Write-Host "  Réussis: $successCount / $totalCount"
+    Write-Host "RÃ©sultats des tests de conversion de rÃ©pertoire:"
+    Write-Host "  RÃ©ussis: $successCount / $totalCount"
     
     $results | Format-Table -Property FilePath, InitialEncoding, FinalEncoding, HasBOM, ExpectedBOM, ContentPreserved, Success
     
-    # Nettoyer les fichiers de test si demandé
+    # Nettoyer les fichiers de test si demandÃ©
     if ($CleanupAfterTest) {
         foreach ($file in $testFiles) {
             if (Test-Path -Path $file.Path) {
@@ -369,3 +421,13 @@ Ceci est un fichier de test avec des caractères spéciaux:
 
 # Exporter les fonctions
 Export-ModuleMember -Function New-TestFile, Test-EncodingDetection, Test-EncodingConversion, Test-DirectoryConversion
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

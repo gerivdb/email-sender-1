@@ -1,14 +1,14 @@
-{
+﻿{
     "BrokenReferences":  [
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\CharacterNormalizer.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\CharacterNormalizer.ps1",
                                  "ReferencePath":  "C:\\path\\to\\file.txt",
                                  "LineNumbers":  [
                                                      29
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
                                  "ReferencePath":  "D:\\rapport.json",
                                  "LineNumbers":  [
                                                      18,
@@ -16,28 +16,28 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
                                  "ReferencePath":  "(?:Get-ChildItem|Get-Content|Set-Content|Test-Path|Remove-Item|Copy-Item|Move-Item|New-Item)\\s+(?:-Path\\s+)?[",
                                  "LineNumbers":  [
                                                      87
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
                                  "ReferencePath":  "(?:Import-Module|Import-PSModule|Import-Script)\\s+(?:-Path\\s+)?[",
                                  "LineNumbers":  [
                                                      89
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences-Fixed.ps1",
                                  "ReferencePath":  "(?:Invoke-Expression|Invoke-Command|Invoke-Script)\\s+(?:-Command\\s+)?[",
                                  "LineNumbers":  [
                                                      91
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
                                  "ReferencePath":  "D:\\rapport.json",
                                  "LineNumbers":  [
                                                      18,
@@ -45,42 +45,42 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
                                  "ReferencePath":  "(?:Get-ChildItem|Get-Content|Set-Content|Test-Path|Remove-Item|Copy-Item|Move-Item|New-Item)\\s+(?:-Path\\s+)?[",
                                  "LineNumbers":  [
                                                      87
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
                                  "ReferencePath":  "(?:Import-Module|Import-PSModule|Import-Script)\\s+(?:-Path\\s+)?[",
                                  "LineNumbers":  [
                                                      89
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Detect-BrokenReferences.ps1",
                                  "ReferencePath":  "(?:Invoke-Expression|Invoke-Command|Invoke-Script)\\s+(?:-Command\\s+)?[",
                                  "LineNumbers":  [
                                                      91
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\EncodingConverter.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\EncodingConverter.ps1",
                                  "ReferencePath":  "C:\\path\\to\\file.ps1",
                                  "LineNumbers":  [
                                                      9
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\EncodingDetector.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\EncodingDetector.ps1",
                                  "ReferencePath":  "C:\\path\\to\\file.ps1",
                                  "LineNumbers":  [
                                                      13
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix-all-encodings.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix-all-encodings.ps1",
                                  "ReferencePath":  ".git",
                                  "LineNumbers":  [
                                                      57,
@@ -88,7 +88,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix-encoding-utf8.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix-encoding-utf8.ps1",
                                  "ReferencePath":  "workflows",
                                  "LineNumbers":  [
                                                      4,
@@ -97,7 +97,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
                                  "ReferencePath":  "$DetectScript",
                                  "LineNumbers":  [
                                                      74,
@@ -107,7 +107,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References-Fixed.ps1",
                                  "ReferencePath":  "$UpdateScript",
                                  "LineNumbers":  [
                                                      119,
@@ -117,7 +117,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
                                  "ReferencePath":  "$DetectScript",
                                  "LineNumbers":  [
                                                      74,
@@ -127,7 +127,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Manage-References.ps1",
                                  "ReferencePath":  "$UpdateScript",
                                  "LineNumbers":  [
                                                      119,
@@ -137,7 +137,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences-Fixed.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences-Fixed.ps1",
                                  "ReferencePath":  "scripts",
                                  "LineNumbers":  [
                                                      3,
@@ -146,7 +146,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\Update-BrokenReferences.ps1",
                                  "ReferencePath":  "scripts",
                                  "LineNumbers":  [
                                                      3,
@@ -155,7 +155,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_all_workflows.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_all_workflows.py",
                                  "ReferencePath":  "os",
                                  "LineNumbers":  [
                                                      1,
@@ -169,7 +169,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_all_workflows.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_all_workflows.py",
                                  "ReferencePath":  "json",
                                  "LineNumbers":  [
                                                      2,
@@ -178,7 +178,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_all_workflows.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_all_workflows.py",
                                  "ReferencePath":  "re",
                                  "LineNumbers":  [
                                                      3,
@@ -223,14 +223,14 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_all_workflows.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_all_workflows.py",
                                  "ReferencePath":  "these",
                                  "LineNumbers":  [
                                                      86
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding.py",
                                  "ReferencePath":  "sys",
                                  "LineNumbers":  [
                                                      1,
@@ -243,7 +243,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding.py",
                                  "ReferencePath":  "os",
                                  "LineNumbers":  [
                                                      2,
@@ -251,7 +251,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding_simple.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding_simple.py",
                                  "ReferencePath":  "os",
                                  "LineNumbers":  [
                                                      1,
@@ -265,7 +265,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding_simple.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding_simple.py",
                                  "ReferencePath":  "json",
                                  "LineNumbers":  [
                                                      2,
@@ -275,7 +275,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding_simple.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding_simple.py",
                                  "ReferencePath":  "re",
                                  "LineNumbers":  [
                                                      3,
@@ -321,14 +321,14 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding_simple.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_encoding_simple.py",
                                  "ReferencePath":  "these",
                                  "LineNumbers":  [
                                                      86
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_n8n_connections.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_n8n_connections.py",
                                  "ReferencePath":  "json",
                                  "LineNumbers":  [
                                                      1,
@@ -347,21 +347,21 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_n8n_connections.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_n8n_connections.py",
                                  "ReferencePath":  "os",
                                  "LineNumbers":  [
                                                      2
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_n8n_connections.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_n8n_connections.py",
                                  "ReferencePath":  "sys",
                                  "LineNumbers":  [
                                                      3
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_workflow_names.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_workflow_names.py",
                                  "ReferencePath":  "os",
                                  "LineNumbers":  [
                                                      1,
@@ -375,7 +375,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_workflow_names.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_workflow_names.py",
                                  "ReferencePath":  "json",
                                  "LineNumbers":  [
                                                      2,
@@ -392,7 +392,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_workflow_names.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_workflow_names.py",
                                  "ReferencePath":  "re",
                                  "LineNumbers":  [
                                                      3,
@@ -421,14 +421,14 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_workflow_names.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\fix_workflow_names.py",
                                  "ReferencePath":  "these",
                                  "LineNumbers":  [
                                                      97
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\list_n8n_workflows.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\list_n8n_workflows.py",
                                  "ReferencePath":  "requests",
                                  "LineNumbers":  [
                                                      1,
@@ -436,7 +436,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\list_n8n_workflows.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\list_n8n_workflows.py",
                                  "ReferencePath":  "json",
                                  "LineNumbers":  [
                                                      2,
@@ -444,7 +444,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\list_n8n_workflows.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\list_n8n_workflows.py",
                                  "ReferencePath":  "datetime",
                                  "LineNumbers":  [
                                                      3,
@@ -452,7 +452,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
                                  "ReferencePath":  "os",
                                  "LineNumbers":  [
                                                      1,
@@ -466,7 +466,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
                                  "ReferencePath":  "json",
                                  "LineNumbers":  [
                                                      2,
@@ -477,7 +477,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
                                  "ReferencePath":  "unicodedata",
                                  "LineNumbers":  [
                                                      3,
@@ -486,7 +486,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
                                  "ReferencePath":  "re",
                                  "LineNumbers":  [
                                                      4,
@@ -510,14 +510,14 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\remove_accents.py",
                                  "ReferencePath":  "these",
                                  "LineNumbers":  [
                                                      61
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\simple_fix.py",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\encoding\\simple_fix.py",
                                  "ReferencePath":  "sys",
                                  "LineNumbers":  [
                                                      1,

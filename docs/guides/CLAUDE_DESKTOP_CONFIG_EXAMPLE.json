@@ -1,11 +1,11 @@
-{
+﻿{
   "mcpServers": {
     "filesystem": {
       "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1"
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
       ]
     }
   }

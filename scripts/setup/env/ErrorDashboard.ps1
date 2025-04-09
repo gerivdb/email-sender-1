@@ -1,12 +1,12 @@
-# Script pour générer un tableau de bord de suivi des erreurs
+﻿# Script pour gÃ©nÃ©rer un tableau de bord de suivi des erreurs
 
-# Importer le module de collecte de données
+# Importer le module de collecte de donnÃ©es
 $collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "ErrorDataCollector.ps1"
 if (Test-Path -Path $collectorPath) {
     . $collectorPath
 }
 else {
-    Write-Error "Le module de collecte de données est introuvable: $collectorPath"
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
     return
 }
 
@@ -21,20 +21,97 @@ $DashboardConfig = @{
     # Titre du tableau de bord
     Title = "Tableau de bord de suivi des erreurs"
     
-    # Période par défaut (en jours)
+    # PÃ©riode par dÃ©faut (en jours)
     DefaultPeriod = 30
     
-    # Actualisation automatique (en secondes, 0 pour désactiver)
+    # Actualisation automatique (en secondes, 0 pour dÃ©sactiver)
     AutoRefresh = 300
     
-    # Thème (light ou dark)
+    # ThÃ¨me (light ou dark)
+    Theme = "dark"
+}
+
+# Fonction pour initialiser le tableau de bord
+
+# Script pour gÃ©nÃ©rer un tableau de bord de suivi des erreurs
+
+# Importer le module de collecte de donnÃ©es
+$collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "ErrorDataCollector.ps1"
+if (Test-Path -Path $collectorPath) {
+    . $collectorPath
+}
+else {
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
+    return
+}
+
+# Configuration du tableau de bord
+$DashboardConfig = @{
+    # Dossier de sortie du tableau de bord
+    OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorDashboard"
+    
+    # Nom du fichier HTML
+    HtmlFile = "index.html"
+    
+    # Titre du tableau de bord
+    Title = "Tableau de bord de suivi des erreurs"
+    
+    # PÃ©riode par dÃ©faut (en jours)
+    DefaultPeriod = 30
+    
+    # Actualisation automatique (en secondes, 0 pour dÃ©sactiver)
+    AutoRefresh = 300
+    
+    # ThÃ¨me (light ou dark)
     Theme = "dark"
 }
 
 # Fonction pour initialiser le tableau de bord
 function Initialize-ErrorDashboard {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$OutputFolder = "",
         
         [Parameter(Mandatory = $false)]
@@ -51,7 +128,7 @@ function Initialize-ErrorDashboard {
         [string]$Theme = "dark"
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $DashboardConfig.OutputFolder = $OutputFolder
     }
@@ -67,18 +144,18 @@ function Initialize-ErrorDashboard {
     $DashboardConfig.AutoRefresh = $AutoRefresh
     $DashboardConfig.Theme = $Theme
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $DashboardConfig.OutputFolder)) {
         New-Item -Path $DashboardConfig.OutputFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Initialiser le collecteur de données
+    # Initialiser le collecteur de donnÃ©es
     Initialize-ErrorDataCollector
     
     return $DashboardConfig
 }
 
-# Fonction pour générer le tableau de bord HTML
+# Fonction pour gÃ©nÃ©rer le tableau de bord HTML
 function New-ErrorDashboard {
     param (
         [Parameter(Mandatory = $false)]
@@ -88,18 +165,18 @@ function New-ErrorDashboard {
         [switch]$OpenInBrowser
     )
     
-    # Utiliser la période par défaut si non spécifiée
+    # Utiliser la pÃ©riode par dÃ©faut si non spÃ©cifiÃ©e
     if ($Days -le 0) {
         $Days = $DashboardConfig.DefaultPeriod
     }
     
-    # Obtenir les données
+    # Obtenir les donnÃ©es
     $errors = Get-ErrorData -Days $Days
     $stats = Get-ErrorStatistics
     
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $dailyErrorsData = @()
-    $daysToShow = [Math]::Min($Days, 30)  # Limiter à 30 jours pour le graphique
+    $daysToShow = [Math]::Min($Days, 30)  # Limiter Ã  30 jours pour le graphique
     
     for ($i = $daysToShow - 1; $i -ge 0; $i--) {
         $day = (Get-Date).AddDays(-$i).ToString("yyyy-MM-dd")
@@ -111,7 +188,7 @@ function New-ErrorDashboard {
         }
     }
     
-    # Préparer les données pour les graphiques circulaires
+    # PrÃ©parer les donnÃ©es pour les graphiques circulaires
     $categoryData = @()
     foreach ($category in $stats.ErrorsByCategory.PSObject.Properties) {
         $categoryData += @{
@@ -136,7 +213,7 @@ function New-ErrorDashboard {
         }
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -327,13 +404,13 @@ function New-ErrorDashboard {
         <div class="header">
             <h1>$($DashboardConfig.Title)</h1>
             <div>
-                <span>Dernière mise à jour: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>DerniÃ¨re mise Ã  jour: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="filters">
             <div class="filter-group">
-                <label for="period">Période:</label>
+                <label for="period">PÃ©riode:</label>
                 <select id="period">
                     <option value="7" $(if ($Days -eq 7) { "selected" } else { "" })>7 jours</option>
                     <option value="14" $(if ($Days -eq 14) { "selected" } else { "" })>14 jours</option>
@@ -343,7 +420,7 @@ function New-ErrorDashboard {
             </div>
             
             <div class="filter-group">
-                <label for="severity">Sévérité:</label>
+                <label for="severity">SÃ©vÃ©ritÃ©:</label>
                 <select id="severity">
                     <option value="">Toutes</option>
                     <option value="Error">Erreur</option>
@@ -353,7 +430,7 @@ function New-ErrorDashboard {
             </div>
             
             <div class="filter-group">
-                <label for="category">Catégorie:</label>
+                <label for="category">CatÃ©gorie:</label>
                 <select id="category">
                     <option value="">Toutes</option>
                     $(foreach ($category in $stats.ErrorsByCategory.PSObject.Properties) {
@@ -372,7 +449,7 @@ function New-ErrorDashboard {
             </div>
             
             <div class="stat-card">
-                <h3>Erreurs (Sévérité)</h3>
+                <h3>Erreurs (SÃ©vÃ©ritÃ©)</h3>
                 <div class="stat-value">$($stats.ErrorsBySeverity.Error)</div>
             </div>
             
@@ -394,12 +471,12 @@ function New-ErrorDashboard {
             </div>
             
             <div class="chart-card">
-                <h3>Erreurs par catégorie</h3>
+                <h3>Erreurs par catÃ©gorie</h3>
                 <canvas id="category-chart"></canvas>
             </div>
             
             <div class="chart-card">
-                <h3>Erreurs par sévérité</h3>
+                <h3>Erreurs par sÃ©vÃ©ritÃ©</h3>
                 <canvas id="severity-chart"></canvas>
             </div>
             
@@ -409,13 +486,13 @@ function New-ErrorDashboard {
             </div>
         </div>
         
-        <h2>Dernières erreurs</h2>
+        <h2>DerniÃ¨res erreurs</h2>
         <table class="errors-table">
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Sévérité</th>
-                    <th>Catégorie</th>
+                    <th>SÃ©vÃ©ritÃ©</th>
+                    <th>CatÃ©gorie</th>
                     <th>Source</th>
                     <th>Message</th>
                 </tr>
@@ -443,12 +520,12 @@ function New-ErrorDashboard {
         </table>
         
         <div class="footer">
-            <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | Période: $Days jours</p>
+            <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | PÃ©riode: $Days jours</p>
         </div>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const dailyErrorsData = $(ConvertTo-Json -InputObject $dailyErrorsData);
         const categoryData = $(ConvertTo-Json -InputObject $categoryData);
         const severityData = $(ConvertTo-Json -InputObject $severityData);
@@ -501,7 +578,7 @@ function New-ErrorDashboard {
             }
         });
         
-        // Graphique des erreurs par catégorie
+        // Graphique des erreurs par catÃ©gorie
         const categoryCtx = document.getElementById('category-chart').getContext('2d');
         new Chart(categoryCtx, {
             type: 'pie',
@@ -522,7 +599,7 @@ function New-ErrorDashboard {
             }
         });
         
-        // Graphique des erreurs par sévérité
+        // Graphique des erreurs par sÃ©vÃ©ritÃ©
         const severityCtx = document.getElementById('severity-chart').getContext('2d');
         new Chart(severityCtx, {
             type: 'pie',
@@ -591,7 +668,7 @@ function New-ErrorDashboard {
     $outputPath = Join-Path -Path $DashboardConfig.OutputFolder -ChildPath $DashboardConfig.HtmlFile
     $html | Set-Content -Path $outputPath -Encoding UTF8
     
-    # Ouvrir dans le navigateur si demandé
+    # Ouvrir dans le navigateur si demandÃ©
     if ($OpenInBrowser) {
         Start-Process $outputPath
     }
@@ -599,7 +676,7 @@ function New-ErrorDashboard {
     return $outputPath
 }
 
-# Fonction pour démarrer un serveur web simple pour le tableau de bord
+# Fonction pour dÃ©marrer un serveur web simple pour le tableau de bord
 function Start-ErrorDashboardServer {
     param (
         [Parameter(Mandatory = $false)]
@@ -609,16 +686,16 @@ function Start-ErrorDashboardServer {
         [switch]$OpenInBrowser
     )
     
-    # Générer le tableau de bord
+    # GÃ©nÃ©rer le tableau de bord
     $dashboardPath = New-ErrorDashboard
     
-    # Démarrer le serveur HTTP
+    # DÃ©marrer le serveur HTTP
     $listener = New-Object System.Net.HttpListener
     $listener.Prefixes.Add("http://localhost:$Port/")
     $listener.Start()
     
-    Write-Host "Serveur démarré sur http://localhost:$Port/"
-    Write-Host "Appuyez sur Ctrl+C pour arrêter le serveur."
+    Write-Host "Serveur dÃ©marrÃ© sur http://localhost:$Port/"
+    Write-Host "Appuyez sur Ctrl+C pour arrÃªter le serveur."
     
     if ($OpenInBrowser) {
         Start-Process "http://localhost:$Port/"
@@ -633,7 +710,7 @@ function Start-ErrorDashboardServer {
             $localPath = $request.Url.LocalPath
             $queryString = $request.Url.Query
             
-            # Analyser les paramètres de requête
+            # Analyser les paramÃ¨tres de requÃªte
             $days = $DashboardConfig.DefaultPeriod
             $severity = ""
             $category = ""
@@ -654,18 +731,18 @@ function Start-ErrorDashboardServer {
                 }
             }
             
-            # Générer le tableau de bord avec les filtres
+            # GÃ©nÃ©rer le tableau de bord avec les filtres
             $dashboardPath = New-ErrorDashboard -Days $days
             
             # Lire le contenu du fichier
             $content = Get-Content -Path $dashboardPath -Raw
             
-            # Définir les en-têtes de réponse
+            # DÃ©finir les en-tÃªtes de rÃ©ponse
             $buffer = [System.Text.Encoding]::UTF8.GetBytes($content)
             $response.ContentLength64 = $buffer.Length
             $response.ContentType = "text/html; charset=UTF-8"
             
-            # Envoyer la réponse
+            # Envoyer la rÃ©ponse
             $output = $response.OutputStream
             $output.Write($buffer, 0, $buffer.Length)
             $output.Close()
@@ -678,3 +755,13 @@ function Start-ErrorDashboardServer {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ErrorDashboard, New-ErrorDashboard, Start-ErrorDashboardServer
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

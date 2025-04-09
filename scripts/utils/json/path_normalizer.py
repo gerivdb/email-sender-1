@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -96,13 +96,13 @@ class PathNormalizer:
         if fix_paths:
             # Ancien chemin (avec espaces et accents)
             old_path_variants = [
-                r"D:\\DO\\WEB\\N8N tests\\scripts json à tester\\EMAIL SENDER 1",
-                r"D:/DO/WEB/N8N tests/scripts json à tester/EMAIL SENDER 1",
-                r"D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1"
+                r"D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1",
+                r"D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1",
+                r"D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
             ]
             
             # Nouveau chemin (avec underscores)
-            new_path = r"D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1"
+            new_path = r"D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
             
             # Remplacer les anciens chemins par le nouveau chemin
             for variant in old_path_variants:

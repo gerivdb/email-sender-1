@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -50,7 +50,7 @@ def generate_documentation():
     """Génère une documentation sur l'organisation des scripts workflow."""
     
     # Définir le répertoire racine des scripts workflow
-    workflow_dir = Path("D:/DO/WEB/N8N_tests/scripts_ json_a_ tester/EMAIL_SENDER_1/scripts/workflow")
+    workflow_dir = Path("D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1/scripts/workflow")
     
     # Vérifier que le répertoire existe
     if not workflow_dir.exists():

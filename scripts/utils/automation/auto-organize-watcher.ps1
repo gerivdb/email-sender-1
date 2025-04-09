@@ -57,10 +57,112 @@ $rules = @(
 )
 
 # Fonction pour dÃ©terminer la destination d'un fichier
+
+# Script pour surveiller et organiser automatiquement les nouveaux fichiers
+# Ce script surveille le dÃ©pÃ´t et organise automatiquement les nouveaux fichiers
+
+# Importation des modules nÃ©cessaires
+Add-Type -AssemblyName System.IO.FileSystem.Watcher
+
+# DÃ©finition des rÃ¨gles d'organisation
+$rules = @(
+    # Fichiers de configuration JSON
+    @{
+        Pattern = "*.settings.json", "*_settings.json", "settings.json"
+        Destination = "config\vscode"
+        Exclude = ".github"
+    },
+    # Fichiers CMD
+    @{
+        Pattern = "*.cmd"
+        Destination = "scripts\cmd\batch"
+        Exclude = "scripts\cmd"
+    },
+    # Fichiers de redÃ©marrage
+    @{
+        Pattern = "restart_*.cmd"
+        Destination = "scripts\cmd\batch"
+        Exclude = "scripts\cmd"
+    },
+    # Fichiers MCP
+    @{
+        Pattern = "mcp-*.cmd", "*-mcp-*.cmd"
+        Destination = "scripts\cmd\mcp"
+        Exclude = "scripts\cmd"
+    },
+    # Fichiers Augment
+    @{
+        Pattern = "augment-*.cmd"
+        Destination = "scripts\cmd\augment"
+        Exclude = "scripts\cmd"
+    },
+    # Fichiers de log
+    @{
+        Pattern = "*.log"
+        Destination = "logs\daily"
+        Exclude = "logs"
+    },
+    # Fichiers Markdown
+    @{
+        Pattern = "GUIDE_*.md", "guide_*.md"
+        Destination = "docs\guides"
+        Exclude = "docs"
+    },
+    # Fichiers de workflow
+    @{
+        Pattern = "*.workflow.json", "*_workflow.json"
+        Destination = "workflows"
+        Exclude = "workflows"
+    }
+)
+
+# Fonction pour dÃ©terminer la destination d'un fichier
 function Get-FileDestination {
     param (
         [string]$FilePath
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     $fileName = [System.IO.Path]::GetFileName($FilePath)
     $fileDir = [System.IO.Path]::GetDirectoryName($FilePath)
@@ -182,4 +284,14 @@ if ($args.Count -gt 0) {
     Start-FileWatcher -Path $path
 } else {
     Start-FileWatcher
+}
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

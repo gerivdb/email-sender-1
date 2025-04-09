@@ -1,27 +1,91 @@
-# Script pour détecter de nouveaux patterns d'erreur
+﻿# Script pour dÃ©tecter de nouveaux patterns d'erreur
 
 # Configuration
 $PatternConfig = @{
     # Dossier des patterns d'erreur
     PatternsFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorPatterns"
     
-    # Fichier de base de données des patterns
+    # Fichier de base de donnÃ©es des patterns
     PatternsFile = Join-Path -Path $env:TEMP -ChildPath "ErrorPatterns\patterns.json"
     
-    # Dossier des logs à analyser
+    # Dossier des logs Ã  analyser
     LogsFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorLogs"
     
-    # Seuil de similarité pour considérer un pattern comme nouveau
+    # Seuil de similaritÃ© pour considÃ©rer un pattern comme nouveau
     SimilarityThreshold = 0.7
     
-    # Nombre minimum d'occurrences pour considérer un pattern
+    # Nombre minimum d'occurrences pour considÃ©rer un pattern
     MinOccurrences = 3
 }
 
-# Fonction pour initialiser la détection de patterns
+# Fonction pour initialiser la dÃ©tection de patterns
+
+# Script pour dÃ©tecter de nouveaux patterns d'erreur
+
+# Configuration
+$PatternConfig = @{
+    # Dossier des patterns d'erreur
+    PatternsFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorPatterns"
+    
+    # Fichier de base de donnÃ©es des patterns
+    PatternsFile = Join-Path -Path $env:TEMP -ChildPath "ErrorPatterns\patterns.json"
+    
+    # Dossier des logs Ã  analyser
+    LogsFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorLogs"
+    
+    # Seuil de similaritÃ© pour considÃ©rer un pattern comme nouveau
+    SimilarityThreshold = 0.7
+    
+    # Nombre minimum d'occurrences pour considÃ©rer un pattern
+    MinOccurrences = 3
+}
+
+# Fonction pour initialiser la dÃ©tection de patterns
 function Initialize-PatternDetection {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$PatternsFolder = "",
         
         [Parameter(Mandatory = $false)]
@@ -37,7 +101,7 @@ function Initialize-PatternDetection {
         [int]$MinOccurrences = 0
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($PatternsFolder)) {
         $PatternConfig.PatternsFolder = $PatternsFolder
     }
@@ -58,14 +122,14 @@ function Initialize-PatternDetection {
         $PatternConfig.MinOccurrences = $MinOccurrences
     }
     
-    # Créer les dossiers s'ils n'existent pas
+    # CrÃ©er les dossiers s'ils n'existent pas
     foreach ($folder in @($PatternConfig.PatternsFolder, $PatternConfig.LogsFolder)) {
         if (-not (Test-Path -Path $folder)) {
             New-Item -Path $folder -ItemType Directory -Force | Out-Null
         }
     }
     
-    # Créer le fichier de patterns s'il n'existe pas
+    # CrÃ©er le fichier de patterns s'il n'existe pas
     if (-not (Test-Path -Path $PatternConfig.PatternsFile)) {
         $initialPatterns = @{
             Patterns = @()
@@ -106,7 +170,7 @@ function Add-ErrorPattern {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier de patterns existe
+    # VÃ©rifier si le fichier de patterns existe
     if (-not (Test-Path -Path $PatternConfig.PatternsFile)) {
         Initialize-PatternDetection
     }
@@ -114,15 +178,15 @@ function Add-ErrorPattern {
     # Charger les patterns existants
     $patternsData = Get-Content -Path $PatternConfig.PatternsFile -Raw | ConvertFrom-Json
     
-    # Vérifier si le pattern existe déjà
+    # VÃ©rifier si le pattern existe dÃ©jÃ 
     $existingPattern = $patternsData.Patterns | Where-Object { $_.Pattern -eq $Pattern -or $_.Name -eq $Name }
     
     if ($existingPattern) {
-        Write-Warning "Un pattern avec ce nom ou cette expression existe déjà."
+        Write-Warning "Un pattern avec ce nom ou cette expression existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer le pattern
+    # CrÃ©er le pattern
     $newPattern = @{
         ID = [Guid]::NewGuid().ToString()
         Pattern = $Pattern
@@ -147,7 +211,7 @@ function Add-ErrorPattern {
     return $newPattern
 }
 
-# Fonction pour analyser les logs et détecter des patterns
+# Fonction pour analyser les logs et dÃ©tecter des patterns
 function Find-ErrorPatterns {
     param (
         [Parameter(Mandatory = $false)]
@@ -163,12 +227,12 @@ function Find-ErrorPatterns {
         [switch]$IncludeExisting
     )
     
-    # Utiliser le dossier de logs par défaut si non spécifié
+    # Utiliser le dossier de logs par dÃ©faut si non spÃ©cifiÃ©
     if ([string]::IsNullOrEmpty($LogsFolder)) {
         $LogsFolder = $PatternConfig.LogsFolder
     }
     
-    # Vérifier si le dossier de logs existe
+    # VÃ©rifier si le dossier de logs existe
     if (-not (Test-Path -Path $LogsFolder)) {
         Write-Error "Le dossier de logs n'existe pas: $LogsFolder"
         return $null
@@ -197,7 +261,7 @@ function Find-ErrorPatterns {
         $errorMatches = [regex]::Matches($content, "(?i)error|exception|failed|failure|crash|fatal")
         
         foreach ($match in $errorMatches) {
-            # Extraire le contexte de l'erreur (ligne complète)
+            # Extraire le contexte de l'erreur (ligne complÃ¨te)
             $lineStart = $content.LastIndexOf("`n", $match.Index) + 1
             if ($lineStart -lt 0) { $lineStart = 0 }
             
@@ -220,9 +284,9 @@ function Find-ErrorPatterns {
         }
     }
     
-    Write-Host "Trouvé $($errors.Count) erreurs potentielles."
+    Write-Host "TrouvÃ© $($errors.Count) erreurs potentielles."
     
-    # Vérifier les patterns existants
+    # VÃ©rifier les patterns existants
     if ($IncludeExisting) {
         foreach ($pattern in $existingPatterns) {
             $regex = [regex]$pattern.Pattern
@@ -235,11 +299,11 @@ function Find-ErrorPatterns {
                 }
             }
             
-            # Mettre à jour le nombre d'occurrences
+            # Mettre Ã  jour le nombre d'occurrences
             $pattern.Occurrences += $matchCount
         }
         
-        # Enregistrer les patterns mis à jour
+        # Enregistrer les patterns mis Ã  jour
         $patternsData.LastUpdate = Get-Date -Format "o"
         $patternsData | ConvertTo-Json -Depth 5 | Set-Content -Path $PatternConfig.PatternsFile
     }
@@ -272,24 +336,24 @@ function Find-ErrorPatterns {
     # Filtrer les groupes par nombre d'occurrences
     $significantGroups = $groups.GetEnumerator() | Where-Object { $_.Value.Count -ge $PatternConfig.MinOccurrences }
     
-    Write-Host "Trouvé $($significantGroups.Count) groupes d'erreurs significatifs."
+    Write-Host "TrouvÃ© $($significantGroups.Count) groupes d'erreurs significatifs."
     
-    # Générer des patterns pour chaque groupe
+    # GÃ©nÃ©rer des patterns pour chaque groupe
     foreach ($group in $significantGroups) {
         $representative = $group.Key
         $occurrences = $group.Value.Count
         
-        # Générer un pattern à partir des occurrences
+        # GÃ©nÃ©rer un pattern Ã  partir des occurrences
         $pattern = Get-GeneralizedPattern -Strings ($group.Value | ForEach-Object { $_.Line })
         
-        # Créer un nom pour le pattern
+        # CrÃ©er un nom pour le pattern
         $name = "Pattern_" + [Guid]::NewGuid().ToString().Substring(0, 8)
         
         # Ajouter le pattern
         $potentialPatterns += @{
             Pattern = $pattern
             Name = $name
-            Description = "Pattern détecté automatiquement"
+            Description = "Pattern dÃ©tectÃ© automatiquement"
             Category = "Auto-detected"
             Severity = "Warning"
             Solution = ""
@@ -301,7 +365,7 @@ function Find-ErrorPatterns {
     return $potentialPatterns
 }
 
-# Fonction pour calculer la similarité entre deux chaînes
+# Fonction pour calculer la similaritÃ© entre deux chaÃ®nes
 function Get-StringSimilarity {
     param (
         [Parameter(Mandatory = $true)]
@@ -311,7 +375,7 @@ function Get-StringSimilarity {
         [string]$String2
     )
     
-    # Utiliser la distance de Levenshtein pour calculer la similarité
+    # Utiliser la distance de Levenshtein pour calculer la similaritÃ©
     $maxLength = [Math]::Max($String1.Length, $String2.Length)
     if ($maxLength -eq 0) {
         return 1.0
@@ -336,15 +400,15 @@ function Get-LevenshteinDistance {
     $len1 = $String1.Length
     $len2 = $String2.Length
     
-    # Créer la matrice de distance
+    # CrÃ©er la matrice de distance
     $distance = New-Object 'int[,]' ($len1 + 1), ($len2 + 1)
     
-    # Initialiser la première colonne
+    # Initialiser la premiÃ¨re colonne
     for ($i = 0; $i -le $len1; $i++) {
         $distance[$i, 0] = $i
     }
     
-    # Initialiser la première ligne
+    # Initialiser la premiÃ¨re ligne
     for ($j = 0; $j -le $len2; $j++) {
         $distance[0, $j] = $j
     }
@@ -367,7 +431,7 @@ function Get-LevenshteinDistance {
     return $distance[$len1, $len2]
 }
 
-# Fonction pour généraliser un pattern à partir d'un ensemble de chaînes
+# Fonction pour gÃ©nÃ©raliser un pattern Ã  partir d'un ensemble de chaÃ®nes
 function Get-GeneralizedPattern {
     param (
         [Parameter(Mandatory = $true)]
@@ -386,7 +450,7 @@ function Get-GeneralizedPattern {
     $tokens = @()
     $reference = $Strings[0]
     
-    # Diviser la référence en tokens (mots)
+    # Diviser la rÃ©fÃ©rence en tokens (mots)
     $referenceTokens = $reference -split '\s+'
     
     foreach ($token in $referenceTokens) {
@@ -406,7 +470,7 @@ function Get-GeneralizedPattern {
     
     # Construire le pattern
     if ($tokens.Count -eq 0) {
-        # Aucun token commun, utiliser une approche plus générale
+        # Aucun token commun, utiliser une approche plus gÃ©nÃ©rale
         $pattern = ($Strings | ForEach-Object { [regex]::Escape($_) }) -join "|"
     }
     else {
@@ -416,7 +480,7 @@ function Get-GeneralizedPattern {
     return $pattern
 }
 
-# Fonction pour sauvegarder les patterns détectés
+# Fonction pour sauvegarder les patterns dÃ©tectÃ©s
 function Save-DetectedPatterns {
     param (
         [Parameter(Mandatory = $true)]
@@ -426,7 +490,7 @@ function Save-DetectedPatterns {
         [switch]$AutoApprove
     )
     
-    # Vérifier si le fichier de patterns existe
+    # VÃ©rifier si le fichier de patterns existe
     if (-not (Test-Path -Path $PatternConfig.PatternsFile)) {
         Initialize-PatternDetection
     }
@@ -460,27 +524,27 @@ function Save-DetectedPatterns {
             $confirm = Read-Host "Voulez-vous ajouter ce pattern? (O/N)"
             
             if ($confirm -eq "O" -or $confirm -eq "o") {
-                $name = Read-Host "Nom du pattern (laisser vide pour utiliser le nom par défaut)"
+                $name = Read-Host "Nom du pattern (laisser vide pour utiliser le nom par dÃ©faut)"
                 if ([string]::IsNullOrEmpty($name)) {
                     $name = $pattern.Name
                 }
                 
-                $description = Read-Host "Description (laisser vide pour utiliser la description par défaut)"
+                $description = Read-Host "Description (laisser vide pour utiliser la description par dÃ©faut)"
                 if ([string]::IsNullOrEmpty($description)) {
                     $description = $pattern.Description
                 }
                 
-                $category = Read-Host "Catégorie (laisser vide pour utiliser la catégorie par défaut)"
+                $category = Read-Host "CatÃ©gorie (laisser vide pour utiliser la catÃ©gorie par dÃ©faut)"
                 if ([string]::IsNullOrEmpty($category)) {
                     $category = $pattern.Category
                 }
                 
-                $severity = Read-Host "Sévérité (laisser vide pour utiliser la sévérité par défaut)"
+                $severity = Read-Host "SÃ©vÃ©ritÃ© (laisser vide pour utiliser la sÃ©vÃ©ritÃ© par dÃ©faut)"
                 if ([string]::IsNullOrEmpty($severity)) {
                     $severity = $pattern.Severity
                 }
                 
-                $solution = Read-Host "Solution (laisser vide pour utiliser la solution par défaut)"
+                $solution = Read-Host "Solution (laisser vide pour utiliser la solution par dÃ©faut)"
                 if ([string]::IsNullOrEmpty($solution)) {
                     $solution = $pattern.Solution
                 }
@@ -500,7 +564,7 @@ function Save-DetectedPatterns {
     return $savedPatterns
 }
 
-# Fonction pour générer un rapport des patterns
+# Fonction pour gÃ©nÃ©rer un rapport des patterns
 function New-PatternReport {
     param (
         [Parameter(Mandatory = $false)]
@@ -519,20 +583,20 @@ function New-PatternReport {
     # Charger les patterns
     $patternsData = Get-Content -Path $PatternConfig.PatternsFile -Raw | ConvertFrom-Json
     
-    # Filtrer par catégorie si spécifiée
+    # Filtrer par catÃ©gorie si spÃ©cifiÃ©e
     $patterns = $patternsData.Patterns
     if (-not [string]::IsNullOrEmpty($Category)) {
         $patterns = $patterns | Where-Object { $_.Category -eq $Category }
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "PatternReport-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -635,13 +699,13 @@ function New-PatternReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="summary">
             <p>Nombre total de patterns: $($patterns.Count)</p>
-            $(if (-not [string]::IsNullOrEmpty($Category)) { "<p>Catégorie: $Category</p>" })
+            $(if (-not [string]::IsNullOrEmpty($Category)) { "<p>CatÃ©gorie: $Category</p>" })
         </div>
         
         <h2>Patterns d'erreur</h2>
@@ -654,14 +718,14 @@ function New-PatternReport {
                 <h3>$($pattern.Name)</h3>
                 <div class='pattern-meta'>
                     <span>ID: $($pattern.ID)</span> |
-                    <span>Catégorie: $($pattern.Category)</span> |
-                    <span>Sévérité: <span class='$severityClass'>$($pattern.Severity)</span></span> |
-                    <span>Créé le: $createdAt</span> |
+                    <span>CatÃ©gorie: $($pattern.Category)</span> |
+                    <span>SÃ©vÃ©ritÃ©: <span class='$severityClass'>$($pattern.Severity)</span></span> |
+                    <span>CrÃ©Ã© le: $createdAt</span> |
                     <span>Occurrences: $($pattern.Occurrences)</span>
                 </div>
                 <p>$($pattern.Description)</p>
                 <div class='pattern-regex'>
-                    <strong>Expression régulière:</strong><br>
+                    <strong>Expression rÃ©guliÃ¨re:</strong><br>
                     $($pattern.Pattern)
                 </div>
                 $(if (-not [string]::IsNullOrEmpty($pattern.Solution)) {
@@ -682,7 +746,7 @@ function New-PatternReport {
         })
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </div>
 </body>
@@ -692,7 +756,7 @@ function New-PatternReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -703,3 +767,13 @@ function New-PatternReport {
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-PatternDetection, Add-ErrorPattern, Find-ErrorPatterns
 Export-ModuleMember -Function Save-DetectedPatterns, New-PatternReport
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

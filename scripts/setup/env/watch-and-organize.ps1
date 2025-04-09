@@ -59,12 +59,116 @@ foreach ($rule in $autoOrganizeRules) {
 }
 
 # Fonction pour dÃ©placer un fichier automatiquement
+
+# Script pour surveiller en temps rÃ©el les nouveaux fichiers Ã  la racine et les organiser automatiquement
+# Ce script utilise FileSystemWatcher pour dÃ©tecter les nouveaux fichiers et les dÃ©placer automatiquement
+
+Write-Host "=== Surveillance en temps rÃ©el des nouveaux fichiers ===" -ForegroundColor Cyan
+
+# Obtenir le chemin racine du projet
+$projectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+Set-Location $projectRoot
+
+Write-Host "Surveillance du dossier: $projectRoot" -ForegroundColor Yellow
+
+# RÃ¨gles d'organisation automatique
+$autoOrganizeRules = @(
+    # Format: [pattern, destination, description]
+    @("*.json", "all-workflows/original", "Workflows n8n"),
+    @("*.workflow.json", "all-workflows/original", "Workflows n8n"),
+    @("mcp-*.cmd", "src/mcp/batch", "Fichiers batch MCP"),
+    @("gateway.exe.cmd", "src/mcp/batch", "Fichier batch Gateway"),
+    @("*.yaml", "src/mcp/config", "Fichiers config YAML"),
+    @("mcp-config*.json", "src/mcp/config", "Fichiers config MCP"),
+    @("*.ps1", "scripts", "Scripts PowerShell"),
+    @("configure-*.ps1", "scripts/setup", "Scripts de configuration"),
+    @("setup-*.ps1", "scripts/setup", "Scripts d'installation"),
+    @("update-*.ps1", "scripts/maintenance", "Scripts de mise Ã  jour"),
+    @("cleanup-*.ps1", "scripts/maintenance", "Scripts de nettoyage"),
+    @("check-*.ps1", "scripts/maintenance", "Scripts de vÃ©rification"),
+    @("organize-*.ps1", "scripts/maintenance", "Scripts d'organisation"),
+    @("GUIDE_*.md", "docs/guides", "Guides d'utilisation"),
+    @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)"),
+    @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)"),
+    @("*.log", "logs", "Fichiers de logs"),
+    @("*.env", "config", "Fichiers d'environnement"),
+    @("*.config", "config", "Fichiers de configuration"),
+    @("start-*.cmd", "tools", "Scripts de dÃ©marrage"),
+    @("*.cmd", "cmd", "Fichiers de commande Windows (sauf standards GitHub)"),
+    @("*.cmd", "cmd", "Fichiers de commande Windows (sauf standards GitHub)"),
+    @("*.py", "src", "Scripts Python")
+)
+
+# Fichiers Ã  conserver Ã  la racine
+$keepFiles = @(
+    "README.md",
+    ".gitignore",
+    "package.json",
+    "package-lock.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md"
+)
+
+# VÃ©rifier si les dossiers existent, sinon les crÃ©er
+foreach ($rule in $autoOrganizeRules) {
+    $destination = $rule[1]
+    if (-not (Test-Path "$projectRoot\$destination")) {
+        New-Item -ItemType Directory -Path "$projectRoot\$destination" -Force | Out-Null
+        Write-Host "Dossier $destination crÃ©Ã©" -ForegroundColor Green
+    }
+}
+
+# Fonction pour dÃ©placer un fichier automatiquement
 function Move-FileAutomatically {
     param (
         [string]$SourcePath,
         [string]$DestinationFolder,
         [string]$Description
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
 
     $fileName = Split-Path $SourcePath -Leaf
     $destinationPath = Join-Path $DestinationFolder $fileName
@@ -193,3 +297,13 @@ try {
     Write-Host "Surveillance arrÃªtÃ©e." -ForegroundColor Yellow
 }
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

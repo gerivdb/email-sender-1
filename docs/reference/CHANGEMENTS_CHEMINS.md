@@ -1,10 +1,11 @@
-# Changements de chemins et reconstruction du projet
+﻿# Changements de chemins et reconstruction du projet
 
 ## Contexte
 
-Suite à des problèmes avec les chemins contenant des accents français et des espaces, tous les chemins du projet ont été modifiés pour utiliser des underscores à la place. Par exemple :
-- `D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1` est devenu
-- `D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1`
+Suite à des problèmes avec les chemins contenant des accents français et des espaces, tous les chemins du projet ont été modifiés pour utiliser des underscores à la place. Plus récemment, le chemin a été simplifié davantage :
+- `D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1` (original avec espaces et accents)
+- `D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1` (première normalisation)
+- `D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1` (simplification actuelle)
 
 Ce document explique les changements effectués et comment le projet a été rebâti.
 

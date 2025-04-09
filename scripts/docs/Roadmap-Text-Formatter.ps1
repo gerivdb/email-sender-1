@@ -2,6 +2,53 @@
 # Script d'interface utilisateur pour le formatage de texte en format roadmap
 
 # Fonction pour afficher le menu principal
+
+
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Écrire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # Créer le répertoire de logs si nécessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'écriture dans le journal
+    }
+}
+try {
+    # Script principal
+# Roadmap-Text-Formatter.ps1
+# Script d'interface utilisateur pour le formatage de texte en format roadmap
+
+# Fonction pour afficher le menu principal
 function Show-MainMenu {
     Clear-Host
     Write-Host "=== Roadmap Text Formatter ===" -ForegroundColor Cyan
@@ -114,9 +161,9 @@ function Add-SectionToRoadmap {
         $timeEstimate = "3-5 jours"
     }
     
-    $roadmapFile = Read-Host "Fichier roadmap (par défaut: roadmap_perso.md)"
+    $roadmapFile = Read-Host "Fichier roadmap (par défaut: "Roadmap\roadmap_perso.md")"
     if ([string]::IsNullOrWhiteSpace($roadmapFile)) {
-        $roadmapFile = "roadmap_perso.md"
+        $roadmapFile = ""Roadmap\roadmap_perso.md""
     }
     
     $addScript = Join-Path -Path $PSScriptRoot -ChildPath "Add-FormattedTextToRoadmap.ps1"
@@ -163,9 +210,9 @@ function Insert-SectionBetweenExisting {
         $timeEstimate = "3-5 jours"
     }
     
-    $roadmapFile = Read-Host "Fichier roadmap (par défaut: roadmap_perso.md)"
+    $roadmapFile = Read-Host "Fichier roadmap (par défaut: "Roadmap\roadmap_perso.md")"
     if ([string]::IsNullOrWhiteSpace($roadmapFile)) {
-        $roadmapFile = "roadmap_perso.md"
+        $roadmapFile = ""Roadmap\roadmap_perso.md""
     }
     
     $sectionNumber = Read-Host "Numéro de section avant laquelle insérer la nouvelle section"
@@ -185,3 +232,13 @@ function Insert-SectionBetweenExisting {
 
 # Démarrer le programme
 Show-MainMenu
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "Exécution du script terminée."
+}

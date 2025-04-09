@@ -102,6 +102,153 @@ $fileRules = @(
 )
 
 # Fonction pour dÃ©placer les fichiers selon les rÃ¨gles
+
+
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+# Script pour organiser la structure du dÃ©pÃ´t
+# Ce script organise les fichiers selon leur nature, type et usage
+
+# DÃ©finition des dossiers principaux
+$mainFolders = @(
+    "config",       # Fichiers de configuration
+    "scripts",      # Scripts divers
+    "docs",         # Documentation
+    "workflows",    # Workflows n8n
+    "assets",       # Ressources statiques
+    "logs",         # Fichiers de logs
+    "mcp",          # Fichiers MCP
+    "src",          # Code source
+    "tests",        # Tests
+    "tools"         # Outils divers
+)
+
+# DÃ©finition des sous-dossiers
+$subFolders = @(
+    # Config
+    "config\app",           # Configuration de l'application
+    "config\env",           # Variables d'environnement
+    "config\n8n",           # Configuration n8n
+    "config\vscode",        # Configuration VS Code
+    
+    # Scripts
+    "scripts\cmd",          # Scripts CMD
+    "scripts\cmd\augment",  # Scripts CMD pour Augment
+    "scripts\cmd\mcp",      # Scripts CMD pour MCP
+    "scripts\cmd\batch",    # Scripts batch
+    "scripts\maintenance",  # Scripts de maintenance
+    "scripts\setup",        # Scripts d'installation
+    "scripts\workflow",     # Scripts liÃ©s aux workflows
+    "scripts\utils",        # Scripts utilitaires
+    
+    # MCP
+    "mcp\config",           # Configuration MCP
+    "mcp\servers",          # Serveurs MCP
+    "mcp\gdrive",           # MCP Google Drive
+    
+    # Logs
+    "logs\daily",           # Logs quotidiens
+    "logs\weekly",          # Logs hebdomadaires
+    "logs\monthly",         # Logs mensuels
+    "logs\scripts",         # Logs des scripts
+    "logs\workflows"        # Logs des workflows
+)
+
+# CrÃ©ation des dossiers s'ils n'existent pas
+foreach ($folder in $mainFolders) {
+    if (-not (Test-Path -Path $folder)) {
+        Write-Host "CrÃ©ation du dossier: $folder" -ForegroundColor Yellow
+        New-Item -Path $folder -ItemType Directory -Force | Out-Null
+    }
+}
+
+foreach ($folder in $subFolders) {
+    if (-not (Test-Path -Path $folder)) {
+        Write-Host "CrÃ©ation du dossier: $folder" -ForegroundColor Yellow
+        New-Item -Path $folder -ItemType Directory -Force | Out-Null
+    }
+}
+
+# DÃ©finition des rÃ¨gles de dÃ©placement des fichiers
+$fileRules = @(
+    # Fichiers de configuration JSON
+    @{
+        Pattern = "*.settings.json", "*_settings.json", "settings.json"
+        Destination = "config\vscode"
+        Exclude = ".github"
+    },
+    # Fichiers package.json et associÃ©s
+    @{
+        Pattern = "package.json", "package-lock.json"
+        Destination = "."  # Reste Ã  la racine (convention GitHub)
+        Exclude = ""
+    },
+    # Fichiers CMD
+    @{
+        Pattern = "*.cmd"
+        Destination = "scripts\cmd\batch"
+        Exclude = "scripts\cmd"
+    },
+    # Fichiers de redÃ©marrage
+    @{
+        Pattern = "restart_*.cmd"
+        Destination = "scripts\cmd\batch"
+        Exclude = "scripts\cmd"
+    },
+    # Fichiers MCP
+    @{
+        Pattern = "mcp-*.cmd", "*-mcp-*.cmd"
+        Destination = "scripts\cmd\mcp"
+        Exclude = "scripts\cmd"
+    },
+    # Fichiers Augment
+    @{
+        Pattern = "augment-*.cmd"
+        Destination = "scripts\cmd\augment"
+        Exclude = "scripts\cmd"
+    }
+)
+
+# Fonction pour dÃ©placer les fichiers selon les rÃ¨gles
 function Move-FilesAccordingToRules {
     foreach ($rule in $fileRules) {
         foreach ($pattern in $rule.Pattern) {
@@ -215,3 +362,13 @@ Organize-McpFolders
 Organize-CmdFolder
 
 Write-Host "`nOrganisation de la structure du dÃ©pÃ´t terminÃ©e avec succÃ¨s!" -ForegroundColor Green
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

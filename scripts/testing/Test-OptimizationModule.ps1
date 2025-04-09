@@ -1,37 +1,43 @@
+﻿<#
+.SYNOPSIS
+    Tests unitaires pour le module d'optimisation
+.DESCRIPTION
+    Ce script exÃ©cute des tests unitaires pour le module d'optimisation du Script Manager
+
 <#
 .SYNOPSIS
     Tests unitaires pour le module d'optimisation
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour le module d'optimisation du Script Manager
+    Ce script exÃ©cute des tests unitaires pour le module d'optimisation du Script Manager
 #>
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installé. Installation..." -ForegroundColor Yellow
+    Write-Host "Le module Pester n'est pas installÃ©. Installation..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\D"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $ModulePath)) {
-    Write-Host "Module d'optimisation non trouvé: $ModulePath" -ForegroundColor Red
+    Write-Host "Module d'optimisation non trouvÃ©: $ModulePath" -ForegroundColor Red
     exit 1
 }
 
 # Importer le module
 Import-Module $ModulePath -Force
 
-# Créer un dossier temporaire pour les tests
+# CrÃ©er un dossier temporaire pour les tests
 $TestDir = Join-Path -Path $env:TEMP -ChildPath "ScriptManagerTests"
 if (-not (Test-Path -Path $TestDir)) {
     New-Item -ItemType Directory -Path $TestDir -Force | Out-Null
 }
 
-# Créer un fichier d'analyse de test
+# CrÃ©er un fichier d'analyse de test
 $AnalysisPath = Join-Path -Path $TestDir -ChildPath "analysis.json"
 $Analysis = @{
     Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -136,7 +142,7 @@ $Analysis = @{
                 @{
                     Type = "Syntax"
                     Severity = "Low"
-                    Description = "Utilisation de commandes obsolètes"
+                    Description = "Utilisation de commandes obsolÃ¨tes"
                 }
             )
             UsedBy = @()
@@ -146,7 +152,7 @@ $Analysis = @{
 
 Set-Content -Path $AnalysisPath -Value $Analysis
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 $PowerShellTestFile = Join-Path -Path $TestDir -ChildPath "test.ps1"
 $PythonTestFile = Join-Path -Path $TestDir -ChildPath "test.py"
 $BatchTestFile = Join-Path -Path $TestDir -ChildPath "test.cmd"
@@ -161,6 +167,48 @@ function Test-Function {
     param (
         [string]$Parameter
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     if ($Parameter -eq $null) {
         Write-Host "Parameter is null"
@@ -314,24 +362,24 @@ REM GOTO end
 ECHO Script completed
 '@
 
-# Écrire les fichiers de test
+# Ã‰crire les fichiers de test
 Set-Content -Path $PowerShellTestFile -Value $PowerShellContent
 Set-Content -Path $PythonTestFile -Value $PythonContent
 Set-Content -Path $BatchTestFile -Value $BatchContent
 
-# Définir le chemin de sortie pour l'optimisation
+# DÃ©finir le chemin de sortie pour l'optimisation
 $OptimizationPath = Join-Path -Path $TestDir -ChildPath "optimization"
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "Module d'optimisation" {
     Context "Invoke-ScriptOptimization" {
-        It "Devrait exécuter l'optimisation avec succès" {
+        It "Devrait exÃ©cuter l'optimisation avec succÃ¨s" {
             $Optimization = Invoke-ScriptOptimization -AnalysisPath $AnalysisPath -OutputPath $OptimizationPath -LearningEnabled
             $Optimization | Should -Not -BeNullOrEmpty
             $Optimization.TotalScripts | Should -Be 3
         }
         
-        It "Devrait créer les dossiers d'optimisation" {
+        It "Devrait crÃ©er les dossiers d'optimisation" {
             Test-Path -Path $OptimizationPath | Should -Be $true
             Test-Path -Path (Join-Path -Path $OptimizationPath -ChildPath "suggestions") | Should -Be $true
             Test-Path -Path (Join-Path -Path $OptimizationPath -ChildPath "anti-patterns") | Should -Be $true
@@ -339,27 +387,27 @@ Describe "Module d'optimisation" {
             Test-Path -Path (Join-Path -Path $OptimizationPath -ChildPath "refactoring") | Should -Be $true
         }
         
-        It "Devrait créer le fichier d'optimisation" {
+        It "Devrait crÃ©er le fichier d'optimisation" {
             Test-Path -Path (Join-Path -Path $OptimizationPath -ChildPath "optimization.json") | Should -Be $true
         }
         
-        It "Devrait détecter des anti-patterns" {
+        It "Devrait dÃ©tecter des anti-patterns" {
             Test-Path -Path (Join-Path -Path $OptimizationPath -ChildPath "anti-patterns\anti_patterns.json") | Should -Be $true
             $AntiPatterns = Get-Content -Path (Join-Path -Path $OptimizationPath -ChildPath "anti-patterns\anti_patterns.json") | ConvertFrom-Json
             $AntiPatterns.TotalScripts | Should -Be 3
         }
         
-        It "Devrait générer des suggestions" {
+        It "Devrait gÃ©nÃ©rer des suggestions" {
             Test-Path -Path (Join-Path -Path $OptimizationPath -ChildPath "suggestions\suggestions.json") | Should -Be $true
             $Suggestions = Get-Content -Path (Join-Path -Path $OptimizationPath -ChildPath "suggestions\suggestions.json") | ConvertFrom-Json
             $Suggestions.TotalScripts | Should -Be 3
         }
         
-        It "Devrait créer un rapport HTML des suggestions" {
+        It "Devrait crÃ©er un rapport HTML des suggestions" {
             Test-Path -Path (Join-Path -Path $OptimizationPath -ChildPath "suggestions\suggestions_report.html") | Should -Be $true
         }
         
-        It "Devrait créer un modèle d'apprentissage" {
+        It "Devrait crÃ©er un modÃ¨le d'apprentissage" {
             Test-Path -Path (Join-Path -Path $OptimizationPath -ChildPath "learning\global_model.json") | Should -Be $true
             $LearningModel = Get-Content -Path (Join-Path -Path $OptimizationPath -ChildPath "learning\global_model.json") | ConvertFrom-Json
             $LearningModel.TotalScripts | Should -Be 3
@@ -370,3 +418,13 @@ Describe "Module d'optimisation" {
 # Nettoyer les fichiers de test
 Remove-Item -Path $TestDir -Recurse -Force
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

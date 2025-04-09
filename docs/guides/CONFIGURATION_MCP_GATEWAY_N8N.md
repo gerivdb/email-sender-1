@@ -1,4 +1,4 @@
-# Configuration du MCP Gateway dans n8n
+﻿# Configuration du MCP Gateway dans n8n
 
 Ce guide vous explique comment configurer le MCP Gateway dans n8n pour pouvoir l'utiliser dans vos workflows.
 
@@ -30,8 +30,8 @@ Remplissez les champs comme suit :
 
 - **Credential Name**: MCP Gateway
 - **Command**: Chemin complet vers gateway.exe.cmd
-  - Exemple: `D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\gateway.exe.cmd`
-- **Arguments**: `start --config "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1\gateway.yaml" mcp-stdio`
+  - Exemple: `D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\gateway.exe.cmd`
+- **Arguments**: `start --config "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\gateway.yaml" mcp-stdio`
   - Remplacez le chemin par le chemin complet vers votre fichier gateway.yaml
 - **Environments**: `N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true`
 

@@ -1,11 +1,30 @@
-# Script pour la planification de l'implémentation
+﻿# Script pour la planification de l'implÃ©mentation
 
 # Configuration
 $PlanningConfig = @{
     # Dossier de stockage des documents de planification
     OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ProjectPlanning"
     
-    # Fichier des tâches
+    # Fichier des tÃ¢ches
+    TasksFile = Join-Path -Path $env:TEMP -ChildPath "ProjectPlanning\tasks.json"
+    
+    # Fichier des ressources
+    ResourcesFile = Join-Path -Path $env:TEMP -ChildPath "ProjectPlanning\resources.json"
+    
+    # Fichier du calendrier
+    ScheduleFile = Join-Path -Path $env:TEMP -ChildPath "ProjectPlanning\schedule.json"
+}
+
+# Fonction pour initialiser la planification
+
+# Script pour la planification de l'implÃ©mentation
+
+# Configuration
+$PlanningConfig = @{
+    # Dossier de stockage des documents de planification
+    OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ProjectPlanning"
+    
+    # Fichier des tÃ¢ches
     TasksFile = Join-Path -Path $env:TEMP -ChildPath "ProjectPlanning\tasks.json"
     
     # Fichier des ressources
@@ -23,8 +42,50 @@ function Initialize-ImplementationPlanning {
         [string]$ResourcesFile = "",
         [string]$ScheduleFile = ""
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
     
-    # Mettre à jour la configuration
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
+    
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $PlanningConfig.OutputFolder = $OutputFolder
     }
@@ -41,12 +102,12 @@ function Initialize-ImplementationPlanning {
         $PlanningConfig.ScheduleFile = $ScheduleFile
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $PlanningConfig.OutputFolder)) {
         New-Item -Path $PlanningConfig.OutputFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Créer les fichiers s'ils n'existent pas
+    # CrÃ©er les fichiers s'ils n'existent pas
     $files = @{
         $PlanningConfig.TasksFile = @{
             Tasks = @()
@@ -75,7 +136,7 @@ function Initialize-ImplementationPlanning {
     return $PlanningConfig
 }
 
-# Fonction pour ajouter une tâche
+# Fonction pour ajouter une tÃ¢che
 function Add-ImplementationTask {
     param (
         [Parameter(Mandatory = $true)]
@@ -108,23 +169,23 @@ function Add-ImplementationTask {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $PlanningConfig.TasksFile)) {
         Initialize-ImplementationPlanning
     }
     
-    # Charger les tâches existantes
+    # Charger les tÃ¢ches existantes
     $tasksData = Get-Content -Path $PlanningConfig.TasksFile -Raw | ConvertFrom-Json
     
-    # Vérifier si la tâche existe déjà
+    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
     $existingTask = $tasksData.Tasks | Where-Object { $_.Name -eq $Name }
     
     if ($existingTask) {
-        Write-Warning "Une tâche avec ce nom existe déjà."
+        Write-Warning "Une tÃ¢che avec ce nom existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer la tâche
+    # CrÃ©er la tÃ¢che
     $task = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -143,11 +204,11 @@ function Add-ImplementationTask {
         ActualHours = 0
     }
     
-    # Ajouter la tâche
+    # Ajouter la tÃ¢che
     $tasksData.Tasks += $task
     $tasksData.LastUpdate = Get-Date -Format "o"
     
-    # Enregistrer les tâches
+    # Enregistrer les tÃ¢ches
     $tasksData | ConvertTo-Json -Depth 5 | Set-Content -Path $PlanningConfig.TasksFile
     
     return $task
@@ -173,7 +234,7 @@ function Add-ImplementationResource {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $PlanningConfig.ResourcesFile)) {
         Initialize-ImplementationPlanning
     }
@@ -181,15 +242,15 @@ function Add-ImplementationResource {
     # Charger les ressources existantes
     $resourcesData = Get-Content -Path $PlanningConfig.ResourcesFile -Raw | ConvertFrom-Json
     
-    # Vérifier si la ressource existe déjà
+    # VÃ©rifier si la ressource existe dÃ©jÃ 
     $existingResource = $resourcesData.Resources | Where-Object { $_.Name -eq $Name }
     
     if ($existingResource) {
-        Write-Warning "Une ressource avec ce nom existe déjà."
+        Write-Warning "Une ressource avec ce nom existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer la ressource
+    # CrÃ©er la ressource
     $resource = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -230,7 +291,7 @@ function Add-ImplementationMilestone {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $PlanningConfig.ScheduleFile)) {
         Initialize-ImplementationPlanning
     }
@@ -238,15 +299,15 @@ function Add-ImplementationMilestone {
     # Charger le calendrier
     $scheduleData = Get-Content -Path $PlanningConfig.ScheduleFile -Raw | ConvertFrom-Json
     
-    # Vérifier si le jalon existe déjà
+    # VÃ©rifier si le jalon existe dÃ©jÃ 
     $existingMilestone = $scheduleData.Schedule.Milestones | Where-Object { $_.Name -eq $Name }
     
     if ($existingMilestone) {
-        Write-Warning "Un jalon avec ce nom existe déjà."
+        Write-Warning "Un jalon avec ce nom existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer le jalon
+    # CrÃ©er le jalon
     $milestone = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -269,7 +330,7 @@ function Add-ImplementationMilestone {
     return $milestone
 }
 
-# Fonction pour planifier une tâche
+# Fonction pour planifier une tÃ¢che
 function Set-TaskSchedule {
     param (
         [Parameter(Mandatory = $true)]
@@ -285,24 +346,24 @@ function Set-TaskSchedule {
         [string[]]$AssignedTo = @()
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $PlanningConfig.TasksFile)) {
-        Write-Error "Le fichier des tâches n'existe pas."
+        Write-Error "Le fichier des tÃ¢ches n'existe pas."
         return $null
     }
     
-    # Charger les tâches
+    # Charger les tÃ¢ches
     $tasksData = Get-Content -Path $PlanningConfig.TasksFile -Raw | ConvertFrom-Json
     
-    # Trouver la tâche
+    # Trouver la tÃ¢che
     $task = $tasksData.Tasks | Where-Object { $_.ID -eq $TaskID }
     
     if (-not $task) {
-        Write-Error "La tâche avec l'ID '$TaskID' n'existe pas."
+        Write-Error "La tÃ¢che avec l'ID '$TaskID' n'existe pas."
         return $null
     }
     
-    # Mettre à jour la tâche
+    # Mettre Ã  jour la tÃ¢che
     $task.StartDate = $StartDate
     $task.EndDate = $EndDate
     $task.UpdatedAt = Get-Date -Format "o"
@@ -311,14 +372,14 @@ function Set-TaskSchedule {
         $task.AssignedTo = $AssignedTo
     }
     
-    # Enregistrer les tâches
+    # Enregistrer les tÃ¢ches
     $tasksData.LastUpdate = Get-Date -Format "o"
     $tasksData | ConvertTo-Json -Depth 5 | Set-Content -Path $PlanningConfig.TasksFile
     
     return $task
 }
 
-# Fonction pour générer un diagramme de Gantt
+# Fonction pour gÃ©nÃ©rer un diagramme de Gantt
 function New-GanttChart {
     param (
         [Parameter(Mandatory = $false)]
@@ -334,7 +395,7 @@ function New-GanttChart {
         [switch]$OpenOutput
     )
     
-    # Charger les données
+    # Charger les donnÃ©es
     $tasksData = Get-Content -Path $PlanningConfig.TasksFile -Raw | ConvertFrom-Json
     $tasks = $tasksData.Tasks | Where-Object { $_.StartDate -and $_.EndDate }
     
@@ -344,14 +405,14 @@ function New-GanttChart {
         $milestones = $scheduleData.Schedule.Milestones
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "GanttChart-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Préparer les données pour le diagramme
+    # PrÃ©parer les donnÃ©es pour le diagramme
     $ganttTasks = @()
     
     foreach ($task in $tasks) {
@@ -387,7 +448,7 @@ function New-GanttChart {
         }
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -474,7 +535,7 @@ function New-GanttChart {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
@@ -485,15 +546,15 @@ function New-GanttChart {
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #e74c3c;"></div>
-                <span>Priorité haute</span>
+                <span>PrioritÃ© haute</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #3498db;"></div>
-                <span>Priorité moyenne</span>
+                <span>PrioritÃ© moyenne</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #2ecc71;"></div>
-                <span>Priorité basse</span>
+                <span>PrioritÃ© basse</span>
             </div>
             $(if ($IncludeMilestones) {
                 "<div class='legend-item'>
@@ -504,15 +565,15 @@ function New-GanttChart {
         </div>
         
         <div class="footer">
-            <p>Diagramme généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <p>Diagramme gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </div>
     
     <script>
-        // Données pour le diagramme
+        // DonnÃ©es pour le diagramme
         const tasks = $(ConvertTo-Json -InputObject $ganttTasks -Depth 5);
         
-        // Créer le diagramme de Gantt
+        // CrÃ©er le diagramme de Gantt
         const gantt = new Gantt("#gantt", tasks, {
             header_height: 50,
             column_width: 30,
@@ -528,7 +589,7 @@ function New-GanttChart {
                 return `
                     <div class="details-container">
                         <h5>${task.name}</h5>
-                        <p>Début: ${task.start}</p>
+                        <p>DÃ©but: ${task.start}</p>
                         <p>Fin: ${task.end}</p>
                         <p>Progression: ${task.progress}%</p>
                     </div>
@@ -543,7 +604,7 @@ function New-GanttChart {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le diagramme si demandé
+    # Ouvrir le diagramme si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -551,11 +612,11 @@ function New-GanttChart {
     return $OutputPath
 }
 
-# Fonction pour générer un rapport de planification
+# Fonction pour gÃ©nÃ©rer un rapport de planification
 function New-ImplementationPlanReport {
     param (
         [Parameter(Mandatory = $false)]
-        [string]$Title = "Rapport de planification d'implémentation",
+        [string]$Title = "Rapport de planification d'implÃ©mentation",
         
         [Parameter(Mandatory = $false)]
         [string]$OutputPath = "",
@@ -567,7 +628,7 @@ function New-ImplementationPlanReport {
         [switch]$OpenOutput
     )
     
-    # Charger les données
+    # Charger les donnÃ©es
     $tasksData = Get-Content -Path $PlanningConfig.TasksFile -Raw | ConvertFrom-Json
     $scheduleData = Get-Content -Path $PlanningConfig.ScheduleFile -Raw | ConvertFrom-Json
     
@@ -580,7 +641,7 @@ function New-ImplementationPlanReport {
         $resources = $resourcesData.Resources
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "ImplementationPlan-$timestamp.html"
@@ -601,7 +662,7 @@ function New-ImplementationPlanReport {
         0
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -730,18 +791,18 @@ function New-ImplementationPlanReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="summary">
             <div class="summary-card">
-                <h3>Tâches totales</h3>
+                <h3>TÃ¢ches totales</h3>
                 <div class="summary-value">$($tasks.Count)</div>
             </div>
             
             <div class="summary-card">
-                <h3>Heures estimées</h3>
+                <h3>Heures estimÃ©es</h3>
                 <div class="summary-value">$totalEstimatedHours</div>
             </div>
             
@@ -784,25 +845,25 @@ function New-ImplementationPlanReport {
         </div>
         
         <div class="section">
-            <h2>Tâches</h2>
+            <h2>TÃ¢ches</h2>
             
             <table>
                 <thead>
                     <tr>
                         <th>Nom</th>
-                        <th>Priorité</th>
-                        <th>Heures estimées</th>
+                        <th>PrioritÃ©</th>
+                        <th>Heures estimÃ©es</th>
                         <th>Statut</th>
-                        <th>Début</th>
+                        <th>DÃ©but</th>
                         <th>Fin</th>
-                        <th>Assigné à</th>
+                        <th>AssignÃ© Ã </th>
                     </tr>
                 </thead>
                 <tbody>
                     $(foreach ($task in ($tasks | Sort-Object -Property Priority, Name)) {
                         $priorityClass = "priority-" + $task.Priority.ToLower()
                         $statusClass = "status-" + $task.Status.ToLower().Replace(" ", "-")
-                        $assignedTo = if ($task.AssignedTo.Count -gt 0) { $task.AssignedTo -join ", " } else { "Non assigné" }
+                        $assignedTo = if ($task.AssignedTo.Count -gt 0) { $task.AssignedTo -join ", " } else { "Non assignÃ©" }
                         
                         "<tr>
                             <td>$($task.Name)</td>
@@ -826,14 +887,14 @@ function New-ImplementationPlanReport {
                     <thead>
                         <tr>
                             <th>Nom</th>
-                            <th>Rôle</th>
+                            <th>RÃ´le</th>
                             <th>Heures disponibles</th>
-                            <th>Compétences</th>
+                            <th>CompÃ©tences</th>
                         </tr>
                     </thead>
                     <tbody>
                         $(foreach ($resource in ($resources | Sort-Object -Property Role, Name)) {
-                            $skills = if ($resource.Skills.Count -gt 0) { $resource.Skills -join ", " } else { "Non spécifié" }
+                            $skills = if ($resource.Skills.Count -gt 0) { $resource.Skills -join ", " } else { "Non spÃ©cifiÃ©" }
                             
                             "<tr>
                                 <td>$($resource.Name)</td>
@@ -848,7 +909,7 @@ function New-ImplementationPlanReport {
         })
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </div>
 </body>
@@ -858,7 +919,7 @@ function New-ImplementationPlanReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -869,3 +930,13 @@ function New-ImplementationPlanReport {
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ImplementationPlanning, Add-ImplementationTask, Add-ImplementationResource
 Export-ModuleMember -Function Add-ImplementationMilestone, Set-TaskSchedule, New-GanttChart, New-ImplementationPlanReport
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

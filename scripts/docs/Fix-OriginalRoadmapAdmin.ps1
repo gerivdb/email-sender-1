@@ -1,6 +1,70 @@
+﻿# Script pour corriger les problèmes dans le fichier RoadmapAdmin.ps1 original
+
+$filePath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1/RoadmapAdmin.ps1"
+
+# Vérifier si le fichier existe
+if (-not (Test-Path -Path $filePath)) {
+    Write-Host "Le fichier n'existe pas: $filePath" -ForegroundColor Red
+    exit 1
+}
+
+# Lire le contenu du fichier ligne par ligne
+$lines = Get-Content -Path $filePath
+
+# Créer un tableau pour stocker les lignes modifiées
+$newLines = @()
+
+# Parcourir chaque ligne et appliquer les corrections
+for ($i = 0; $i -lt $lines.Count; $i++) {
+    $line = $lines[$i]
+    
+    # 1. Corriger le verbe non approuvé (ligne 65)
+    if ($i -eq 64 -and $line -match "
+
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
 # Script pour corriger les problèmes dans le fichier RoadmapAdmin.ps1 original
 
-$filePath = "D:/DO/WEB/N8N_tests/scripts_ json_a_ tester/EMAIL_SENDER_1/RoadmapAdmin.ps1"
+$filePath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1/RoadmapAdmin.ps1"
 
 # Vérifier si le fichier existe
 if (-not (Test-Path -Path $filePath)) {
@@ -98,3 +162,13 @@ for ($i = 0; $i -lt $newLines.Count; $i++) {
 Set-Content -Path $filePath -Value $newLines -Encoding UTF8
 
 Write-Host "Les corrections ont été appliquées avec succès au fichier: $filePath" -ForegroundColor Green
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

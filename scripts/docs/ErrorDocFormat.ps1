@@ -1,14 +1,14 @@
-# Script pour définir un format standardisé de documentation des erreurs
+﻿# Script pour dÃ©finir un format standardisÃ© de documentation des erreurs
 
 # Configuration
 $DocConfig = @{
     # Dossier de stockage des templates
     TemplatesFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorDocumentation\Templates"
     
-    # Dossier de stockage des erreurs documentées
+    # Dossier de stockage des erreurs documentÃ©es
     DocsFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorDocumentation\Docs"
     
-    # Format de fichier par défaut
+    # Format de fichier par dÃ©faut
     DefaultFormat = "Markdown"
     
     # Champs obligatoires
@@ -23,7 +23,7 @@ $DocConfig = @{
         "PreventionSteps"
     )
     
-    # Catégories d'erreurs
+    # CatÃ©gories d'erreurs
     Categories = @(
         "Syntax",
         "Runtime",
@@ -38,10 +38,94 @@ $DocConfig = @{
     )
 }
 
-# Fonction pour initialiser le système de documentation
+# Fonction pour initialiser le systÃ¨me de documentation
+
+# Script pour dÃ©finir un format standardisÃ© de documentation des erreurs
+
+# Configuration
+$DocConfig = @{
+    # Dossier de stockage des templates
+    TemplatesFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorDocumentation\Templates"
+    
+    # Dossier de stockage des erreurs documentÃ©es
+    DocsFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorDocumentation\Docs"
+    
+    # Format de fichier par dÃ©faut
+    DefaultFormat = "Markdown"
+    
+    # Champs obligatoires
+    RequiredFields = @(
+        "ID",
+        "Title",
+        "Type",
+        "Severity",
+        "Description",
+        "RootCause",
+        "Solution",
+        "PreventionSteps"
+    )
+    
+    # CatÃ©gories d'erreurs
+    Categories = @(
+        "Syntax",
+        "Runtime",
+        "Logic",
+        "Resource",
+        "Configuration",
+        "Data",
+        "Security",
+        "Performance",
+        "Compatibility",
+        "Deprecation"
+    )
+}
+
+# Fonction pour initialiser le systÃ¨me de documentation
 function Initialize-ErrorDocumentation {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$TemplatesFolder = "",
         
         [Parameter(Mandatory = $false)]
@@ -52,7 +136,7 @@ function Initialize-ErrorDocumentation {
         [string]$DefaultFormat = ""
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($TemplatesFolder)) {
         $DocConfig.TemplatesFolder = $TemplatesFolder
     }
@@ -65,14 +149,14 @@ function Initialize-ErrorDocumentation {
         $DocConfig.DefaultFormat = $DefaultFormat
     }
     
-    # Créer les dossiers s'ils n'existent pas
+    # CrÃ©er les dossiers s'ils n'existent pas
     foreach ($folder in @($DocConfig.TemplatesFolder, $DocConfig.DocsFolder)) {
         if (-not (Test-Path -Path $folder)) {
             New-Item -Path $folder -ItemType Directory -Force | Out-Null
         }
     }
     
-    # Créer les templates par défaut s'ils n'existent pas
+    # CrÃ©er les templates par dÃ©faut s'ils n'existent pas
     foreach ($category in $DocConfig.Categories) {
         $templatePath = Join-Path -Path $DocConfig.TemplatesFolder -ChildPath "$category.md"
         
@@ -80,14 +164,14 @@ function Initialize-ErrorDocumentation {
             $template = @"
 # [Title]
 
-## Informations générales
+## Informations gÃ©nÃ©rales
 - **ID**: [ID]
 - **Type**: $category
-- **Sévérité**: [Severity]
-- **Date de découverte**: [DiscoveryDate]
+- **SÃ©vÃ©ritÃ©**: [Severity]
+- **Date de dÃ©couverte**: [DiscoveryDate]
 - **Date de correction**: [FixDate]
-- **Versions affectées**: [AffectedVersions]
-- **Composants affectés**: [AffectedComponents]
+- **Versions affectÃ©es**: [AffectedVersions]
+- **Composants affectÃ©s**: [AffectedComponents]
 
 ## Description
 [Description]
@@ -101,13 +185,13 @@ function Initialize-ErrorDocumentation {
 ## Solution
 [Solution]
 
-## Étapes de prévention
+## Ã‰tapes de prÃ©vention
 [PreventionSteps]
 
-## Références
+## RÃ©fÃ©rences
 [References]
 
-## Mots-clés
+## Mots-clÃ©s
 [Keywords]
 
 ## Notes
@@ -121,7 +205,7 @@ function Initialize-ErrorDocumentation {
     return $DocConfig
 }
 
-# Fonction pour créer un nouveau template
+# Fonction pour crÃ©er un nouveau template
 function New-ErrorDocTemplate {
     param (
         [Parameter(Mandatory = $true)]
@@ -137,39 +221,39 @@ function New-ErrorDocTemplate {
         [switch]$Force
     )
     
-    # Vérifier si la catégorie existe
+    # VÃ©rifier si la catÃ©gorie existe
     if (-not $DocConfig.Categories.Contains($Category)) {
-        Write-Warning "La catégorie '$Category' n'existe pas. Catégories disponibles: $($DocConfig.Categories -join ', ')"
+        Write-Warning "La catÃ©gorie '$Category' n'existe pas. CatÃ©gories disponibles: $($DocConfig.Categories -join ', ')"
         return $false
     }
     
-    # Déterminer le nom du template
+    # DÃ©terminer le nom du template
     if ([string]::IsNullOrEmpty($TemplateName)) {
         $TemplateName = $Category
     }
     
-    # Déterminer le chemin du template
+    # DÃ©terminer le chemin du template
     $templatePath = Join-Path -Path $DocConfig.TemplatesFolder -ChildPath "$TemplateName.md"
     
-    # Vérifier si le template existe déjà
+    # VÃ©rifier si le template existe dÃ©jÃ 
     if ((Test-Path -Path $templatePath) -and -not $Force) {
-        Write-Warning "Le template '$TemplateName' existe déjà. Utilisez -Force pour le remplacer."
+        Write-Warning "Le template '$TemplateName' existe dÃ©jÃ . Utilisez -Force pour le remplacer."
         return $false
     }
     
-    # Utiliser le contenu fourni ou créer un contenu par défaut
+    # Utiliser le contenu fourni ou crÃ©er un contenu par dÃ©faut
     if ([string]::IsNullOrEmpty($Content)) {
         $Content = @"
 # [Title]
 
-## Informations générales
+## Informations gÃ©nÃ©rales
 - **ID**: [ID]
 - **Type**: $Category
-- **Sévérité**: [Severity]
-- **Date de découverte**: [DiscoveryDate]
+- **SÃ©vÃ©ritÃ©**: [Severity]
+- **Date de dÃ©couverte**: [DiscoveryDate]
 - **Date de correction**: [FixDate]
-- **Versions affectées**: [AffectedVersions]
-- **Composants affectés**: [AffectedComponents]
+- **Versions affectÃ©es**: [AffectedVersions]
+- **Composants affectÃ©s**: [AffectedComponents]
 
 ## Description
 [Description]
@@ -183,13 +267,13 @@ function New-ErrorDocTemplate {
 ## Solution
 [Solution]
 
-## Étapes de prévention
+## Ã‰tapes de prÃ©vention
 [PreventionSteps]
 
-## Références
+## RÃ©fÃ©rences
 [References]
 
-## Mots-clés
+## Mots-clÃ©s
 [Keywords]
 
 ## Notes
@@ -197,7 +281,7 @@ function New-ErrorDocTemplate {
 "@
     }
     
-    # Créer le template
+    # CrÃ©er le template
     $Content | Set-Content -Path $templatePath -Encoding UTF8
     
     return $templatePath
@@ -210,18 +294,18 @@ function Get-ErrorDocTemplate {
         [string]$Category
     )
     
-    # Vérifier si la catégorie existe
+    # VÃ©rifier si la catÃ©gorie existe
     if (-not $DocConfig.Categories.Contains($Category)) {
-        Write-Warning "La catégorie '$Category' n'existe pas. Catégories disponibles: $($DocConfig.Categories -join ', ')"
+        Write-Warning "La catÃ©gorie '$Category' n'existe pas. CatÃ©gories disponibles: $($DocConfig.Categories -join ', ')"
         return $null
     }
     
-    # Déterminer le chemin du template
+    # DÃ©terminer le chemin du template
     $templatePath = Join-Path -Path $DocConfig.TemplatesFolder -ChildPath "$Category.md"
     
-    # Vérifier si le template existe
+    # VÃ©rifier si le template existe
     if (-not (Test-Path -Path $templatePath)) {
-        Write-Warning "Le template pour la catégorie '$Category' n'existe pas."
+        Write-Warning "Le template pour la catÃ©gorie '$Category' n'existe pas."
         return $null
     }
     
@@ -231,7 +315,7 @@ function Get-ErrorDocTemplate {
     return $template
 }
 
-# Fonction pour créer une documentation d'erreur
+# Fonction pour crÃ©er une documentation d'erreur
 function New-ErrorDocumentation {
     param (
         [Parameter(Mandatory = $true)]
@@ -288,20 +372,20 @@ function New-ErrorDocumentation {
         [string]$OutputPath = ""
     )
     
-    # Utiliser le format par défaut si non spécifié
+    # Utiliser le format par dÃ©faut si non spÃ©cifiÃ©
     if ([string]::IsNullOrEmpty($Format)) {
         $Format = $DocConfig.DefaultFormat
     }
     
-    # Générer un ID unique si non spécifié
+    # GÃ©nÃ©rer un ID unique si non spÃ©cifiÃ©
     $ID = [Guid]::NewGuid().ToString().Substring(0, 8).ToUpper()
     
-    # Utiliser la date actuelle si non spécifiée
+    # Utiliser la date actuelle si non spÃ©cifiÃ©e
     if ([string]::IsNullOrEmpty($DiscoveryDate)) {
         $DiscoveryDate = Get-Date -Format "yyyy-MM-dd"
     }
     
-    # Créer l'objet de documentation
+    # CrÃ©er l'objet de documentation
     $doc = @{
         ID = $ID
         Title = $Title
@@ -322,31 +406,31 @@ function New-ErrorDocumentation {
         CreatedAt = Get-Date -Format "o"
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $fileName = "$ID-$($Title -replace '[^\w\-]', '_').$(if ($Format -eq 'Markdown') { 'md' } elseif ($Format -eq 'JSON') { 'json' } elseif ($Format -eq 'HTML') { 'html' } else { 'txt' })"
         $OutputPath = Join-Path -Path $DocConfig.DocsFolder -ChildPath $fileName
     }
     
-    # Générer le contenu selon le format
+    # GÃ©nÃ©rer le contenu selon le format
     switch ($Format) {
         "Markdown" {
             # Obtenir le template
             $template = Get-ErrorDocTemplate -Category $Category
             
             if (-not $template) {
-                # Utiliser un template par défaut
+                # Utiliser un template par dÃ©faut
                 $template = @"
 # [Title]
 
-## Informations générales
+## Informations gÃ©nÃ©rales
 - **ID**: [ID]
 - **Type**: [Category]
-- **Sévérité**: [Severity]
-- **Date de découverte**: [DiscoveryDate]
+- **SÃ©vÃ©ritÃ©**: [Severity]
+- **Date de dÃ©couverte**: [DiscoveryDate]
 - **Date de correction**: [FixDate]
-- **Versions affectées**: [AffectedVersions]
-- **Composants affectés**: [AffectedComponents]
+- **Versions affectÃ©es**: [AffectedVersions]
+- **Composants affectÃ©s**: [AffectedComponents]
 
 ## Description
 [Description]
@@ -360,13 +444,13 @@ function New-ErrorDocumentation {
 ## Solution
 [Solution]
 
-## Étapes de prévention
+## Ã‰tapes de prÃ©vention
 [PreventionSteps]
 
-## Références
+## RÃ©fÃ©rences
 [References]
 
-## Mots-clés
+## Mots-clÃ©s
 [Keywords]
 
 ## Notes
@@ -464,7 +548,7 @@ function New-ErrorDocumentation {
         <h1>$($doc.Title)</h1>
         
         <div class="section">
-            <h2>Informations générales</h2>
+            <h2>Informations gÃ©nÃ©rales</h2>
             <table class="info-table">
                 <tr>
                     <th>ID</th>
@@ -475,11 +559,11 @@ function New-ErrorDocumentation {
                     <td>$($doc.Category)</td>
                 </tr>
                 <tr>
-                    <th>Sévérité</th>
+                    <th>SÃ©vÃ©ritÃ©</th>
                     <td class="severity-$($doc.Severity.ToLower())">$($doc.Severity)</td>
                 </tr>
                 <tr>
-                    <th>Date de découverte</th>
+                    <th>Date de dÃ©couverte</th>
                     <td>$($doc.DiscoveryDate)</td>
                 </tr>
                 <tr>
@@ -487,11 +571,11 @@ function New-ErrorDocumentation {
                     <td>$($doc.FixDate)</td>
                 </tr>
                 <tr>
-                    <th>Versions affectées</th>
+                    <th>Versions affectÃ©es</th>
                     <td>$($doc.AffectedVersions)</td>
                 </tr>
                 <tr>
-                    <th>Composants affectés</th>
+                    <th>Composants affectÃ©s</th>
                     <td>$($doc.AffectedComponents)</td>
                 </tr>
             </table>
@@ -518,17 +602,17 @@ function New-ErrorDocumentation {
         </div>
         
         <div class="section">
-            <h2>Étapes de prévention</h2>
+            <h2>Ã‰tapes de prÃ©vention</h2>
             <p>$($doc.PreventionSteps)</p>
         </div>
         
         <div class="section">
-            <h2>Références</h2>
+            <h2>RÃ©fÃ©rences</h2>
             <p>$($doc.References)</p>
         </div>
         
         <div class="section">
-            <h2>Mots-clés</h2>
+            <h2>Mots-clÃ©s</h2>
             <p>$($doc.Keywords)</p>
         </div>
         
@@ -551,11 +635,11 @@ DOCUMENTATION D'ERREUR
 Titre: $($doc.Title)
 ID: $($doc.ID)
 Type: $($doc.Category)
-Sévérité: $($doc.Severity)
-Date de découverte: $($doc.DiscoveryDate)
+SÃ©vÃ©ritÃ©: $($doc.Severity)
+Date de dÃ©couverte: $($doc.DiscoveryDate)
 Date de correction: $($doc.FixDate)
-Versions affectées: $($doc.AffectedVersions)
-Composants affectés: $($doc.AffectedComponents)
+Versions affectÃ©es: $($doc.AffectedVersions)
+Composants affectÃ©s: $($doc.AffectedComponents)
 
 DESCRIPTION
 ----------
@@ -573,15 +657,15 @@ SOLUTION
 -------
 $($doc.Solution)
 
-ÉTAPES DE PRÉVENTION
+Ã‰TAPES DE PRÃ‰VENTION
 ------------------
 $($doc.PreventionSteps)
 
-RÉFÉRENCES
+RÃ‰FÃ‰RENCES
 ---------
 $($doc.References)
 
-MOTS-CLÉS
+MOTS-CLÃ‰S
 --------
 $($doc.Keywords)
 
@@ -629,13 +713,13 @@ function Find-ErrorDocumentation {
     # Obtenir tous les fichiers de documentation
     $files = Get-ChildItem -Path $DocConfig.DocsFolder -Recurse -File
     
-    # Filtrer les fichiers selon les critères
+    # Filtrer les fichiers selon les critÃ¨res
     $results = @()
     
     foreach ($file in $files) {
         $content = Get-Content -Path $file.FullName -Raw
         
-        # Vérifier si le fichier correspond aux critères
+        # VÃ©rifier si le fichier correspond aux critÃ¨res
         $match = $true
         
         if (-not [string]::IsNullOrEmpty($SearchTerm) -and $content -notmatch [regex]::Escape($SearchTerm)) {
@@ -646,21 +730,21 @@ function Find-ErrorDocumentation {
             $match = $false
         }
         
-        if (-not [string]::IsNullOrEmpty($Severity) -and $content -notmatch "Sévérité:\s*$([regex]::Escape($Severity))") {
+        if (-not [string]::IsNullOrEmpty($Severity) -and $content -notmatch "SÃ©vÃ©ritÃ©:\s*$([regex]::Escape($Severity))") {
             $match = $false
         }
         
-        if (-not [string]::IsNullOrEmpty($Component) -and $content -notmatch "Composants affectés:.*$([regex]::Escape($Component))") {
+        if (-not [string]::IsNullOrEmpty($Component) -and $content -notmatch "Composants affectÃ©s:.*$([regex]::Escape($Component))") {
             $match = $false
         }
         
-        if (-not [string]::IsNullOrEmpty($Version) -and $content -notmatch "Versions affectées:.*$([regex]::Escape($Version))") {
+        if (-not [string]::IsNullOrEmpty($Version) -and $content -notmatch "Versions affectÃ©es:.*$([regex]::Escape($Version))") {
             $match = $false
         }
         
-        # Vérifier les dates
+        # VÃ©rifier les dates
         if ($StartDate -ne $null) {
-            if ($content -match "Date de découverte:\s*(\d{4}-\d{2}-\d{2})") {
+            if ($content -match "Date de dÃ©couverte:\s*(\d{4}-\d{2}-\d{2})") {
                 $docDate = [DateTime]::Parse($Matches[1])
                 if ($docDate -lt $StartDate) {
                     $match = $false
@@ -669,7 +753,7 @@ function Find-ErrorDocumentation {
         }
         
         if ($EndDate -ne $null) {
-            if ($content -match "Date de découverte:\s*(\d{4}-\d{2}-\d{2})") {
+            if ($content -match "Date de dÃ©couverte:\s*(\d{4}-\d{2}-\d{2})") {
                 $docDate = [DateTime]::Parse($Matches[1])
                 if ($docDate -gt $EndDate) {
                     $match = $false
@@ -677,13 +761,13 @@ function Find-ErrorDocumentation {
             }
         }
         
-        # Ajouter le fichier aux résultats s'il correspond
+        # Ajouter le fichier aux rÃ©sultats s'il correspond
         if ($match) {
             # Extraire les informations de base
             $id = if ($content -match "ID:\s*([A-Z0-9]+)") { $Matches[1] } else { "" }
             $title = if ($content -match "# (.+)") { $Matches[1] } else { $file.BaseName }
             $category = if ($content -match "Type:\s*(\w+)") { $Matches[1] } else { "" }
-            $severity = if ($content -match "Sévérité:\s*(\w+)") { $Matches[1] } else { "" }
+            $severity = if ($content -match "SÃ©vÃ©ritÃ©:\s*(\w+)") { $Matches[1] } else { "" }
             
             $results += [PSCustomObject]@{
                 ID = $id
@@ -700,3 +784,13 @@ function Find-ErrorDocumentation {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ErrorDocumentation, New-ErrorDocTemplate, Get-ErrorDocTemplate, New-ErrorDocumentation, Find-ErrorDocumentation
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

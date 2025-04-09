@@ -1,3 +1,41 @@
+﻿# Script pour le partage des connaissances sur les erreurs
+
+# Importer le module de documentation des erreurs
+$docFormatPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "ErrorDocFormat.ps1"
+if (Test-Path -Path $docFormatPath) {
+    . $docFormatPath
+}
+else {
+    Write-Error "Le module de documentation des erreurs est introuvable: $docFormatPath"
+    return
+}
+
+# Configuration
+$KnowledgeConfig = @{
+    # Dossier de la base de connaissances
+    KnowledgeBaseFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorKnowledgeBase"
+    
+    # Dossier des articles
+    ArticlesFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorKnowledgeBase\Articles"
+    
+    # Dossier des ressources
+    ResourcesFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorKnowledgeBase\Resources"
+    
+    # Fichier d'index
+    IndexFile = Join-Path -Path $env:TEMP -ChildPath "ErrorKnowledgeBase\index.md"
+    
+    # CatÃ©gories d'articles
+    Categories = @(
+        "Erreurs courantes",
+        "Bonnes pratiques",
+        "Tutoriels",
+        "RÃ©fÃ©rences",
+        "Ã‰tudes de cas"
+    )
+}
+
+# Fonction pour initialiser la base de connaissances
+
 # Script pour le partage des connaissances sur les erreurs
 
 # Importer le module de documentation des erreurs
@@ -24,20 +62,62 @@ $KnowledgeConfig = @{
     # Fichier d'index
     IndexFile = Join-Path -Path $env:TEMP -ChildPath "ErrorKnowledgeBase\index.md"
     
-    # Catégories d'articles
+    # CatÃ©gories d'articles
     Categories = @(
         "Erreurs courantes",
         "Bonnes pratiques",
         "Tutoriels",
-        "Références",
-        "Études de cas"
+        "RÃ©fÃ©rences",
+        "Ã‰tudes de cas"
     )
 }
 
 # Fonction pour initialiser la base de connaissances
 function Initialize-KnowledgeBase {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$KnowledgeBaseFolder = "",
         
         [Parameter(Mandatory = $false)]
@@ -47,7 +127,7 @@ function Initialize-KnowledgeBase {
         [string]$ResourcesFolder = ""
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($KnowledgeBaseFolder)) {
         $KnowledgeConfig.KnowledgeBaseFolder = $KnowledgeBaseFolder
         $KnowledgeConfig.IndexFile = Join-Path -Path $KnowledgeBaseFolder -ChildPath "index.md"
@@ -61,14 +141,14 @@ function Initialize-KnowledgeBase {
         $KnowledgeConfig.ResourcesFolder = $ResourcesFolder
     }
     
-    # Créer les dossiers s'ils n'existent pas
+    # CrÃ©er les dossiers s'ils n'existent pas
     foreach ($folder in @($KnowledgeConfig.KnowledgeBaseFolder, $KnowledgeConfig.ArticlesFolder, $KnowledgeConfig.ResourcesFolder)) {
         if (-not (Test-Path -Path $folder)) {
             New-Item -Path $folder -ItemType Directory -Force | Out-Null
         }
     }
     
-    # Créer les dossiers de catégories
+    # CrÃ©er les dossiers de catÃ©gories
     foreach ($category in $KnowledgeConfig.Categories) {
         $categoryFolder = Join-Path -Path $KnowledgeConfig.ArticlesFolder -ChildPath $category.Replace(" ", "_")
         if (-not (Test-Path -Path $categoryFolder)) {
@@ -76,26 +156,26 @@ function Initialize-KnowledgeBase {
         }
     }
     
-    # Créer le fichier d'index s'il n'existe pas
+    # CrÃ©er le fichier d'index s'il n'existe pas
     if (-not (Test-Path -Path $KnowledgeConfig.IndexFile)) {
         $indexContent = @"
 # Base de connaissances des erreurs
 
-Cette base de connaissances contient des articles, des tutoriels et des références sur les erreurs courantes et leur résolution.
+Cette base de connaissances contient des articles, des tutoriels et des rÃ©fÃ©rences sur les erreurs courantes et leur rÃ©solution.
 
-## Catégories
+## CatÃ©gories
 
 $(foreach ($category in $KnowledgeConfig.Categories) {
     "- [$category](./$($category.Replace(" ", "_")))`n"
 })
 
-## Articles récents
+## Articles rÃ©cents
 
 ## Articles populaires
 
 ## Recherche
 
-Utilisez la fonction de recherche pour trouver des articles spécifiques.
+Utilisez la fonction de recherche pour trouver des articles spÃ©cifiques.
 "@
         
         $indexContent | Set-Content -Path $KnowledgeConfig.IndexFile -Encoding UTF8
@@ -107,14 +187,14 @@ Utilisez la fonction de recherche pour trouver des articles spécifiques.
     return $KnowledgeConfig
 }
 
-# Fonction pour créer un nouvel article
+# Fonction pour crÃ©er un nouvel article
 function New-KnowledgeArticle {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Title,
         
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Erreurs courantes", "Bonnes pratiques", "Tutoriels", "Références", "Études de cas")]
+        [ValidateSet("Erreurs courantes", "Bonnes pratiques", "Tutoriels", "RÃ©fÃ©rences", "Ã‰tudes de cas")]
         [string]$Category,
         
         [Parameter(Mandatory = $true)]
@@ -139,34 +219,34 @@ function New-KnowledgeArticle {
         [string]$ErrorDocPath = ""
     )
     
-    # Générer un ID unique
+    # GÃ©nÃ©rer un ID unique
     $id = [Guid]::NewGuid().ToString().Substring(0, 8).ToUpper()
     
     # Formater le titre pour le nom de fichier
     $fileName = "$id-$($Title -replace '[^\w\-]', '_').md"
     
-    # Déterminer le dossier de catégorie
+    # DÃ©terminer le dossier de catÃ©gorie
     $categoryFolder = Join-Path -Path $KnowledgeConfig.ArticlesFolder -ChildPath $Category.Replace(" ", "_")
     
-    # Déterminer le chemin de l'article
+    # DÃ©terminer le chemin de l'article
     $articlePath = Join-Path -Path $categoryFolder -ChildPath $fileName
     
-    # Utiliser le résumé fourni ou générer un résumé à partir du contenu
+    # Utiliser le rÃ©sumÃ© fourni ou gÃ©nÃ©rer un rÃ©sumÃ© Ã  partir du contenu
     if ([string]::IsNullOrEmpty($Summary)) {
         $Summary = $Content.Substring(0, [Math]::Min(200, $Content.Length)) + "..."
     }
     
-    # Générer le contenu de l'article
+    # GÃ©nÃ©rer le contenu de l'article
     $articleContent = @"
 # $Title
 
 - **ID**: $id
-- **Catégorie**: $Category
+- **CatÃ©gorie**: $Category
 - **Date**: $(Get-Date -Format "yyyy-MM-dd")
 - **Auteur**: $Author
 - **Tags**: $(if ($Tags.Count -gt 0) { $Tags -join ", " } else { "Aucun" })
 
-## Résumé
+## RÃ©sumÃ©
 
 $Summary
 
@@ -179,21 +259,21 @@ $(if ($RelatedArticles.Count -gt 0) {
 } else { "" })
 
 $(if ($References.Count -gt 0) {
-    "## Références`n`n" + ($References | ForEach-Object { "- $_`n" })
+    "## RÃ©fÃ©rences`n`n" + ($References | ForEach-Object { "- $_`n" })
 } else { "" })
 
 $(if (-not [string]::IsNullOrEmpty($ErrorDocPath)) {
-    "## Documentation d'erreur associée`n`n[Voir la documentation d'erreur]($ErrorDocPath)`n"
+    "## Documentation d'erreur associÃ©e`n`n[Voir la documentation d'erreur]($ErrorDocPath)`n"
 } else { "" })
 
 ---
-Dernière mise à jour: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+DerniÃ¨re mise Ã  jour: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 "@
     
     # Enregistrer l'article
     $articleContent | Set-Content -Path $articlePath -Encoding UTF8
     
-    # Mettre à jour l'index
+    # Mettre Ã  jour l'index
     Update-KnowledgeBaseIndex -NewArticlePath $articlePath
     
     return @{
@@ -204,7 +284,7 @@ Dernière mise à jour: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
     }
 }
 
-# Fonction pour mettre à jour l'index de la base de connaissances
+# Fonction pour mettre Ã  jour l'index de la base de connaissances
 function Update-KnowledgeBaseIndex {
     param (
         [Parameter(Mandatory = $false)]
@@ -229,7 +309,7 @@ function Update-KnowledgeBaseIndex {
                 $title = if ($content -match "# (.+)") { $Matches[1] } else { $article.BaseName }
                 $id = if ($content -match "ID:\s*([A-Z0-9]+)") { $Matches[1] } else { "" }
                 $date = if ($content -match "Date:\s*(.+)") { $Matches[1] } else { "" }
-                $summary = if ($content -match "Résumé\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
+                $summary = if ($content -match "RÃ©sumÃ©\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
                 
                 $articles += [PSCustomObject]@{
                     Title = $title
@@ -243,20 +323,20 @@ function Update-KnowledgeBaseIndex {
         }
     }
     
-    # Trier les articles par date (les plus récents en premier)
+    # Trier les articles par date (les plus rÃ©cents en premier)
     $recentArticles = $articles | Sort-Object -Property Date -Descending | Select-Object -First 5
     
-    # Générer la section des articles récents
-    $recentArticlesContent = "## Articles récents`n`n"
+    # GÃ©nÃ©rer la section des articles rÃ©cents
+    $recentArticlesContent = "## Articles rÃ©cents`n`n"
     
     foreach ($article in $recentArticles) {
         $relativePath = $article.Path.Replace($KnowledgeConfig.KnowledgeBaseFolder, ".").Replace("\", "/")
         $recentArticlesContent += "- [$($article.Title)]($relativePath) - $($article.Date)`n"
     }
     
-    # Mettre à jour la section des articles récents dans l'index
-    $indexContent = if ($indexContent -match "## Articles récents\s*\n(.*?)(?=\n+##|\n*$)") {
-        $indexContent -replace "## Articles récents\s*\n(.*?)(?=\n+##|\n*$)", "$recentArticlesContent`n"
+    # Mettre Ã  jour la section des articles rÃ©cents dans l'index
+    $indexContent = if ($indexContent -match "## Articles rÃ©cents\s*\n(.*?)(?=\n+##|\n*$)") {
+        $indexContent -replace "## Articles rÃ©cents\s*\n(.*?)(?=\n+##|\n*$)", "$recentArticlesContent`n"
     }
     else {
         $indexContent + "`n$recentArticlesContent`n"
@@ -265,9 +345,9 @@ function Update-KnowledgeBaseIndex {
     # Enregistrer l'index
     $indexContent | Set-Content -Path $KnowledgeConfig.IndexFile -Encoding UTF8
     
-    # Mettre en évidence le nouvel article si spécifié
+    # Mettre en Ã©vidence le nouvel article si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($NewArticlePath)) {
-        Write-Host "Nouvel article ajouté: $NewArticlePath"
+        Write-Host "Nouvel article ajoutÃ©: $NewArticlePath"
     }
     
     return $KnowledgeConfig.IndexFile
@@ -280,7 +360,7 @@ function Search-KnowledgeBase {
         [string]$SearchTerm,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Erreurs courantes", "Bonnes pratiques", "Tutoriels", "Références", "Études de cas")]
+        [ValidateSet("Erreurs courantes", "Bonnes pratiques", "Tutoriels", "RÃ©fÃ©rences", "Ã‰tudes de cas")]
         [string]$Category = "",
         
         [Parameter(Mandatory = $false)]
@@ -309,14 +389,14 @@ function Search-KnowledgeBase {
             foreach ($article in $categoryArticles) {
                 $content = Get-Content -Path $article.FullName -Raw
                 
-                # Vérifier si l'article correspond aux critères
+                # VÃ©rifier si l'article correspond aux critÃ¨res
                 $match = $true
                 
                 if (-not [string]::IsNullOrEmpty($SearchTerm) -and $content -notmatch [regex]::Escape($SearchTerm)) {
                     $match = $false
                 }
                 
-                # Vérifier les tags
+                # VÃ©rifier les tags
                 if ($Tags.Count -gt 0) {
                     $articleTags = if ($content -match "Tags:\s*(.+)") { $Matches[1] } else { "" }
                     
@@ -333,7 +413,7 @@ function Search-KnowledgeBase {
                     }
                 }
                 
-                # Vérifier les dates
+                # VÃ©rifier les dates
                 if ($StartDate -ne $null -or $EndDate -ne $null) {
                     $articleDate = if ($content -match "Date:\s*(\d{4}-\d{2}-\d{2})") { $Matches[1] } else { "" }
                     
@@ -350,14 +430,14 @@ function Search-KnowledgeBase {
                     }
                 }
                 
-                # Ajouter l'article aux résultats s'il correspond
+                # Ajouter l'article aux rÃ©sultats s'il correspond
                 if ($match) {
                     $title = if ($content -match "# (.+)") { $Matches[1] } else { $article.BaseName }
                     $id = if ($content -match "ID:\s*([A-Z0-9]+)") { $Matches[1] } else { "" }
                     $date = if ($content -match "Date:\s*(.+)") { $Matches[1] } else { "" }
                     $author = if ($content -match "Auteur:\s*(.+)") { $Matches[1] } else { "" }
                     $tags = if ($content -match "Tags:\s*(.+)") { $Matches[1] } else { "" }
-                    $summary = if ($content -match "Résumé\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
+                    $summary = if ($content -match "RÃ©sumÃ©\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
                     
                     $articles += [PSCustomObject]@{
                         Title = $title
@@ -374,20 +454,20 @@ function Search-KnowledgeBase {
         }
     }
     
-    # Trier les résultats par date
+    # Trier les rÃ©sultats par date
     $articles = $articles | Sort-Object -Property Date -Descending
     
     return $articles
 }
 
-# Fonction pour générer un rapport HTML des articles
+# Fonction pour gÃ©nÃ©rer un rapport HTML des articles
 function New-KnowledgeBaseReport {
     param (
         [Parameter(Mandatory = $false)]
         [string]$Title = "Rapport de la base de connaissances",
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Erreurs courantes", "Bonnes pratiques", "Tutoriels", "Références", "Études de cas")]
+        [ValidateSet("Erreurs courantes", "Bonnes pratiques", "Tutoriels", "RÃ©fÃ©rences", "Ã‰tudes de cas")]
         [string]$Category = "",
         
         [Parameter(Mandatory = $false)]
@@ -409,14 +489,14 @@ function New-KnowledgeBaseReport {
     # Rechercher les articles
     $articles = Search-KnowledgeBase -SearchTerm "" -Category $Category -Tags $Tags -StartDate $StartDate -EndDate $EndDate
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "KnowledgeBaseReport-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -495,15 +575,15 @@ function New-KnowledgeBaseReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="summary">
             <p>Nombre total d'articles: $($articles.Count)</p>
-            $(if (-not [string]::IsNullOrEmpty($Category)) { "<p>Catégorie: $Category</p>" })
+            $(if (-not [string]::IsNullOrEmpty($Category)) { "<p>CatÃ©gorie: $Category</p>" })
             $(if ($Tags.Count -gt 0) { "<p>Tags: $($Tags -join ", ")</p>" })
-            $(if ($StartDate -ne $null) { "<p>Date de début: $($StartDate.ToString('yyyy-MM-dd'))</p>" })
+            $(if ($StartDate -ne $null) { "<p>Date de dÃ©but: $($StartDate.ToString('yyyy-MM-dd'))</p>" })
             $(if ($EndDate -ne $null) { "<p>Date de fin: $($EndDate.ToString('yyyy-MM-dd'))</p>" })
         </div>
         
@@ -514,7 +594,7 @@ function New-KnowledgeBaseReport {
                 <h3>$($article.Title)</h3>
                 <div class='article-meta'>
                     <span>ID: $($article.ID)</span> |
-                    <span>Catégorie: $($article.Category)</span> |
+                    <span>CatÃ©gorie: $($article.Category)</span> |
                     <span>Date: $($article.Date)</span> |
                     <span>Auteur: $($article.Author)</span>
                 </div>
@@ -529,7 +609,7 @@ function New-KnowledgeBaseReport {
         })
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </div>
 </body>
@@ -539,7 +619,7 @@ function New-KnowledgeBaseReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -547,14 +627,14 @@ function New-KnowledgeBaseReport {
     return $OutputPath
 }
 
-# Fonction pour créer un article à partir d'une documentation d'erreur
+# Fonction pour crÃ©er un article Ã  partir d'une documentation d'erreur
 function New-KnowledgeArticleFromErrorDoc {
     param (
         [Parameter(Mandatory = $true)]
         [string]$ErrorDocPath,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Erreurs courantes", "Bonnes pratiques", "Tutoriels", "Références", "Études de cas")]
+        [ValidateSet("Erreurs courantes", "Bonnes pratiques", "Tutoriels", "RÃ©fÃ©rences", "Ã‰tudes de cas")]
         [string]$Category = "Erreurs courantes",
         
         [Parameter(Mandatory = $false)]
@@ -570,7 +650,7 @@ function New-KnowledgeArticleFromErrorDoc {
         [string[]]$References = @()
     )
     
-    # Vérifier si le document d'erreur existe
+    # VÃ©rifier si le document d'erreur existe
     if (-not (Test-Path -Path $ErrorDocPath)) {
         Write-Error "Le document d'erreur n'existe pas: $ErrorDocPath"
         return $null
@@ -582,15 +662,15 @@ function New-KnowledgeArticleFromErrorDoc {
     # Extraire les informations du document
     $title = if ($errorDoc -match "# (.+)") { $Matches[1] } else { "Article sur une erreur" }
     $id = if ($errorDoc -match "ID:\s*([A-Z0-9]+)") { $Matches[1] } else { "" }
-    $severity = if ($errorDoc -match "Sévérité:\s*(.+)") { $Matches[1] } else { "" }
+    $severity = if ($errorDoc -match "SÃ©vÃ©ritÃ©:\s*(.+)") { $Matches[1] } else { "" }
     $description = if ($errorDoc -match "Description\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
     $rootCause = if ($errorDoc -match "Cause racine\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
     $solution = if ($errorDoc -match "Solution\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
-    $preventionSteps = if ($errorDoc -match "Étapes de prévention\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
+    $preventionSteps = if ($errorDoc -match "Ã‰tapes de prÃ©vention\s*\n+(.+?)(?=\n+##|\n*$)") { $Matches[1].Trim() } else { "" }
     
-    # Générer le contenu de l'article
+    # GÃ©nÃ©rer le contenu de l'article
     $content = @"
-## Description du problème
+## Description du problÃ¨me
 
 $description
 
@@ -602,14 +682,14 @@ $rootCause
 
 $solution
 
-## Prévention
+## PrÃ©vention
 
 $preventionSteps
 
 $AdditionalContent
 "@
     
-    # Créer l'article
+    # CrÃ©er l'article
     $article = New-KnowledgeArticle -Title $title -Category $Category -Content $content `
         -Tags $Tags -RelatedArticles $RelatedArticles -References $References -ErrorDocPath $ErrorDocPath
     
@@ -619,3 +699,13 @@ $AdditionalContent
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-KnowledgeBase, New-KnowledgeArticle, Update-KnowledgeBaseIndex, Search-KnowledgeBase
 Export-ModuleMember -Function New-KnowledgeBaseReport, New-KnowledgeArticleFromErrorDoc
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

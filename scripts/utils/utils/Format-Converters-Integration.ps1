@@ -1,5 +1,5 @@
-# Script d'intégration pour le module Format-Converters
-# Ce script intègre les convertisseurs XML et HTML dans le module Format-Converters existant
+﻿# Script d'intÃ©gration pour le module Format-Converters
+# Ce script intÃ¨gre les convertisseurs XML et HTML dans le module Format-Converters existant
 
 # Chemins des modules
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -7,13 +7,13 @@ $parentPath = Split-Path -Parent $scriptPath
 $formatConvertersPath = Join-Path -Path (Split-Path -Parent $parentPath) -ChildPath "Format-Converters"
 $xmlSupportPath = Join-Path -Path $parentPath -ChildPath "XmlSupport.ps1"
 
-# Vérifier si le module Format-Converters existe
+# VÃ©rifier si le module Format-Converters existe
 if (-not (Test-Path -Path $formatConvertersPath)) {
     Write-Error "Le module Format-Converters n'existe pas: $formatConvertersPath"
     exit 1
 }
 
-# Vérifier si le module XmlSupport existe
+# VÃ©rifier si le module XmlSupport existe
 if (-not (Test-Path -Path $xmlSupportPath)) {
     Write-Error "Le module XmlSupport n'existe pas: $xmlSupportPath"
     exit 1
@@ -22,24 +22,104 @@ if (-not (Test-Path -Path $xmlSupportPath)) {
 # Importer le module XmlSupport
 . $xmlSupportPath
 
-# Créer le dossier d'intégration dans Format-Converters s'il n'existe pas
+# CrÃ©er le dossier d'intÃ©gration dans Format-Converters s'il n'existe pas
 $integrationPath = Join-Path -Path $formatConvertersPath -ChildPath "Integrations"
 if (-not (Test-Path -Path $integrationPath)) {
     New-Item -Path $integrationPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer le dossier XML_HTML dans le dossier d'intégration s'il n'existe pas
+# CrÃ©er le dossier XML_HTML dans le dossier d'intÃ©gration s'il n'existe pas
 $xmlHtmlIntegrationPath = Join-Path -Path $integrationPath -ChildPath "XML_HTML"
 if (-not (Test-Path -Path $xmlHtmlIntegrationPath)) {
     New-Item -Path $xmlHtmlIntegrationPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour copier un fichier avec vérification de la date de modification
+# Fonction pour copier un fichier avec vÃ©rification de la date de modification
+
+# Script d'intÃ©gration pour le module Format-Converters
+# Ce script intÃ¨gre les convertisseurs XML et HTML dans le module Format-Converters existant
+
+# Chemins des modules
+$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
+$parentPath = Split-Path -Parent $scriptPath
+$formatConvertersPath = Join-Path -Path (Split-Path -Parent $parentPath) -ChildPath "Format-Converters"
+$xmlSupportPath = Join-Path -Path $parentPath -ChildPath "XmlSupport.ps1"
+
+# VÃ©rifier si le module Format-Converters existe
+if (-not (Test-Path -Path $formatConvertersPath)) {
+    Write-Error "Le module Format-Converters n'existe pas: $formatConvertersPath"
+    exit 1
+}
+
+# VÃ©rifier si le module XmlSupport existe
+if (-not (Test-Path -Path $xmlSupportPath)) {
+    Write-Error "Le module XmlSupport n'existe pas: $xmlSupportPath"
+    exit 1
+}
+
+# Importer le module XmlSupport
+. $xmlSupportPath
+
+# CrÃ©er le dossier d'intÃ©gration dans Format-Converters s'il n'existe pas
+$integrationPath = Join-Path -Path $formatConvertersPath -ChildPath "Integrations"
+if (-not (Test-Path -Path $integrationPath)) {
+    New-Item -Path $integrationPath -ItemType Directory -Force | Out-Null
+}
+
+# CrÃ©er le dossier XML_HTML dans le dossier d'intÃ©gration s'il n'existe pas
+$xmlHtmlIntegrationPath = Join-Path -Path $integrationPath -ChildPath "XML_HTML"
+if (-not (Test-Path -Path $xmlHtmlIntegrationPath)) {
+    New-Item -Path $xmlHtmlIntegrationPath -ItemType Directory -Force | Out-Null
+}
+
+# Fonction pour copier un fichier avec vÃ©rification de la date de modification
 function Copy-FileIfNewer {
     param (
         [string]$SourcePath,
         [string]$DestinationPath
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     if (-not (Test-Path -Path $SourcePath)) {
         Write-Error "Le fichier source n'existe pas: $SourcePath"
@@ -53,22 +133,22 @@ function Copy-FileIfNewer {
         
         if ($sourceItem.LastWriteTime -gt $destinationItem.LastWriteTime) {
             Copy-Item -Path $SourcePath -Destination $DestinationPath -Force
-            Write-Host "Fichier mis à jour: $DestinationPath" -ForegroundColor Green
+            Write-Host "Fichier mis Ã  jour: $DestinationPath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Host "Fichier déjà à jour: $DestinationPath" -ForegroundColor Cyan
+            Write-Host "Fichier dÃ©jÃ  Ã  jour: $DestinationPath" -ForegroundColor Cyan
             return $false
         }
     }
     else {
         Copy-Item -Path $SourcePath -Destination $DestinationPath -Force
-        Write-Host "Fichier copié: $DestinationPath" -ForegroundColor Green
+        Write-Host "Fichier copiÃ©: $DestinationPath" -ForegroundColor Green
         return $true
     }
 }
 
-# Copier les fichiers d'implémentation
+# Copier les fichiers d'implÃ©mentation
 $implementationPath = Join-Path -Path $parentPath -ChildPath "Implementation"
 $implementationFiles = Get-ChildItem -Path $implementationPath -Filter "*.ps1"
 
@@ -83,10 +163,10 @@ foreach ($file in $implementationFiles) {
 $destinationPath = Join-Path -Path $xmlHtmlIntegrationPath -ChildPath "XmlSupport.ps1"
 Copy-FileIfNewer -SourcePath $xmlSupportPath -DestinationPath $destinationPath
 
-# Créer le fichier d'intégration principal
+# CrÃ©er le fichier d'intÃ©gration principal
 $integrationFile = @"
-# Module d'intégration XML_HTML pour Format-Converters
-# Ce fichier est généré automatiquement par le script d'intégration
+# Module d'intÃ©gration XML_HTML pour Format-Converters
+# Ce fichier est gÃ©nÃ©rÃ© automatiquement par le script d'intÃ©gration
 
 # Importer les modules
 `$scriptPath = Split-Path -Parent `$MyInvocation.MyCommand.Path
@@ -105,7 +185,7 @@ function Register-XmlHtmlConverters {
     # Enregistrer les convertisseurs XML
     `$ConverterRegistry["xml"] = @{
         Name = "XML"
-        Description = "Format XML structuré"
+        Description = "Format XML structurÃ©"
         Extensions = @(".xml")
         ImportFunction = { param(`$FilePath) Import-XmlFile -FilePath `$FilePath }
         ExportFunction = { param(`$Data, `$FilePath) Export-XmlFile -InputObject `$Data -FilePath `$FilePath }
@@ -138,7 +218,7 @@ function Register-XmlHtmlConverters {
             "xml" = { param(`$Content) ConvertFrom-XmlToHtml -XmlDocument `$Content }
         }
         ValidateFunction = { param(`$Content) `$true } # HTML est plus permissif, pas de validation stricte
-        AnalyzeFunction = { param(`$FilePath) `$null } # Pas d'analyse spécifique pour HTML pour le moment
+        AnalyzeFunction = { param(`$FilePath) `$null } # Pas d'analyse spÃ©cifique pour HTML pour le moment
     }
     
     return `$ConverterRegistry
@@ -151,6 +231,16 @@ Export-ModuleMember -Function Register-XmlHtmlConverters
 $integrationMainPath = Join-Path -Path $xmlHtmlIntegrationPath -ChildPath "XML_HTML_Integration.ps1"
 Set-Content -Path $integrationMainPath -Value $integrationFile -Encoding UTF8
 
-Write-Host "Intégration terminée avec succès!" -ForegroundColor Green
+Write-Host "IntÃ©gration terminÃ©e avec succÃ¨s!" -ForegroundColor Green
 Write-Host "Les convertisseurs XML et HTML sont maintenant disponibles dans le module Format-Converters." -ForegroundColor Green
-Write-Host "Chemin d'intégration: $xmlHtmlIntegrationPath" -ForegroundColor Cyan
+Write-Host "Chemin d'intÃ©gration: $xmlHtmlIntegrationPath" -ForegroundColor Cyan
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

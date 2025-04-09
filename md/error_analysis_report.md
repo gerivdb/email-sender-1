@@ -1,4 +1,4 @@
-# Analyse des erreurs recurrentes et patterns problematiques
+﻿# Analyse des erreurs recurrentes et patterns problematiques
 
 *Genere le 07/04/2025 06:55*
 
@@ -6,13 +6,13 @@
 
 ### Exception
 
-- 2025-04-05 21:02:03,396 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
-- 2025-04-05 21:02:18,638 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
-- 2025-04-05 21:25:19,721 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
-- 2025-04-05 21:50:35,773 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
-- 2025-04-05 21:53:14,903 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
-- 2025-04-05 21:57:40,209 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
-- 2025-04-05 22:05:34,362 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
+- 2025-04-05 21:02:03,396 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
+- 2025-04-05 21:02:18,638 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
+- 2025-04-05 21:25:19,721 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
+- 2025-04-05 21:50:35,773 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
+- 2025-04-05 21:53:14,903 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
+- 2025-04-05 21:57:40,209 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
+- 2025-04-05 22:05:34,362 - run_app - ERROR - Erreur lors de la construction de l'index RAG: cannot import name 'JournalRAG' from 'journal_rag_simple' (D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\python\journal\journal_rag_simple.py)
 
 ### Encodage
 

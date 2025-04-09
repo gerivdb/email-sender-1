@@ -1,26 +1,50 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste la Phase 3 : Élimination des duplications.
+    Teste la Phase 3 : Ã‰limination des duplications.
 .DESCRIPTION
-    Ce script teste spécifiquement la Phase 3 du projet de réorganisation des scripts,
-    qui concerne l'élimination des duplications. Il vérifie que les duplications de code
-    ont été éliminées et que les fonctions communes ont été extraites.
+    Ce script teste spÃ©cifiquement la Phase 3 du projet de rÃ©organisation des scripts,
+    qui concerne l'Ã©limination des duplications. Il vÃ©rifie que les duplications de code
+    ont Ã©tÃ© Ã©liminÃ©es et que les fonctions communes ont Ã©tÃ© extraites.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à tester. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  tester. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport de test. Par défaut: scripts\tests\duplications_test_report.json
+    Chemin du fichier de sortie pour le rapport de test. Par dÃ©faut: scripts\tests\duplications_test_report.json
 .PARAMETER MinimumLineCount
-    Nombre minimum de lignes pour considérer une duplication. Par défaut: 5
+    Nombre minimum de lignes pour considÃ©rer une duplication. Par dÃ©faut: 5
 .PARAMETER SimilarityThreshold
-    Seuil de similarité (0-1) pour considérer deux blocs comme similaires. Par défaut: 0.8
+    Seuil de similaritÃ© (0-1) pour considÃ©rer deux blocs comme similaires. Par dÃ©faut: 0.8
 .PARAMETER Verbose
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Test-Phase3-Duplications.ps1
     Teste la Phase 3 sur tous les scripts du dossier "scripts".
 .EXAMPLE
     .\Test-Phase3-Duplications.ps1 -Path "scripts\maintenance" -MinimumLineCount 10 -Verbose
-    Teste la Phase 3 sur les scripts du dossier "scripts\maintenance" avec un seuil de 10 lignes et des informations détaillées.
+    Teste la Phase 3 sur les scripts du dossier "scripts\maintenance" avec un seuil de 10 lignes et des informations dÃ©taillÃ©es.
+
+<#
+.SYNOPSIS
+    Teste la Phase 3 : Ã‰limination des duplications.
+.DESCRIPTION
+    Ce script teste spÃ©cifiquement la Phase 3 du projet de rÃ©organisation des scripts,
+    qui concerne l'Ã©limination des duplications. Il vÃ©rifie que les duplications de code
+    ont Ã©tÃ© Ã©liminÃ©es et que les fonctions communes ont Ã©tÃ© extraites.
+.PARAMETER Path
+    Chemin du dossier contenant les scripts Ã  tester. Par dÃ©faut: scripts
+.PARAMETER OutputPath
+    Chemin du fichier de sortie pour le rapport de test. Par dÃ©faut: scripts\tests\duplications_test_report.json
+.PARAMETER MinimumLineCount
+    Nombre minimum de lignes pour considÃ©rer une duplication. Par dÃ©faut: 5
+.PARAMETER SimilarityThreshold
+    Seuil de similaritÃ© (0-1) pour considÃ©rer deux blocs comme similaires. Par dÃ©faut: 0.8
+.PARAMETER Verbose
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
+.EXAMPLE
+    .\Test-Phase3-Duplications.ps1
+    Teste la Phase 3 sur tous les scripts du dossier "scripts".
+.EXAMPLE
+    .\Test-Phase3-Duplications.ps1 -Path "scripts\maintenance" -MinimumLineCount 10 -Verbose
+    Teste la Phase 3 sur les scripts du dossier "scripts\maintenance" avec un seuil de 10 lignes et des informations dÃ©taillÃ©es.
 #>
 
 param (
@@ -31,7 +55,49 @@ param (
     [switch]$Verbose
 )
 
-# Fonction pour écrire des messages de log
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
+
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -53,7 +119,7 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\tests\test_results.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
@@ -107,7 +173,7 @@ function Get-CodeBlocks {
         return $Blocks
     }
     
-    # Créer des blocs de code de taille variable
+    # CrÃ©er des blocs de code de taille variable
     for ($i = 0; $i -le $Lines.Count - $MinimumLineCount; $i++) {
         for ($j = $MinimumLineCount; $j -le [Math]::Min(50, $Lines.Count - $i); $j++) {
             $BlockLines = $Lines[$i..($i + $j - 1)]
@@ -133,14 +199,14 @@ function Get-CodeBlocks {
     return $Blocks
 }
 
-# Fonction pour calculer la similarité entre deux blocs de code
+# Fonction pour calculer la similaritÃ© entre deux blocs de code
 function Get-Similarity {
     param (
         [string]$Text1,
         [string]$Text2
     )
     
-    # Utiliser la distance de Levenshtein pour calculer la similarité
+    # Utiliser la distance de Levenshtein pour calculer la similaritÃ©
     $MaxLength = [Math]::Max($Text1.Length, $Text2.Length)
     if ($MaxLength -eq 0) {
         return 1.0
@@ -152,7 +218,7 @@ function Get-Similarity {
     return $Similarity
 }
 
-# Fonction pour calculer la distance de Levenshtein entre deux chaînes
+# Fonction pour calculer la distance de Levenshtein entre deux chaÃ®nes
 function Get-LevenshteinDistance {
     param (
         [string]$String1,
@@ -162,15 +228,15 @@ function Get-LevenshteinDistance {
     $Len1 = $String1.Length
     $Len2 = $String2.Length
     
-    # Créer une matrice de distance
+    # CrÃ©er une matrice de distance
     $Distance = New-Object 'int[,]' ($Len1 + 1), ($Len2 + 1)
     
-    # Initialiser la première colonne
+    # Initialiser la premiÃ¨re colonne
     for ($i = 0; $i -le $Len1; $i++) {
         $Distance[$i, 0] = $i
     }
     
-    # Initialiser la première ligne
+    # Initialiser la premiÃ¨re ligne
     for ($j = 0; $j -le $Len2; $j++) {
         $Distance[0, $j] = $j
     }
@@ -192,7 +258,7 @@ function Get-LevenshteinDistance {
     return $Distance[$Len1, $Len2]
 }
 
-# Fonction pour détecter les duplications dans un fichier
+# Fonction pour dÃ©tecter les duplications dans un fichier
 function Find-IntraFileDuplications {
     param (
         [string]$FilePath,
@@ -209,12 +275,12 @@ function Find-IntraFileDuplications {
         for ($j = $i + 1; $j -lt $Blocks.Count; $j++) {
             $Block2 = $Blocks[$j]
             
-            # Vérifier si les blocs se chevauchent
+            # VÃ©rifier si les blocs se chevauchent
             if ($Block1.EndLine -ge $Block2.StartLine) {
                 continue
             }
             
-            # Vérifier si les hachages sont identiques
+            # VÃ©rifier si les hachages sont identiques
             if ($Block1.Hash -eq $Block2.Hash) {
                 $Duplications += @{
                     File = $FilePath
@@ -230,7 +296,7 @@ function Find-IntraFileDuplications {
     return $Duplications
 }
 
-# Fonction pour détecter les duplications entre fichiers
+# Fonction pour dÃ©tecter les duplications entre fichiers
 function Find-InterFileDuplications {
     param (
         [array]$Files,
@@ -260,7 +326,7 @@ function Find-InterFileDuplications {
             # Comparer les blocs entre les deux fichiers
             foreach ($Block1 in $Blocks1) {
                 foreach ($Block2 in $Blocks2) {
-                    # Vérifier si les hachages sont identiques
+                    # VÃ©rifier si les hachages sont identiques
                     if ($Block1.Hash -eq $Block2.Hash) {
                         $Duplications += @{
                             File1 = $File1
@@ -271,7 +337,7 @@ function Find-InterFileDuplications {
                             Similarity = 1.0
                         }
                     } else {
-                        # Calculer la similarité entre les blocs
+                        # Calculer la similaritÃ© entre les blocs
                         $Similarity = Get-Similarity -Text1 $Block1.Text -Text2 $Block2.Text
                         
                         if ($Similarity -ge $SimilarityThreshold) {
@@ -303,24 +369,24 @@ function Test-Duplications {
         [switch]$Verbose
     )
     
-    Write-Log "=== Test de la Phase 3 : Élimination des duplications ===" -Level "TITLE"
-    Write-Log "Chemin des scripts à tester: $Path" -Level "INFO"
+    Write-Log "=== Test de la Phase 3 : Ã‰limination des duplications ===" -Level "TITLE"
+    Write-Log "Chemin des scripts Ã  tester: $Path" -Level "INFO"
     Write-Log "Nombre minimum de lignes: $MinimumLineCount" -Level "INFO"
-    Write-Log "Seuil de similarité: $SimilarityThreshold" -Level "INFO"
+    Write-Log "Seuil de similaritÃ©: $SimilarityThreshold" -Level "INFO"
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $OutputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $OutputDir)) {
         New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-        Write-Log "Dossier de sortie créé: $OutputDir" -Level "INFO"
+        Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "INFO"
     }
     
     # Obtenir tous les fichiers de script
     $ScriptFiles = Get-ScriptFiles -Path $Path
     $TotalFiles = $ScriptFiles.Count
-    Write-Log "Nombre de fichiers à analyser: $TotalFiles" -Level "INFO"
+    Write-Log "Nombre de fichiers Ã  analyser: $TotalFiles" -Level "INFO"
     
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $Results = @{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalFiles = $TotalFiles
@@ -330,13 +396,13 @@ function Test-Duplications {
         InterFileDuplications = @()
     }
     
-    # Détecter les duplications dans chaque fichier
-    Write-Log "Détection des duplications internes..." -Level "INFO"
+    # DÃ©tecter les duplications dans chaque fichier
+    Write-Log "DÃ©tection des duplications internes..." -Level "INFO"
     $FileCounter = 0
     foreach ($File in $ScriptFiles) {
         $FileCounter++
         $Progress = [math]::Round(($FileCounter / $TotalFiles) * 100)
-        Write-Progress -Activity "Détection des duplications internes" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
+        Write-Progress -Activity "DÃ©tection des duplications internes" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
         
         if ($Verbose) {
             Write-Log "Analyse du fichier: $($File.FullName)" -Level "INFO"
@@ -352,49 +418,59 @@ function Test-Duplications {
             }
             
             if ($Verbose) {
-                Write-Log "  Duplications internes trouvées: $($Duplications.Count)" -Level "WARNING"
+                Write-Log "  Duplications internes trouvÃ©es: $($Duplications.Count)" -Level "WARNING"
             }
         }
     }
     
-    Write-Progress -Activity "Détection des duplications internes" -Completed
+    Write-Progress -Activity "DÃ©tection des duplications internes" -Completed
     
-    # Détecter les duplications entre fichiers
-    Write-Log "Détection des duplications entre fichiers..." -Level "INFO"
+    # DÃ©tecter les duplications entre fichiers
+    Write-Log "DÃ©tection des duplications entre fichiers..." -Level "INFO"
     $InterFileDuplications = Find-InterFileDuplications -Files $ScriptFiles -MinimumLineCount $MinimumLineCount -SimilarityThreshold $SimilarityThreshold
     $Results.InterFileDuplications = $InterFileDuplications
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $Results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    # Afficher un résumé
+    # Afficher un rÃ©sumÃ©
     $IntraFileCount = ($Results.IntraFileDuplications | Measure-Object -Property Duplications -Sum).Sum
     $InterFileCount = $Results.InterFileDuplications.Count
     
-    Write-Log "Analyse terminée" -Level "SUCCESS"
-    Write-Log "Nombre total de fichiers analysés: $TotalFiles" -Level "INFO"
-    Write-Log "Nombre de duplications internes trouvées: $IntraFileCount" -Level $(if ($IntraFileCount -gt 0) { "WARNING" } else { "SUCCESS" })
-    Write-Log "Nombre de duplications entre fichiers trouvées: $InterFileCount" -Level $(if ($InterFileCount -gt 0) { "WARNING" } else { "SUCCESS" })
-    Write-Log "Résultats enregistrés dans: $OutputPath" -Level "SUCCESS"
+    Write-Log "Analyse terminÃ©e" -Level "SUCCESS"
+    Write-Log "Nombre total de fichiers analysÃ©s: $TotalFiles" -Level "INFO"
+    Write-Log "Nombre de duplications internes trouvÃ©es: $IntraFileCount" -Level $(if ($IntraFileCount -gt 0) { "WARNING" } else { "SUCCESS" })
+    Write-Log "Nombre de duplications entre fichiers trouvÃ©es: $InterFileCount" -Level $(if ($InterFileCount -gt 0) { "WARNING" } else { "SUCCESS" })
+    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
     
-    # Déterminer si le test est réussi
+    # DÃ©terminer si le test est rÃ©ussi
     if ($InterFileCount -gt 10) {
-        Write-Log "Un nombre important de duplications entre fichiers a été détecté" -Level "WARNING"
-        Write-Log "La Phase 3 n'a pas complètement réussi" -Level "WARNING"
+        Write-Log "Un nombre important de duplications entre fichiers a Ã©tÃ© dÃ©tectÃ©" -Level "WARNING"
+        Write-Log "La Phase 3 n'a pas complÃ¨tement rÃ©ussi" -Level "WARNING"
         return $false
     } elseif ($InterFileCount -gt 0) {
-        Write-Log "Quelques duplications entre fichiers ont été détectées" -Level "WARNING"
-        Write-Log "La Phase 3 a partiellement réussi" -Level "WARNING"
+        Write-Log "Quelques duplications entre fichiers ont Ã©tÃ© dÃ©tectÃ©es" -Level "WARNING"
+        Write-Log "La Phase 3 a partiellement rÃ©ussi" -Level "WARNING"
         return $true
     } else {
-        Write-Log "Aucune duplication significative détectée" -Level "SUCCESS"
-        Write-Log "La Phase 3 a réussi" -Level "SUCCESS"
+        Write-Log "Aucune duplication significative dÃ©tectÃ©e" -Level "SUCCESS"
+        Write-Log "La Phase 3 a rÃ©ussi" -Level "SUCCESS"
         return $true
     }
 }
 
-# Exécuter le test
+# ExÃ©cuter le test
 $Success = Test-Duplications -Path $Path -OutputPath $OutputPath -MinimumLineCount $MinimumLineCount -SimilarityThreshold $SimilarityThreshold -Verbose:$Verbose
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $Success
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

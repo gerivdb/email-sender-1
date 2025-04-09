@@ -1,11 +1,30 @@
-# Script pour la conception de l'architecture du système
+﻿# Script pour la conception de l'architecture du systÃ¨me
 
 # Configuration
 $ArchitectureConfig = @{
     # Dossier de stockage des documents d'architecture
     OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ProjectArchitecture"
     
-    # Fichier des composants du système
+    # Fichier des composants du systÃ¨me
+    ComponentsFile = Join-Path -Path $env:TEMP -ChildPath "ProjectArchitecture\components.json"
+    
+    # Fichier des interfaces entre composants
+    InterfacesFile = Join-Path -Path $env:TEMP -ChildPath "ProjectArchitecture\interfaces.json"
+    
+    # Fichier des standards de code
+    StandardsFile = Join-Path -Path $env:TEMP -ChildPath "ProjectArchitecture\standards.json"
+}
+
+# Fonction pour initialiser la conception d'architecture
+
+# Script pour la conception de l'architecture du systÃ¨me
+
+# Configuration
+$ArchitectureConfig = @{
+    # Dossier de stockage des documents d'architecture
+    OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ProjectArchitecture"
+    
+    # Fichier des composants du systÃ¨me
     ComponentsFile = Join-Path -Path $env:TEMP -ChildPath "ProjectArchitecture\components.json"
     
     # Fichier des interfaces entre composants
@@ -23,8 +42,50 @@ function Initialize-ArchitectureDesign {
         [string]$InterfacesFile = "",
         [string]$StandardsFile = ""
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
     
-    # Mettre à jour la configuration
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
+    
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $ArchitectureConfig.OutputFolder = $OutputFolder
     }
@@ -41,12 +102,12 @@ function Initialize-ArchitectureDesign {
         $ArchitectureConfig.StandardsFile = $StandardsFile
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $ArchitectureConfig.OutputFolder)) {
         New-Item -Path $ArchitectureConfig.OutputFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Créer les fichiers s'ils n'existent pas
+    # CrÃ©er les fichiers s'ils n'existent pas
     $files = @{
         $ArchitectureConfig.ComponentsFile = @{
             Components = @()
@@ -94,7 +155,7 @@ function Add-Component {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ArchitectureConfig.ComponentsFile)) {
         Initialize-ArchitectureDesign
     }
@@ -102,15 +163,15 @@ function Add-Component {
     # Charger les composants existants
     $componentsData = Get-Content -Path $ArchitectureConfig.ComponentsFile -Raw | ConvertFrom-Json
     
-    # Vérifier si le composant existe déjà
+    # VÃ©rifier si le composant existe dÃ©jÃ 
     $existingComponent = $componentsData.Components | Where-Object { $_.Name -eq $Name }
     
     if ($existingComponent) {
-        Write-Warning "Un composant avec ce nom existe déjà."
+        Write-Warning "Un composant avec ce nom existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer le composant
+    # CrÃ©er le composant
     $component = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -162,7 +223,7 @@ function Add-Interface {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ArchitectureConfig.InterfacesFile)) {
         Initialize-ArchitectureDesign
     }
@@ -170,18 +231,18 @@ function Add-Interface {
     # Charger les interfaces existantes
     $interfacesData = Get-Content -Path $ArchitectureConfig.InterfacesFile -Raw | ConvertFrom-Json
     
-    # Vérifier si l'interface existe déjà
+    # VÃ©rifier si l'interface existe dÃ©jÃ 
     $existingInterface = $interfacesData.Interfaces | Where-Object { 
         $_.Name -eq $Name -or 
         ($_.SourceComponent -eq $SourceComponent -and $_.TargetComponent -eq $TargetComponent)
     }
     
     if ($existingInterface) {
-        Write-Warning "Une interface avec ce nom ou entre ces composants existe déjà."
+        Write-Warning "Une interface avec ce nom ou entre ces composants existe dÃ©jÃ ."
         return $null
     }
     
-    # Vérifier si les composants existent
+    # VÃ©rifier si les composants existent
     $componentsData = Get-Content -Path $ArchitectureConfig.ComponentsFile -Raw | ConvertFrom-Json
     $sourceExists = $componentsData.Components | Where-Object { $_.Name -eq $SourceComponent }
     $targetExists = $componentsData.Components | Where-Object { $_.Name -eq $TargetComponent }
@@ -196,7 +257,7 @@ function Add-Interface {
         return $null
     }
     
-    # Créer l'interface
+    # CrÃ©er l'interface
     $interface = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -244,7 +305,7 @@ function Add-CodeStandard {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ArchitectureConfig.StandardsFile)) {
         Initialize-ArchitectureDesign
     }
@@ -252,15 +313,15 @@ function Add-CodeStandard {
     # Charger les standards existants
     $standardsData = Get-Content -Path $ArchitectureConfig.StandardsFile -Raw | ConvertFrom-Json
     
-    # Vérifier si le standard existe déjà
+    # VÃ©rifier si le standard existe dÃ©jÃ 
     $existingStandard = $standardsData.Standards | Where-Object { $_.Name -eq $Name }
     
     if ($existingStandard) {
-        Write-Warning "Un standard avec ce nom existe déjà."
+        Write-Warning "Un standard avec ce nom existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer le standard
+    # CrÃ©er le standard
     $standard = @{
         ID = [Guid]::NewGuid().ToString()
         Name = $Name
@@ -283,7 +344,7 @@ function Add-CodeStandard {
     return $standard
 }
 
-# Fonction pour générer un diagramme d'architecture
+# Fonction pour gÃ©nÃ©rer un diagramme d'architecture
 function New-ArchitectureDiagram {
     param (
         [Parameter(Mandatory = $false)]
@@ -296,21 +357,21 @@ function New-ArchitectureDiagram {
         [switch]$OpenOutput
     )
     
-    # Charger les données
+    # Charger les donnÃ©es
     $componentsData = Get-Content -Path $ArchitectureConfig.ComponentsFile -Raw | ConvertFrom-Json
     $interfacesData = Get-Content -Path $ArchitectureConfig.InterfacesFile -Raw | ConvertFrom-Json
     
     $components = $componentsData.Components
     $interfaces = $interfacesData.Interfaces
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "ArchitectureDiagram-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Préparer les données pour le diagramme
+    # PrÃ©parer les donnÃ©es pour le diagramme
     $nodes = @()
     $edges = @()
     
@@ -364,7 +425,7 @@ function New-ArchitectureDiagram {
         }
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -434,14 +495,14 @@ function New-ArchitectureDiagram {
     <div class="header">
         <h1>$Title</h1>
         <div>
-            <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+            <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
         </div>
     </div>
     
     <div id="mynetwork"></div>
     
     <div class="legend">
-        <h3>Légende</h3>
+        <h3>LÃ©gende</h3>
         <div class="legend-item">
             <div class="legend-color" style="background-color: #4caf50;"></div>
             <span>Module</span>
@@ -473,15 +534,15 @@ function New-ArchitectureDiagram {
     </div>
     
     <div class="footer">
-        <p>Diagramme généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <p>Diagramme gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     </div>
     
     <script>
-        // Données pour le diagramme
+        // DonnÃ©es pour le diagramme
         const nodes = $(ConvertTo-Json -InputObject $nodes -Depth 5);
         const edges = $(ConvertTo-Json -InputObject $edges -Depth 5);
         
-        // Créer le réseau
+        // CrÃ©er le rÃ©seau
         const container = document.getElementById('mynetwork');
         const data = {
             nodes: new vis.DataSet(nodes),
@@ -521,7 +582,7 @@ function New-ArchitectureDiagram {
         };
         const network = new vis.Network(container, data, options);
         
-        // Ajuster la taille du réseau lors du redimensionnement de la fenêtre
+        // Ajuster la taille du rÃ©seau lors du redimensionnement de la fenÃªtre
         window.addEventListener('resize', function() {
             network.fit();
         });
@@ -533,7 +594,7 @@ function New-ArchitectureDiagram {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le diagramme si demandé
+    # Ouvrir le diagramme si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -541,7 +602,7 @@ function New-ArchitectureDiagram {
     return $OutputPath
 }
 
-# Fonction pour générer un rapport d'architecture
+# Fonction pour gÃ©nÃ©rer un rapport d'architecture
 function New-ArchitectureReport {
     param (
         [Parameter(Mandatory = $false)]
@@ -557,7 +618,7 @@ function New-ArchitectureReport {
         [switch]$OpenOutput
     )
     
-    # Charger les données
+    # Charger les donnÃ©es
     $componentsData = Get-Content -Path $ArchitectureConfig.ComponentsFile -Raw | ConvertFrom-Json
     $interfacesData = Get-Content -Path $ArchitectureConfig.InterfacesFile -Raw | ConvertFrom-Json
     
@@ -570,14 +631,14 @@ function New-ArchitectureReport {
         $standards = $standardsData.Standards
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "ArchitectureReport-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -682,12 +743,12 @@ function New-ArchitectureReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="section">
-            <h2>Composants du système</h2>
+            <h2>Composants du systÃ¨me</h2>
             <p>Nombre total de composants: $($components.Count)</p>
             
             <table>
@@ -696,8 +757,8 @@ function New-ArchitectureReport {
                         <th>Nom</th>
                         <th>Type</th>
                         <th>Description</th>
-                        <th>Responsabilité</th>
-                        <th>Dépendances</th>
+                        <th>ResponsabilitÃ©</th>
+                        <th>DÃ©pendances</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -756,7 +817,7 @@ function New-ArchitectureReport {
                     <thead>
                         <tr>
                             <th>Nom</th>
-                            <th>Catégorie</th>
+                            <th>CatÃ©gorie</th>
                             <th>Description</th>
                             <th>Langages applicables</th>
                         </tr>
@@ -778,7 +839,7 @@ function New-ArchitectureReport {
         })
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </div>
 </body>
@@ -788,7 +849,7 @@ function New-ArchitectureReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -799,3 +860,13 @@ function New-ArchitectureReport {
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ArchitectureDesign, Add-Component, Add-Interface, Add-CodeStandard
 Export-ModuleMember -Function New-ArchitectureDiagram, New-ArchitectureReport
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

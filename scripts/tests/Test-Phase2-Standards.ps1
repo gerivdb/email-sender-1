@@ -1,35 +1,99 @@
-<#
+﻿<#
 .SYNOPSIS
     Teste la Phase 2 : Standardisation des scripts.
 .DESCRIPTION
-    Ce script teste spécifiquement la Phase 2 du projet de réorganisation des scripts,
-    qui concerne la standardisation des scripts. Il vérifie que les scripts sont conformes
-    aux standards de codage définis.
+    Ce script teste spÃ©cifiquement la Phase 2 du projet de rÃ©organisation des scripts,
+    qui concerne la standardisation des scripts. Il vÃ©rifie que les scripts sont conformes
+    aux standards de codage dÃ©finis.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à tester. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  tester. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport de test. Par défaut: scripts\tests\standards_test_report.json
+    Chemin du fichier de sortie pour le rapport de test. Par dÃ©faut: scripts\tests\standards_test_report.json
 .PARAMETER ScriptType
-    Type de script à tester (All, PowerShell, Python, Batch, Shell). Par défaut: All
+    Type de script Ã  tester (All, PowerShell, Python, Batch, Shell). Par dÃ©faut: All
 .PARAMETER Verbose
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Test-Phase2-Standards.ps1
     Teste la Phase 2 sur tous les scripts du dossier "scripts".
 .EXAMPLE
     .\Test-Phase2-Standards.ps1 -Path "scripts\maintenance" -ScriptType PowerShell -Verbose
-    Teste la Phase 2 sur les scripts PowerShell du dossier "scripts\maintenance" avec des informations détaillées.
+    Teste la Phase 2 sur les scripts PowerShell du dossier "scripts\maintenance" avec des informations dÃ©taillÃ©es.
+
+<#
+.SYNOPSIS
+    Teste la Phase 2 : Standardisation des scripts.
+.DESCRIPTION
+    Ce script teste spÃ©cifiquement la Phase 2 du projet de rÃ©organisation des scripts,
+    qui concerne la standardisation des scripts. Il vÃ©rifie que les scripts sont conformes
+    aux standards de codage dÃ©finis.
+.PARAMETER Path
+    Chemin du dossier contenant les scripts Ã  tester. Par dÃ©faut: scripts
+.PARAMETER OutputPath
+    Chemin du fichier de sortie pour le rapport de test. Par dÃ©faut: scripts\tests\standards_test_report.json
+.PARAMETER ScriptType
+    Type de script Ã  tester (All, PowerShell, Python, Batch, Shell). Par dÃ©faut: All
+.PARAMETER Verbose
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
+.EXAMPLE
+    .\Test-Phase2-Standards.ps1
+    Teste la Phase 2 sur tous les scripts du dossier "scripts".
+.EXAMPLE
+    .\Test-Phase2-Standards.ps1 -Path "scripts\maintenance" -ScriptType PowerShell -Verbose
+    Teste la Phase 2 sur les scripts PowerShell du dossier "scripts\maintenance" avec des informations dÃ©taillÃ©es.
 #>
 
 param (
     [string]$Path = "scripts",
     [string]$OutputPath = "scripts\tests\standards_test_report.json",
-    [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")]
+    [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
     [string]$ScriptType = "All",
     [switch]$Verbose
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -51,7 +115,7 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\tests\test_results.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
@@ -87,7 +151,7 @@ function Get-ScriptFiles {
     return $Files
 }
 
-# Fonction pour déterminer le type de script
+# Fonction pour dÃ©terminer le type de script
 function Get-ScriptType {
     param (
         [string]$FilePath
@@ -107,7 +171,7 @@ function Get-ScriptType {
     }
 }
 
-# Fonction pour vérifier l'en-tête du script
+# Fonction pour vÃ©rifier l'en-tÃªte du script
 function Test-ScriptHeader {
     param (
         [string]$FilePath,
@@ -119,22 +183,22 @@ function Test-ScriptHeader {
     
     switch ($ScriptType) {
         "PowerShell" {
-            # Vérifier la présence d'un bloc de commentaires
+            # VÃ©rifier la prÃ©sence d'un bloc de commentaires
             if (-not ($Content -match "<#[\s\S]*?#>")) {
                 $Issues += [PSCustomObject]@{
                     Rule = "Header"
-                    Description = "Le script ne contient pas de bloc de commentaires d'en-tête"
+                    Description = "Le script ne contient pas de bloc de commentaires d'en-tÃªte"
                     Severity = "High"
                 }
             } else {
-                # Vérifier les éléments requis dans l'en-tête
+                # VÃ©rifier les Ã©lÃ©ments requis dans l'en-tÃªte
                 $null = $Content -match "<#[\s\S]*?#>"
                 $HeaderContent = $Matches[0]
                 
                 if (-not ($HeaderContent -match "\.SYNOPSIS")) {
                     $Issues += [PSCustomObject]@{
                         Rule = "Header"
-                        Description = "L'en-tête ne contient pas de section SYNOPSIS"
+                        Description = "L'en-tÃªte ne contient pas de section SYNOPSIS"
                         Severity = "Medium"
                     }
                 }
@@ -142,34 +206,34 @@ function Test-ScriptHeader {
                 if (-not ($HeaderContent -match "\.DESCRIPTION")) {
                     $Issues += [PSCustomObject]@{
                         Rule = "Header"
-                        Description = "L'en-tête ne contient pas de section DESCRIPTION"
+                        Description = "L'en-tÃªte ne contient pas de section DESCRIPTION"
                         Severity = "Medium"
                     }
                 }
             }
         }
         "Python" {
-            # Vérifier la présence d'un docstring
+            # VÃ©rifier la prÃ©sence d'un docstring
             if (-not ($Content -match '"""[\s\S]*?"""' -or $Content -match "'''[\s\S]*?'''")) {
                 $Issues += [PSCustomObject]@{
                     Rule = "Header"
-                    Description = "Le script ne contient pas de docstring d'en-tête"
+                    Description = "Le script ne contient pas de docstring d'en-tÃªte"
                     Severity = "High"
                 }
             }
         }
         "Batch" {
-            # Vérifier la présence de commentaires d'en-tête
+            # VÃ©rifier la prÃ©sence de commentaires d'en-tÃªte
             if (-not ($Content -match "::[-]+\r?\n::([\s\S]*?)::[-]+")) {
                 $Issues += [PSCustomObject]@{
                     Rule = "Header"
-                    Description = "Le script ne contient pas de bloc de commentaires d'en-tête"
+                    Description = "Le script ne contient pas de bloc de commentaires d'en-tÃªte"
                     Severity = "High"
                 }
             }
         }
         "Shell" {
-            # Vérifier la présence d'un shebang
+            # VÃ©rifier la prÃ©sence d'un shebang
             if (-not ($Content -match "^#!/bin/(ba)?sh")) {
                 $Issues += [PSCustomObject]@{
                     Rule = "Header"
@@ -183,7 +247,7 @@ function Test-ScriptHeader {
     return $Issues
 }
 
-# Fonction pour vérifier le style de code
+# Fonction pour vÃ©rifier le style de code
 function Test-CodeStyle {
     param (
         [string]$FilePath,
@@ -194,7 +258,7 @@ function Test-CodeStyle {
     $ContentLines = Get-Content -Path $FilePath -Encoding UTF8
     $Issues = @()
     
-    # Vérifier la longueur des lignes
+    # VÃ©rifier la longueur des lignes
     for ($i = 0; $i -lt $ContentLines.Count; $i++) {
         $LineNumber = $i + 1
         $Line = $ContentLines[$i]
@@ -202,28 +266,28 @@ function Test-CodeStyle {
         if ($Line.Length -gt 120) {
             $Issues += [PSCustomObject]@{
                 Rule = "LineLength"
-                Description = "La ligne $LineNumber dépasse 120 caractères (${$Line.Length})"
+                Description = "La ligne $LineNumber dÃ©passe 120 caractÃ¨res (${$Line.Length})"
                 Severity = "Low"
                 LineNumber = $LineNumber
             }
         }
     }
     
-    # Vérifications spécifiques au type de script
+    # VÃ©rifications spÃ©cifiques au type de script
     switch ($ScriptType) {
         "PowerShell" {
-            # Vérifier les comparaisons avec $null
+            # VÃ©rifier les comparaisons avec $null
             $NullComparisons = [regex]::Matches($Content, "(\`$[A-Za-z0-9_]+)\s+-eq\s+\`$null")
             foreach ($Comparison in $NullComparisons) {
                 $Issues += [PSCustomObject]@{
                     Rule = "NullComparison"
-                    Description = "Comparaison avec `$null incorrecte: '$($Comparison.Value)'. Utilisez plutôt: `$null -eq $($Comparison.Groups[1].Value)"
+                    Description = "Comparaison avec `$null incorrecte: '$($Comparison.Value)'. Utilisez plutÃ´t: `$null -eq $($Comparison.Groups[1].Value)"
                     Severity = "Medium"
                 }
             }
         }
         "Python" {
-            # Vérifier l'utilisation de if __name__ == "__main__"
+            # VÃ©rifier l'utilisation de if __name__ == "__main__"
             if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
                 $Issues += [PSCustomObject]@{
                     Rule = "MainGuard"
@@ -232,7 +296,7 @@ function Test-CodeStyle {
                 }
             }
             
-            # Vérifier l'indentation (espaces vs tabs)
+            # VÃ©rifier l'indentation (espaces vs tabs)
             if ($Content -match "\t") {
                 $Issues += [PSCustomObject]@{
                     Rule = "Indentation"
@@ -242,7 +306,7 @@ function Test-CodeStyle {
             }
         }
         "Batch" {
-            # Vérifier l'utilisation de @echo off
+            # VÃ©rifier l'utilisation de @echo off
             if (-not ($Content -match "^@echo off")) {
                 $Issues += [PSCustomObject]@{
                     Rule = "EchoOff"
@@ -252,11 +316,11 @@ function Test-CodeStyle {
             }
         }
         "Shell" {
-            # Vérifier l'utilisation de set -e
+            # VÃ©rifier l'utilisation de set -e
             if (-not ($Content -match "set -e")) {
                 $Issues += [PSCustomObject]@{
                     Rule = "SetE"
-                    Description = "Le script n'utilise pas 'set -e' pour arrêter en cas d'erreur"
+                    Description = "Le script n'utilise pas 'set -e' pour arrÃªter en cas d'erreur"
                     Severity = "Medium"
                 }
             }
@@ -266,7 +330,7 @@ function Test-CodeStyle {
     return $Issues
 }
 
-# Fonction pour vérifier l'encodage du fichier
+# Fonction pour vÃ©rifier l'encodage du fichier
 function Test-FileEncoding {
     param (
         [string]$FilePath,
@@ -275,7 +339,7 @@ function Test-FileEncoding {
     
     $Issues = @()
     
-    # Lire les premiers octets du fichier pour détecter l'encodage
+    # Lire les premiers octets du fichier pour dÃ©tecter l'encodage
     $Bytes = [System.IO.File]::ReadAllBytes($FilePath)
     $HasBOM = $false
     
@@ -288,7 +352,7 @@ function Test-FileEncoding {
             if (-not $HasBOM) {
                 $Issues += [PSCustomObject]@{
                     Rule = "Encoding"
-                    Description = "Le script PowerShell n'est pas encodé en UTF-8 avec BOM"
+                    Description = "Le script PowerShell n'est pas encodÃ© en UTF-8 avec BOM"
                     Severity = "Medium"
                 }
             }
@@ -331,15 +395,15 @@ function Test-Script {
     
     $Issues = @()
     
-    # Vérifier l'en-tête du script
+    # VÃ©rifier l'en-tÃªte du script
     $HeaderIssues = Test-ScriptHeader -FilePath $FilePath -ScriptType $ScriptType
     $Issues += $HeaderIssues
     
-    # Vérifier le style de code
+    # VÃ©rifier le style de code
     $StyleIssues = Test-CodeStyle -FilePath $FilePath -ScriptType $ScriptType
     $Issues += $StyleIssues
     
-    # Vérifier l'encodage du fichier
+    # VÃ©rifier l'encodage du fichier
     $EncodingIssues = Test-FileEncoding -FilePath $FilePath -ScriptType $ScriptType
     $Issues += $EncodingIssues
     
@@ -366,22 +430,22 @@ function Test-Standards {
     )
     
     Write-Log "=== Test de la Phase 2 : Standardisation des scripts ===" -Level "TITLE"
-    Write-Log "Chemin des scripts à tester: $Path" -Level "INFO"
+    Write-Log "Chemin des scripts Ã  tester: $Path" -Level "INFO"
     Write-Log "Type de script: $ScriptType" -Level "INFO"
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $OutputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $OutputDir)) {
         New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-        Write-Log "Dossier de sortie créé: $OutputDir" -Level "INFO"
+        Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "INFO"
     }
     
     # Obtenir tous les fichiers de script
     $ScriptFiles = Get-ScriptFiles -Path $Path -ScriptType $ScriptType
     $TotalFiles = $ScriptFiles.Count
-    Write-Log "Nombre de fichiers à analyser: $TotalFiles" -Level "INFO"
+    Write-Log "Nombre de fichiers Ã  analyser: $TotalFiles" -Level "INFO"
     
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $Results = @{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalFiles = $TotalFiles
@@ -398,7 +462,7 @@ function Test-Standards {
     foreach ($File in $ScriptFiles) {
         $FileCounter++
         $Progress = [math]::Round(($FileCounter / $TotalFiles) * 100)
-        Write-Progress -Activity "Analyse de conformité" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
+        Write-Progress -Activity "Analyse de conformitÃ©" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
         
         if ($Verbose) {
             Write-Log "Analyse du fichier: $($File.FullName)" -Level "INFO"
@@ -415,7 +479,7 @@ function Test-Standards {
             $Results.TotalIssueCount += $ScriptResult.IssueCount
             
             if ($Verbose -and $ScriptResult.IssueCount -gt 0) {
-                Write-Log "  Problèmes trouvés: $($ScriptResult.IssueCount)" -Level "WARNING"
+                Write-Log "  ProblÃ¨mes trouvÃ©s: $($ScriptResult.IssueCount)" -Level "WARNING"
                 foreach ($Issue in $ScriptResult.Issues) {
                     $SeverityColor = switch ($Issue.Severity) {
                         "High" { "ERROR" }
@@ -428,38 +492,48 @@ function Test-Standards {
         }
     }
     
-    Write-Progress -Activity "Analyse de conformité" -Completed
+    Write-Progress -Activity "Analyse de conformitÃ©" -Completed
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $Results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    # Afficher un résumé
-    Write-Log "Analyse terminée" -Level "SUCCESS"
-    Write-Log "Nombre total de fichiers analysés: $TotalFiles" -Level "INFO"
-    Write-Log "Nombre total de problèmes trouvés: $($Results.TotalIssueCount)" -Level "INFO"
-    Write-Log "  Problèmes de sévérité haute: $($Results.HighSeverityCount)" -Level $(if ($Results.HighSeverityCount -gt 0) { "WARNING" } else { "SUCCESS" })
-    Write-Log "  Problèmes de sévérité moyenne: $($Results.MediumSeverityCount)" -Level $(if ($Results.MediumSeverityCount -gt 0) { "WARNING" } else { "SUCCESS" })
-    Write-Log "  Problèmes de sévérité basse: $($Results.LowSeverityCount)" -Level "INFO"
-    Write-Log "Résultats enregistrés dans: $OutputPath" -Level "SUCCESS"
+    # Afficher un rÃ©sumÃ©
+    Write-Log "Analyse terminÃ©e" -Level "SUCCESS"
+    Write-Log "Nombre total de fichiers analysÃ©s: $TotalFiles" -Level "INFO"
+    Write-Log "Nombre total de problÃ¨mes trouvÃ©s: $($Results.TotalIssueCount)" -Level "INFO"
+    Write-Log "  ProblÃ¨mes de sÃ©vÃ©ritÃ© haute: $($Results.HighSeverityCount)" -Level $(if ($Results.HighSeverityCount -gt 0) { "WARNING" } else { "SUCCESS" })
+    Write-Log "  ProblÃ¨mes de sÃ©vÃ©ritÃ© moyenne: $($Results.MediumSeverityCount)" -Level $(if ($Results.MediumSeverityCount -gt 0) { "WARNING" } else { "SUCCESS" })
+    Write-Log "  ProblÃ¨mes de sÃ©vÃ©ritÃ© basse: $($Results.LowSeverityCount)" -Level "INFO"
+    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
     
-    # Déterminer si le test est réussi
+    # DÃ©terminer si le test est rÃ©ussi
     if ($Results.HighSeverityCount -gt 0) {
-        Write-Log "Des problèmes de sévérité haute ont été détectés" -Level "WARNING"
-        Write-Log "La Phase 2 n'a pas complètement réussi" -Level "WARNING"
+        Write-Log "Des problÃ¨mes de sÃ©vÃ©ritÃ© haute ont Ã©tÃ© dÃ©tectÃ©s" -Level "WARNING"
+        Write-Log "La Phase 2 n'a pas complÃ¨tement rÃ©ussi" -Level "WARNING"
         return $false
     } elseif ($Results.MediumSeverityCount -gt 10) {
-        Write-Log "Un nombre important de problèmes de sévérité moyenne a été détecté" -Level "WARNING"
-        Write-Log "La Phase 2 a partiellement réussi" -Level "WARNING"
+        Write-Log "Un nombre important de problÃ¨mes de sÃ©vÃ©ritÃ© moyenne a Ã©tÃ© dÃ©tectÃ©" -Level "WARNING"
+        Write-Log "La Phase 2 a partiellement rÃ©ussi" -Level "WARNING"
         return $true
     } else {
-        Write-Log "Aucun problème majeur détecté" -Level "SUCCESS"
-        Write-Log "La Phase 2 a réussi" -Level "SUCCESS"
+        Write-Log "Aucun problÃ¨me majeur dÃ©tectÃ©" -Level "SUCCESS"
+        Write-Log "La Phase 2 a rÃ©ussi" -Level "SUCCESS"
         return $true
     }
 }
 
-# Exécuter le test
+# ExÃ©cuter le test
 $Success = Test-Standards -Path $Path -OutputPath $OutputPath -ScriptType $ScriptType -Verbose:$Verbose
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $Success
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

@@ -40,7 +40,7 @@ if (-not (Test-Path $outputDir)) {
 }
 
 # Traiter tous les fichiers JSON dans le rÃ©pertoire de rÃ©fÃ©rence
-$workflowsDir = "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1\workflows\re-import_pour_analyse"
+$workflowsDir = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\workflows\re-import_pour_analyse"
 if (-not (Test-Path $workflowsDir)) {
     Write-Host "Le rÃ©pertoire de rÃ©fÃ©rence n'existe pas: $workflowsDir" -ForegroundColor Red
     exit

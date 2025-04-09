@@ -1,6 +1,71 @@
-# Script de test pour la compatibilité entre environnements
+﻿# Script de test pour la compatibilitÃ© entre environnements
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
+$pathStandardizerPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "PathStandardizer.ps1"
+$osCommandWrappersPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "OSCommandWrappers.ps1"
+
+if (Test-Path -Path $pathStandardizerPath) {
+    . $pathStandardizerPath
+}
+else {
+    Write-Error "Le module de standardisation des chemins est introuvable: $pathStandardizerPath"
+    return
+}
+
+if (Test-Path -Path $osCommandWrappersPath) {
+    . $osCommandWrappersPath
+}
+else {
+    Write-Error "Le module de wrappers de commandes est introuvable: $osCommandWrappersPath"
+    return
+}
+
+
+
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+# Script de test pour la compatibilitÃ© entre environnements
+
+# Importer les modules nÃ©cessaires
 $pathStandardizerPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "PathStandardizer.ps1"
 $osCommandWrappersPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "OSCommandWrappers.ps1"
 
@@ -21,7 +86,7 @@ else {
 }
 
 function Test-EnvironmentCompatibility {
-    # Déterminer l'environnement actuel
+    # DÃ©terminer l'environnement actuel
     $environment = @{
         IsWindows = $PSVersionTable.PSVersion.Major -lt 6 -or ($PSVersionTable.PSVersion.Major -ge 6 -and $IsWindows)
         IsLinux = $PSVersionTable.PSVersion.Major -ge 6 -and $IsLinux
@@ -30,11 +95,11 @@ function Test-EnvironmentCompatibility {
         PathSeparator = [System.IO.Path]::DirectorySeparatorChar
     }
     
-    Write-Host "Test de compatibilité d'environnement"
+    Write-Host "Test de compatibilitÃ© d'environnement"
     Write-Host "--------------------------------"
-    Write-Host "Système d'exploitation: $(if ($environment.IsWindows) { 'Windows' } elseif ($environment.IsLinux) { 'Linux' } elseif ($environment.IsMacOS) { 'macOS' } else { 'Inconnu' })"
+    Write-Host "SystÃ¨me d'exploitation: $(if ($environment.IsWindows) { 'Windows' } elseif ($environment.IsLinux) { 'Linux' } elseif ($environment.IsMacOS) { 'macOS' } else { 'Inconnu' })"
     Write-Host "Version PowerShell: $($environment.PSVersion)"
-    Write-Host "Séparateur de chemin: '$($environment.PathSeparator)'"
+    Write-Host "SÃ©parateur de chemin: '$($environment.PathSeparator)'"
     
     # Tester la gestion des chemins
     Write-Host "`nTest de gestion des chemins:"
@@ -47,7 +112,7 @@ function Test-EnvironmentCompatibility {
     
     foreach ($path in $testPaths) {
         $normalized = Get-NormalizedPath -Path $path
-        Write-Host "  Original: $path -> Normalisé: $normalized"
+        Write-Host "  Original: $path -> NormalisÃ©: $normalized"
     }
     
     # Tester les wrappers de commandes
@@ -57,13 +122,13 @@ function Test-EnvironmentCompatibility {
     $tempFile = [System.IO.Path]::GetTempFileName()
     "Test de contenu" | Out-File -FilePath $tempFile -Encoding UTF8
     $content = Get-FileContentAuto -Path $tempFile
-    Write-Host "  Get-FileContentAuto: $($content.Length) caractères lus"
+    Write-Host "  Get-FileContentAuto: $($content.Length) caractÃ¨res lus"
     Remove-Item -Path $tempFile -Force
     
     # Test de Test-CrossPlatformPath
     $tempDir = [System.IO.Path]::GetTempPath()
     $exists = Test-CrossPlatformPath -Path $tempDir
-    Write-Host "  Test-CrossPlatformPath: Le répertoire temporaire existe: $exists"
+    Write-Host "  Test-CrossPlatformPath: Le rÃ©pertoire temporaire existe: $exists"
     
     # Test de Join-PathSafely
     $joinedPath = Join-PathSafely -Path $tempDir -ChildPath "test", "file.txt"
@@ -75,10 +140,20 @@ function Test-EnvironmentCompatibility {
     
     # Test de Resolve-EnvironmentPath
     $envPath = Resolve-EnvironmentPath -Path "%TEMP%\test.txt"
-    Write-Host "  Resolve-EnvironmentPath: Chemin résolu: $envPath"
+    Write-Host "  Resolve-EnvironmentPath: Chemin rÃ©solu: $envPath"
     
-    Write-Host "`nTests terminés."
+    Write-Host "`nTests terminÃ©s."
 }
 
-# Exécuter le test
+# ExÃ©cuter le test
 Test-EnvironmentCompatibility
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

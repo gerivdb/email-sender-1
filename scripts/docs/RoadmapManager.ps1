@@ -1,8 +1,12 @@
 # Script de gestion de la roadmap
 # Ce script permet d'accéder à toutes les fonctionnalités de gestion de la roadmap
 
+
+# Script de gestion de la roadmap
+# Ce script permet d'accéder à toutes les fonctionnalités de gestion de la roadmap
+
 param (
-    [string]$RoadmapPath = "roadmap_perso.md",
+    [string]$RoadmapPath = ""Roadmap\roadmap_perso.md"",
     [switch]$Organize = $false,
     [switch]$Execute = $false,
     [switch]$Analyze = $false,
@@ -11,6 +15,48 @@ param (
     [switch]$FixScripts = $false,
     [switch]$Help = $false
 )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Écrire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # Créer le répertoire de logs si nécessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'écriture dans le journal
+    }
+}
+try {
+    # Script principal
+
 
 # Configuration
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -40,7 +86,7 @@ function Show-Help {
     Write-Host "RoadmapManager.ps1 - Script de gestion de la roadmap" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "Paramètres :" -ForegroundColor Yellow
-    Write-Host "  -RoadmapPath <chemin>  : Chemin vers le fichier roadmap (par défaut: roadmap_perso.md)"
+    Write-Host "  -RoadmapPath <chemin>  : Chemin vers le fichier roadmap (par défaut: "Roadmap\roadmap_perso.md")"
     Write-Host "  -Organize              : Organiser les scripts de roadmap dans un dossier dédié"
     Write-Host "  -Execute               : Exécuter la roadmap automatiquement"
     Write-Host "  -Analyze               : Analyser la roadmap et générer des rapports"
@@ -285,3 +331,13 @@ if ($FixScripts) {
 
 # Afficher le menu interactif si aucun paramètre n'est spécifié
 Show-Menu
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "Exécution du script terminée."
+}

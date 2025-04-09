@@ -1,32 +1,94 @@
-# Script pour collecter les données d'erreurs
-# Ce script collecte les données d'erreurs à partir de différentes sources
+﻿# Script pour collecter les donnÃ©es d'erreurs
+# Ce script collecte les donnÃ©es d'erreurs Ã  partir de diffÃ©rentes sources
 
 # Configuration
 $ErrorDataConfig = @{
-    # Dossier de stockage des données
+    # Dossier de stockage des donnÃ©es
     DataFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorTracking"
     
-    # Fichier de base de données des erreurs
+    # Fichier de base de donnÃ©es des erreurs
     DatabaseFile = "errors.json"
     
     # Fichier de statistiques
     StatsFile = "error-stats.json"
     
-    # Nombre de jours à conserver dans l'historique
+    # Nombre de jours Ã  conserver dans l'historique
     HistoryDays = 30
 }
 
-# Fonction pour initialiser le système de collecte
+# Fonction pour initialiser le systÃ¨me de collecte
+
+# Script pour collecter les donnÃ©es d'erreurs
+# Ce script collecte les donnÃ©es d'erreurs Ã  partir de diffÃ©rentes sources
+
+# Configuration
+$ErrorDataConfig = @{
+    # Dossier de stockage des donnÃ©es
+    DataFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorTracking"
+    
+    # Fichier de base de donnÃ©es des erreurs
+    DatabaseFile = "errors.json"
+    
+    # Fichier de statistiques
+    StatsFile = "error-stats.json"
+    
+    # Nombre de jours Ã  conserver dans l'historique
+    HistoryDays = 30
+}
+
+# Fonction pour initialiser le systÃ¨me de collecte
 function Initialize-ErrorDataCollector {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false)
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+]
         [string]$DataFolder = "",
         
         [Parameter(Mandatory = $false)]
         [int]$HistoryDays = 30
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($DataFolder)) {
         $ErrorDataConfig.DataFolder = $DataFolder
     }
@@ -35,12 +97,12 @@ function Initialize-ErrorDataCollector {
         $ErrorDataConfig.HistoryDays = $HistoryDays
     }
     
-    # Créer le dossier de données s'il n'existe pas
+    # CrÃ©er le dossier de donnÃ©es s'il n'existe pas
     if (-not (Test-Path -Path $ErrorDataConfig.DataFolder)) {
         New-Item -Path $ErrorDataConfig.DataFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Créer le fichier de base de données s'il n'existe pas
+    # CrÃ©er le fichier de base de donnÃ©es s'il n'existe pas
     $databasePath = Join-Path -Path $ErrorDataConfig.DataFolder -ChildPath $ErrorDataConfig.DatabaseFile
     if (-not (Test-Path -Path $databasePath)) {
         $initialData = @{
@@ -51,7 +113,7 @@ function Initialize-ErrorDataCollector {
         $initialData | ConvertTo-Json -Depth 5 | Set-Content -Path $databasePath
     }
     
-    # Créer le fichier de statistiques s'il n'existe pas
+    # CrÃ©er le fichier de statistiques s'il n'existe pas
     $statsPath = Join-Path -Path $ErrorDataConfig.DataFolder -ChildPath $ErrorDataConfig.StatsFile
     if (-not (Test-Path -Path $statsPath)) {
         $initialStats = @{
@@ -69,7 +131,7 @@ function Initialize-ErrorDataCollector {
     return $ErrorDataConfig
 }
 
-# Fonction pour ajouter une erreur à la base de données
+# Fonction pour ajouter une erreur Ã  la base de donnÃ©es
 function Add-ErrorData {
     param (
         [Parameter(Mandatory = $true)]
@@ -82,19 +144,19 @@ function Add-ErrorData {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le dossier de données existe
+    # VÃ©rifier si le dossier de donnÃ©es existe
     if (-not (Test-Path -Path $ErrorDataConfig.DataFolder)) {
         Initialize-ErrorDataCollector
     }
     
-    # Charger la base de données
+    # Charger la base de donnÃ©es
     $databasePath = Join-Path -Path $ErrorDataConfig.DataFolder -ChildPath $ErrorDataConfig.DatabaseFile
     $database = Get-Content -Path $databasePath -Raw | ConvertFrom-Json
     
-    # Utiliser Get-ErrorCategorization pour catégoriser l'erreur
+    # Utiliser Get-ErrorCategorization pour catÃ©goriser l'erreur
     $categorization = Get-ErrorCategorization -ErrorMessage $Error.ToString() -Metadata $Metadata
     
-    # Créer l'entrée d'erreur
+    # CrÃ©er l'entrÃ©e d'erreur
     $errorEntry = @{
         Id = [Guid]::NewGuid().ToString()
         Timestamp = Get-Date -Format "o"
@@ -111,28 +173,28 @@ function Add-ErrorData {
         Metadata = $Metadata
     }
     
-    # Ajouter l'erreur à la base de données
+    # Ajouter l'erreur Ã  la base de donnÃ©es
     $database.Errors += $errorEntry
     $database.LastUpdate = Get-Date -Format "o"
     
-    # Nettoyer les anciennes entrées
+    # Nettoyer les anciennes entrÃ©es
     $cutoffDate = (Get-Date).AddDays(-$ErrorDataConfig.HistoryDays)
     $database.Errors = $database.Errors | Where-Object {
         [DateTime]::Parse($_.Timestamp) -ge $cutoffDate
     }
     
-    # Enregistrer la base de données
+    # Enregistrer la base de donnÃ©es
     $database | ConvertTo-Json -Depth 5 | Set-Content -Path $databasePath
     
-    # Mettre à jour les statistiques
+    # Mettre Ã  jour les statistiques
     Update-ErrorStatistics
     
     return $errorEntry
 }
 
-# Fonction pour mettre à jour les statistiques
+# Fonction pour mettre Ã  jour les statistiques
 function Update-ErrorStatistics {
-    # Charger la base de données
+    # Charger la base de donnÃ©es
     $databasePath = Join-Path -Path $ErrorDataConfig.DataFolder -ChildPath $ErrorDataConfig.DatabaseFile
     $database = Get-Content -Path $databasePath -Raw | ConvertFrom-Json
     
@@ -140,7 +202,7 @@ function Update-ErrorStatistics {
     $statsPath = Join-Path -Path $ErrorDataConfig.DataFolder -ChildPath $ErrorDataConfig.StatsFile
     $stats = Get-Content -Path $statsPath -Raw | ConvertFrom-Json
     
-    # Réinitialiser les statistiques
+    # RÃ©initialiser les statistiques
     $stats.TotalErrors = $database.Errors.Count
     $stats.ErrorsByCategory = @{}
     $stats.ErrorsBySeverity = @{}
@@ -149,14 +211,14 @@ function Update-ErrorStatistics {
     
     # Calculer les statistiques
     foreach ($error in $database.Errors) {
-        # Par catégorie
+        # Par catÃ©gorie
         $category = $error.Category
         if (-not $stats.ErrorsByCategory.$category) {
             $stats.ErrorsByCategory | Add-Member -MemberType NoteProperty -Name $category -Value 0
         }
         $stats.ErrorsByCategory.$category++
         
-        # Par sévérité
+        # Par sÃ©vÃ©ritÃ©
         $severity = $error.Severity
         if (-not $stats.ErrorsBySeverity.$severity) {
             $stats.ErrorsBySeverity | Add-Member -MemberType NoteProperty -Name $severity -Value 0
@@ -178,7 +240,7 @@ function Update-ErrorStatistics {
         $stats.DailyErrors.$day++
     }
     
-    # Mettre à jour la date de dernière mise à jour
+    # Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
     $stats.LastUpdate = Get-Date -Format "o"
     
     # Enregistrer les statistiques
@@ -206,7 +268,7 @@ function Get-ErrorData {
         [int]$MaxResults = 0
     )
     
-    # Charger la base de données
+    # Charger la base de donnÃ©es
     $databasePath = Join-Path -Path $ErrorDataConfig.DataFolder -ChildPath $ErrorDataConfig.DatabaseFile
     $database = Get-Content -Path $databasePath -Raw | ConvertFrom-Json
     
@@ -220,12 +282,12 @@ function Get-ErrorData {
         }
     }
     
-    # Filtrer par catégorie
+    # Filtrer par catÃ©gorie
     if (-not [string]::IsNullOrEmpty($Category)) {
         $errors = $errors | Where-Object { $_.Category -eq $Category }
     }
     
-    # Filtrer par sévérité
+    # Filtrer par sÃ©vÃ©ritÃ©
     if (-not [string]::IsNullOrEmpty($Severity)) {
         $errors = $errors | Where-Object { $_.Severity -eq $Severity }
     }
@@ -235,7 +297,7 @@ function Get-ErrorData {
         $errors = $errors | Where-Object { $_.Source -eq $Source }
     }
     
-    # Limiter le nombre de résultats
+    # Limiter le nombre de rÃ©sultats
     if ($MaxResults -gt 0 -and $errors.Count -gt $MaxResults) {
         $errors = $errors | Select-Object -First $MaxResults
     }
@@ -254,3 +316,13 @@ function Get-ErrorStatistics {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-ErrorDataCollector, Add-ErrorData, Update-ErrorStatistics, Get-ErrorData, Get-ErrorStatistics
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

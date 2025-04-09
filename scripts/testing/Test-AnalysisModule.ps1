@@ -1,37 +1,43 @@
+﻿<#
+.SYNOPSIS
+    Tests unitaires pour le module d'analyse
+.DESCRIPTION
+    Ce script exÃ©cute des tests unitaires pour le module d'analyse du Script Manager
+
 <#
 .SYNOPSIS
     Tests unitaires pour le module d'analyse
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour le module d'analyse du Script Manager
+    Ce script exÃ©cute des tests unitaires pour le module d'analyse du Script Manager
 #>
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installé. Installation..." -ForegroundColor Yellow
+    Write-Host "Le module Pester n'est pas installÃ©. Installation..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\D"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $ModulePath)) {
-    Write-Host "Module d'analyse non trouvé: $ModulePath" -ForegroundColor Red
+    Write-Host "Module d'analyse non trouvÃ©: $ModulePath" -ForegroundColor Red
     exit 1
 }
 
 # Importer le module
 Import-Module $ModulePath -Force
 
-# Créer un dossier temporaire pour les tests
+# CrÃ©er un dossier temporaire pour les tests
 $TestDir = Join-Path -Path $env:TEMP -ChildPath "ScriptManagerTests"
 if (-not (Test-Path -Path $TestDir)) {
     New-Item -ItemType Directory -Path $TestDir -Force | Out-Null
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $PowerShellTestFile = Join-Path -Path $TestDir -ChildPath "test.ps1"
 $PythonTestFile = Join-Path -Path $TestDir -ChildPath "test.py"
 $BatchTestFile = Join-Path -Path $TestDir -ChildPath "test.cmd"
@@ -47,6 +53,48 @@ function Test-Function {
     param (
         [string]$Parameter
     )
+
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
     
     if ($Parameter -eq "test") {
         Write-Host "Test successful" -ForegroundColor Green
@@ -110,12 +158,12 @@ CALL helper.cmd
 ENDLOCAL
 '@
 
-# Écrire les fichiers de test
+# Ã‰crire les fichiers de test
 Set-Content -Path $PowerShellTestFile -Value $PowerShellContent
 Set-Content -Path $PythonTestFile -Value $PythonContent
 Set-Content -Path $BatchTestFile -Value $BatchContent
 
-# Créer un fichier d'inventaire de test
+# CrÃ©er un fichier d'inventaire de test
 $InventoryPath = Join-Path -Path $TestDir -ChildPath "inventory.json"
 $Inventory = @{
     Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -191,19 +239,19 @@ $Inventory = @{
 
 Set-Content -Path $InventoryPath -Value $Inventory
 
-# Définir le chemin de sortie pour l'analyse
+# DÃ©finir le chemin de sortie pour l'analyse
 $AnalysisPath = Join-Path -Path $TestDir -ChildPath "analysis.json"
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "Module d'analyse" {
     Context "Invoke-ScriptAnalysis" {
-        It "Devrait analyser les scripts avec succès" {
+        It "Devrait analyser les scripts avec succÃ¨s" {
             $Analysis = Invoke-ScriptAnalysis -InventoryPath $InventoryPath -OutputPath $AnalysisPath -Depth "Basic"
             $Analysis | Should -Not -BeNullOrEmpty
             $Analysis.TotalScripts | Should -Be 3
         }
         
-        It "Devrait créer un fichier d'analyse" {
+        It "Devrait crÃ©er un fichier d'analyse" {
             Test-Path -Path $AnalysisPath | Should -Be $true
         }
         
@@ -220,3 +268,13 @@ Describe "Module d'analyse" {
 # Nettoyer les fichiers de test
 Remove-Item -Path $TestDir -Recurse -Force
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}

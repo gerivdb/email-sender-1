@@ -1,3 +1,13 @@
+﻿# Script Manager PowerShell
+# Encodage: UTF-8 with BOM
+
+# Charger le module de configuration
+. "..\..\D"
+
+# Charger la configuration
+$config = Get-ScriptConfig
+
+
 # Script Manager PowerShell
 # Encodage: UTF-8 with BOM
 
@@ -10,12 +20,12 @@ $config = Get-ScriptConfig
 function Show-Help {
     Write-Host "Script Manager Commands:"
     Write-Host "  inventory   : Liste tous les scripts du projet"
-    Write-Host "  analyze     : Analyse les scripts et affiche les r�sultats"
-    Write-Host "  organize    : Organise les scripts selon les r�gles d�finies"
-    Write-Host "  config      : G�re les options de configuration"
+    Write-Host "  analyze     : Analyse les scripts et affiche les résultats"
+    Write-Host "  organize    : Organise les scripts selon les règles définies"
+    Write-Host "  config      : Gère les options de configuration"
     Write-Host "    config show                : Affiche la configuration actuelle"
-    Write-Host "    config set <section> <key> <value> : D�finit une valeur de configuration"
-    Write-Host "    config reset              : R�initialise la configuration par d�faut"
+    Write-Host "    config set <section> <key> <value> : Définit une valeur de configuration"
+    Write-Host "    config reset              : Réinitialise la configuration par défaut"
 }
 
 function Invoke-Organize {
@@ -25,22 +35,64 @@ function Invoke-Organize {
         [string]$BackupPath = $config.organize.backupPath
     )
 
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+# Fonction de journalisation
+function Write-Log {
+    param (
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Afficher dans la console
+    switch ($Level) {
+        "INFO" { Write-Host $logEntry -ForegroundColor White }
+        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "DEBUG" { Write-Verbose $logEntry }
+    }
+    
+    # Ã‰crire dans le fichier journal
+    try {
+        $logDir = Split-Path -Path $PSScriptRoot -Parent
+        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
+        
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        $logDirPath = Split-Path -Path $logPath -Parent
+        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
+            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
+        }
+        
+        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
+}
+try {
+    # Script principal
+
+
     Write-Host "Organisation des scripts..."
 
     if ($DryRun) {
-        Write-Host "Mode simulation activ� (aucune modification ne sera effectu�e)"
+        Write-Host "Mode simulation activé (aucune modification ne sera effectuée)"
     }
 
     if ($Backup) {
         Write-Host "Sauvegarde des fichiers avant modification dans $BackupPath"
 
-        # Cr�er le dossier de sauvegarde s'il n'existe pas
+        # Créer le dossier de sauvegarde s'il n'existe pas
         if (-not (Test-Path $BackupPath)) {
             New-Item -ItemType Directory -Path $BackupPath -Force | Out-Null
         }
     }
 
-    # Appeler le script Python pour organiser le d�p�t
+    # Appeler le script Python pour organiser le dépôt
     $pythonArgs = @(
         "src/organize_repo.py",
         "--dir", "."
@@ -51,7 +103,7 @@ function Invoke-Organize {
     }
 
     if ($DryRun) {
-        $pythonArgs += "--copy"  # Utiliser --copy pour simuler le d�placement
+        $pythonArgs += "--copy"  # Utiliser --copy pour simuler le déplacement
     }
 
     python $pythonArgs
@@ -72,13 +124,13 @@ function Invoke-Inventory {
         "--path", $Path
     )
 
-    # Ajouter les extensions à inclure
+    # Ajouter les extensions Ã  inclure
     foreach ($ext in $config.inventory.includeExtensions) {
         $pythonArgs += "--include-ext"
         $pythonArgs += $ext
     }
 
-    # Ajouter les dossiers à exclure
+    # Ajouter les dossiers Ã  exclure
     foreach ($folder in $config.inventory.excludeFolders) {
         $pythonArgs += "--exclude-folder"
         $pythonArgs += $folder
@@ -88,7 +140,7 @@ function Invoke-Inventory {
     $pythonArgs += "--max-depth"
     $pythonArgs += $config.inventory.maxDepth
 
-    # Exécuter le script Python avec les arguments
+    # ExÃ©cuter le script Python avec les arguments
     python $pythonArgs
 }
 
@@ -102,19 +154,19 @@ function Invoke-Analyze {
     Write-Host "Analyse des scripts..."
 
     if ($Detailed) {
-        Write-Host "Mode détaillé activé"
+        Write-Host "Mode dÃ©taillÃ© activÃ©"
     }
 
     if ($GenerateReport) {
-        Write-Host "Génération d'un rapport dans $ReportPath"
+        Write-Host "GÃ©nÃ©ration d'un rapport dans $ReportPath"
 
-        # Créer le dossier de rapport s'il n'existe pas
+        # CrÃ©er le dossier de rapport s'il n'existe pas
         if (-not (Test-Path $ReportPath)) {
             New-Item -ItemType Directory -Path $ReportPath -Force | Out-Null
         }
     }
 
-    # À implémenter: logique d'analyse des scripts
+    # Ã€ implÃ©menter: logique d'analyse des scripts
 }
 
 function Invoke-Organize {
@@ -127,19 +179,19 @@ function Invoke-Organize {
     Write-Host "Organisation des scripts..."
 
     if ($DryRun) {
-        Write-Host "Mode simulation activé (aucune modification ne sera effectuée)"
+        Write-Host "Mode simulation activÃ© (aucune modification ne sera effectuÃ©e)"
     }
 
     if ($Backup) {
         Write-Host "Sauvegarde des fichiers avant modification dans $BackupPath"
 
-        # Créer le dossier de sauvegarde s'il n'existe pas
+        # CrÃ©er le dossier de sauvegarde s'il n'existe pas
         if (-not (Test-Path $BackupPath)) {
             New-Item -ItemType Directory -Path $BackupPath -Force | Out-Null
         }
     }
 
-    # À implémenter: logique d'organisation des scripts
+    # Ã€ implÃ©menter: logique d'organisation des scripts
 }
 
 function Invoke-Config {
@@ -163,14 +215,14 @@ function Invoke-Config {
         }
         "set" {
             if ([string]::IsNullOrEmpty($Section) -or [string]::IsNullOrEmpty($Property) -or [string]::IsNullOrEmpty($Value)) {
-                Write-Host "Erreur: Vous devez spécifier une section, une propriété et une valeur."
+                Write-Host "Erreur: Vous devez spÃ©cifier une section, une propriÃ©tÃ© et une valeur."
                 Write-Host "Exemple: config set general verbose true"
                 return
             }
 
             $result = Update-ScriptConfig -Section $Section -Property $Property -Value $Value
             if ($result) {
-                Write-Host "Configuration mise à jour avec succès."
+                Write-Host "Configuration mise Ã  jour avec succÃ¨s."
                 # Recharger la configuration
                 $script:config = Get-ScriptConfig
             }
@@ -178,7 +230,7 @@ function Invoke-Config {
         "reset" {
             $defaultConfig = New-DefaultConfig
             Save-ScriptConfig -Config $defaultConfig
-            Write-Host "Configuration réinitialisée aux valeurs par défaut."
+            Write-Host "Configuration rÃ©initialisÃ©e aux valeurs par dÃ©faut."
             # Recharger la configuration
             $script:config = Get-ScriptConfig
         }
@@ -191,7 +243,7 @@ function Invoke-Config {
 
 # Traitement des arguments de ligne de commande
 if ($args.Count -eq 0) {
-    # Utiliser la commande par défaut de la configuration
+    # Utiliser la commande par dÃ©faut de la configuration
     $command = $config.general.defaultCommand
 } else {
     $command = $args[0]
@@ -199,7 +251,7 @@ if ($args.Count -eq 0) {
 
 switch ($command) {
     "inventory" {
-        # Extraire les paramètres supplémentaires
+        # Extraire les paramÃ¨tres supplÃ©mentaires
         $params = @{}
         if ($args.Count -gt 1) {
             $params["Path"] = $args[1]
@@ -207,7 +259,7 @@ switch ($command) {
         Invoke-Inventory @params
     }
     "analyze" {
-        # Extraire les paramètres supplémentaires
+        # Extraire les paramÃ¨tres supplÃ©mentaires
         $params = @{}
         for ($i = 1; $i -lt $args.Count; $i++) {
             switch ($args[$i]) {
@@ -224,7 +276,7 @@ switch ($command) {
         Invoke-Analyze @params
     }
     "organize" {
-        # Extraire les paramètres supplémentaires
+        # Extraire les paramÃ¨tres supplÃ©mentaires
         $params = @{}
         for ($i = 1; $i -lt $args.Count; $i++) {
             switch ($args[$i]) {
@@ -241,7 +293,7 @@ switch ($command) {
         Invoke-Organize @params
     }
     "config" {
-        # Extraire les paramètres pour la commande config
+        # Extraire les paramÃ¨tres pour la commande config
         $configParams = @{}
         if ($args.Count -gt 1) {
             $configParams["Action"] = $args[1]
@@ -260,3 +312,13 @@ switch ($command) {
     default { Show-Help }
 }
 
+
+}
+catch {
+    Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
+    exit 1
+}
+finally {
+    # Nettoyage final
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+}
