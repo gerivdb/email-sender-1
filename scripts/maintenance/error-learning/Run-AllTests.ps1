@@ -67,7 +67,7 @@ foreach ($testFile in $testFiles) {
 
 # Définir la configuration Pester
 $pesterConfig = New-PesterConfiguration
-$pesterConfig.Run.Path = $testFiles.FullName
+$pesterConfig.Run.Path = @() # Nous allons exécuter les tests un par un
 $pesterConfig.Output.Verbosity = "Detailed"
 
 if ($GenerateReport) {
@@ -92,9 +92,46 @@ if ($GenerateReport) {
     $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 }
 
-# Exécuter les tests
-Write-Host "`nExécution des tests unitaires..." -ForegroundColor Cyan
-$testResults = Invoke-Pester -Configuration $pesterConfig
+# Exécuter les tests un par un
+Write-Host "`nExécution des tests..." -ForegroundColor Cyan
+
+# Initialiser les résultats
+$totalTests = 0
+$passedTests = 0
+$failedTests = 0
+$skippedTests = 0
+
+# Exécuter chaque test individuellement
+foreach ($testFile in $testFiles) {
+    Write-Host "  Exécution de $($testFile.Name)..." -ForegroundColor Yellow
+
+    # Exécuter le test avec Invoke-Pester directement (sans utiliser le fichier de test)
+    $testConfig = New-PesterConfiguration
+    $testConfig.Run.Path = $testFile.FullName
+    $testConfig.Output.Verbosity = "Detailed"
+
+    if ($GenerateReport) {
+        $testConfig.TestResult.Enabled = $true
+        $testConfig.TestResult.OutputPath = Join-Path -Path $reportPath -ChildPath "$($testFile.BaseName).xml"
+        $testConfig.TestResult.OutputFormat = "NUnitXml"
+    }
+
+    $result = Invoke-Pester -Configuration $testConfig -PassThru
+
+    # Mettre à jour les résultats
+    $totalTests += $result.TotalCount
+    $passedTests += $result.PassedCount
+    $failedTests += $result.FailedCount
+    $skippedTests += $result.SkippedCount
+}
+
+# Créer un objet de résultats global
+$testResults = [PSCustomObject]@{
+    TotalCount = $totalTests
+    PassedCount = $passedTests
+    FailedCount = $failedTests
+    SkippedCount = $skippedTests
+}
 
 # Générer un rapport HTML si demandé
 if ($GenerateReport) {
