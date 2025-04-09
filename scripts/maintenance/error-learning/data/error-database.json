@@ -1,11 +1,11 @@
 {
     "Statistics":  {
-                       "TotalErrors":  13,
+                       "TotalErrors":  15,
                        "CategorizedErrors":  {
-                                                 "TestCategory":  9,
-                                                 "TestCategory2":  4
+                                                 "TestCategory":  10,
+                                                 "TestCategory2":  5
                                              },
-                       "LastUpdate":  "2025-04-09 09:09:08"
+                       "LastUpdate":  "2025-04-09 09:25:13"
                    },
     "Errors":  [
                    {
@@ -200,6 +200,36 @@
                        "Timestamp":  "2025-04-09 09:09:08",
                        "ErrorMessage":  "Erreur de test avec solution",
                        "Solution":  "Voici la solution à l\u0027erreur.",
+                       "ScriptStackTrace":  null,
+                       "PositionMessage":  null
+                   },
+                   {
+                       "Source":  "IntegrationTest",
+                       "Id":  "5681a175-5b1f-422e-a778-f0d7247c72db",
+                       "AdditionalInfo":  {
+
+                                          },
+                       "Category":  "TestCategory",
+                       "ErrorType":  "System.Exception",
+                       "Line":  null,
+                       "Timestamp":  "2025-04-09 09:25:12",
+                       "ErrorMessage":  "Erreur de test",
+                       "Solution":  "",
+                       "ScriptStackTrace":  null,
+                       "PositionMessage":  null
+                   },
+                   {
+                       "Source":  "IntegrationTest",
+                       "Id":  "e9d43803-2de0-491e-a013-4041f92c1909",
+                       "AdditionalInfo":  {
+
+                                          },
+                       "Category":  "TestCategory2",
+                       "ErrorType":  "System.Exception",
+                       "Line":  null,
+                       "Timestamp":  "2025-04-09 09:25:13",
+                       "ErrorMessage":  "Erreur de test 2",
+                       "Solution":  "",
                        "ScriptStackTrace":  null,
                        "PositionMessage":  null
                    }

@@ -22,6 +22,7 @@ Import-Module Pester -Force
 
 # Définir le chemin des tests qui fonctionnent correctement
 $testFiles = @(
+    # Tests originaux
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\VeryBasic.Tests.ps1"),
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\Basic.Tests.ps1"),
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\SimpleIntegration.Tests.ps1"),
@@ -30,7 +31,12 @@ $testFiles = @(
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\AdaptiveLearning.Tests.ps1"),
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\ValidationCorrections.Tests.ps1"),
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\HelperFunctions.Tests.ps1"),
-    (Join-Path -Path $PSScriptRoot -ChildPath "Tests\AdvancedErrorHandling.Simple.ps1")
+    (Join-Path -Path $PSScriptRoot -ChildPath "Tests\AdvancedErrorHandling.Simple.ps1"),
+
+    # Nouveaux tests simplifiés
+    (Join-Path -Path $PSScriptRoot -ChildPath "Tests\ErrorLearningSystem.Integration.Simplified.ps1"),
+    (Join-Path -Path $PSScriptRoot -ChildPath "Tests\ScriptAnalysis.Tests.ps1"),
+    (Join-Path -Path $PSScriptRoot -ChildPath "Tests\AdaptiveCorrection.Tests.ps1")
 )
 
 # Afficher les tests trouvés
@@ -49,15 +55,18 @@ $skippedTests = 0
 # Exécuter chaque test individuellement
 foreach ($testFile in $testFiles) {
     Write-Host "  Exécution de $([System.IO.Path]::GetFileName($testFile))..." -ForegroundColor Yellow
-    
+
     # Exécuter le test
     $result = Invoke-Pester -Path $testFile -Output Detailed -PassThru
-    
+
     # Mettre à jour les résultats
     $totalTests += $result.TotalCount
     $passedTests += $result.PassedCount
     $failedTests += $result.FailedCount
     $skippedTests += $result.SkippedCount
+
+    # Attendre un peu entre chaque test pour éviter les conflits d'accès aux fichiers
+    Start-Sleep -Seconds 1
 }
 
 # Afficher un résumé des résultats
