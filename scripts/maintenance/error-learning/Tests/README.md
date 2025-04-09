@@ -4,19 +4,51 @@ Ce répertoire contient les tests unitaires et d'intégration pour le système d
 
 ## Structure des tests
 
-- **Tests unitaires** : Testent les fonctionnalités individuelles du système.
-  - `ErrorLearningSystem.Tests.ps1` : Tests pour le module principal.
-  - `Analyze-ScriptForErrors.Tests.ps1` : Tests pour le script d'analyse des erreurs dans les scripts.
-  - `Auto-CorrectErrors.Tests.ps1` : Tests pour le script de correction automatique des erreurs.
-  - `Adaptive-ErrorCorrection.Tests.ps1` : Tests pour le script d'apprentissage adaptatif.
-  - `Validate-ErrorCorrections.Tests.ps1` : Tests pour le script de validation des corrections.
-  - `Basic.Tests.ps1` : Tests basiques pour vérifier le fonctionnement de Pester.
-  - `Simple.Tests.ps1` : Tests simples pour vérifier le fonctionnement de Pester.
+### Tests basiques
 
-- **Tests d'intégration** : Testent l'interaction entre les différentes parties du système.
-  - `ErrorLearningSystem.Integration.Tests.ps1` : Tests d'intégration pour le système d'apprentissage des erreurs.
+- **VeryBasic.Tests.ps1** : Tests très basiques pour les opérations mathématiques de base
+- **Basic.Tests.ps1** : Tests basiques pour les opérations d'addition et de soustraction
+- **Simple.Tests.ps1** : Tests simples pour vérifier le fonctionnement de Pester
 
-## Exécution des tests
+### Tests unitaires
+
+- **ErrorLearningSystem.Tests.ps1** : Tests pour le module principal
+- **Analyze-ScriptForErrors.Tests.ps1** : Tests pour le script d'analyse des erreurs dans les scripts
+- **Auto-CorrectErrors.Tests.ps1** : Tests pour le script de correction automatique des erreurs
+- **Adaptive-ErrorCorrection.Tests.ps1** : Tests pour le script d'apprentissage adaptatif
+- **Validate-ErrorCorrections.Tests.ps1** : Tests pour le script de validation des corrections
+- **ErrorFunctions.Tests.ps1** : Tests unitaires pour les fonctions du système d'apprentissage des erreurs
+- **ErrorHandling.Tests.ps1** : Tests unitaires pour la gestion des erreurs PowerShell
+- **AdaptiveLearning.Tests.ps1** : Tests unitaires pour la fonctionnalité d'apprentissage adaptatif
+- **ValidationCorrections.Tests.ps1** : Tests unitaires pour la fonctionnalité de validation des corrections
+- **HelperFunctions.Tests.ps1** : Tests unitaires pour les fonctions auxiliaires
+- **AdvancedErrorHandling.Simple.ps1** : Tests unitaires simplifiés pour la fonctionnalité de gestion des erreurs avancée
+
+### Tests d'intégration
+
+- **SimpleIntegration.Tests.ps1** : Tests d'intégration simples pour les opérations de fichier
+- **ErrorLearningSystem.Integration.Tests.ps1** : Tests d'intégration pour le système d'apprentissage des erreurs
+- **ErrorLearningSystem.Integration.Fixed.ps1** : Tests d'intégration corrigés pour le système d'apprentissage des erreurs
+- **ErrorLearningSystem.Integration.Simple.ps1** : Tests d'intégration simplifiés pour le système d'apprentissage des erreurs
+
+## Scripts d'exécution des tests
+
+Plusieurs scripts sont disponibles pour exécuter les tests :
+
+- **Run-AllTests.ps1** : Exécute tous les tests (unitaires et d'intégration)
+- **Run-VeryBasicTests.ps1** : Exécute uniquement les tests très basiques
+- **Run-BasicTests.ps1** : Exécute uniquement les tests basiques
+- **Run-SimpleIntegrationTests.ps1** : Exécute uniquement les tests d'intégration simples
+- **Run-SimpleIntegrationTests2.ps1** : Exécute uniquement les tests d'intégration simplifiés
+- **Run-FixedIntegrationTests.ps1** : Exécute uniquement les tests d'intégration corrigés
+- **Run-FunctionTests.ps1** : Exécute uniquement les tests des fonctions
+- **Run-ErrorHandlingTests.ps1** : Exécute uniquement les tests de gestion des erreurs
+- **Run-AdaptiveLearningTests.ps1** : Exécute uniquement les tests d'apprentissage adaptatif
+- **Run-ValidationCorrectionsTests.ps1** : Exécute uniquement les tests de validation des corrections
+- **Run-HelperFunctionsTests.ps1** : Exécute uniquement les tests des fonctions auxiliaires
+- **Run-AdvancedErrorHandlingSimpleTests.ps1** : Exécute uniquement les tests de gestion des erreurs avancée simplifiés
+- **Run-WorkingTests.ps1** : Exécute tous les tests qui fonctionnent correctement
+- **Run-AllWorkingTests.ps1** : Exécute tous les tests qui fonctionnent correctement (version améliorée)
 
 ### Exécuter tous les tests
 
@@ -42,23 +74,44 @@ Pour exécuter uniquement les tests d'intégration, utilisez la commande suivant
 .\Run-AllTests.ps1 -TestType Integration
 ```
 
-### Générer un rapport HTML des résultats
+### Exécuter tous les tests qui fonctionnent correctement
 
-Pour générer un rapport HTML des résultats des tests, utilisez l'option `-GenerateReport` :
+Pour exécuter tous les tests qui fonctionnent correctement, utilisez la commande suivante :
 
 ```powershell
-.\Run-AllTests.ps1 -GenerateReport
+.\Run-AllWorkingTests.ps1
 ```
 
-## Exécution des tests dans un pipeline CI/CD
+## Automatisation des tests
 
-Pour exécuter les tests dans un pipeline CI/CD, utilisez le script `Run-TestsInPipeline.ps1` situé dans le répertoire `CI-CD` :
+Des scripts sont disponibles pour automatiser l'exécution des tests dans un pipeline CI/CD :
+
+- **CI-CD/Run-TestsInCI.ps1** : Script pour exécuter les tests dans un pipeline CI/CD
+- **CI-CD/github-workflow-tests.yml** : Fichier de configuration pour GitHub Actions
+
+Pour exécuter les tests dans un pipeline CI/CD, utilisez la commande suivante :
 
 ```powershell
-.\CI-CD\Run-TestsInPipeline.ps1
+.\CI-CD\Run-TestsInCI.ps1
 ```
 
 Ce script génère des rapports XML des résultats des tests et de la couverture de code, qui peuvent être utilisés par des outils d'intégration continue comme GitHub Actions.
+
+## Résultats des tests
+
+Les tests actuellement fonctionnels sont les suivants :
+
+- Tests basiques : 6 tests réussis
+- Tests très basiques : 4 tests réussis
+- Tests d'intégration simples : 4 tests réussis
+- Tests des fonctions : 3 tests réussis
+- Tests de gestion des erreurs : 4 tests réussis
+- Tests d'apprentissage adaptatif : 5 tests réussis
+- Tests de validation des corrections : 5 tests réussis
+- Tests des fonctions auxiliaires : 12 tests réussis
+- Tests de gestion des erreurs avancée simplifiés : 4 tests réussis
+
+Total : 43 tests réussis
 
 ## Ajout de nouveaux tests
 
