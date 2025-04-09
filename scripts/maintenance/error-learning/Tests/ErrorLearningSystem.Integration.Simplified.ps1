@@ -16,8 +16,9 @@ Describe "Tests d'intégration simplifiés du système d'apprentissage des erreu
         $script:moduleRoot = Split-Path -Path $PSScriptRoot -Parent
         $script:modulePath = Join-Path -Path $script:moduleRoot -ChildPath "ErrorLearningSystem.psm1"
 
-        # Créer un répertoire temporaire pour les tests
-        $script:testRoot = Join-Path -Path $env:TEMP -ChildPath "ErrorLearningSystemSimplifiedTests"
+        # Créer un répertoire temporaire pour les tests avec un identifiant unique
+        $script:testId = [guid]::NewGuid().ToString().Substring(0, 8)
+        $script:testRoot = Join-Path -Path $env:TEMP -ChildPath "ErrorLearningSystemTests_$script:testId"
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }
@@ -25,18 +26,23 @@ Describe "Tests d'intégration simplifiés du système d'apprentissage des erreu
 
         # Importer le module à tester
         Import-Module $script:modulePath -Force
-
-        # Définir les variables globales du module
-        Set-Variable -Name ErrorDatabasePath -Value (Join-Path -Path $script:testRoot -ChildPath "error-database.json") -Scope Script
-        Set-Variable -Name ErrorLogsPath -Value (Join-Path -Path $script:testRoot -ChildPath "logs") -Scope Script
-        Set-Variable -Name ErrorPatternsPath -Value (Join-Path -Path $script:testRoot -ChildPath "patterns") -Scope Script
-
-        # Initialiser le système
-        Initialize-ErrorLearningSystem -Force
     }
 
     Context "Enregistrement et analyse des erreurs" {
         It "Devrait enregistrer une erreur avec succès" {
+            # Définir des chemins uniques pour ce test
+            $testDbPath = Join-Path -Path $script:testRoot -ChildPath "test1-database.json"
+            $testLogsPath = Join-Path -Path $script:testRoot -ChildPath "test1-logs"
+            $testPatternsPath = Join-Path -Path $script:testRoot -ChildPath "test1-patterns"
+
+            # Définir les variables globales du module pour ce test
+            Set-Variable -Name ErrorDatabasePath -Value $testDbPath -Scope Script
+            Set-Variable -Name ErrorLogsPath -Value $testLogsPath -Scope Script
+            Set-Variable -Name ErrorPatternsPath -Value $testPatternsPath -Scope Script
+
+            # Initialiser le système pour ce test
+            Initialize-ErrorLearningSystem -Force
+
             # Créer une erreur factice
             $exception = New-Object System.Exception("Erreur de test")
             $errorRecord = New-Object System.Management.Automation.ErrorRecord(
@@ -64,7 +70,17 @@ Describe "Tests d'intégration simplifiés du système d'apprentissage des erreu
         }
 
         It "Devrait filtrer les erreurs par catégorie" {
-            # Réinitialiser la base de données
+            # Définir des chemins uniques pour ce test
+            $testDbPath = Join-Path -Path $script:testRoot -ChildPath "test2-database.json"
+            $testLogsPath = Join-Path -Path $script:testRoot -ChildPath "test2-logs"
+            $testPatternsPath = Join-Path -Path $script:testRoot -ChildPath "test2-patterns"
+
+            # Définir les variables globales du module pour ce test
+            Set-Variable -Name ErrorDatabasePath -Value $testDbPath -Scope Script
+            Set-Variable -Name ErrorLogsPath -Value $testLogsPath -Scope Script
+            Set-Variable -Name ErrorPatternsPath -Value $testPatternsPath -Scope Script
+
+            # Initialiser le système pour ce test
             Initialize-ErrorLearningSystem -Force
 
             # Créer une erreur factice avec une catégorie spécifique
@@ -93,6 +109,19 @@ Describe "Tests d'intégration simplifiés du système d'apprentissage des erreu
         }
 
         It "Devrait obtenir des suggestions pour une erreur" {
+            # Définir des chemins uniques pour ce test
+            $testDbPath = Join-Path -Path $script:testRoot -ChildPath "test3-database.json"
+            $testLogsPath = Join-Path -Path $script:testRoot -ChildPath "test3-logs"
+            $testPatternsPath = Join-Path -Path $script:testRoot -ChildPath "test3-patterns"
+
+            # Définir les variables globales du module pour ce test
+            Set-Variable -Name ErrorDatabasePath -Value $testDbPath -Scope Script
+            Set-Variable -Name ErrorLogsPath -Value $testLogsPath -Scope Script
+            Set-Variable -Name ErrorPatternsPath -Value $testPatternsPath -Scope Script
+
+            # Initialiser le système pour ce test
+            Initialize-ErrorLearningSystem -Force
+
             # Créer une erreur factice avec une solution
             $exception = New-Object System.Exception("Erreur de test avec solution")
             $errorRecord = New-Object System.Management.Automation.ErrorRecord(
