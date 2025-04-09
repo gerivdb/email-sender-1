@@ -74,7 +74,9 @@ function Test-ScriptWithCache {
         Cache = $CacheInstance
         Key   = $cacheKey
         GenerateValue = {
-            param($Path, $FileInfo) # Pass parameters to scriptblock for clarity
+            # Capture variables from parent scope
+            $Path = $ScriptPath
+            $FileInfo = $scriptFileInfo
 
             # Use Write-Host or Write-Verbose inside GenerateValue for feedback
             Write-Host " -> Generating analysis for '$($FileInfo.Name)' (Cache Miss)..." -ForegroundColor Yellow
@@ -106,8 +108,6 @@ function Test-ScriptWithCache {
                 AnalysisTime    = Get-Date
             }
         }
-        # Pass arguments to the scriptblock
-        GenerateValueArgumentList = @($ScriptPath, $scriptFileInfo)
         # Override default TTL for this specific item if needed
         # TTLSeconds = 7200
         Tags = @("Analysis", "Script", $scriptFileInfo.Extension) # Add relevant tags
@@ -148,7 +148,9 @@ function Get-FileEncodingWithCache {
         Cache = $CacheInstance
         Key   = $cacheKey
         GenerateValue = {
-            param($Path, $FileInfo)
+            # Capture variables from parent scope
+            $Path = $FilePath
+            $FileInfo = $fileInfo
 
             Write-Host " -> Detecting encoding for '$($FileInfo.Name)' (Cache Miss)..." -ForegroundColor Yellow
             # Simulate detection time
@@ -194,7 +196,6 @@ function Get-FileEncodingWithCache {
                 DetectionTime    = Get-Date
             }
         }
-        GenerateValueArgumentList = @($FilePath, $fileInfo)
         Tags = @("Encoding", "FileMeta", $fileInfo.Extension)
     }
     if($PSBoundParameters['RunWithVerbose']) { $cacheArgs.Verbose = $true }
