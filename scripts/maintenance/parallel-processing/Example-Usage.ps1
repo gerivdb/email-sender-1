@@ -50,20 +50,26 @@ if ($null -ne $scriptWithIssues) {
 Write-Host "`n--- Exemple 2: Correction parallèle (simulation) ---"
 $correctionResults = $scriptFiles | Invoke-ParallelScriptCorrection -MaxThreads 8 -WhatIf
 
+# Afficher les statistiques des corrections
+Write-Host "`nStatistiques des corrections (simulation):"
+Write-Host "  Scripts traités: $($correctionResults.Count)"
+Write-Host "  Problèmes détectés: $(($correctionResults | Measure-Object -Property IssuesFound -Sum).Sum)"
+Write-Host "  Corrections potentielles: $(($correctionResults | Measure-Object -Property CorrectionsMade -Sum).Sum)"
+
 # Exemple 3: Utilisation directe de Invoke-OptimizedParallel
 Write-Host "`n--- Exemple 3: Utilisation directe de Invoke-OptimizedParallel ---"
 $customResults = $scriptFiles | Invoke-OptimizedParallel -ScriptBlock {
     param($scriptPath)
-    
+
     try {
         # Lire le contenu du script
         $content = Get-Content -Path $scriptPath -Raw -ErrorAction Stop
-        
+
         # Effectuer une analyse personnalisée
         $functionCount = ([regex]::Matches($content, 'function\s+\w+')).Count
         $commentCount = ([regex]::Matches($content, '^\s*#.*$', 'Multiline')).Count
         $lineCount = ($content -split "`n").Length
-        
+
         return [PSCustomObject]@{
             ScriptPath = $scriptPath
             FunctionCount = $functionCount
