@@ -125,21 +125,25 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [ ] Implémenter la détection des encodages de caractères
 
 ### 2.1.3 Optimisation de la parallélisation (PowerShell 5.1)
-- [ ] Optimiser les Runspace Pools
-  - [ ] Déterminer le nombre optimal de threads basé sur le nombre de cœurs
-  - [ ] Implémenter la réutilisation des pools pour réduire les frais généraux
-- [ ] Implémenter le traitement par lots (Batch Processing)
-  - [ ] Regrouper les fichiers en lots pour réduire le nombre de threads nécessaires
-  - [ ] Adapter les scripts pour traiter plusieurs fichiers par thread
-- [ ] Optimiser l'utilisation de la mémoire
-  - [ ] Utiliser des structures de données efficaces (List<T>, Dictionary<K,V>)
-  - [ ] Partager les données en lecture seule entre les threads
-- [ ] Implémenter la synchronisation thread-safe
-  - [ ] Utiliser ConcurrentDictionary pour collecter les résultats
-  - [ ] Utiliser SemaphoreSlim pour limiter l'accès aux ressources partagées
-- [ ] Mettre en place des outils de mesure de performance
-  - [ ] Mesurer le temps d'exécution et l'utilisation des ressources
-  - [ ] Identifier et éliminer les goulots d'étranglement
+- [x] Optimiser les Runspace Pools
+  - [x] Déterminer le nombre optimal de threads basé sur le nombre de cœurs
+  - [x] Implémenter la réutilisation des pools pour réduire les frais généraux
+- [x] Implémenter le traitement par lots (Batch Processing)
+  - [x] Regrouper les fichiers en lots pour réduire le nombre de threads nécessaires
+  - [x] Adapter les scripts pour traiter plusieurs fichiers par thread
+- [x] Optimiser l'utilisation de la mémoire
+  - [x] Utiliser des structures de données efficaces (List<T>, Dictionary<K,V>)
+  - [x] Partager les données en lecture seule entre les threads
+- [x] Implémenter la synchronisation thread-safe
+  - [x] Utiliser ConcurrentDictionary pour collecter les résultats
+  - [x] Utiliser SemaphoreSlim pour limiter l'accès aux ressources partagées
+- [x] Mettre en place des outils de mesure de performance
+  - [x] Mesurer le temps d'exécution et l'utilisation des ressources
+  - [x] Identifier et éliminer les goulots d'étranglement
+- [x] Intégrer la parallélisation au système d'apprentissage des erreurs
+  - [x] Créer un script de traitement parallèle des erreurs
+  - [x] Implémenter l'analyse des erreurs en parallèle
+  - [x] Générer des rapports d'analyse d'erreurs
 
 ### 2.1.4 Gestion des cas ambigus
 - [ ] Développer un mécanisme pour gérer les cas où plusieurs formats sont possibles
