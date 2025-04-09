@@ -11,6 +11,11 @@ $script:ErrorDatabasePath = Join-Path -Path $PSScriptRoot -ChildPath "data\error
 $script:ErrorLogsPath = Join-Path -Path $PSScriptRoot -ChildPath "logs"
 $script:ErrorPatternsPath = Join-Path -Path $PSScriptRoot -ChildPath "patterns"
 $script:IsInitialized = $false
+$script:LastDatabaseSave = [DateTime]::MinValue
+$script:DatabaseModified = $false
+$script:DatabaseSaveInterval = [TimeSpan]::FromSeconds(5) # Sauvegarder au maximum toutes les 5 secondes
+$script:ErrorCache = @{} # Cache pour les erreurs fréquentes
+$script:MaxCacheSize = 100 # Taille maximale du cache
 
 # Fonction d'initialisation
 function Initialize-ErrorLearningSystem {
@@ -231,6 +236,14 @@ function Register-PowerShellError {
             Initialize-ErrorLearningSystem
         }
 
+        # Vérifier si l'erreur est déjà dans le cache
+        $errorKey = "$($ErrorRecord.Exception.GetType().FullName)|$($ErrorRecord.Exception.Message)|$Source|$Category"
+
+        if ($script:ErrorCache.ContainsKey($errorKey) -and -not $NoSave) {
+            Write-Verbose "Erreur trouvée dans le cache. Réutilisation de l'ID existant."
+            return $script:ErrorCache[$errorKey]
+        }
+
         # Créer un objet d'erreur
         $errorId = [guid]::NewGuid().ToString()
         $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -250,6 +263,20 @@ function Register-PowerShellError {
             Line = $ErrorRecord.InvocationInfo.Line
             Solution = $Solution
             AdditionalInfo = $AdditionalInfo
+        }
+
+        # Ajouter l'erreur au cache
+        if (-not $NoSave) {
+            # Gérer la taille du cache
+            if ($script:ErrorCache.Count -ge $script:MaxCacheSize) {
+                # Supprimer la première entrée (la plus ancienne)
+                $oldestKey = $script:ErrorCache.Keys | Select-Object -First 1
+                $script:ErrorCache.Remove($oldestKey)
+                Write-Verbose "Cache plein. Suppression de l'entrée la plus ancienne."
+            }
+
+            $script:ErrorCache[$errorKey] = $errorId
+            Write-Verbose "Erreur ajoutée au cache. Taille du cache: $($script:ErrorCache.Count)"
         }
 
         # Vérifier que la base de données est initialisée
@@ -303,33 +330,91 @@ function Register-PowerShellError {
         # Mettre à jour la date de dernière mise à jour
         $script:ErrorDatabase.Statistics.LastUpdate = $timestamp
 
+        # Marquer la base de données comme modifiée
+        $script:DatabaseModified = $true
+
         # Sauvegarder la base de données si demandé
         if (-not $NoSave) {
-            try {
-                Write-Verbose "Sauvegarde de la base de données..."
-                $json = $script:ErrorDatabase | ConvertTo-Json -Depth 10 -ErrorAction Stop
-                Set-Content -Path $script:ErrorDatabasePath -Value $json -Force -ErrorAction Stop
-                Write-Verbose "Base de données sauvegardée avec succès."
-            }
-            catch {
-                Write-Warning "Impossible de sauvegarder la base de données : $_"
-            }
+            # Vérifier si l'intervalle de sauvegarde est écoulé
+            $currentTime = Get-Date
+            $timeSinceLastSave = $currentTime - $script:LastDatabaseSave
 
-            # Journaliser l'erreur
-            try {
-                Write-Verbose "Journalisation de l'erreur..."
-                $logFileName = "error-log-$(Get-Date -Format 'yyyy-MM-dd').json"
-                $logFilePath = Join-Path -Path $script:ErrorLogsPath -ChildPath $logFileName
-
-                # Créer le répertoire des logs s'il n'existe pas
-                $logDir = Split-Path -Path $logFilePath -Parent
-                if (-not (Test-Path -Path $logDir)) {
-                    New-Item -Path $logDir -ItemType Directory -Force -ErrorAction Stop | Out-Null
+            if ($timeSinceLastSave -ge $script:DatabaseSaveInterval) {
+                try {
+                    Write-Verbose "Sauvegarde de la base de données..."
+                    $json = $script:ErrorDatabase | ConvertTo-Json -Depth 10 -ErrorAction Stop
+                    Set-Content -Path $script:ErrorDatabasePath -Value $json -Force -ErrorAction Stop
+                    $script:LastDatabaseSave = $currentTime
+                    $script:DatabaseModified = $false
+                    Write-Verbose "Base de données sauvegardée avec succès."
                 }
+                catch {
+                    Write-Warning "Impossible de sauvegarder la base de données : $_"
+                }
+            }
+            else {
+                Write-Verbose "Sauvegarde différée (dernière sauvegarde il y a $($timeSinceLastSave.TotalSeconds) secondes)"
+            }
 
-                $errorJson = $errorObject | ConvertTo-Json -Depth 10 -ErrorAction Stop
-                Add-Content -Path $logFilePath -Value $errorJson -Encoding UTF8 -ErrorAction Stop
-                Write-Verbose "Erreur journalisée avec succès dans le fichier : $logFilePath"
+            # Journaliser l'erreur (optimisé)
+            try {
+                # Journaliser seulement toutes les 10 erreurs ou si c'est une erreur critique
+                $shouldLog = ($script:ErrorDatabase.Statistics.TotalErrors % 10 -eq 0) -or
+                             ($ErrorRecord.Exception -is [System.SystemException]) -or
+                             ($Category -eq "Critical")
+
+                if ($shouldLog) {
+                    Write-Verbose "Journalisation de l'erreur..."
+                    $logFileName = "error-log-$(Get-Date -Format 'yyyy-MM-dd').json"
+                    $logFilePath = Join-Path -Path $script:ErrorLogsPath -ChildPath $logFileName
+
+                    # Créer le répertoire des logs s'il n'existe pas
+                    $logDir = Split-Path -Path $logFilePath -Parent
+                    if (-not (Test-Path -Path $logDir)) {
+                        New-Item -Path $logDir -ItemType Directory -Force -ErrorAction Stop | Out-Null
+                    }
+
+                    # Ajouter un compteur d'occurrences pour les erreurs similaires
+                    $errorObject.OccurrenceCount = 1
+
+                    # Vérifier si le fichier existe et n'est pas vide
+                    if ((Test-Path -Path $logFilePath) -and (Get-Item -Path $logFilePath).Length -gt 0) {
+                        # Lire le fichier de log existant
+                        $existingLogs = @(Get-Content -Path $logFilePath -Raw | ConvertFrom-Json -ErrorAction SilentlyContinue)
+
+                        # Vérifier si une erreur similaire existe déjà
+                        $similarErrorFound = $false
+                        foreach ($log in $existingLogs) {
+                            if (($log.ErrorType -eq $errorObject.ErrorType) -and
+                                ($log.ErrorMessage -eq $errorObject.ErrorMessage) -and
+                                ($log.Category -eq $errorObject.Category)) {
+                                # Incrémenter le compteur d'occurrences
+                                if ($log.PSObject.Properties.Name -contains "OccurrenceCount") {
+                                    $log.OccurrenceCount++
+                                } else {
+                                    Add-Member -InputObject $log -MemberType NoteProperty -Name "OccurrenceCount" -Value 2
+                                }
+                                $similarErrorFound = $true
+                                break
+                            }
+                        }
+
+                        # Si aucune erreur similaire n'a été trouvée, ajouter la nouvelle erreur
+                        if (-not $similarErrorFound) {
+                            $existingLogs += $errorObject
+                        }
+
+                        # Écrire le fichier de log mis à jour
+                        $existingLogs | ConvertTo-Json -Depth 10 -ErrorAction Stop | Set-Content -Path $logFilePath -Force -ErrorAction Stop
+                    } else {
+                        # Créer un nouveau fichier de log avec la première erreur
+                        @($errorObject) | ConvertTo-Json -Depth 10 -ErrorAction Stop | Set-Content -Path $logFilePath -Force -ErrorAction Stop
+                    }
+
+                    Write-Verbose "Erreur journalisée avec succès dans le fichier : $logFilePath"
+                } else {
+                    Write-Verbose "Journalisation différée (erreur non critique ou compteur non divisible par 10)"
+                }
             }
             catch {
                 Write-Warning "Impossible de journaliser l'erreur : $_"
@@ -489,5 +574,39 @@ function Get-ErrorSuggestions {
     }
 }
 
+# Fonction pour sauvegarder la base de données
+function Save-ErrorDatabase {
+    [CmdletBinding()]
+    param ()
+
+    if ($script:DatabaseModified) {
+        try {
+            Write-Verbose "Sauvegarde finale de la base de données..."
+            $json = $script:ErrorDatabase | ConvertTo-Json -Depth 10 -ErrorAction Stop
+            Set-Content -Path $script:ErrorDatabasePath -Value $json -Force -ErrorAction Stop
+            $script:LastDatabaseSave = Get-Date
+            $script:DatabaseModified = $false
+            Write-Verbose "Base de données sauvegardée avec succès."
+            return $true
+        }
+        catch {
+            Write-Warning "Impossible de sauvegarder la base de données : $_"
+            return $false
+        }
+    }
+    else {
+        Write-Verbose "Aucune modification à sauvegarder."
+        return $true
+    }
+}
+
+# Enregistrer un gestionnaire d'événement pour sauvegarder la base de données à la fin de l'exécution
+$MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
+    if ($script:IsInitialized -and $script:DatabaseModified) {
+        Write-Verbose "Sauvegarde de la base de données avant de décharger le module..."
+        Save-ErrorDatabase
+    }
+}
+
 # Exporter les fonctions
-Export-ModuleMember -Function Initialize-ErrorLearningSystem, Register-PowerShellError, Get-PowerShellErrorAnalysis, Get-ErrorSuggestions
+Export-ModuleMember -Function Initialize-ErrorLearningSystem, Register-PowerShellError, Get-PowerShellErrorAnalysis, Get-ErrorSuggestions, Save-ErrorDatabase

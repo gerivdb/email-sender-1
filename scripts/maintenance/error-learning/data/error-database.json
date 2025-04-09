@@ -347,14 +347,44 @@
                        "Solution":  "Voici la solution à l\u0027erreur.",
                        "ScriptStackTrace":  null,
                        "PositionMessage":  null
+                   },
+                   {
+                       "Source":  "IntegrationTest",
+                       "Id":  "afb02c26-28d0-4383-9c5e-bc99f5c51ff1",
+                       "AdditionalInfo":  {
+
+                                          },
+                       "Category":  "TestCategory",
+                       "ErrorType":  "System.Exception",
+                       "Line":  null,
+                       "Timestamp":  "2025-04-09 09:47:15",
+                       "ErrorMessage":  "Erreur de test",
+                       "Solution":  "",
+                       "ScriptStackTrace":  null,
+                       "PositionMessage":  null
+                   },
+                   {
+                       "Source":  "IntegrationTest",
+                       "Id":  "8008b8f8-a09c-44ec-abb5-cf3d52de18cb",
+                       "AdditionalInfo":  {
+
+                                          },
+                       "Category":  "TestCategory",
+                       "ErrorType":  "System.Exception",
+                       "Line":  null,
+                       "Timestamp":  "2025-04-09 09:47:16",
+                       "ErrorMessage":  "Erreur de test avec solution",
+                       "Solution":  "Voici la solution à l\u0027erreur.",
+                       "ScriptStackTrace":  null,
+                       "PositionMessage":  null
                    }
                ],
     "Statistics":  {
-                       "TotalErrors":  23,
+                       "TotalErrors":  25,
                        "CategorizedErrors":  {
-                                                 "TestCategory":  16,
+                                                 "TestCategory":  18,
                                                  "TestCategory2":  7
                                              },
-                       "LastUpdate":  "2025-04-09 09:37:25"
+                       "LastUpdate":  "2025-04-09 09:47:16"
                    }
 }

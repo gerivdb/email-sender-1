@@ -10,13 +10,13 @@
 param (
     [Parameter(Mandatory = $true)]
     [string]$ScriptPath,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$FixErrors,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$GenerateReport,
-    
+
     [Parameter(Mandatory = $false)]
     [string]$ReportPath = ""
 )
@@ -76,32 +76,50 @@ $errorPatterns = @(
     }
 )
 
+# Pré-compiler les expressions régulières pour de meilleures performances
+$compiledPatterns = @()
+foreach ($pattern in $errorPatterns) {
+    $compiledPatterns += @{
+        Name = $pattern.Name
+        Regex = [regex]::new($pattern.Pattern, [System.Text.RegularExpressions.RegexOptions]::Compiled)
+        Description = $pattern.Description
+        Suggestion = $pattern.Suggestion
+        Severity = $pattern.Severity
+    }
+}
+
 # Analyser le script
 $detectedIssues = @()
 
-foreach ($pattern in $errorPatterns) {
-    $matches = [regex]::Matches($scriptContent, $pattern.Pattern)
-    
-    foreach ($match in $matches) {
-        # Trouver le numéro de ligne
-        $lineNumber = ($scriptContent.Substring(0, $match.Index).Split("`n")).Length
-        
-        # Extraire la ligne complète
-        $lines = $scriptContent.Split("`n")
-        $line = $lines[$lineNumber - 1].Trim()
-        
-        # Créer un objet pour l'erreur détectée
-        $issue = [PSCustomObject]@{
-            Name = $pattern.Name
-            Description = $pattern.Description
-            Suggestion = $pattern.Suggestion
-            Severity = $pattern.Severity
-            LineNumber = $lineNumber
-            Line = $line
-            Match = $match.Value
+# Préparer les lignes une seule fois
+$lines = $scriptContent.Split("`n")
+
+# Analyser chaque pattern
+foreach ($pattern in $compiledPatterns) {
+    $regexMatches = $pattern.Regex.Matches($scriptContent)
+
+    # Traiter les correspondances par lots pour améliorer les performances
+    if ($regexMatches.Count -gt 0) {
+        foreach ($match in $regexMatches) {
+            # Trouver le numéro de ligne
+            $lineNumber = ($scriptContent.Substring(0, $match.Index).Split("`n")).Length
+
+            # Extraire la ligne complète
+            $line = $lines[$lineNumber - 1].Trim()
+
+            # Créer un objet pour l'erreur détectée
+            $issue = [PSCustomObject]@{
+                Name = $pattern.Name
+                Description = $pattern.Description
+                Suggestion = $pattern.Suggestion
+                Severity = $pattern.Severity
+                LineNumber = $lineNumber
+                Line = $line
+                Match = $match.Value
+            }
+
+            $detectedIssues += $issue
         }
-        
-        $detectedIssues += $issue
     }
 }
 
@@ -111,7 +129,7 @@ Write-Host "Erreurs détectées : $($detectedIssues.Count)"
 
 if ($detectedIssues.Count -gt 0) {
     Write-Host "`nDétails des erreurs :"
-    
+
     foreach ($issue in $detectedIssues) {
         Write-Host "`n[$($issue.Severity)] $($issue.Name) (Ligne $($issue.LineNumber))"
         Write-Host "  Message : $($issue.Description)"
@@ -126,24 +144,24 @@ else {
 # Corriger les erreurs si demandé
 if ($FixErrors) {
     Write-Host "`nApplication des corrections..."
-    
+
     # Trier les problèmes par numéro de ligne (décroissant) pour éviter les décalages
     $sortedIssues = $detectedIssues | Sort-Object -Property LineNumber -Descending
-    
+
     # Lire le contenu du script en tant que tableau de lignes
     $scriptLines = Get-Content -Path $ScriptPath
-    
+
     # Créer une sauvegarde du script original
     $backupPath = "$ScriptPath.bak"
     Copy-Item -Path $ScriptPath -Destination $backupPath -Force
-    
+
     # Appliquer les corrections
     $correctionsApplied = 0
-    
+
     foreach ($issue in $sortedIssues) {
         $lineIndex = $issue.LineNumber - 1
         $originalLine = $scriptLines[$lineIndex]
-        
+
         # Appliquer la correction en fonction du type de problème
         switch ($issue.Name) {
             "HardcodedPath" {
@@ -175,10 +193,10 @@ if ($FixErrors) {
             }
         }
     }
-    
+
     # Sauvegarder le script corrigé
     $scriptLines | Out-File -FilePath $ScriptPath -Force
-    
+
     Write-Host "Corrections appliquées : $correctionsApplied"
     Write-Host "Sauvegarde créée : $backupPath"
 }
