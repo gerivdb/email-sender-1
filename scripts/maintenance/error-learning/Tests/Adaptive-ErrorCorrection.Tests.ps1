@@ -151,5 +151,5 @@ if (`$true) {
     }
 }
 
-# Exécuter les tests
-Invoke-Pester -Path $PSCommandPath -Output Detailed
+# Ne pas exécuter les tests automatiquement pour éviter la récursion infinie
+# Invoke-Pester -Path $PSCommandPath -Output Detailed
