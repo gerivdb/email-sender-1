@@ -130,7 +130,7 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 ## 2.1 Amélioration de la détection automatique de format
 **Complexité**: Élevée
 **Temps estimé**: 5-7 jours
-**Progression**: 50% - *Mise à jour le 11/04/2025*
+**Progression**: 75% - *Mise à jour le 11/04/2025*
 **Date de début**: 11/04/2025
 **Date cible d'achèvement**: 27/04/2025
 
@@ -176,11 +176,11 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [x] Implémenter un système de confirmation utilisateur pour les cas ambigus
 - [x] Créer une interface pour afficher les formats détectés avec leur score de confiance
 
-### 2.1.5 Tests et validation
-- [ ] Créer une suite de tests avec des exemples variés
-- [ ] Tester la détection avec des fichiers malformés ou incomplets
-- [ ] Mesurer le taux de réussite de la détection automatique
-- [ ] Optimiser les algorithmes en fonction des résultats
+### 2.1.5 Tests et validation - *Terminé le 11/04/2025*
+- [x] Créer une suite de tests avec des exemples variés
+- [x] Tester la détection avec des fichiers malformés ou incomplets
+- [x] Mesurer le taux de réussite de la détection automatique
+- [x] Optimiser les algorithmes en fonction des résultats
 
 ### 2.1.6 Intégration et documentation
 - [ ] Intégrer le nouveau système de détection dans le module Format-Converters
