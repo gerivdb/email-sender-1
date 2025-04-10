@@ -23,7 +23,7 @@
 [CmdletBinding()]
 param(
     [Parameter()]
-    [string]$RoadmapPath = (Join-Path -Path (Join-Path -Path (Split-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -Parent) -ChildPath "Roadmap") -ChildPath "roadmap_perso.md")
+    [string]$RoadmapPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_perso.md"
 )
 
 # Vérifier si le fichier de roadmap existe

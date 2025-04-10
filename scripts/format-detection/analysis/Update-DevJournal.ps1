@@ -23,7 +23,7 @@
 [CmdletBinding()]
 param(
     [Parameter()]
-    [string]$JournalPath = (Join-Path -Path (Split-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -Parent) -ChildPath "logs/dev_journal")
+    [string]$JournalPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\logs\dev_journal"
 )
 
 # Vérifier si le répertoire de journaux existe
