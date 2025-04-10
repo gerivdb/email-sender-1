@@ -248,14 +248,14 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 ## 2.1 Détection automatique des formats
 **Complexité**: Moyenne
 **Temps estimé**: 5-7 jours
-**Progression**: 0%
-**Date de début prévue**: 20/04/2025
+**Progression**: 33% - *Mise à jour le 11/04/2025*
+**Date de début**: 11/04/2025
 **Date cible d'achèvement**: 27/04/2025
 
-### 2.1.1 Analyse des problèmes actuels
-- [ ] Identifier les limitations de la détection automatique actuelle
-- [ ] Analyser les cas d'échec de détection
-- [ ] Définir les critères de détection pour chaque format
+### 2.1.1 Analyse des problèmes actuels - *Terminé le 11/04/2025*
+- [x] Identifier les limitations de la détection automatique actuelle
+- [x] Analyser les cas d'échec de détection
+- [x] Définir les critères de détection pour chaque format
 
 ### 2.1.2 Implémentation des améliorations
 - [ ] Développer des algorithmes de détection plus robustes

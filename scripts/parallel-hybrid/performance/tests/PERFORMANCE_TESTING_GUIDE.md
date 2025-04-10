@@ -1,4 +1,4 @@
-# Guide de tests de performance
+# Guide de tests de performance - Test AutoHotkey
 
 Ce guide explique comment créer et exécuter des tests de performance pour l'architecture hybride PowerShell-Python. Il fournit des exemples et des bonnes pratiques pour mesurer et comparer les performances des différentes implémentations.
 
@@ -36,32 +36,32 @@ Describe "Tests de performance" {
                     [scriptblock]$ScriptBlock,
                     [int]$Iterations = 5
                 )
-                
+
                 $times = @()
-                
+
                 for ($i = 0; $i -lt $Iterations; $i++) {
                     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
                     & $ScriptBlock
                     $stopwatch.Stop()
                     $times += $stopwatch.Elapsed.TotalMilliseconds
                 }
-                
+
                 return ($times | Measure-Object -Average).Average
             }
         }
-        
+
         It "Mesure les performances de ma fonction" {
             # Définir la fonction à tester
             $myFunction = {
                 # Code à mesurer
             }
-            
+
             # Mesurer les performances
             $avgTime = Measure-Performance -ScriptBlock $myFunction -Iterations 5
-            
+
             # Afficher les résultats
             Write-Host "Temps moyen : $avgTime ms"
-            
+
             # Vérifier que les performances sont acceptables
             $avgTime | Should -BeLessThan 100
         }
@@ -116,16 +116,16 @@ function Compare-Implementations {
         [hashtable]$Parameters = @{},
         [int]$Iterations = 5
     )
-    
+
     # Mesurer les performances de la première implémentation
     $result1 = Measure-FunctionPerformance -Name "$Name (Implémentation 1)" -ScriptBlock $Implementation1 -Parameters $Parameters -Iterations $Iterations
-    
+
     # Mesurer les performances de la seconde implémentation
     $result2 = Measure-FunctionPerformance -Name "$Name (Implémentation 2)" -ScriptBlock $Implementation2 -Parameters $Parameters -Iterations $Iterations
-    
+
     # Calculer l'amélioration en pourcentage
     $timeImprovement = ($result1.AverageExecutionTimeMs - $result2.AverageExecutionTimeMs) / $result1.AverageExecutionTimeMs * 100
-    
+
     return [PSCustomObject]@{
         Name = $Name
         Result1 = $result1
@@ -167,23 +167,23 @@ function Measure-ScalabilityPerformance {
         [int[]]$DataSizes,
         [int]$Iterations = 3
     )
-    
+
     $results = @()
-    
+
     foreach ($size in $DataSizes) {
         # Générer les données de test
         $data = New-LargeDataArray -Size $size
-        
+
         # Mesurer les performances
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
-        
+
         for ($i = 1; $i -le $Iterations; $i++) {
             & $ScriptBlock -data $data | Out-Null
         }
-        
+
         $stopwatch.Stop()
         $executionTime = $stopwatch.Elapsed.TotalMilliseconds / $Iterations
-        
+
         # Enregistrer les résultats
         $results += [PSCustomObject]@{
             Size = $size
@@ -191,7 +191,7 @@ function Measure-ScalabilityPerformance {
             ItemsPerMs = $size / $executionTime
         }
     }
-    
+
     return $results
 }
 ```
@@ -285,28 +285,28 @@ Describe "Tests de performance" {
         BeforeAll {
             # Générer des données de test
             $testData = 1..1000 | ForEach-Object { [PSCustomObject]@{ Value = Get-Random } }
-            
+
             # Définir les implémentations à comparer
             $implementation1 = {
                 param($data)
                 return $data | Sort-Object -Property Value
             }
-            
+
             $implementation2 = {
                 param($data)
                 return $data | Select-Object Value | Sort-Object -Property Value
             }
         }
-        
+
         It "Compare les performances du tri" {
             # Comparer les implémentations
             $comparison = Compare-Implementations -Name "Tri" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData } -Iterations 5
-            
+
             # Afficher les résultats
             Write-Host "Temps moyen (Implémentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
             Write-Host "Temps moyen (Implémentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
             Write-Host "Amélioration: $($comparison.TimeImprovementPercent) %"
-            
+
             # Vérifier que l'implémentation 2 est plus rapide
             $comparison.TimeImprovementPercent | Should -BeGreaterThan 0
         }
@@ -322,27 +322,27 @@ Describe "Tests de performance" {
         BeforeAll {
             # Définir les tailles de données à tester
             $dataSizes = @(100, 1000, 10000)
-            
+
             # Définir la fonction à tester
             $sortFunction = {
                 param($data)
                 return $data | Sort-Object -Property Value
             }
         }
-        
+
         It "Mesure la scalabilité du tri" {
             # Mesurer les performances avec différentes tailles de données
             $results = Measure-ScalabilityPerformance -Name "Tri" -ScriptBlock $sortFunction -DataSizes $dataSizes -Iterations 3
-            
+
             # Afficher les résultats
             foreach ($result in $results) {
                 Write-Host "Taille: $($result.Size) éléments, Temps: $($result.ExecutionTimeMs) ms, Débit: $($result.ItemsPerMs) éléments/ms"
             }
-            
+
             # Vérifier que le débit diminue avec l'augmentation de la taille des données
             $smallSizeItemsPerMs = $results[0].ItemsPerMs
             $largeSizeItemsPerMs = $results[-1].ItemsPerMs
-            
+
             $largeSizeItemsPerMs | Should -BeLessThan $smallSizeItemsPerMs
         }
     }
@@ -357,7 +357,7 @@ Describe "Tests de performance" {
         BeforeAll {
             # Générer des données de test
             $testFiles = New-TestFiles -OutputPath $testRootDir -FileCount 20
-            
+
             # Définir les implémentations à comparer
             $sequentialImplementation = {
                 param($files)
@@ -373,7 +373,7 @@ Describe "Tests de performance" {
                 }
                 return $results
             }
-            
+
             $parallelImplementation = {
                 param($files)
                 $results = $files | ForEach-Object -Parallel {
@@ -389,16 +389,16 @@ Describe "Tests de performance" {
                 return $results
             }
         }
-        
+
         It "Compare les performances du traitement séquentiel et parallèle" -Skip:($PSVersionTable.PSVersion.Major -lt 7) {
             # Comparer les implémentations
             $comparison = Compare-Implementations -Name "Traitement de fichiers" -Implementation1 $sequentialImplementation -Implementation2 $parallelImplementation -Parameters @{ files = $testFiles } -Iterations 3
-            
+
             # Afficher les résultats
             Write-Host "Temps moyen (Séquentiel): $($comparison.Result1.AverageExecutionTimeMs) ms"
             Write-Host "Temps moyen (Parallèle): $($comparison.Result2.AverageExecutionTimeMs) ms"
             Write-Host "Amélioration: $($comparison.TimeImprovementPercent) %"
-            
+
             # Vérifier que le traitement parallèle est plus rapide
             $comparison.TimeImprovementPercent | Should -BeGreaterThan 10
         }

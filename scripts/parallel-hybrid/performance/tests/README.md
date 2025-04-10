@@ -1,5 +1,7 @@
 # Tests de performance pour l'architecture hybride PowerShell-Python
 
+## Test du script AutoHotkey - Test final
+
 Ce répertoire contient les tests unitaires et de performance pour l'architecture hybride PowerShell-Python. Ces tests permettent de vérifier le bon fonctionnement des scripts et de mesurer leurs performances.
 
 ## Structure des tests
@@ -143,11 +145,11 @@ Describe "Ma fonctionnalité" {
             # Code d'initialisation
             $testData = @(1, 2, 3)
         }
-        
+
         It "Fait quelque chose de spécifique" {
             # Appeler la fonction à tester
             $result = Do-Something -Data $testData
-            
+
             # Vérifier le résultat
             $result | Should -Be 6
         }
