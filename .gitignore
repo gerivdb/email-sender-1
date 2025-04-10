@@ -24,6 +24,9 @@ build/
 # Logs
 logs/
 *.log
+scripts/logs/
+scripts/maintenance/*/logs/
+scripts/manager/data/*.log
 
 # Fichiers temporaires
 tmp/
@@ -31,10 +34,12 @@ temp/
 
 # Fichiers de credentials sensibles
 .n8n/credentials/
+credentials/
 credentials/*.json
 
 # Cache
 .cache/
+.n8n/.cache/
 
 # Sous-modules problématiques
 mcp-gdrive/
