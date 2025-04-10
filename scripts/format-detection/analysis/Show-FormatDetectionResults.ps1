@@ -44,20 +44,20 @@
 param (
     [Parameter(Mandatory = $true)]
     [string]$FilePath,
-    
+
     [Parameter(Mandatory = $false)]
     [PSObject]$DetectionResult,
-    
+
     [Parameter(Mandatory = $false)]
     [ValidateSet("JSON", "HTML", "")]
     [string]$ExportFormat = "",
-    
+
     [Parameter(Mandatory = $false)]
     [string]$OutputPath = "",
-    
+
     [Parameter(Mandatory = $false)]
-    [switch]$ShowAllFormats = $true,
-    
+    [switch]$ShowAllFormats,
+
     [Parameter(Mandatory = $false)]
     [int]$TopFormatsCount = 5
 )
@@ -74,7 +74,7 @@ function Get-ScoreColor {
     param (
         [int]$Score
     )
-    
+
     switch ($Score) {
         {$_ -ge 90} { return "Green" }
         {$_ -ge 70} { return "Yellow" }
@@ -89,10 +89,10 @@ function Export-ResultsToHtml {
         [PSObject]$Result,
         [string]$OutputPath
     )
-    
+
     $fileName = [System.IO.Path]::GetFileName($Result.FilePath)
     $extension = [System.IO.Path]::GetExtension($Result.FilePath).ToLower()
-    
+
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -181,17 +181,17 @@ function Export-ResultsToHtml {
 <body>
     <div class="container">
         <h1>Résultats de détection de format</h1>
-        
+
         <div class="file-info">
             <p><strong>Fichier:</strong> $fileName</p>
             <p><strong>Chemin:</strong> $($Result.FilePath)</p>
             <p><strong>Extension:</strong> $extension</p>
             <p><strong>Taille:</strong> $($Result.Size) octets</p>
         </div>
-        
+
         <div class="detection-result">
             <h2>Format détecté: $($Result.DetectedFormat)</h2>
-            <p><strong>Score de confiance:</strong> 
+            <p><strong>Score de confiance:</strong>
 "@
 
     $scoreClass = switch ($Result.ConfidenceScore) {
@@ -205,7 +205,7 @@ function Export-ResultsToHtml {
             </p>
             <p><strong>Critères correspondants:</strong> $($Result.MatchedCriteria)</p>
         </div>
-        
+
 "@
 
     if ($Result.Encoding) {
@@ -217,7 +217,7 @@ function Export-ResultsToHtml {
             <p><strong>Confiance:</strong> $($Result.Encoding.Confidence)%</p>
             <p><strong>Description:</strong> $($Result.Encoding.Description)</p>
         </div>
-        
+
 "@
     }
 
@@ -241,9 +241,9 @@ function Export-ResultsToHtml {
             {$_ -ge 70} { "score-medium" }
             default { "score-low" }
         }
-        
+
         $criteriaText = $format.MatchedCriteria -join ", "
-        
+
         $html += @"
                 <tr>
                     <td>$($format.Format)</td>
@@ -272,7 +272,7 @@ function Export-ResultsToJson {
         [PSObject]$Result,
         [string]$OutputPath
     )
-    
+
     $Result | ConvertTo-Json -Depth 5 | Set-Content -Path $OutputPath -Encoding UTF8
     Write-Host "Rapport JSON exporté vers '$OutputPath'" -ForegroundColor Green
 }
@@ -284,37 +284,37 @@ function Main {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         exit 1
     }
-    
+
     # Obtenir les résultats de détection
     if (-not $DetectionResult) {
         $DetectionResult = & $formatDetectionScript -FilePath $FilePath -DetectEncoding -ReturnAllFormats
     }
-    
+
     # Vérifier si le résultat contient les scores de tous les formats
     if (-not $DetectionResult.AllFormats) {
         Write-Error "Le script de détection de format n'a pas retourné les scores de tous les formats."
         exit 1
     }
-    
+
     # Afficher les résultats
     $fileName = [System.IO.Path]::GetFileName($DetectionResult.FilePath)
     $extension = [System.IO.Path]::GetExtension($DetectionResult.FilePath).ToLower()
-    
+
     Write-Host "`n===== RÉSULTATS DE DÉTECTION DE FORMAT =====" -ForegroundColor Cyan
     Write-Host "Fichier: $fileName" -ForegroundColor White
     Write-Host "Chemin: $($DetectionResult.FilePath)" -ForegroundColor White
     Write-Host "Extension: $extension" -ForegroundColor White
     Write-Host "Taille: $($DetectionResult.Size) octets" -ForegroundColor White
-    
+
     Write-Host "`nFormat détecté: " -NoNewline
     Write-Host "$($DetectionResult.DetectedFormat)" -ForegroundColor Green -NoNewline
     Write-Host " avec un score de confiance de " -NoNewline
-    
+
     $scoreColor = Get-ScoreColor -Score $DetectionResult.ConfidenceScore
     Write-Host "$($DetectionResult.ConfidenceScore)%" -ForegroundColor $scoreColor
-    
+
     Write-Host "Critères correspondants: $($DetectionResult.MatchedCriteria)" -ForegroundColor White
-    
+
     # Afficher l'encodage si disponible
     if ($DetectionResult.Encoding) {
         Write-Host "`n--- Encodage détecté ---" -ForegroundColor Magenta
@@ -323,49 +323,49 @@ function Main {
         Write-Host "Confiance: $($DetectionResult.Encoding.Confidence)%" -ForegroundColor $(Get-ScoreColor -Score $DetectionResult.Encoding.Confidence)
         Write-Host "Description: $($DetectionResult.Encoding.Description)" -ForegroundColor White
     }
-    
+
     # Afficher tous les formats détectés
     Write-Host "`n--- Tous les formats détectés ---" -ForegroundColor Yellow
-    
+
     $formats = $DetectionResult.AllFormats | Sort-Object -Property Score, Priority -Descending
-    
+
     if (-not $ShowAllFormats) {
         $formats = $formats | Select-Object -First $TopFormatsCount
     }
-    
+
     foreach ($format in $formats) {
         $scoreColor = Get-ScoreColor -Score $format.Score
         $criteriaText = $format.MatchedCriteria -join ", "
-        
+
         Write-Host "$($format.Format)" -NoNewline -ForegroundColor Cyan
         Write-Host " - Score: " -NoNewline
         Write-Host "$($format.Score)%" -NoNewline -ForegroundColor $scoreColor
         Write-Host " - Priorité: $($format.Priority) - Critères: $criteriaText"
     }
-    
+
     Write-Host "`n==========================================" -ForegroundColor Cyan
-    
+
     # Exporter les résultats si demandé
     if ($ExportFormat -ne "") {
         if ($OutputPath -eq "") {
             $baseName = [System.IO.Path]::GetFileNameWithoutExtension($DetectionResult.FilePath)
             $directory = [System.IO.Path]::GetDirectoryName($DetectionResult.FilePath)
-            
+
             $extension = switch ($ExportFormat) {
                 "JSON" { ".json" }
                 "HTML" { ".html" }
                 default { ".txt" }
             }
-            
+
             $OutputPath = Join-Path -Path $directory -ChildPath "$baseName-format-detection$extension"
         }
-        
+
         switch ($ExportFormat) {
             "JSON" { Export-ResultsToJson -Result $DetectionResult -OutputPath $OutputPath }
             "HTML" { Export-ResultsToHtml -Result $DetectionResult -OutputPath $OutputPath }
         }
     }
-    
+
     return $DetectionResult
 }
 

@@ -40,16 +40,16 @@
 
 param (
     [Parameter(Mandatory = $false)]
-    [switch]$CreateSamples = $true,
-    
+    [switch]$CreateSamples,
+
     [Parameter(Mandatory = $false)]
     [string]$SamplesDirectory = "$PSScriptRoot\demo_samples",
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$AutoResolve,
-    
+
     [Parameter(Mandatory = $false)]
-    [switch]$GenerateReport = $true
+    [switch]$GenerateReport
 )
 
 # Importer les scripts nécessaires
@@ -61,11 +61,11 @@ if (-not (Test-Path -Path $integrationScript)) {
 }
 
 # Fonction pour créer des exemples de fichiers ambigus
-function Create-SampleFiles {
+function New-SampleFiles {
     param (
         [string]$Directory
     )
-    
+
     # Créer le répertoire s'il n'existe pas
     if (-not (Test-Path -Path $Directory -PathType Container)) {
         try {
@@ -77,9 +77,9 @@ function Create-SampleFiles {
             exit 1
         }
     }
-    
+
     Write-Host "Création d'exemples de fichiers ambigus..." -ForegroundColor Yellow
-    
+
     # Exemple 1: Fichier JSON qui pourrait être confondu avec du JavaScript
     $jsonJsContent = @"
 {
@@ -98,11 +98,11 @@ function Create-SampleFiles {
     "license": "MIT"
 }
 "@
-    
+
     $jsonJsPath = Join-Path -Path $Directory -ChildPath "package.txt"
     $jsonJsContent | Set-Content -Path $jsonJsPath -Encoding UTF8
     Write-Host "  Créé : package.txt (JSON/JavaScript ambigu)" -ForegroundColor Green
-    
+
     # Exemple 2: Fichier XML qui pourrait être confondu avec du HTML
     $xmlHtmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
@@ -116,11 +116,11 @@ function Create-SampleFiles {
     </body>
 </html>
 "@
-    
+
     $xmlHtmlPath = Join-Path -Path $Directory -ChildPath "page.txt"
     $xmlHtmlContent | Set-Content -Path $xmlHtmlPath -Encoding UTF8
     Write-Host "  Créé : page.txt (XML/HTML ambigu)" -ForegroundColor Green
-    
+
     # Exemple 3: Fichier CSV qui pourrait être confondu avec du texte
     $csvTextContent = @"
 Name,Age,Email
@@ -128,11 +128,11 @@ John Doe,30,john.doe@example.com
 Jane Smith,25,jane.smith@example.com
 Bob Johnson,40,bob.johnson@example.com
 "@
-    
+
     $csvTextPath = Join-Path -Path $Directory -ChildPath "data.txt"
     $csvTextContent | Set-Content -Path $csvTextPath -Encoding UTF8
     Write-Host "  Créé : data.txt (CSV/Texte ambigu)" -ForegroundColor Green
-    
+
     # Exemple 4: Fichier PowerShell qui pourrait être confondu avec du texte
     $ps1TextContent = @"
 # This is a PowerShell script
@@ -142,17 +142,17 @@ function Test-Function {
     param (
         [string]`$Name
     )
-    
+
     Write-Host "Hello, `$Name!"
 }
 
 Test-Function -Name "World"
 "@
-    
+
     $ps1TextPath = Join-Path -Path $Directory -ChildPath "script.txt"
     $ps1TextContent | Set-Content -Path $ps1TextPath -Encoding UTF8
     Write-Host "  Créé : script.txt (PowerShell/Texte ambigu)" -ForegroundColor Green
-    
+
     # Exemple 5: Fichier INI qui pourrait être confondu avec du texte
     $iniTextContent = @"
 [General]
@@ -169,11 +169,11 @@ MaxConnections=10
 Name=John Doe
 Email=john.doe@example.com
 "@
-    
+
     $iniTextPath = Join-Path -Path $Directory -ChildPath "config.txt"
     $iniTextContent | Set-Content -Path $iniTextPath -Encoding UTF8
     Write-Host "  Créé : config.txt (INI/Texte ambigu)" -ForegroundColor Green
-    
+
     # Exemple 6: Fichier YAML qui pourrait être confondu avec du texte
     $yamlTextContent = @"
 # YAML configuration file
@@ -193,25 +193,25 @@ user:
     - admin
     - user
 "@
-    
+
     $yamlTextPath = Join-Path -Path $Directory -ChildPath "config.yaml.txt"
     $yamlTextContent | Set-Content -Path $yamlTextPath -Encoding UTF8
     Write-Host "  Créé : config.yaml.txt (YAML/Texte ambigu)" -ForegroundColor Green
-    
+
     Write-Host "Exemples de fichiers ambigus créés avec succès." -ForegroundColor Green
     Write-Host ""
-    
+
     # Retourner la liste des fichiers créés
     return Get-ChildItem -Path $Directory -File
 }
 
 # Fonction pour générer un rapport HTML
-function Generate-DemoReport {
+function New-DemoReport {
     param (
         [array]$Results,
         [string]$OutputPath = "$PSScriptRoot\AmbiguousFormatDemo.html"
     )
-    
+
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -325,40 +325,40 @@ function Generate-DemoReport {
 <body>
     <div class="container">
         <h1>Démonstration - Gestion des cas ambigus</h1>
-        
+
         <div class="summary">
             <h2>Résumé</h2>
             <p><strong>Nombre de fichiers testés:</strong> $($Results.Count)</p>
             <p><strong>Mode de résolution:</strong> $(if ($AutoResolve) { "Automatique" } else { "Confirmation utilisateur" })</p>
             <p><strong>Date de la démonstration:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
-        
+
         <h2>Détails des exemples</h2>
 "@
 
     foreach ($result in $Results) {
         $fileName = [System.IO.Path]::GetFileName($result.FilePath)
         $fileContent = Get-Content -Path $result.FilePath -Raw
-        
+
         # Déterminer si le cas est ambigu
         $topFormats = $result.AllFormats | Sort-Object -Property Score, Priority -Descending | Select-Object -First 2
         $isAmbiguous = ($topFormats.Count -ge 2) -and (($topFormats[0].Score - $topFormats[1].Score) -lt 20)
-        
+
         $resultClass = if ($isAmbiguous) {
             if ($AutoResolve) { "resolved" } else { "ambiguous" }
         } else {
             "detection-result"
         }
-        
+
         $html += @"
         <div class="demo-case">
             <h3>$fileName</h3>
-            
+
             <div class="file-info">
                 <p><strong>Chemin:</strong> $($result.FilePath)</p>
                 <p><strong>Taille:</strong> $($result.Size) octets</p>
             </div>
-            
+
             <div class="$resultClass">
                 <h4>Résultat de détection</h4>
 "@
@@ -385,7 +385,7 @@ function Generate-DemoReport {
                 <p><strong>Score de confiance:</strong> <span class="$scoreClass">$($result.ConfidenceScore)%</span></p>
                 <p><strong>Critères correspondants:</strong> $($result.MatchedCriteria)</p>
             </div>
-            
+
             <h4>Formats détectés</h4>
             <table class="format-list">
                 <thead>
@@ -405,9 +405,9 @@ function Generate-DemoReport {
                 {$_ -ge 70} { "score-medium" }
                 default { "score-low" }
             }
-            
+
             $criteriaText = $format.MatchedCriteria -join ", "
-            
+
             $html += @"
                     <tr>
                         <td>$($format.Format)</td>
@@ -421,7 +421,7 @@ function Generate-DemoReport {
         $html += @"
                 </tbody>
             </table>
-            
+
             <h4>Contenu du fichier</h4>
             <div class="file-content">$([System.Web.HttpUtility]::HtmlEncode($fileContent))</div>
         </div>
@@ -443,12 +443,12 @@ function Main {
     Write-Host "Démonstration du système de gestion des cas ambigus" -ForegroundColor Cyan
     Write-Host "Mode de résolution : $(if ($AutoResolve) { 'Automatique' } else { 'Confirmation utilisateur' })" -ForegroundColor Cyan
     Write-Host ""
-    
+
     # Créer des exemples de fichiers si demandé
     $sampleFiles = @()
-    
-    if ($CreateSamples) {
-        $sampleFiles = Create-SampleFiles -Directory $SamplesDirectory
+
+    if ($CreateSamples -or -not (Test-Path -Path $SamplesDirectory -PathType Container)) {
+        $sampleFiles = New-SampleFiles -Directory $SamplesDirectory
     }
     else {
         # Utiliser les fichiers existants
@@ -460,35 +460,35 @@ function Main {
             exit 1
         }
     }
-    
+
     if ($sampleFiles.Count -eq 0) {
         Write-Error "Aucun fichier d'exemple trouvé."
         exit 1
     }
-    
+
     Write-Host "Nombre de fichiers d'exemple : $($sampleFiles.Count)" -ForegroundColor Yellow
     Write-Host ""
-    
+
     # Tester chaque fichier
     $results = @()
-    
+
     foreach ($file in $sampleFiles) {
         Write-Host "Analyse du fichier : $($file.Name)" -ForegroundColor Yellow
-        
+
         # Exécuter le script d'intégration
         $result = & $integrationScript -FilePath $file.FullName -AutoResolve:$AutoResolve -ShowDetails
-        
+
         # Ajouter le résultat à la liste
         $results += $result
-        
+
         Write-Host ""
     }
-    
+
     # Générer un rapport si demandé
     if ($GenerateReport) {
-        Generate-DemoReport -Results $results
+        New-DemoReport -Results $results
     }
-    
+
     return $results
 }
 

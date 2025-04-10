@@ -41,13 +41,13 @@
 param (
     [Parameter(Mandatory = $false)]
     [string]$TestDirectory = "$PSScriptRoot\ambiguous_samples",
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$AutoResolve,
-    
+
     [Parameter(Mandatory = $false)]
-    [switch]$GenerateReport = $true,
-    
+    [switch]$GenerateReport,
+
     [Parameter(Mandatory = $false)]
     [string]$ReportPath = "$PSScriptRoot\AmbiguousFormatTestReport.html"
 )
@@ -77,10 +77,10 @@ if (-not (Test-Path -Path $TestDirectory -PathType Container)) {
         Write-Error "Impossible de créer le répertoire de test : $_"
         exit 1
     }
-    
+
     # Créer des exemples de fichiers ambigus
     Write-Host "Création d'exemples de fichiers ambigus..." -ForegroundColor Yellow
-    
+
     # Exemple 1: Fichier JSON qui pourrait être confondu avec du JavaScript
     $jsonJsContent = @"
 {
@@ -99,10 +99,10 @@ if (-not (Test-Path -Path $TestDirectory -PathType Container)) {
     "license": "MIT"
 }
 "@
-    
+
     $jsonJsPath = Join-Path -Path $TestDirectory -ChildPath "package.txt"
     $jsonJsContent | Set-Content -Path $jsonJsPath -Encoding UTF8
-    
+
     # Exemple 2: Fichier XML qui pourrait être confondu avec du HTML
     $xmlHtmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
@@ -116,10 +116,10 @@ if (-not (Test-Path -Path $TestDirectory -PathType Container)) {
     </body>
 </html>
 "@
-    
+
     $xmlHtmlPath = Join-Path -Path $TestDirectory -ChildPath "page.txt"
     $xmlHtmlContent | Set-Content -Path $xmlHtmlPath -Encoding UTF8
-    
+
     # Exemple 3: Fichier CSV qui pourrait être confondu avec du texte
     $csvTextContent = @"
 Name,Age,Email
@@ -127,10 +127,10 @@ John Doe,30,john.doe@example.com
 Jane Smith,25,jane.smith@example.com
 Bob Johnson,40,bob.johnson@example.com
 "@
-    
+
     $csvTextPath = Join-Path -Path $TestDirectory -ChildPath "data.txt"
     $csvTextContent | Set-Content -Path $csvTextPath -Encoding UTF8
-    
+
     # Exemple 4: Fichier PowerShell qui pourrait être confondu avec du texte
     $ps1TextContent = @"
 # This is a PowerShell script
@@ -140,16 +140,16 @@ function Test-Function {
     param (
         [string]`$Name
     )
-    
+
     Write-Host "Hello, `$Name!"
 }
 
 Test-Function -Name "World"
 "@
-    
+
     $ps1TextPath = Join-Path -Path $TestDirectory -ChildPath "script.txt"
     $ps1TextContent | Set-Content -Path $ps1TextPath -Encoding UTF8
-    
+
     # Exemple 5: Fichier INI qui pourrait être confondu avec du texte
     $iniTextContent = @"
 [General]
@@ -166,17 +166,17 @@ MaxConnections=10
 Name=John Doe
 Email=john.doe@example.com
 "@
-    
+
     $iniTextPath = Join-Path -Path $TestDirectory -ChildPath "config.txt"
     $iniTextContent | Set-Content -Path $iniTextPath -Encoding UTF8
 }
 
 # Fonction pour générer un rapport HTML
-function Generate-TestReport {
+function New-TestReport {
     param (
         [array]$Results
     )
-    
+
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -280,7 +280,7 @@ function Generate-TestReport {
 <body>
     <div class="container">
         <h1>Rapport de test - Gestion des cas ambigus</h1>
-        
+
         <div class="summary">
             <h2>Résumé</h2>
             <p><strong>Nombre de fichiers testés:</strong> $($Results.Count)</p>
@@ -288,28 +288,28 @@ function Generate-TestReport {
             <p><strong>Cas résolus automatiquement:</strong> $($Results.Where({ $_.IsAmbiguous -and $_.AutoResolved }).Count)</p>
             <p><strong>Cas résolus par l'utilisateur:</strong> $($Results.Where({ $_.IsAmbiguous -and -not $_.AutoResolved }).Count)</p>
         </div>
-        
+
         <h2>Détails des tests</h2>
 "@
 
     foreach ($result in $Results) {
         $fileName = [System.IO.Path]::GetFileName($result.FilePath)
-        
+
         $resultClass = if ($result.IsAmbiguous) {
             if ($result.AutoResolved) { "resolved" } else { "ambiguous" }
         } else {
             "detection-result"
         }
-        
+
         $html += @"
         <div class="test-case">
             <h3>$fileName</h3>
-            
+
             <div class="file-info">
                 <p><strong>Chemin:</strong> $($result.FilePath)</p>
                 <p><strong>Taille:</strong> $($result.Size) octets</p>
             </div>
-            
+
             <div class="$resultClass">
                 <h4>Résultat de détection</h4>
 "@
@@ -336,7 +336,7 @@ function Generate-TestReport {
                 <p><strong>Score de confiance:</strong> <span class="$scoreClass">$($result.ConfidenceScore)%</span></p>
                 <p><strong>Critères correspondants:</strong> $($result.MatchedCriteria)</p>
             </div>
-            
+
             <h4>Formats détectés</h4>
             <table class="format-list">
                 <thead>
@@ -356,9 +356,9 @@ function Generate-TestReport {
                 {$_ -ge 70} { "score-medium" }
                 default { "score-low" }
             }
-            
+
             $criteriaText = $format.MatchedCriteria -join ", "
-            
+
             $html += @"
                     <tr>
                         <td>$($format.Format)</td>
@@ -392,49 +392,49 @@ function Main {
     Write-Host "Répertoire de test : $TestDirectory" -ForegroundColor Cyan
     Write-Host "Mode de résolution : $(if ($AutoResolve) { 'Automatique' } else { 'Confirmation utilisateur' })" -ForegroundColor Cyan
     Write-Host ""
-    
+
     # Obtenir la liste des fichiers de test
     $testFiles = Get-ChildItem -Path $TestDirectory -File
-    
+
     if ($testFiles.Count -eq 0) {
         Write-Error "Aucun fichier de test trouvé dans le répertoire '$TestDirectory'."
         exit 1
     }
-    
+
     Write-Host "Nombre de fichiers de test : $($testFiles.Count)" -ForegroundColor Yellow
     Write-Host ""
-    
+
     # Tester chaque fichier
     $results = @()
-    
+
     foreach ($file in $testFiles) {
         Write-Host "Test du fichier : $($file.Name)" -ForegroundColor Yellow
-        
+
         # Exécuter le script de gestion des cas ambigus
         $result = & $handleAmbiguousScript -FilePath $file.FullName -AutoResolve:$AutoResolve
-        
+
         # Déterminer si le cas était ambigu
         $topFormats = $result.AllFormats | Sort-Object -Property Score, Priority -Descending | Select-Object -First 2
         $isAmbiguous = ($topFormats.Count -ge 2) -and (($topFormats[0].Score - $topFormats[1].Score) -lt 20)
-        
+
         # Ajouter des informations supplémentaires au résultat
         $result | Add-Member -MemberType NoteProperty -Name "IsAmbiguous" -Value $isAmbiguous
         $result | Add-Member -MemberType NoteProperty -Name "AutoResolved" -Value $AutoResolve
-        
+
         # Afficher les résultats
         & $showResultsScript -FilePath $file.FullName -DetectionResult $result
-        
+
         # Ajouter le résultat à la liste
         $results += $result
-        
+
         Write-Host ""
     }
-    
+
     # Générer un rapport si demandé
     if ($GenerateReport) {
-        Generate-TestReport -Results $results
+        New-TestReport -Results $results
     }
-    
+
     return $results
 }
 
