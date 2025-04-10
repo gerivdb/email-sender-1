@@ -1,0 +1,8 @@
+﻿{
+    "DefaultTTL":  3600,
+    "MaxDiskSize":  1000,
+    "CachePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\cache",
+    "MaxMemorySize":  100,
+    "EvictionPolicy":  "LRU",
+    "CacheType":  "Hybrid"
+}

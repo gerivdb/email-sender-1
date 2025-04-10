@@ -1,0 +1,36 @@
+{
+    // Paramètres généraux VS Code
+    "files.maxMemoryForLargeFilesMB": 4096,
+    "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.env.windows": {
+        "LC_ALL": "fr_FR.UTF-8"
+    },
+    "terminal.integrated.gpuAcceleration": "on",
+    
+    // Paramètres spécifiques à Augment
+    "augment.chat.autoConfirmLargeMessages": true,
+    "augment.chat.maxMessageSizeKB": 100,
+    "augment.chat.guidelinesPath": ".augment/chat_guidelines.md",
+    "augment.chat.defaultModel": "claude-3-sonnet-20240229",
+    "augment.chat.useMarkdownForCodeBlocks": true,
+    
+    // Paramètres pour améliorer la performance
+    "augment.codebase.maxFileSizeKB": 5000,
+    "augment.codebase.excludePatterns": [
+        "node_modules/**",
+        ".git/**",
+        "**/*.min.js",
+        "**/*.bundle.js",
+        "**/*.map",
+        "**/dist/**",
+        "**/build/**"
+    ],
+    
+    // Paramètres pour la gestion des boîtes de dialogue
+    "augment.ui.suppressDialogs": [
+        "keepAll",
+        "largeOutput"
+    ],
+    "augment.ui.autoConfirmKeepAll": true,
+    "augment.ui.autoConfirmLargeOutput": true
+}

@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="42" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="1" invalid="0" date="2025-04-10" time="08:46:12">
+  <environment clr-version="4.0.30319.42000" user-domain="DESKTOP-ORG3GN0" cwd="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests" platform="Microsoft Windows 10 Famille|C:\Windows|\Device\Harddisk0\Partition2" machine-name="DESKTOP-ORG3GN0" nunit-version="2.5.8.0" os-version="10.0.19045" user="user" />
+  <culture-info current-culture="fr-FR" current-uiculture="fr-FR" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Ignored" success="True" time="18.3291" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Functions.Tests.ps1" executed="True" result="Success" success="True" time="3.5843" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Functions.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Fonctions communes des scripts de performance" executed="True" result="Success" success="True" time="1.8034" asserts="0" description="Fonctions communes des scripts de performance">
+            <results>
+              <test-suite type="TestFixture" name="Fonctions communes des scripts de performance.New-DirectoryIfNotExists" executed="True" result="Success" success="True" time="0.9078" asserts="0" description="Fonctions communes des scripts de performance.New-DirectoryIfNotExists">
+                <results>
+                  <test-case description="CrÃ©e un rÃ©pertoire s'il n'existe pas" name="Fonctions communes des scripts de performance.New-DirectoryIfNotExists.CrÃ©e un rÃ©pertoire s'il n'existe pas" time="0.5435" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Retourne le chemin existant si le rÃ©pertoire existe dÃ©jÃ " name="Fonctions communes des scripts de performance.New-DirectoryIfNotExists.Retourne le chemin existant si le rÃ©pertoire existe dÃ©jÃ " time="0.0368" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Fonctions communes des scripts de performance.Formatage des donnÃ©es pour JavaScript" executed="True" result="Success" success="True" time="1.233" asserts="0" description="Fonctions communes des scripts de performance.Formatage des donnÃ©es pour JavaScript">
+                <results>
+                  <test-case description="Formate correctement les donnÃ©es en JSON" name="Fonctions communes des scripts de performance.Formatage des donnÃ©es pour JavaScript.Formate correctement les donnÃ©es en JSON" time="0.2789" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Fonctions communes des scripts de performance.Tri des rÃ©sultats avec plusieurs critÃ¨res" executed="True" result="Success" success="True" time="1.3288" asserts="0" description="Fonctions communes des scripts de performance.Tri des rÃ©sultats avec plusieurs critÃ¨res">
+                <results>
+                  <test-case description="Trie correctement par taux de succÃ¨s dÃ©croissant puis par temps d'exÃ©cution" name="Fonctions communes des scripts de performance.Tri des rÃ©sultats avec plusieurs critÃ¨res.Trie correctement par taux de succÃ¨s dÃ©croissant puis par temps d'exÃ©cution" time="0.062" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Fonctions communes des scripts de performance.Calcul des statistiques" executed="True" result="Success" success="True" time="1.7379" asserts="0" description="Fonctions communes des scripts de performance.Calcul des statistiques">
+                <results>
+                  <test-case description="Calcule correctement les moyennes des mÃ©triques" name="Fonctions communes des scripts de performance.Calcul des statistiques.Calcule correctement les moyennes des mÃ©triques" time="0.0912" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Calcule correctement le taux de succÃ¨s" name="Fonctions communes des scripts de performance.Calcul des statistiques.Calcule correctement le taux de succÃ¨s" time="0.2739" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\HtmlReporting.Tests.ps1" executed="True" result="Success" success="True" time="0.7475" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\HtmlReporting.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Fonctions de gÃ©nÃ©ration de rapports HTML" executed="True" result="Success" success="True" time="0.4581" asserts="0" description="Fonctions de gÃ©nÃ©ration de rapports HTML">
+            <results>
+              <test-suite type="TestFixture" name="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de graphiques" executed="True" result="Success" success="True" time="0.1786" asserts="0" description="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de graphiques">
+                <results>
+                  <test-case description="GÃ©nÃ¨re correctement un graphique Chart.js" name="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de graphiques.GÃ©nÃ¨re correctement un graphique Chart.js" time="0.0798" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de tableaux HTML" executed="True" result="Success" success="True" time="0.2796" asserts="0" description="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de tableaux HTML">
+                <results>
+                  <test-case description="GÃ©nÃ¨re correctement un tableau HTML" name="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de tableaux HTML.GÃ©nÃ¨re correctement un tableau HTML" time="0.0778" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de rapports complets" executed="True" result="Success" success="True" time="0.438" asserts="0" description="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de rapports complets">
+                <results>
+                  <test-case description="GÃ©nÃ¨re correctement un rapport HTML complet" name="Fonctions de gÃ©nÃ©ration de rapports HTML.GÃ©nÃ©ration de rapports complets.GÃ©nÃ¨re correctement un rapport HTML complet" time="0.1232" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Integration.Tests.ps1" executed="True" result="Success" success="True" time="6.7324" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Integration.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Tests d'intÃ©gration des scripts de performance" executed="True" result="Success" success="True" time="6.4015" asserts="0" description="Tests d'intÃ©gration des scripts de performance">
+            <results>
+              <test-suite type="TestFixture" name="Tests d'intÃ©gration des scripts de performance.Interaction entre les fonctions" executed="True" result="Success" success="True" time="3.9709" asserts="0" description="Tests d'intÃ©gration des scripts de performance.Interaction entre les fonctions">
+                <results>
+                  <test-case description="IntÃ¨gre correctement la crÃ©ation de rÃ©pertoires et la gÃ©nÃ©ration de fichiers" name="Tests d'intÃ©gration des scripts de performance.Interaction entre les fonctions.IntÃ¨gre correctement la crÃ©ation de rÃ©pertoires et la gÃ©nÃ©ration de fichiers" time="0.2698" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="IntÃ¨gre correctement la mesure de performances et le calcul de statistiques" name="Tests d'intÃ©gration des scripts de performance.Interaction entre les fonctions.IntÃ¨gre correctement la mesure de performances et le calcul de statistiques" time="3.5238" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="GÃ¨re correctement les erreurs dans les scripts" name="Tests d'intÃ©gration des scripts de performance.Interaction entre les fonctions.GÃ¨re correctement les erreurs dans les scripts" time="0.1291" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Tests d'intÃ©gration des scripts de performance.Flux de travail complet" executed="True" result="Success" success="True" time="6.38" asserts="0" description="Tests d'intÃ©gration des scripts de performance.Flux de travail complet">
+                <results>
+                  <test-case description="ExÃ©cute correctement le flux de travail complet" name="Tests d'intÃ©gration des scripts de performance.Flux de travail complet.ExÃ©cute correctement le flux de travail complet" time="2.3682" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Optimize-ParallelBatchSize.Tests.ps1" executed="True" result="Success" success="True" time="0.581" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Optimize-ParallelBatchSize.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Optimize-ParallelBatchSize" executed="True" result="Success" success="True" time="0.2831" asserts="0" description="Optimize-ParallelBatchSize">
+            <results>
+              <test-suite type="TestFixture" name="Optimize-ParallelBatchSize.New-DirectoryIfNotExists" executed="True" result="Success" success="True" time="0.1014" asserts="0" description="Optimize-ParallelBatchSize.New-DirectoryIfNotExists">
+                <results>
+                  <test-case description="CrÃ©e un rÃ©pertoire s'il n'existe pas" name="Optimize-ParallelBatchSize.New-DirectoryIfNotExists.CrÃ©e un rÃ©pertoire s'il n'existe pas" time="0.0335" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Retourne le chemin existant si le rÃ©pertoire existe dÃ©jÃ " name="Optimize-ParallelBatchSize.New-DirectoryIfNotExists.Retourne le chemin existant si le rÃ©pertoire existe dÃ©jÃ " time="0.0321" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Optimize-ParallelBatchSize.Tri des rÃ©sultats" executed="True" result="Success" success="True" time="0.2676" asserts="0" description="Optimize-ParallelBatchSize.Tri des rÃ©sultats">
+                <results>
+                  <test-case description="Trie correctement les rÃ©sultats par taux de succÃ¨s dÃ©croissant puis par temps d'exÃ©cution" name="Optimize-ParallelBatchSize.Tri des rÃ©sultats.Trie correctement les rÃ©sultats par taux de succÃ¨s dÃ©croissant puis par temps d'exÃ©cution" time="0.0333" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Identifie correctement le rÃ©sultat optimal selon le critÃ¨re 'FastestSuccessful'" name="Optimize-ParallelBatchSize.Tri des rÃ©sultats.Identifie correctement le rÃ©sultat optimal selon le critÃ¨re 'FastestSuccessful'" time="0.0484" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="GÃ¨re correctement le cas oÃ¹ aucun rÃ©sultat n'a 100% de succÃ¨s" name="Optimize-ParallelBatchSize.Tri des rÃ©sultats.GÃ¨re correctement le cas oÃ¹ aucun rÃ©sultat n'a 100% de succÃ¨s" time="0.0632" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Optimize-ParallelMemory.Tests.ps1" executed="True" result="Success" success="True" time="0.6405" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Optimize-ParallelMemory.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Optimize-ParallelMemory" executed="True" result="Success" success="True" time="0.4065" asserts="0" description="Optimize-ParallelMemory">
+            <results>
+              <test-suite type="TestFixture" name="Optimize-ParallelMemory.New-DirectoryIfNotExists" executed="True" result="Success" success="True" time="0.121" asserts="0" description="Optimize-ParallelMemory.New-DirectoryIfNotExists">
+                <results>
+                  <test-case description="CrÃ©e un rÃ©pertoire s'il n'existe pas" name="Optimize-ParallelMemory.New-DirectoryIfNotExists.CrÃ©e un rÃ©pertoire s'il n'existe pas" time="0.0504" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Retourne le chemin existant si le rÃ©pertoire existe dÃ©jÃ " name="Optimize-ParallelMemory.New-DirectoryIfNotExists.Retourne le chemin existant si le rÃ©pertoire existe dÃ©jÃ " time="0.0314" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Optimize-ParallelMemory.Gestion des donnÃ©es de test" executed="True" result="Success" success="True" time="0.2449" asserts="0" description="Optimize-ParallelMemory.Gestion des donnÃ©es de test">
+                <results>
+                  <test-case description="Utilise le chemin de donnÃ©es de test fourni s'il est valide" name="Optimize-ParallelMemory.Gestion des donnÃ©es de test.Utilise le chemin de donnÃ©es de test fourni s'il est valide" time="0.0511" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="GÃ¨re correctement un chemin de donnÃ©es de test invalide" name="Optimize-ParallelMemory.Gestion des donnÃ©es de test.GÃ¨re correctement un chemin de donnÃ©es de test invalide" time="0.0316" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Optimize-ParallelMemory.Formatage des donnÃ©es pour les graphiques" executed="True" result="Success" success="True" time="0.3922" asserts="0" description="Optimize-ParallelMemory.Formatage des donnÃ©es pour les graphiques">
+                <results>
+                  <test-case description="Formate correctement les donnÃ©es pour JavaScript" name="Optimize-ParallelMemory.Formatage des donnÃ©es pour les graphiques.Formate correctement les donnÃ©es pour JavaScript" time="0.1254" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Performance.Tests.ps1" executed="True" result="Ignored" success="True" time="1.9876" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Performance.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Tests de performance" executed="True" result="Ignored" success="True" time="1.5793" asserts="0" description="Tests de performance">
+            <results>
+              <test-suite type="TestFixture" name="Tests de performance.Mesure des performances des fonctions" executed="True" result="Success" success="True" time="0.6791" asserts="0" description="Tests de performance.Mesure des performances des fonctions">
+                <results>
+                  <test-case description="Compare les performances des fonctions de tri" name="Tests de performance.Mesure des performances des fonctions.Compare les performances des fonctions de tri" time="0.2569" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Tests de performance.Mesure des performances des opÃ©rations sur les fichiers" executed="True" result="Ignored" success="True" time="0.723" asserts="0" description="Tests de performance.Mesure des performances des opÃ©rations sur les fichiers">
+                <results>
+                  <test-case description="Compare les performances du traitement en sÃ©rie et en parallÃ¨le" name="Tests de performance.Mesure des performances des opÃ©rations sur les fichiers.Compare les performances du traitement en sÃ©rie et en parallÃ¨le" time="0.0254" asserts="0" success="False" result="Ignored" executed="False" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Tests de performance.Mesure des performances des fonctions de formatage" executed="True" result="Success" success="True" time="1.5643" asserts="0" description="Tests de performance.Mesure des performances des fonctions de formatage">
+                <results>
+                  <test-case description="Compare les performances des fonctions de formatage JSON" name="Tests de performance.Mesure des performances des fonctions de formatage.Compare les performances des fonctions de formatage JSON" time="0.2572" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Test-ParallelPerformance.Tests.ps1" executed="True" result="Success" success="True" time="2.8124" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\Test-ParallelPerformance.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Test-ParallelPerformance" executed="True" result="Success" success="True" time="2.591" asserts="0" description="Test-ParallelPerformance">
+            <results>
+              <test-suite type="TestFixture" name="Test-ParallelPerformance.Mesure des performances" executed="True" result="Success" success="True" time="2.3167" asserts="0" description="Test-ParallelPerformance.Mesure des performances">
+                <results>
+                  <test-case description="Mesure correctement le temps d'exÃ©cution d'un script" name="Test-ParallelPerformance.Mesure des performances.Mesure correctement le temps d'exÃ©cution d'un script" time="1.0959" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Capture correctement les erreurs lors de l'exÃ©cution d'un script" name="Test-ParallelPerformance.Mesure des performances.Capture correctement les erreurs lors de l'exÃ©cution d'un script" time="1.1814" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Test-ParallelPerformance.Formatage des donnÃ©es pour les graphiques" executed="True" result="Success" success="True" time="2.4576" asserts="0" description="Test-ParallelPerformance.Formatage des donnÃ©es pour les graphiques">
+                <results>
+                  <test-case description="Formate correctement les donnÃ©es pour JavaScript" name="Test-ParallelPerformance.Formatage des donnÃ©es pour les graphiques.Formate correctement les donnÃ©es pour JavaScript" time="0.0895" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Test-ParallelPerformance.Calcul des statistiques" executed="True" result="Success" success="True" time="2.556" asserts="0" description="Test-ParallelPerformance.Calcul des statistiques">
+                <results>
+                  <test-case description="Calcule correctement les moyennes des mÃ©triques" name="Test-ParallelPerformance.Calcul des statistiques.Calcule correctement les moyennes des mÃ©triques" time="0.0473" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Calcule correctement le taux de succÃ¨s" name="Test-ParallelPerformance.Calcul des statistiques.Calcule correctement le taux de succÃ¨s" time="0.0288" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\TestDataManagement.Tests.ps1" executed="True" result="Success" success="True" time="1.2435" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\parallel-hybrid\performance\tests\TestDataManagement.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Gestion des donnÃ©es de test" executed="True" result="Success" success="True" time="0.9564" asserts="0" description="Gestion des donnÃ©es de test">
+            <results>
+              <test-suite type="TestFixture" name="Gestion des donnÃ©es de test.Validation des chemins de donnÃ©es" executed="True" result="Success" success="True" time="0.3936" asserts="0" description="Gestion des donnÃ©es de test.Validation des chemins de donnÃ©es">
+                <results>
+                  <test-case description="Valide correctement un chemin existant" name="Gestion des donnÃ©es de test.Validation des chemins de donnÃ©es.Valide correctement un chemin existant" time="0.0478" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Valide correctement un chemin de rÃ©pertoire" name="Gestion des donnÃ©es de test.Validation des chemins de donnÃ©es.Valide correctement un chemin de rÃ©pertoire" time="0.0724" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Rejette correctement un chemin de fichier quand un rÃ©pertoire est requis" name="Gestion des donnÃ©es de test.Validation des chemins de donnÃ©es.Rejette correctement un chemin de fichier quand un rÃ©pertoire est requis" time="0.0992" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Rejette correctement un chemin inexistant" name="Gestion des donnÃ©es de test.Validation des chemins de donnÃ©es.Rejette correctement un chemin inexistant" time="0.0819" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Rejette correctement un chemin vide" name="Gestion des donnÃ©es de test.Validation des chemins de donnÃ©es.Rejette correctement un chemin vide" time="0.0333" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Gestion des donnÃ©es de test.GÃ©nÃ©ration de donnÃ©es de test" executed="True" result="Success" success="True" time="0.6698" asserts="0" description="Gestion des donnÃ©es de test.GÃ©nÃ©ration de donnÃ©es de test">
+                <results>
+                  <test-case description="GÃ©nÃ¨re correctement le nombre de fichiers spÃ©cifiÃ©" name="Gestion des donnÃ©es de test.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re correctement le nombre de fichiers spÃ©cifiÃ©" time="0.1176" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="GÃ©nÃ¨re des fichiers avec la taille spÃ©cifiÃ©e" name="Gestion des donnÃ©es de test.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re des fichiers avec la taille spÃ©cifiÃ©e" time="0.0943" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Gestion des donnÃ©es de test.Gestion des chemins relatifs et absolus" executed="True" result="Success" success="True" time="0.9147" asserts="0" description="Gestion des donnÃ©es de test.Gestion des chemins relatifs et absolus">
+                <results>
+                  <test-case description="Normalise correctement un chemin absolu" name="Gestion des donnÃ©es de test.Gestion des chemins relatifs et absolus.Normalise correctement un chemin absolu" time="0.064" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Normalise correctement un chemin relatif" name="Gestion des donnÃ©es de test.Gestion des chemins relatifs et absolus.Normalise correctement un chemin relatif" time="0.0286" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Normalise correctement un chemin avec des composants .. et ." name="Gestion des donnÃ©es de test.Gestion des chemins relatifs et absolus.Normalise correctement un chemin avec des composants .. et ." time="0.037" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Retourne null pour un chemin vide" name="Gestion des donnÃ©es de test.Gestion des chemins relatifs et absolus.Retourne null pour un chemin vide" time="0.0334" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
