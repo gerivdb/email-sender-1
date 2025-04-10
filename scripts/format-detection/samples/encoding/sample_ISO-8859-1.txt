@@ -1,0 +1,41 @@
+=== Test de dÃ©tection d'encodage ===
+
+== Texte latin (ASCII) ==
+The quick brown fox jumps over the lazy dog.
+0123456789 !@#$%^&*()_+-=[]{}|;':",./<>?
+
+== Texte franÃ§ais (Latin-1) ==
+Voici un texte en franÃ§ais avec des accents : Ã©Ã¨ÃªÃ«Ã Ã¢Ã¤Ã´Ã¶Ã¹Ã»Ã¼Ã¿Ã§
+Les Å"ufs et les bÅ"ufs sont dans le prÃ©.
+
+== Texte allemand (Latin-1) ==
+Falsches Ãoben von Xylophonmusik quÃ¤lt jeden grÃ¶ÃYeren Zwerg.
+Die KÃ¶nigin und der KÃ¶nig leben in einem SchloÃY.
+
+== Texte grec (UTF-8) ==
+ÎzÎµÏfÎºÎµÏ?Î¬Î¶Ï? Ï"Î·Î½ Ï^Ï.Ï?Î¿Ï?Î¸ÏOÏÎ± Î²Î´ÎµÎ»Ï.Î³Î¼Î¯Î±.
+ÎsÎ±Î»Î·Î¼Î­ÏÎ±, Ï?ÏZÏ, ÎµÎ¯ÏfÏ"Îµ ÏfÎ®Î¼ÎµÏÎ±;
+
+== Texte russe (UTF-8) ==
+Ğ¡ÑSĞµÑ^ÑO Ğ¶Ğµ ĞµÑ?Ñ' ÑÑ,Ğ¸Ñ. Ğ¼ÑĞ³ĞºĞ¸Ñ. Ñ"Ñ?Ğ°Ğ½Ñ?ÑfĞ·ÑĞºĞ¸Ñ. Ğ±ÑfĞ»Ğ¾Ğº, Ğ´Ğ° Ğ²Ñ<Ğ¿ĞµĞ¹ Ñ?Ğ°ÑZ.
+Ğ¨Ğ¸Ñ?Ğ¾ĞºĞ°Ñ ÑĞ»ĞµĞºÑ,Ñ?Ğ¸Ñ"Ğ¸ĞºĞ°Ñ?Ğ¸Ñ ÑZĞ¶Ğ½Ñ<Ñ. Ğ³ÑfĞ±ĞµÑ?Ğ½Ğ¸Ğ¹ Ğ´Ğ°ÑÑ, Ğ¼Ğ¾Ñ?Ğ½Ñ<Ğ¹ Ñ,Ğ¾Ğ»Ñ?Ğ¾Ğº Ğ¿Ğ¾Ğ´ÑSÑ'Ğ¼Ñf ÑĞµĞ»ÑOÑĞºĞ¾Ğ³Ğ¾ Ñ.Ğ¾Ğ·ÑĞ¹ÑÑ,Ğ²Ğ°.
+
+== Texte japonais (UTF-8) ==
+ã"ã,ã¯ã«ã»ã¸ã¨ ã¡ã,Sã¬ã,<ã,' ã,ã<ã,^ãYã,Oã ã¤ã­ãªã,?ã,?
+ç§ã¯æ-¥æo¬èªzã,'å<?å¼·ã-ã¦ã"ã¾ãTã?,
+
+== Texte chinois (UTF-8) ==
+æ^'èf½åzä¸<çZ»ç'fè?Oä¸ä¼¤èº«ä½"ã?,
+ä½ å¥½ï¼Oä¸-ç.Oï¼
+
+== Texte arabe (UTF-8) ==
+Ø£Ù?Ø§ Ù,Ø§Ø¯Ø± Ø¹Ù"Ù? Ø£ÙfÙ" Ø§Ù"Ø²Ø¬Ø§Ø¬ Ù^ Ù?Ø°Ø§ Ù"Ø§ ÙSØ¤Ù"Ù.Ù?ÙS.
+Ù.Ø±Ø­Ø¨Ø§ Ø¨Ø§Ù"Ø¹Ø§Ù"Ù.!
+
+== Texte hÃ©breu (UTF-8) ==
+×× ×T ×T×>×.×o ×o××>×.×o ×-×>×.×>×T×ª ×.×-×" ×o× ×z×-×T×§ ×o×T.
+×©×o×.× ×¢×.×o×!
+
+== Texte emoji (UTF-8) ==
+ğY~? ğY~f ğY~" ğY~ ğY~? ğY~. ğY~, ğY¤£ ğY¥² â~ºï¸ ğY~S ğY~? ğYT, ğYTf ğY~? ğY~O ğY~ ğY¥° ğY~~ ğY~- ğY~T ğY~s ğY~< ğY~> ğY~ ğY~o
+ğY¶ ğY± ğY­ ğY¹ ğY° ğY¦S ğY» ğY¼ ğY»â?â"ï¸ ğY¨ ğY¯ ğY¦ ğY® ğY· ğY½ ğY¸ ğYµ ğYT^ ğYT? ğYTS ğY' ğY" ğY§ ğY¦ ğY¤ ğY£
