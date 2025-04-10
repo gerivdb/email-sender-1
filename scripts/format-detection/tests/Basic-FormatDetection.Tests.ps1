@@ -15,7 +15,7 @@
 #>
 
 # Créer un répertoire temporaire pour les tests
-$testDir = Join-Path -Path $env:TEMP -ChildPath "FormatDetectionTests"
+$testDir = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\format-detection\tests\basic_samples"
 if (-not (Test-Path -Path $testDir -PathType Container)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
@@ -40,52 +40,52 @@ Describe "Tests basiques de détection de format" {
             $extension = [System.IO.Path]::GetExtension($txtFile).ToLower()
             $extension | Should -Be ".txt"
         }
-        
+
         It "Détecte correctement le format d'un fichier .csv" {
             $extension = [System.IO.Path]::GetExtension($csvFile).ToLower()
             $extension | Should -Be ".csv"
         }
-        
+
         It "Détecte correctement le format d'un fichier .xml" {
             $extension = [System.IO.Path]::GetExtension($xmlFile).ToLower()
             $extension | Should -Be ".xml"
         }
-        
+
         It "Détecte correctement le format d'un fichier .json" {
             $extension = [System.IO.Path]::GetExtension($jsonFile).ToLower()
             $extension | Should -Be ".json"
         }
     }
-    
+
     Context "Détection par contenu" {
         It "Détecte correctement le contenu d'un fichier texte" {
             $content = Get-Content -Path $txtFile -Raw
             $content | Should -Match "fichier texte"
         }
-        
+
         It "Détecte correctement le contenu d'un fichier CSV" {
             $content = Get-Content -Path $csvFile -Raw
             $content | Should -Match "Nom,Prénom,Age"
         }
-        
+
         It "Détecte correctement le contenu d'un fichier XML" {
             $content = Get-Content -Path $xmlFile -Raw
             $content | Should -Match "<racine>"
         }
-        
+
         It "Détecte correctement le contenu d'un fichier JSON" {
             $content = Get-Content -Path $jsonFile -Raw
             $content | Should -Match "nom"
         }
     }
-    
+
     AfterAll {
         # Nettoyer les fichiers d'échantillon
         Remove-Item -Path $txtFile -Force -ErrorAction SilentlyContinue
         Remove-Item -Path $csvFile -Force -ErrorAction SilentlyContinue
         Remove-Item -Path $xmlFile -Force -ErrorAction SilentlyContinue
         Remove-Item -Path $jsonFile -Force -ErrorAction SilentlyContinue
-        
+
         # Supprimer le répertoire de test
         Remove-Item -Path $testDir -Force -ErrorAction SilentlyContinue
     }

@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de couverture de code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0078D4;
+        }
+        .summary {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .progress {
+            height: 20px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+        }
+        .high {
+            background-color: #4CAF50;
+        }
+        .medium {
+            background-color: #FFC107;
+        }
+        .low {
+            background-color: #F44336;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #0078D4;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .covered {
+            color: green;
+        }
+        .not-covered {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rapport de couverture de code</h1>
+    <p>Date de gÃ©nÃ©ration : 10/04/2025 18:38:40</p>
+
+    <div class="summary">
+        <h2>RÃ©sumÃ©</h2>
+        <p>Commandes analysÃ©es : </p>
+        <p>Commandes couvertes : </p>
+        <p>Commandes non couvertes : 0</p>
+
+        <div class="progress-bar">
+            <div class="progress low" style="width: 0%">
+                0%
+            </div>
+        </div>
+    </div>
+
+    <h2>DÃ©tails par fichier</h2>
+    <table>
+        <tr>
+            <th>Fichier</th>
+            <th>Commandes analysÃ©es</th>
+            <th>Commandes couvertes</th>
+            <th>Pourcentage</th>
+        </tr>    </table>
+
+    <h2>Lignes non couvertes</h2>
+    <table>
+        <tr>
+            <th>Fichier</th>
+            <th>Ligne</th>
+            <th>Commande</th>
+        </tr>    </table>
+</body>
+</html>

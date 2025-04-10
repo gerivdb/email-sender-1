@@ -1,20 +1,45 @@
-# Auto detect text files and perform LF normalization
+# Set default behavior to automatically normalize line endings
 * text=auto
 
-# Documents
-*.md text diff=markdown
-*.txt text
-*.json text
+# Force batch scripts to use CRLF
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
 
-# Scripts
-*.js text
-*.ps1 text
-*.py text
+# Force bash scripts to use LF
 *.sh text eol=lf
-*.cmd text eol=crlf
-*.bat text eol=crlf
 
-# Binaries
+# PowerShell scripts
+*.ps1 text eol=crlf
+*.psm1 text eol=crlf
+*.psd1 text eol=crlf
+
+# Web files
+*.html text eol=crlf
+*.htm text eol=crlf
+*.css text eol=crlf
+*.js text eol=crlf
+*.json text eol=crlf
+*.xml text eol=crlf
+
+# Source code
+*.py text eol=lf
+*.java text eol=lf
+*.c text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+
+# Documentation
+*.md text eol=crlf
+*.txt text eol=crlf
+
+# Config files
+*.yml text eol=lf
+*.yaml text eol=lf
+*.conf text eol=lf
+*.config text eol=crlf
+*.ini text eol=crlf
+
+# Binary files (should not be modified)
 *.png binary
 *.jpg binary
 *.jpeg binary
@@ -26,4 +51,7 @@
 *.eot binary
 *.woff binary
 *.woff2 binary
-*.sqlite binary
+*.pdf binary
+*.exe binary
+*.dll binary
+*.bin binary
