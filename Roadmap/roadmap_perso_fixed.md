@@ -130,7 +130,7 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 ## 2.1 Amélioration de la détection automatique de format
 **Complexité**: Élevée
 **Temps estimé**: 5-7 jours
-**Progression**: 33% - *Mise à jour le 11/04/2025*
+**Progression**: 50% - *Mise à jour le 11/04/2025*
 **Date de début**: 11/04/2025
 **Date cible d'achèvement**: 27/04/2025
 
@@ -171,10 +171,10 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
   - [x] Améliorer la structure et la lisibilité du code
   - [x] Standardiser les pratiques de codage dans tous les scripts
 
-### 2.1.4 Gestion des cas ambigus
-- [ ] Développer un mécanisme pour gérer les cas où plusieurs formats sont possibles
-- [ ] Implémenter un système de confirmation utilisateur pour les cas ambigus
-- [ ] Créer une interface pour afficher les formats détectés avec leur score de confiance
+### 2.1.4 Gestion des cas ambigus - *Terminé le 11/04/2025*
+- [x] Développer un mécanisme pour gérer les cas où plusieurs formats sont possibles
+- [x] Implémenter un système de confirmation utilisateur pour les cas ambigus
+- [x] Créer une interface pour afficher les formats détectés avec leur score de confiance
 
 ### 2.1.5 Tests et validation
 - [ ] Créer une suite de tests avec des exemples variés
