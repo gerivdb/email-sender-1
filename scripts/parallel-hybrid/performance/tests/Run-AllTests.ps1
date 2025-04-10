@@ -48,6 +48,15 @@ $pesterConfig.Run.Path = $PSScriptRoot
 $pesterConfig.Run.PassThru = $true
 $pesterConfig.Output.Verbosity = 'Detailed'
 
+# Configuration de la couverture de code
+$pesterConfig.CodeCoverage.Enabled = $true
+$pesterConfig.CodeCoverage.Path = @(
+    "$PSScriptRoot\..\benchmark.ps1",
+    "$PSScriptRoot\..\Optimize-ParallelBatchSize.ps1"
+)
+$pesterConfig.CodeCoverage.OutputFormat = 'JaCoCo'
+$pesterConfig.CodeCoverage.OutputPath = "$PSScriptRoot\TestResults\coverage.xml"
+
 if ($GenerateReport) {
     $pesterConfig.TestResult.Enabled = $true
     $pesterConfig.TestResult.OutputPath = "$OutputPath\TestResults.xml"

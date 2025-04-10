@@ -140,7 +140,8 @@ Describe "Tests d'intégration des scripts de performance" {
                 return $stats
             }
 
-            # Aucune initialisation nécessaire pour ce contexte
+            # Initialisation du répertoire de test
+            $testDataDir = Join-Path -Path $TestDrive -ChildPath "TestData"
         }
 
         It "Intègre correctement la création de répertoires et la génération de fichiers" {

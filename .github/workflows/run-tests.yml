@@ -1,0 +1,61 @@
+name: Run Performance Tests
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'scripts/parallel-hybrid/performance/**'
+      - '.github/workflows/run-tests.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'scripts/parallel-hybrid/performance/**'
+      - '.github/workflows/run-tests.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install Pester
+      shell: pwsh
+      run: |
+        Install-Module -Name Pester -Force -SkipPublisherCheck
+    
+    - name: Run Tests
+      shell: pwsh
+      run: |
+        $testResults = & "./scripts/parallel-hybrid/performance/tests/Run-CITests.ps1" -ThresholdPercent 60
+        
+        # Afficher les résultats
+        Write-Host "Tests exécutés : $($testResults.TotalCount)"
+        Write-Host "Tests réussis  : $($testResults.PassedCount)"
+        Write-Host "Tests échoués  : $($testResults.FailedCount)"
+        
+        # Échouer le workflow si des tests ont échoué
+        if ($testResults.FailedCount -gt 0) {
+          Write-Host "::error::$($testResults.FailedCount) tests ont échoué."
+          exit 1
+        }
+    
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results
+        path: scripts/parallel-hybrid/performance/tests/TestResults/
+    
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        nunit_files: scripts/parallel-hybrid/performance/tests/TestResults/TestResults.xml
+    
+    - name: Publish Code Coverage
+      uses: codecov/codecov-action@v3
+      with:
+        files: scripts/parallel-hybrid/performance/tests/TestResults/coverage.xml
+        fail_ci_if_error: true

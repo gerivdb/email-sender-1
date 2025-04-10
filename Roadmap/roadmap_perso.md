@@ -74,6 +74,12 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
   - [x] Créer des guides d'intégration pour les développeurs
   - [x] Développer des exemples de code pour les cas d'usage courants
   - [x] Établir des recommandations de configuration selon les scénarios
+- [x] Améliorer la couverture et la qualité des tests - *Terminé le 11/04/2025*
+  - [x] Ajouter des tests pour couvrir d'autres aspects des scripts de performance
+  - [x] Améliorer la couverture de code avec Pester Coverage
+  - [x] Intégrer les tests dans un pipeline CI/CD
+  - [x] Ajouter des tests de performance plus complets
+  - [x] Documenter les tests et créer des guides pour en ajouter de nouveaux
 
 ## 1.2 Optimisation de la gestion des caches
 **Complexité**: Moyenne à élevée
