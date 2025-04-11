@@ -1,0 +1,89 @@
+{
+  "timestamp": "2025-04-11T18:03:25.195152",
+  "errors": [
+    {
+      "test_path": "examples/test_example.py",
+      "test_name": "test_failing_equality",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "examples/test_example.py",
+      "test_name": "test_failing_exception",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "examples/test_example.py",
+      "test_name": "test_failing_true",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "examples/test_example.py",
+      "test_name": "test_name_error",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "examples/test_example.py",
+      "test_name": "test_type_error",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "examples/test_example.py",
+      "test_name": "test_zero_division_error",
+      "error_type": "E       ZeroDivisionError",
+      "error_message": "division by zero",
+      "traceback": []
+    },
+    {
+      "test_path": "FAILED examples/test_example.py",
+      "test_name": "test_failing_equality",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "FAILED examples/test_example.py",
+      "test_name": "test_failing_exception",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "FAILED examples/test_example.py",
+      "test_name": "test_failing_true",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "FAILED examples/test_example.py",
+      "test_name": "test_name_error",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "FAILED examples/test_example.py",
+      "test_name": "test_type_error",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    },
+    {
+      "test_path": "FAILED examples/test_example.py",
+      "test_name": "test_zero_division_error",
+      "error_type": null,
+      "error_message": null,
+      "traceback": []
+    }
+  ]
+}
