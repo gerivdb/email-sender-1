@@ -19,10 +19,6 @@
     .\Run-AllTests.ps1
     Exécute tous les tests unitaires et génère un rapport HTML.
 
-.EXAMPLE
-    .\Run-AllTests.ps1 -OutputDirectory "C:\Reports" -GenerateHtmlReport:$false
-    Exécute tous les tests unitaires et enregistre les résultats dans le répertoire spécifié, sans générer de rapport HTML.
-
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -33,10 +29,15 @@
 param(
     [Parameter(Mandatory = $false)]
     [string]$OutputDirectory = (Join-Path -Path $PSScriptRoot -ChildPath "TestResults"),
-    
+
     [Parameter(Mandatory = $false)]
-    [switch]$GenerateHtmlReport = $true
+    [switch]$GenerateHtmlReport
 )
+
+# Définir la valeur par défaut du paramètre GenerateHtmlReport
+if (-not $PSBoundParameters.ContainsKey('GenerateHtmlReport')) {
+    $GenerateHtmlReport = $true
+}
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
@@ -50,6 +51,15 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
+# Charger les fonctions d'aide pour les tests
+$testHelpersPath = Join-Path -Path $PSScriptRoot -ChildPath "TestHelpers.ps1"
+if (Test-Path -Path $testHelpersPath) {
+    . $testHelpersPath
+} else {
+    Write-Error "Le fichier d'aide pour les tests '$testHelpersPath' n'existe pas."
+    exit 1
+}
+
 # Vérifier la version de Pester
 $pesterVersion = (Get-Module -Name Pester -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1).Version
 Write-Host "Version de Pester détectée : $pesterVersion" -ForegroundColor Cyan
@@ -59,7 +69,7 @@ function New-DirectoryIfNotExists {
     param (
         [string]$Path
     )
-    
+
     if (-not (Test-Path -Path $Path -PathType Container)) {
         New-Item -Path $Path -ItemType Directory -Force | Out-Null
         Write-Verbose "Répertoire créé : $Path"
@@ -79,13 +89,23 @@ $testFiles = @(
 )
 
 # Vérifier si les fichiers de test existent
-$missingTests = $testFiles | Where-Object { -not (Test-Path -Path $_) }
+$missingTests = @()
+foreach ($file in $testFiles) {
+    if (-not (Test-Path -Path $file)) {
+        $missingTests += $file
+    }
+}
 
 if ($missingTests.Count -gt 0) {
     Write-Warning "Les fichiers de test suivants sont manquants :`n$($missingTests -join "`n")"
 }
 
-$existingTests = $testFiles | Where-Object { Test-Path -Path $_ }
+$existingTests = @()
+foreach ($file in $testFiles) {
+    if (Test-Path -Path $file) {
+        $existingTests += $file
+    }
+}
 
 if ($existingTests.Count -eq 0) {
     Write-Error "Aucun fichier de test n'a été trouvé."
@@ -95,6 +115,14 @@ if ($existingTests.Count -eq 0) {
 # Chemin du module à tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "Format-Converters.psm1"
+
+# Copier le fichier de critères de détection pour les tests
+$testCriteriaPath = Join-Path -Path $PSScriptRoot -ChildPath "TestData\FormatDetectionCriteria.json"
+$targetCriteriaPath = Join-Path -Path $moduleRoot -ChildPath "Detectors\FormatDetectionCriteria.json"
+
+if (Test-Path -Path $testCriteriaPath) {
+    Copy-Item -Path $testCriteriaPath -Destination $targetCriteriaPath -Force
+}
 
 # Configuration de Pester
 $pesterConfig = New-PesterConfiguration
@@ -126,9 +154,9 @@ Write-Host "Durée totale : $($testResults.Duration.TotalSeconds) secondes" -For
 # Générer un rapport HTML si demandé
 if ($GenerateHtmlReport) {
     Write-Host "`nGénération du rapport HTML..." -ForegroundColor Cyan
-    
+
     $htmlReportPath = Join-Path -Path $OutputDirectory -ChildPath "TestReport.html"
-    
+
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -235,13 +263,13 @@ if ($GenerateHtmlReport) {
 <body>
     <div class="container">
         <h1>Rapport de tests unitaires - Module Format-Converters</h1>
-        
+
         <div class="summary">
             <h2>Résumé</h2>
             <p><strong>Date d'exécution:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
             <p><strong>Version de Pester:</strong> $pesterVersion</p>
         </div>
-        
+
         <div class="metrics">
             <div class="metric-card">
                 <h3>Tests exécutés</h3>
@@ -264,16 +292,23 @@ if ($GenerateHtmlReport) {
                 <div class="metric-value neutral">$([Math]::Round($testResults.Duration.TotalSeconds, 2)) s</div>
             </div>
         </div>
-        
+
         <h2>Résultats détaillés</h2>
 "@
 
     # Regrouper les tests par fichier
-    $testsByFile = $testResults.Tests | Group-Object -Property Path
-    
-    foreach ($fileGroup in $testsByFile) {
-        $fileName = [System.IO.Path]::GetFileName($fileGroup.Name)
-        
+    $testsByFile = @{}
+    foreach ($test in $testResults.Tests) {
+        $fileName = [System.IO.Path]::GetFileName($test.Path)
+        if (-not $testsByFile.ContainsKey($fileName)) {
+            $testsByFile[$fileName] = @()
+        }
+        $testsByFile[$fileName] += $test
+    }
+
+    foreach ($fileName in $testsByFile.Keys) {
+        $fileTests = $testsByFile[$fileName]
+
         $html += @"
         <div class="test-file">
             <h3>$fileName</h3>
@@ -287,18 +322,18 @@ if ($GenerateHtmlReport) {
                 </thead>
                 <tbody>
 "@
-        
-        foreach ($test in $fileGroup.Group) {
+
+        foreach ($test in $fileTests) {
             $resultClass = switch ($test.Result) {
                 "Passed" { "success" }
                 "Failed" { "failure" }
                 "Skipped" { "warning" }
                 default { "neutral" }
             }
-            
+
             $testName = $test.Name -replace '^[^.]+\.', ''
             $duration = [Math]::Round($test.Duration.TotalMilliseconds, 2)
-            
+
             $html += @"
                     <tr>
                         <td>$testName</td>
@@ -307,20 +342,20 @@ if ($GenerateHtmlReport) {
                     </tr>
 "@
         }
-        
+
         $html += @"
                 </tbody>
             </table>
         </div>
 "@
     }
-    
+
     $html += @"
     </div>
 </body>
 </html>
 "@
-    
+
     $html | Set-Content -Path $htmlReportPath -Encoding UTF8
     Write-Host "Rapport HTML généré : $htmlReportPath" -ForegroundColor Green
 }
