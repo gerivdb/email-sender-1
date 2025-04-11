@@ -1,11 +1,11 @@
 ﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests pour la fonction D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\Format-Converters\Tests\Handle-AmbiguousFormats.Tests.
+    Tests pour la fonction D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\Format-Converters\Tests\Test-FileFormat.Tests.
 
 .DESCRIPTION
-    Ce fichier contient des tests pour la fonction D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\Format-Converters\Tests\Handle-AmbiguousFormats.Tests.
-    Il a Ã©tÃ© gÃ©nÃ©rÃ© automatiquement Ã  partir du fichier de test simplifiÃ© D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\Format-Converters\Tests\Handle-AmbiguousFormats.Tests.Simplified.ps1.
+    Ce fichier contient des tests pour la fonction D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\Format-Converters\Tests\Test-FileFormat.Tests.
+    Il a Ã©tÃ© gÃ©nÃ©rÃ© automatiquement Ã  partir du fichier de test simplifiÃ© D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\Format-Converters\Tests\Test-FileFormat.Tests.Simplified.ps1.
 
 .NOTES
     Date de gÃ©nÃ©ration : 2025-04-11 16:01:12
