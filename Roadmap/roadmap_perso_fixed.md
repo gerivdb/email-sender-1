@@ -1,10 +1,11 @@
 # Roadmap personnelle d'amélioration du projet
 
 ## État d'avancement global
-- **Tâches prioritaires**: 60% terminées
-- **Tâches de priorité moyenne**: 15% terminées
-- **Tâches terminées**: 9/12 (75%)
-- **Progression globale**: 50%
+- **Tâches prioritaires**: 50% terminées (2/4 sections principales)
+- **Tâches de priorité moyenne**: 20% terminées (1/5 sections principales)
+- **Tâches de priorité basse**: 0% terminées (0/4 sections principales)
+- **Tâches terminées**: 10/21 (48%)
+- **Progression globale**: 40%
 
 ## Vue d'ensemble des tâches par priorité et complexité
 
@@ -125,7 +126,105 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
   - Créer des hooks Git pour l'analyse pré-commit
   - Implémenter des intégrations avec les outils existants
 
+## 1.3 Système d'Optimisation Proactive Basé sur l'Usage
+**Complexité**: Très Élevée
+**Temps estimé**: 10-12 jours
+**Progression**: 0%
+**Date de début prévue**: 15/05/2025
+**Date cible d'achèvement**: 27/05/2025
+
+### 1.3.1 Monitoring et Analyse Comportementale
+- [ ] Logger l'utilisation des scripts (fréquence, durée, succès/échec, ressources consommées)
+- [ ] Analyser les logs pour identifier les scripts les plus utilisés, les plus lents, ou ceux échouant le plus souvent
+- [ ] Détecter les goulots d'étranglement récurrents dans les processus parallèles
+
+### 1.3.2 Optimisation Dynamique de la Parallélisation
+- [ ] Ajuster dynamiquement le nombre de threads/runspaces en fonction de la charge système observée
+- [ ] Réorganiser dynamiquement la file d'attente des tâches en priorisant celles qui bloquent souvent d'autres processus
+- [ ] Implémenter un système de feedback pour l'auto-ajustement des paramètres de parallélisation
+
+### 1.3.3 Mise en Cache Prédictive et Adaptative
+- [ ] Utiliser les patterns d'usage pour précharger le cache pour les scripts/données fréquemment accédés
+- [ ] Adapter dynamiquement les stratégies d'invalidation/expiration du cache en fonction de la fréquence d'accès
+- [ ] Développer un système de prédiction des besoins futurs basé sur l'historique d'utilisation
+
+### 1.3.4 Suggestions de Refactorisation Intelligentes
+- [ ] Coupler l'analyse d'usage avec l'analyse statique pour suggérer proactivement la refactorisation
+- [ ] Identifier automatiquement les candidats à la refactorisation basés sur des métriques objectives
+- [ ] Générer des rapports de recommandation avec justifications et bénéfices attendus
+
+## 1.4 Extension du Système d'Apprentissage des Erreurs
+**Complexité**: Élevée
+**Temps estimé**: 7-9 jours
+**Progression**: 0%
+**Date de début prévue**: 28/05/2025
+**Date cible d'achèvement**: 06/06/2025
+
+### 1.4.1 Analyse Causale et Contextuelle
+- [ ] Enrichir le stockage des erreurs avec le contexte (paramètres d'entrée, état du système)
+- [ ] Implémenter des techniques de Root Cause Analysis (RCA) pour identifier les causes profondes
+- [ ] Développer un système de classification hiérarchique des erreurs
+
+### 1.4.2 Auto-Correction Expérimentale
+- [ ] Identifier les classes d'erreurs à faible risque pouvant être auto-corrigées
+- [ ] Développer un mécanisme de proposition de corrections automatiques avec validation utilisateur
+- [ ] Implémenter un système de suivi des corrections appliquées et leur taux de succès
+
+### 1.4.3 Boucle de Feedback avec la Documentation
+- [ ] Lier les erreurs fréquentes à la documentation existante
+- [ ] Suggérer des améliorations de documentation basées sur les erreurs récurrentes
+- [ ] Créer un mécanisme automatique de mise à jour de la documentation pour les erreurs courantes
+
 # 2. TÂCHES DE PRIORITÉ MOYENNE
+## 2.5 Implémentation de TestOmnibus pour l'analyse des tests Python
+**Complexité**: Moyenne
+**Temps estimé**: 3-5 jours
+**Progression**: 100% - *Terminé le 11/04/2025*
+**Date de début**: 11/04/2025
+**Date d'achèvement**: 11/04/2025
+
+### 2.5.1 Développement du script principal
+- [x] Créer le script Python run_testomnibus.py
+- [x] Implémenter l'exécution parallèle des tests
+- [x] Développer l'analyse des erreurs
+- [x] Créer la génération de rapports HTML
+
+### 2.5.2 Développement du wrapper PowerShell
+- [x] Créer le script Invoke-TestOmnibus.ps1
+- [x] Implémenter la vérification des dépendances
+- [x] Développer l'interface utilisateur
+- [x] Créer les options avancées
+
+### 2.5.3 Intégration avec le système d'apprentissage des erreurs
+- [x] Créer le script Integrate-ErrorLearning.ps1
+- [x] Implémenter la sauvegarde des erreurs
+- [x] Développer l'analyse des patterns d'erreur
+- [x] Créer les suggestions de correction
+
+### 2.5.4 Documentation et exemples
+- [x] Créer le fichier README.md
+- [x] Documenter les options disponibles
+- [x] Créer des exemples d'utilisation
+- [x] Documenter l'intégration avec CI/CD
+
+### 2.5.5 Améliorations avancées - *Ajouté le 11/04/2025*
+- [x] Amélioration de l'extraction des erreurs
+  - [x] Modifier la fonction extract_error_details pour mieux capturer les erreurs
+  - [x] Ajouter une analyse plus approfondie de la sortie de pytest
+  - [x] Améliorer la structure des données d'erreur
+- [x] Amélioration du filtrage des tests par pattern
+  - [x] Modifier la fonction find_test_files pour prendre en charge des patterns avancés
+  - [x] Ajouter le support pour les expressions régulières et les patterns pytest
+  - [x] Ajouter le support pour les patterns de test spécifiques (fichier::classe::méthode)
+- [x] Ajout de l'analyse des tendances d'erreurs
+  - [x] Créer une fonction update_error_trends pour analyser les tendances
+  - [x] Ajouter un onglet "Tendances" au rapport HTML avec des graphiques
+  - [x] Améliorer la base de données d'erreurs pour stocker l'historique
+- [x] Intégration avec Allure et Jenkins
+  - [x] Ajouter le support pour générer des rapports Allure
+  - [x] Ajouter le support pour générer des rapports JUnit pour Jenkins
+  - [x] Créer des scripts d'intégration avec Allure et Jenkins
+  - [x] Ajouter un mode simulation pour tester l'intégration sans serveur
 
 ## 2.1 Amélioration de la détection automatique de format - *Terminé le 11/04/2025*
 **Complexité**: Élevée
@@ -247,14 +346,53 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [ ] Développer des outils pour vérifier la qualité de la documentation
 - [ ] Créer un processus de revue de la documentation
 
+## 2.4 Intégration Continue des Standards et de la Qualité
+**Complexité**: Moyenne
+**Temps estimé**: 4-6 jours
+**Progression**: 0%
+**Date de début prévue**: 11/05/2025
+**Date cible d'achèvement**: 16/05/2025
+
+### 2.4.1 Automatisation du Contrôle des Standards
+- [ ] Intégrer Manage-Standards-v2.ps1 et d'autres linters dans les hooks pre-commit Git
+- [ ] Configurer le pipeline CI/CD pour bloquer les merges si les standards ne sont pas respectés
+- [ ] Développer des rapports automatiques de conformité aux standards
+
+### 2.4.2 Tableau de Bord Qualité
+- [ ] Mettre en place un outil pour visualiser l'évolution de la qualité du code
+- [ ] Implémenter des métriques de qualité (complexité cyclomatique, duplication, code smells)
+- [ ] Créer des visualisations pour suivre l'évolution de la qualité dans le temps
+
+### 2.4.3 Génération de Documentation Technique Dynamique
+- [ ] Utiliser des outils pour générer la documentation depuis le code source
+- [ ] Automatiser la mise à jour de la documentation via CI
+- [ ] Implémenter la vérification de cohérence entre code et documentation
+
+## 2.6 Gestion Centralisée et Sécurisée des Configurations
+**Complexité**: Moyenne
+**Temps estimé**: 5-7 jours
+**Progression**: 0%
+**Date de début prévue**: 17/05/2025
+**Date cible d'achèvement**: 23/05/2025
+
+### 2.6.1 Référentiel de Configuration Unifié
+- [ ] Développer un système centralisé pour gérer toutes les configurations
+- [ ] Implémenter la gestion des configurations par environnement (dev, test, prod)
+- [ ] Créer des outils d'administration pour la gestion des configurations
+
+### 2.6.2 Gestion Sécurisée des Secrets
+- [ ] Intégrer une solution de gestion des secrets
+- [ ] Implémenter la rotation automatique des secrets
+- [ ] Développer des mécanismes d'audit pour l'accès aux secrets
+
 # 3. TÂCHES DE PRIORITÉ BASSE
 
 ## 3.1 Refactorisation du code legacy
 **Complexité**: Élevée
 **Temps estimé**: 10-15 jours
 **Progression**: 0%
-**Date de début prévue**: 15/05/2025
-**Date cible d'achèvement**: 30/05/2025
+**Date de début prévue**: 24/05/2025
+**Date cible d'achèvement**: 08/06/2025
 
 ### 3.1.1 Analyse du code existant
 - [ ] Identifier les modules et les scripts à refactoriser
@@ -280,8 +418,8 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 **Complexité**: Moyenne
 **Temps estimé**: 7-10 jours
 **Progression**: 0%
-**Date de début prévue**: 01/06/2025
-**Date cible d'achèvement**: 10/06/2025
+**Date de début prévue**: 09/06/2025
+**Date cible d'achèvement**: 19/06/2025
 
 ### 3.2.1 Analyse des besoins d'intégration
 - [ ] Identifier les services externes pertinents
@@ -303,7 +441,100 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [ ] Documenter les API et les processus d'intégration
 - [ ] Créer des exemples et des guides d'utilisation
 
+## 3.3 Monitoring Approfondi et Alerting
+**Complexité**: Moyenne
+**Temps estimé**: 5-7 jours
+**Progression**: 0%
+**Date de début prévue**: 20/06/2025
+**Date cible d'achèvement**: 27/06/2025
+
+### 3.3.1 Health Checks Détaillés
+- [ ] Implémenter des points de terminaison de "health check" pour chaque composant majeur
+- [ ] Vérifier non seulement la disponibilité mais aussi la capacité à exécuter des opérations de base
+- [ ] Développer un tableau de bord centralisé pour visualiser l'état de santé du système
+
+### 3.3.2 Monitoring des Ressources et des Performances
+- [ ] Intégrer des outils pour suivre l'utilisation CPU/RAM/Disque/Réseau
+- [ ] Définir des seuils d'alerte pour les dégradations de performance
+- [ ] Implémenter un système de notification pour les alertes critiques
+
+### 3.3.3 Centralisation et Analyse des Logs Opérationnels
+- [ ] Standardiser le format des logs pour tous les composants
+- [ ] Envoyer les logs vers un système centralisé pour faciliter l'analyse
+- [ ] Développer des outils d'analyse automatique des logs pour détecter les anomalies
+
+## 3.4 Stratégies de Déploiement et Rollback Robustes
+**Complexité**: Moyenne
+**Temps estimé**: 4-6 jours
+**Progression**: 0%
+**Date de début prévue**: 28/06/2025
+**Date cible d'achèvement**: 04/07/2025
+
+### 3.4.1 Déploiement Automatisé et Fiable
+- [ ] Scripter entièrement le processus de déploiement pour tous les environnements
+- [ ] Implémenter des stratégies comme Blue/Green ou Canary pour les composants critiques
+- [ ] Développer des mécanismes de validation post-déploiement
+
+### 3.4.2 Procédures de Rollback Automatisées
+- [ ] Développer des scripts pour revenir rapidement à la version précédente
+- [ ] Implémenter des tests automatiques pour valider les rollbacks
+- [ ] Créer une documentation détaillée des procédures de rollback
+
 # 4. TÂCHES TERMINÉES
+
+## 4.3 Améliorations avancées de TestOmnibus
+**Complexité**: Moyenne
+**Temps estimé**: 1 jour
+**Progression**: 100% - *Terminé le 11/04/2025*
+
+### 4.3.1 Amélioration de l'analyse des erreurs
+- [x] Implémenter une meilleure extraction des erreurs de pytest
+- [x] Ajouter l'analyse des tendances d'erreurs au fil du temps
+- [x] Créer des visualisations graphiques des tendances d'erreurs
+
+### 4.3.2 Amélioration du filtrage des tests
+- [x] Implémenter le support pour les patterns de test avancés
+- [x] Ajouter le support pour cibler des tests spécifiques (fichier::classe::méthode)
+- [x] Optimiser la recherche des fichiers de test
+
+### 4.3.3 Intégration avec des outils externes
+- [x] Ajouter l'intégration avec Allure pour des rapports interactifs
+- [x] Implémenter l'intégration avec Jenkins pour l'intégration continue
+- [x] Créer un mode simulation pour tester sans serveur
+
+## 4.4 Architectural Decision Records (ADRs)
+**Complexité**: Faible
+**Temps estimé**: 2-3 jours
+**Progression**: 0%
+**Date de début prévue**: 05/07/2025
+**Date cible d'achèvement**: 08/07/2025
+
+### 4.4.1 Mise en Place du Processus ADR
+- [ ] Adopter un format simple pour documenter les décisions architecturales importantes
+- [ ] Stocker les ADRs dans le dépôt Git
+- [ ] Développer un processus de revue et d'approbation des ADRs
+
+### 4.4.2 Rétro-documentation des Décisions Clés
+- [ ] Créer des ADRs pour les décisions déjà prises
+- [ ] Documenter les raisons des choix architecturaux majeurs
+- [ ] Lier les ADRs aux sections pertinentes du code
+
+## 4.5 Amélioration Continue du Journal de Développement RAG
+**Complexité**: Moyenne
+**Temps estimé**: 4-6 jours
+**Progression**: 0%
+**Date de début prévue**: 09/07/2025
+**Date cible d'achèvement**: 15/07/2025
+
+### 4.5.1 Intégration Bidirectionnelle avec les Tâches
+- [ ] Lier les entrées de journal aux tâches spécifiques de la roadmap
+- [ ] Permettre de générer des ébauches d'entrées de journal depuis les commits
+- [ ] Développer des outils pour faciliter la création d'entrées de journal
+
+### 4.5.2 Capacités de Recherche Sémantique
+- [ ] Explorer l'utilisation de techniques NLP/vectorisation pour la recherche sémantique
+- [ ] Implémenter un moteur de recherche avancé pour le journal
+- [ ] Développer des fonctionnalités de suggestion basées sur le contenu du journal
 
 ## 4.1 Mise en place de l'infrastructure de base
 **Complexité**: Élevée
@@ -334,3 +565,4 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [x] Intégrer les modules développés
 - [x] Effectuer des tests d'intégration
 - [x] Valider les fonctionnalités avec les utilisateurs
+
