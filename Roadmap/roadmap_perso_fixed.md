@@ -127,10 +127,10 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 
 # 2. TÂCHES DE PRIORITÉ MOYENNE
 
-## 2.1 Amélioration de la détection automatique de format
+## 2.1 Amélioration de la détection automatique de format - *Terminé le 11/04/2025*
 **Complexité**: Élevée
 **Temps estimé**: 5-7 jours
-**Progression**: 75% - *Mise à jour le 11/04/2025*
+**Progression**: 100% - *Mise à jour le 11/04/2025*
 **Date de début**: 11/04/2025
 **Date cible d'achèvement**: 27/04/2025
 
@@ -182,11 +182,11 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [x] Mesurer le taux de réussite de la détection automatique
 - [x] Optimiser les algorithmes en fonction des résultats
 
-### 2.1.6 Intégration et documentation
-- [ ] Intégrer le nouveau système de détection dans le module Format-Converters
-- [ ] Mettre à jour l'interface utilisateur
-- [ ] Documenter les améliorations et les limitations
-- [ ] Créer des exemples de cas d'utilisation
+### 2.1.6 Intégration et documentation - *Terminé le 11/04/2025*
+- [x] Intégrer le nouveau système de détection dans le module Format-Converters
+- [x] Mettre à jour l'interface utilisateur
+- [x] Documenter les améliorations et les limitations
+- [x] Créer des exemples de cas d'utilisation
 
 ## 2.2 Système de priorisation des implémentations
 **Complexité**: Moyenne
