@@ -28,9 +28,24 @@ scripts/logs/
 scripts/maintenance/*/logs/
 scripts/manager/data/*.log
 
-# Fichiers temporaires
+# Fichiers temporaires et backups
 tmp/
 temp/
+*.backup
+*.bak
+*.tmp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+coverage.xml
+test-results/
+TestResults/
+.coverage
+__pycache__/
+jenkins-results/
+test_reports/
 
 # Fichiers de credentials sensibles
 .n8n/credentials/
