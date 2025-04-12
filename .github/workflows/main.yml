@@ -1,0 +1,105 @@
+name: PowerShell et Node.js Workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    # Configuration de Node.js sans cache pour le moment
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'none'  # Désactive le cache jusqu'à ce que vous ayez un package-lock.json
+      
+    # Utilisation de PowerShell 5.1 (déjà installé sur les runners Windows)
+    - name: Vérifier la version de PowerShell
+      run: |
+        $PSVersionTable.PSVersion
+      shell: powershell  # Spécifie explicitement PowerShell 5.1 (pas pwsh)
+      
+    # Installation des modules PowerShell nécessaires
+    - name: Installer les modules PowerShell
+      run: |
+        Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+        Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+      shell: powershell
+      
+    # Exécution de l'analyse statique du code
+    - name: Analyser le code avec PSScriptAnalyzer
+      run: |
+        try {
+          $results = Invoke-ScriptAnalyzer -Path ./scripts -Recurse -Severity Error
+          if ($results) {
+            $results | Format-Table -AutoSize
+            Write-Error "Des erreurs ont été détectées par PSScriptAnalyzer"
+            exit 1
+          }
+        } catch {
+          Write-Error "Erreur lors de l'analyse du code : $_"
+          exit 1
+        }
+      shell: powershell
+      
+    # Exécution des tests
+    - name: Exécuter les tests TestOmnibus
+      run: |
+        try {
+          # Créer les répertoires de résultats s'ils n'existent pas
+          if (-not (Test-Path -Path "scripts\utils\TestOmnibus\Results")) {
+            New-Item -Path "scripts\utils\TestOmnibus\Results" -ItemType Directory -Force | Out-Null
+          }
+          
+          # Exécuter TestOmnibus
+          .\scripts\utils\TestOmnibus\Invoke-EnhancedTestOmnibus.ps1 -TestPath '.\scripts\utils\ProactiveOptimization\tests' -UseAdvancedOptimization
+          
+          # Vérifier si des erreurs se sont produites
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Des erreurs se sont produites lors de l'exécution des tests"
+            exit 1
+          }
+        } catch {
+          Write-Error "Erreur lors de l'exécution des tests : $_"
+          exit 1
+        }
+      shell: powershell
+      
+    # Enregistrement des résultats des tests comme artefacts
+    - name: Enregistrer les résultats des tests
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          scripts/utils/TestOmnibus/Results/**
+          scripts/utils/ProactiveOptimization/tests/results/**
+        if-no-files-found: warn  # Ne pas échouer si aucun fichier n'est trouvé
+      
+    # Préparation pour l'utilisation future de Node.js
+    - name: Créer package.json de base si nécessaire
+      run: |
+        if (-not (Test-Path -Path "package.json")) {
+          @{
+            name = "email-sender-1"
+            version = "0.1.0"
+            description = "Email Sender Project"
+            scripts = @{
+              test = "echo 'No tests configured yet'"
+            }
+            dependencies = @{}
+            devDependencies = @{}
+          } | ConvertTo-Json | Out-File -FilePath "package.json" -Encoding utf8
+          
+          Write-Host "Un fichier package.json de base a été créé. Vous pourrez l'enrichir ultérieurement."
+        } else {
+          Write-Host "Le fichier package.json existe déjà."
+        }
+      shell: powershell

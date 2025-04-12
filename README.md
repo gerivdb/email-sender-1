@@ -2,6 +2,33 @@
 
 Ce projet contient des workflows n8n et des outils pour automatiser l'envoi d'emails et la gestion des processus de booking pour le groupe Gribitch. Il inclut également un système complet d'intégration continue et de déploiement continu (CI/CD) avec notifications par email.
 
+## Nouvelles fonctionnalités
+
+### TestOmnibus
+
+TestOmnibus est un framework de test avancé qui offre les fonctionnalités suivantes :
+
+- **Analyse des tendances** : Analyse l'historique des résultats des tests pour identifier les tendances.
+- **Détection des tests flaky** : Identifie les tests instables et propose des solutions pour les stabiliser.
+- **Intégration avec SonarQube** : Convertit les résultats des tests au format compatible avec SonarQube.
+- **Optimisation avancée** : Optimise l'exécution des tests en fonction de l'historique et des ressources système.
+
+### Gestion des erreurs
+
+Le système de gestion des erreurs offre :
+
+- Détection et classification des erreurs
+- Journalisation centralisée
+- Rapports d'erreurs détaillés
+- Intégration avec les outils de développement
+
+### GitHub Actions
+
+Le projet est maintenant configuré avec GitHub Actions pour l'intégration continue, utilisant :
+
+- PowerShell 5.1 pour les scripts existants
+- Node.js 18 pour les fonctionnalités futures
+
 ## Structure du projet
 
 ```
@@ -241,6 +268,31 @@ Pour démarrer manuellement la surveillance en temps réel :
 ### Scripts d'organisation disponibles
 
 - **scripts/maintenance/auto-organize.ps1** - Organisation interactive des fichiers
+
+### Scripts TestOmnibus
+
+```powershell
+# Exécution simple
+.\scripts\utils\TestOmnibus\Invoke-EnhancedTestOmnibus.ps1 -TestPath ".\scripts\utils\ProactiveOptimization\tests"
+
+# Avec détection des tests flaky
+.\scripts\utils\TestOmnibus\Invoke-EnhancedTestOmnibus.ps1 -TestPath ".\scripts\utils\ProactiveOptimization\tests" -DetectFlakyTests
+
+# Avec optimisation avancée
+.\scripts\utils\TestOmnibus\Invoke-EnhancedTestOmnibus.ps1 -TestPath ".\scripts\utils\ProactiveOptimization\tests" -UseAdvancedOptimization
+
+# Avec analyse des tendances
+.\scripts\utils\TestOmnibus\Invoke-EnhancedTestOmnibus.ps1 -TestPath ".\scripts\utils\ProactiveOptimization\tests" -AnalyzeTrends
+```
+
+### Scripts de gestion des erreurs
+
+```powershell
+# Générer un rapport d'erreurs
+. .\scripts\utils\ErrorHandling\ErrorHandler.ps1
+Get-ErrorReport -LastDay -GenerateHtml
+```
+
 - **scripts/maintenance/auto-organize-silent.ps1** - Organisation silencieuse (pour les tâches planifiées)
 - **scripts/maintenance/watch-and-organize.ps1** - Surveillance en temps réel des nouveaux fichiers
 - **scripts/maintenance/clean-root.ps1** - Nettoyage interactif des fichiers à la racine

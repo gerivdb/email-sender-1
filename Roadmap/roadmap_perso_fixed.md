@@ -252,6 +252,84 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
   - [ ] Créer un système de recommandations personnalisées
   - [ ] Implémenter un mécanisme de feedback pour améliorer les recommandations
 
+
+## 1.6 Migration PowerShell 5.1 vers 7
+**Complexité**: Élevée
+**Temps estimé**: 15-20 jours
+**Progression**: 0%
+**Date de début prévue**: 01/07/2025
+**Date cible d'achèvement**: 26/07/2025
+
+### 1.6.1 Phase préparatoire - Audit et inventaire (3-4 jours)
+- [ ] Inventaire et classification des scripts
+  - [ ] Lister tous les scripts et modules avec Get-ChildItem -Recurse
+  - [ ] Identifier les scripts critiques et leur niveau de priorité
+  - [ ] Créer une matrice de dépendances entre les scripts
+- [ ] Audit de compatibilité
+  - [ ] Analyser les modules utilisés avec Get-Module -ListAvailable
+  - [ ] Vérifier la compatibilité des cmdlets Windows spécifiques
+  - [ ] Identifier les appels aux cmdlets dépréciées (Get-WmiObject, etc.)
+- [ ] Création d'un registre des risques
+  - [ ] Documenter les points critiques identifiés
+  - [ ] Évaluer l'impact potentiel sur chaque composant
+  - [ ] Préparer des stratégies de mitigation
+
+### 1.6.2 Environnement de test (4-5 jours)
+- [ ] Configuration de l'infrastructure de test
+  - [ ] Créer des machines virtuelles de test
+  - [ ] Installer PowerShell 7 en parallèle de 5.1
+  - [ ] Configurer VS Code avec l'extension PowerShell mise à jour
+- [ ] Mise en place des tests automatisés
+  - [ ] Développer des tests Pester pour les fonctionnalités critiques
+  - [ ] Créer des scénarios de test pour les cas d'usage spécifiques
+  - [ ] Implémenter des tests de régression
+- [ ] Documentation des procédures de test
+  - [ ] Créer des check-lists de validation
+  - [ ] Documenter les cas de test
+  - [ ] Préparer les procédures de rollback
+
+### 1.6.3 Migration pilote (3-4 jours)
+- [ ] Sélection et migration des scripts non critiques
+  - [ ] Identifier un sous-ensemble de scripts pour le pilote
+  - [ ] Adapter les chemins et références à PowerShell
+  - [ ] Mettre à jour les appels aux cmdlets dépréciées
+- [ ] Tests et validation du pilote
+  - [ ] Exécuter les tests automatisés
+  - [ ] Vérifier les performances et la compatibilité
+  - [ ] Documenter les problèmes rencontrés
+- [ ] Ajustements et corrections
+  - [ ] Corriger les problèmes identifiés
+  - [ ] Optimiser les scripts migrés
+  - [ ] Mettre à jour la documentation technique
+
+### 1.6.4 Migration principale (4-5 jours)
+- [ ] Migration progressive des scripts
+  - [ ] Migrer les scripts par ordre de priorité
+  - [ ] Adapter les interactions Python-PowerShell
+  - [ ] Mettre à jour les chemins d'exécution
+- [ ] Validation continue
+  - [ ] Exécuter les tests après chaque migration
+  - [ ] Vérifier les performances en production
+  - [ ] Documenter les changements effectués
+- [ ] Gestion des exceptions
+  - [ ] Identifier les scripts nécessitant PowerShell 5.1
+  - [ ] Créer des wrappers de compatibilité si nécessaire
+  - [ ] Documenter les cas particuliers
+
+### 1.6.5 Stabilisation et documentation (2-3 jours)
+- [ ] Finalisation de la migration
+  - [ ] Vérifier tous les scripts migrés
+  - [ ] Nettoyer les références obsolètes
+  - [ ] Mettre à jour la configuration globale
+- [ ] Documentation finale
+  - [ ] Mettre à jour la documentation technique
+  - [ ] Créer des guides de maintenance
+  - [ ] Documenter les leçons apprises
+- [ ] Formation et support
+  - [ ] Former l'équipe aux nouvelles pratiques
+  - [ ] Mettre en place un système de support
+  - [ ] Créer une FAQ des problèmes courants
+
 # 2. TÂCHES DE PRIORITÉ MOYENNE
 ## 2.5 Implémentation de TestOmnibus pour l'analyse des tests Python
 **Complexité**: Moyenne

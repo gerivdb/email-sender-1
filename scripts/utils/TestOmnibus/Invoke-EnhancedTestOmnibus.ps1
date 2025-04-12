@@ -39,31 +39,31 @@
 param (
     [Parameter(Mandatory = $true)]
     [string]$TestPath,
-    
+
     [Parameter(Mandatory = $false)]
     [string]$OutputPath = (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results"),
-    
+
     [Parameter(Mandatory = $false)]
     [string]$HistoryPath = (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\History"),
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$DetectFlakyTests,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$AnalyzeTrends,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$UseSonarQube,
-    
+
     [Parameter(Mandatory = $false)]
     [string]$SonarQubeUrl,
-    
+
     [Parameter(Mandatory = $false)]
     [string]$SonarQubeToken,
-    
+
     [Parameter(Mandatory = $false)]
     [string]$SonarQubeProjectKey,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$UseAdvancedOptimization
 )
@@ -97,43 +97,49 @@ function Invoke-TestOmnibusWithConfig {
     param (
         [Parameter(Mandatory = $true)]
         [string]$TestPath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ConfigPath
     )
-    
+
     try {
         # Chemin vers TestOmnibus
         $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
-        
+
         if (-not (Test-Path -Path $testOmnibusPath)) {
             Write-Error "TestOmnibus n'existe pas: $testOmnibusPath"
             return $null
         }
-        
+
         # Exécuter TestOmnibus
         Write-Host "Exécution de TestOmnibus..." -ForegroundColor Cyan
-        
+
         $testOmnibusParams = @{
             Path = $TestPath
         }
-        
+
         if ($ConfigPath -and (Test-Path -Path $ConfigPath)) {
             $testOmnibusParams.Add("ConfigPath", $ConfigPath)
         }
-        
-        $result = & $testOmnibusPath @testOmnibusParams
-        
+
+        # Exécuter TestOmnibus et capturer le code de sortie
+        & $testOmnibusPath @testOmnibusParams
+        $exitCode = $LASTEXITCODE
+
+        # Vérifier si l'exécution a réussi
+        if ($exitCode -ne 0) {
+            throw "TestOmnibus a retourné un code d'erreur: $exitCode"
+        }
+
         # Vérifier si des résultats ont été générés
         $resultsPath = Join-Path -Path $OutputPath -ChildPath "results.xml"
         if (-not (Test-Path -Path $resultsPath)) {
             Write-Error "Aucun résultat n'a été généré par TestOmnibus."
             return $null
         }
-        
+
         return $resultsPath
-    }
-    catch {
+    } catch {
         Write-Error "Erreur lors de l'exécution de TestOmnibus: $_"
         return $null
     }
@@ -145,141 +151,144 @@ function Save-ResultsToHistory {
     param (
         [Parameter(Mandatory = $true)]
         [string]$ResultsPath,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$HistoryPath
     )
-    
+
     try {
         # Créer un nom de fichier unique
         $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
         $historyFile = Join-Path -Path $HistoryPath -ChildPath "results_$timestamp.xml"
-        
+
         # Copier les résultats
         Copy-Item -Path $ResultsPath -Destination $historyFile -Force
-        
+
         return $historyFile
-    }
-    catch {
+    } catch {
         Write-Error "Erreur lors de la sauvegarde des résultats dans l'historique: $_"
         return $null
     }
+}
+
+# Initialiser la gestion des erreurs
+$errorHandlingPath = Join-Path -Path $PSScriptRoot -ChildPath "Initialize-ErrorHandling.ps1"
+if (Test-Path -Path $errorHandlingPath) {
+    . $errorHandlingPath
+} else {
+    Write-Warning "Le script de gestion des erreurs n'a pas été trouvé: $errorHandlingPath"
 }
 
 # Point d'entrée principal
 try {
     # Utiliser l'optimisation avancée si demandé
     $configPath = $null
-    
+
     if ($UseAdvancedOptimization) {
         Write-Host "Utilisation de l'optimisation avancée..." -ForegroundColor Cyan
         $optimizerPath = Join-Path -Path $PSScriptRoot -ChildPath "Optimizers\Advanced-Optimizer.ps1"
-        
+
         if (Test-Path -Path $optimizerPath) {
             $optimizationResult = & $optimizerPath -TestPath $TestPath -HistoryPath $HistoryPath -OutputPath $OutputPath
-            
+
             if ($optimizationResult -and $optimizationResult.ConfigPath) {
                 $configPath = $optimizationResult.ConfigPath
                 Write-Host "Configuration optimisée générée: $configPath" -ForegroundColor Green
                 Write-Host "Nombre de threads: $($optimizationResult.ThreadCount)" -ForegroundColor Green
                 Write-Host "Nombre de tests: $($optimizationResult.TestCount)" -ForegroundColor Green
-            }
-            else {
+            } else {
                 Write-Warning "L'optimisation avancée a échoué. Utilisation de la configuration par défaut."
             }
-        }
-        else {
+        } else {
             Write-Warning "Le script d'optimisation avancée n'existe pas: $optimizerPath"
         }
     }
-    
+
     # Détecter les tests flaky si demandé
     if ($DetectFlakyTests) {
         Write-Host "Détection des tests flaky..." -ForegroundColor Cyan
         $flakyTestsPath = Join-Path -Path $PSScriptRoot -ChildPath "Manage-FlakyTests.ps1"
-        
+
         if (Test-Path -Path $flakyTestsPath) {
             $flakyTestsResult = & $flakyTestsPath -TestPath $TestPath -OutputPath $OutputPath -Iterations 3 -GenerateReport -FixMode Retry -MaxRetries 3
-            
+
             if ($flakyTestsResult -and $flakyTestsResult.FlakyTests) {
                 Write-Host "Tests flaky détectés: $($flakyTestsResult.FlakyTests.Count)" -ForegroundColor Yellow
-                
+
                 if ($flakyTestsResult.ReportPath) {
                     Write-Host "Rapport des tests flaky généré: $($flakyTestsResult.ReportPath)" -ForegroundColor Green
                 }
-                
+
                 if ($flakyTestsResult.ConfigPath) {
                     Write-Host "Configuration des tests flaky générée: $($flakyTestsResult.ConfigPath)" -ForegroundColor Green
                 }
-            }
-            else {
+            } else {
                 Write-Host "Aucun test flaky détecté." -ForegroundColor Green
             }
-        }
-        else {
+        } else {
             Write-Warning "Le script de détection des tests flaky n'existe pas: $flakyTestsPath"
         }
-    }
-    else {
+    } else {
         # Exécuter TestOmnibus normalement
         $resultsPath = Invoke-TestOmnibusWithConfig -TestPath $TestPath -ConfigPath $configPath
-        
+
         if ($resultsPath) {
             Write-Host "Tests exécutés avec succès. Résultats enregistrés: $resultsPath" -ForegroundColor Green
-            
+
             # Sauvegarder les résultats dans l'historique
             $historyFile = Save-ResultsToHistory -ResultsPath $resultsPath -HistoryPath $HistoryPath
-            
+
             if ($historyFile) {
                 Write-Host "Résultats sauvegardés dans l'historique: $historyFile" -ForegroundColor Green
             }
         }
     }
-    
+
     # Analyser les tendances si demandé
     if ($AnalyzeTrends) {
         Write-Host "Analyse des tendances..." -ForegroundColor Cyan
         $trendsPath = Join-Path -Path $PSScriptRoot -ChildPath "Analyzers\Analyze-TestTrends.ps1"
-        
+
         if (Test-Path -Path $trendsPath) {
             $trendsResult = & $trendsPath -HistoryPath $HistoryPath -OutputPath $OutputPath -DaysToAnalyze 30 -GenerateReport
-            
+
             if ($trendsResult -and $trendsResult.ReportPath) {
                 Write-Host "Rapport des tendances généré: $($trendsResult.ReportPath)" -ForegroundColor Green
-                
+
                 if ($trendsResult.FlakyTests) {
                     Write-Host "Tests instables détectés par l'analyse des tendances: $($trendsResult.FlakyTests.Count)" -ForegroundColor Yellow
                 }
             }
-        }
-        else {
+        } else {
             Write-Warning "Le script d'analyse des tendances n'existe pas: $trendsPath"
         }
     }
-    
+
     # Intégrer avec SonarQube si demandé
     if ($UseSonarQube) {
         Write-Host "Intégration avec SonarQube..." -ForegroundColor Cyan
         $sonarQubePath = Join-Path -Path $PSScriptRoot -ChildPath "Integrate-SonarQube.ps1"
-        
+
         if (Test-Path -Path $sonarQubePath) {
             $sonarQubeResult = & $sonarQubePath -TestPath $TestPath -SourcePath (Split-Path -Path $TestPath -Parent) -SonarQubeUrl $SonarQubeUrl -SonarQubeToken $SonarQubeToken -ProjectKey $SonarQubeProjectKey -ProjectName $SonarQubeProjectKey -SimulationMode
-            
+
             if ($sonarQubeResult -eq 0) {
                 Write-Host "Intégration avec SonarQube réussie." -ForegroundColor Green
-            }
-            else {
+            } else {
                 Write-Warning "L'intégration avec SonarQube a échoué."
             }
-        }
-        else {
+        } else {
             Write-Warning "Le script d'intégration avec SonarQube n'existe pas: $sonarQubePath"
         }
     }
-    
+
     return 0
-}
-catch {
-    Write-Error "Erreur lors de l'exécution de TestOmnibus amélioré: $_"
+} catch {
+    # Utiliser le gestionnaire d'erreurs si disponible
+    if (Get-Command -Name "Handle-TestOmnibusError" -ErrorAction SilentlyContinue) {
+        Handle-TestOmnibusError -ErrorRecord $_ -TestName "EnhancedTestOmnibus" -AddToReport
+    } else {
+        Write-Error "Erreur lors de l'exécution de TestOmnibus amélioré: $_"
+    }
     return 1
 }
