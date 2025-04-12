@@ -33,10 +33,10 @@ class UsageMetric {
         $this.StartTime = Get-Date
         $this.ExecutionId = [guid]::NewGuid()
         $this.ResourceUsage = @{
-            CpuUsageStart = $null
+            CpuUsageStart    = $null
             MemoryUsageStart = $null
-            CpuUsageEnd = $null
-            MemoryUsageEnd = $null
+            CpuUsageEnd      = $null
+            MemoryUsageEnd   = $null
         }
     }
 
@@ -95,8 +95,7 @@ class UsageDatabase {
                     }
                     $this.InMemoryData[$key] = $list
                 }
-            }
-            catch {
+            } catch {
                 Write-Warning "Impossible de charger la base de données d'utilisation: $_"
             }
         }
@@ -126,8 +125,7 @@ class UsageDatabase {
     [void] SaveToFile() {
         try {
             $this.InMemoryData | Export-Clixml -Path $this.DatabasePath -Force -ErrorAction Stop
-        }
-        catch {
+        } catch {
             Write-Warning "Impossible de sauvegarder la base de données d'utilisation: $_"
         }
     }
@@ -273,14 +271,14 @@ class UsageDatabase {
 
             if ($slowExecutions.Count -gt 0) {
                 $bottleneck = [PSCustomObject]@{
-                    ScriptPath = $key
-                    ScriptName = Split-Path -Path $key -Leaf
-                    AverageDuration = $avgDuration
-                    SlowThreshold = $threshold
-                    SlowExecutionsCount = $slowExecutions.Count
-                    TotalExecutionsCount = $metrics.Count
+                    ScriptPath              = $key
+                    ScriptName              = Split-Path -Path $key -Leaf
+                    AverageDuration         = $avgDuration
+                    SlowThreshold           = $threshold
+                    SlowExecutionsCount     = $slowExecutions.Count
+                    TotalExecutionsCount    = $metrics.Count
                     SlowExecutionPercentage = ($slowExecutions.Count / $metrics.Count) * 100
-                    SlowExecutions = $slowExecutions
+                    SlowExecutions          = $slowExecutions
                 }
 
                 $bottlenecks.Add($bottleneck) | Out-Null
@@ -309,8 +307,7 @@ function Initialize-UsageMonitor {
         $script:UsageDatabase = [UsageDatabase]::new($DatabasePath)
         $script:IsInitialized = $true
         Write-Verbose "UsageMonitor initialisé avec succès. Base de données: $DatabasePath"
-    }
-    catch {
+    } catch {
         Write-Error "Impossible d'initialiser UsageMonitor: $_"
         $script:IsInitialized = $false
     }
@@ -342,8 +339,7 @@ function Start-ScriptUsageTracking {
         $script:ActiveMetrics[$metric.ExecutionId] = $metric
 
         return $metric.ExecutionId
-    }
-    catch {
+    } catch {
         Write-Error "Erreur lors du démarrage du suivi d'utilisation: $_"
         return $null
     }
@@ -381,8 +377,7 @@ function Stop-ScriptUsageTracking {
         $script:ActiveMetrics.Remove($ExecutionId)
 
         Write-Verbose "Suivi d'utilisation terminé pour $($metric.ScriptPath). Durée: $($metric.Duration.TotalMilliseconds) ms"
-    }
-    catch {
+    } catch {
         Write-Error "Erreur lors de l'arrêt du suivi d'utilisation: $_"
     }
 }
@@ -404,12 +399,11 @@ function Get-ScriptUsageStatistics {
 
     if ($ScriptPath) {
         return $script:UsageDatabase.GetMetricsForScript($ScriptPath)
-    }
-    else {
+    } else {
         $result = [PSCustomObject]@{
-            TopUsedScripts = $script:UsageDatabase.GetTopUsedScripts($TopCount)
-            SlowestScripts = $script:UsageDatabase.GetSlowestScripts($TopCount)
-            MostFailingScripts = $script:UsageDatabase.GetMostFailingScripts($TopCount)
+            TopUsedScripts           = $script:UsageDatabase.GetTopUsedScripts($TopCount)
+            SlowestScripts           = $script:UsageDatabase.GetSlowestScripts($TopCount)
+            MostFailingScripts       = $script:UsageDatabase.GetMostFailingScripts($TopCount)
             ResourceIntensiveScripts = $script:UsageDatabase.GetResourceIntensiveScripts($TopCount)
         }
 
@@ -442,5 +436,33 @@ function Save-UsageDatabase {
     Write-Verbose "Base de données d'utilisation sauvegardée avec succès."
 }
 
+# Fonctions additionnelles pour les tests
+function Get-AllScriptPaths {
+    [CmdletBinding()]
+    param ()
+
+    if (-not $script:IsInitialized) {
+        Write-Error "UsageMonitor n'est pas initialisé. Appelez Initialize-UsageMonitor d'abord."
+        return @()
+    }
+
+    return $script:UsageDatabase.InMemoryData.Keys
+}
+
+function Get-MetricsForScript {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$ScriptPath
+    )
+
+    if (-not $script:IsInitialized) {
+        Write-Error "UsageMonitor n'est pas initialisé. Appelez Initialize-UsageMonitor d'abord."
+        return @()
+    }
+
+    return $script:UsageDatabase.GetMetricsForScript($ScriptPath)
+}
+
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Initialize-UsageMonitor, Start-ScriptUsageTracking, Stop-ScriptUsageTracking, Get-ScriptUsageStatistics, Find-ScriptBottlenecks, Save-UsageDatabase
+Export-ModuleMember -Function Initialize-UsageMonitor, Start-ScriptUsageTracking, Stop-ScriptUsageTracking, Get-ScriptUsageStatistics, Find-ScriptBottlenecks, Save-UsageDatabase, Get-AllScriptPaths, Get-MetricsForScript

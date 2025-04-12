@@ -20,44 +20,47 @@
 param (
     [Parameter(Mandatory = $true)]
     [string]$Path,
-    
+
     [Parameter(Mandatory = $false)]
     [string]$ConfigPath
 )
 
+# Définir l'encodage de la console en UTF-8
+$OutputEncoding = [System.Text.UTF8Encoding]::new()
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+
 # Charger la configuration
 $config = @{
-    MaxThreads = 4
-    OutputPath = Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results"
-    GenerateHtmlReport = $true
+    MaxThreads             = 4
+    OutputPath             = Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results"
+    GenerateHtmlReport     = $true
     CollectPerformanceData = $true
 }
 
 if ($ConfigPath -and (Test-Path -Path $ConfigPath)) {
     try {
         $configFromFile = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
-        
+
         if ($configFromFile.MaxThreads) {
             $config.MaxThreads = $configFromFile.MaxThreads
         }
-        
+
         if ($configFromFile.OutputPath) {
             $config.OutputPath = $configFromFile.OutputPath
         }
-        
+
         if ($null -ne $configFromFile.GenerateHtmlReport) {
             $config.GenerateHtmlReport = $configFromFile.GenerateHtmlReport
         }
-        
+
         if ($null -ne $configFromFile.CollectPerformanceData) {
             $config.CollectPerformanceData = $configFromFile.CollectPerformanceData
         }
-        
+
         if ($configFromFile.PriorityScripts) {
             $config.PriorityScripts = $configFromFile.PriorityScripts
         }
-    }
-    catch {
+    } catch {
         Write-Warning "Erreur lors du chargement de la configuration: $_"
     }
 }
@@ -83,11 +86,11 @@ $results = @()
 # Exécuter les tests
 foreach ($testFile in $testFiles) {
     Write-Host "Exécution du test: $($testFile.Name)" -ForegroundColor Yellow
-    
+
     $startTime = Get-Date
     $success = $true
     $errorMessage = ""
-    
+
     try {
         # Simuler l'exécution du test
         if ($testFile.Name -match "Failing") {
@@ -95,38 +98,35 @@ foreach ($testFile in $testFiles) {
             $success = $false
             $errorMessage = "Test échoué"
             Write-Host "  - Échec" -ForegroundColor Red
-        }
-        elseif ($testFile.Name -match "Slow") {
+        } elseif ($testFile.Name -match "Slow") {
             # Simuler un test lent
             Start-Sleep -Seconds 2
             Write-Host "  - Succès (lent)" -ForegroundColor Green
-        }
-        else {
+        } else {
             # Simuler un succès
             Start-Sleep -Milliseconds 100
             Write-Host "  - Succès" -ForegroundColor Green
         }
-    }
-    catch {
+    } catch {
         $success = $false
         $errorMessage = $_.Exception.Message
         Write-Host "  - Erreur: $errorMessage" -ForegroundColor Red
     }
-    
+
     $endTime = Get-Date
     $duration = ($endTime - $startTime).TotalMilliseconds
-    
+
     # Ajouter le résultat
     $result = [PSCustomObject]@{
-        Name = $testFile.Name -replace "\.Tests\.ps1", ""
-        Path = $testFile.FullName
-        Success = $success
+        Name         = $testFile.Name -replace "\.Tests\.ps1", ""
+        Path         = $testFile.FullName
+        Success      = $success
         ErrorMessage = $errorMessage
-        Duration = $duration
-        StartTime = $startTime
-        EndTime = $endTime
+        Duration     = $duration
+        StartTime    = $startTime
+        EndTime      = $endTime
     }
-    
+
     $results += $result
 }
 
@@ -139,7 +139,7 @@ Write-Host "Résultats des tests sauvegardés: $resultsPath" -ForegroundColor Gr
 # Générer un rapport HTML si demandé
 if ($config.GenerateHtmlReport) {
     $reportPath = Join-Path -Path $config.OutputPath -ChildPath "report.html"
-    
+
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -216,36 +216,36 @@ if ($config.GenerateHtmlReport) {
 <body>
     <div class="container">
         <h1>Rapport de Tests</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
-        
-        <h2>Résumé</h2>
+        <p>G&eacute;n&eacute;r&eacute; le $(Get-Date -Format "dd/MM/yyyy \&agrave; HH:mm:ss")</p>
+
+        <h2>R&eacute;sum&eacute;</h2>
         <p>
-            <strong>Tests exécutés:</strong> $($results.Count)<br>
-            <strong>Tests réussis:</strong> $($results | Where-Object { $_.Success } | Measure-Object).Count<br>
-            <strong>Tests échoués:</strong> $($results | Where-Object { -not $_.Success } | Measure-Object).Count<br>
-            <strong>Durée totale:</strong> $([math]::Round(($results | Measure-Object -Property Duration -Sum).Sum, 2)) ms<br>
-            <strong>Threads utilisés:</strong> $($config.MaxThreads)
+            <strong>Tests ex&eacute;cut&eacute;s:</strong> $($results.Count)<br>
+            <strong>Tests r&eacute;ussis:</strong> $(($results | Where-Object { $_.Success }).Count)<br>
+            <strong>Tests &eacute;chou&eacute;s:</strong> $(($results | Where-Object { -not $_.Success }).Count)<br>
+            <strong>Dur&eacute;e totale:</strong> $([math]::Round(($results | Measure-Object -Property Duration -Sum).Sum, 2)) ms<br>
+            <strong>Threads utilis&eacute;s:</strong> $($config.MaxThreads)
         </p>
-        
-        <h2>Résultats détaillés</h2>
+
+        <h2>R&eacute;sultats d&eacute;taill&eacute;s</h2>
         <table>
             <tr>
                 <th>Test</th>
-                <th>Résultat</th>
-                <th>Durée (ms)</th>
-                <th>Détails</th>
+                <th>R&eacute;sultat</th>
+                <th>Dur&eacute;e (ms)</th>
+                <th>D&eacute;tails</th>
             </tr>
 "@
-    
+
     foreach ($result in $results) {
         $statusClass = if ($result.Success) { "success" } else { "failure" }
-        $statusText = if ($result.Success) { "Succès" } else { "Échec" }
-        
+        $statusText = if ($result.Success) { "Succ&egrave;s" } else { "&Eacute;chec" }
+
         if ($result.Success -and $result.Duration -gt 1000) {
             $statusClass = "slow"
-            $statusText = "Succès (lent)"
+            $statusText = "Succ&egrave;s (lent)"
         }
-        
+
         $html += @"
             <tr>
                 <td>$($result.Name)</td>
@@ -255,20 +255,22 @@ if ($config.GenerateHtmlReport) {
             </tr>
 "@
     }
-    
+
     $html += @"
         </table>
-        
+
         <div class="footer">
-            <p>Généré par TestOmnibus</p>
+            <p>G&eacute;n&eacute;r&eacute; par TestOmnibus</p>
         </div>
     </div>
 </body>
 </html>
 "@
-    
-    $html | Out-File -FilePath $reportPath -Encoding utf8 -Force
-    
+
+    # Utiliser UTF-8 avec BOM pour éviter les problèmes d'encodage
+    $utf8WithBom = New-Object System.Text.UTF8Encoding($true)
+    [System.IO.File]::WriteAllText($reportPath, $html, $utf8WithBom)
+
     Write-Host "Rapport HTML généré: $reportPath" -ForegroundColor Green
 }
 

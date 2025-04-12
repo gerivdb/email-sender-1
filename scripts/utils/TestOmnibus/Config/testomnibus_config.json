@@ -1,0 +1,15 @@
+{
+    "MaxThreads": 4,
+    "OutputPath": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/utils/TestOmnibus/Results",
+    "GenerateHtmlReport": true,
+    "CollectPerformanceData": true,
+    "TestModules": [
+        {
+            "Name": "ProactiveOptimization",
+            "Path": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/utils/ProactiveOptimization/tests",
+            "Adapter": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/utils/TestOmnibus/Adapters/ProactiveOptimization-Adapter.ps1",
+            "Priority": 1,
+            "Tags": ["PowerShell", "Optimization", "Monitoring"]
+        }
+    ]
+}
