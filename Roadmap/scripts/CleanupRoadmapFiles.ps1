@@ -1,5 +1,5 @@
-
-
+# Script de nettoyage des fichiers de roadmap
+# Ce script nettoie et organise les fichiers liés à la roadmap
 
 # Configuration de la gestion d'erreurs
 $ErrorActionPreference = 'Stop'
@@ -10,10 +10,10 @@ function Write-Log {
         [string]$Message,
         [string]$Level = "INFO"
     )
-    
+
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] [$Level] $Message"
-    
+
     # Afficher dans la console
     switch ($Level) {
         "INFO" { Write-Host $logEntry -ForegroundColor White }
@@ -21,100 +21,97 @@ function Write-Log {
         "ERROR" { Write-Host $logEntry -ForegroundColor Red }
         "DEBUG" { Write-Verbose $logEntry }
     }
-    
+
     # Écrire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
-        
+
         # Créer le répertoire de logs si nécessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
         }
-        
+
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
-    }
-    catch {
+    } catch {
         # Ignorer les erreurs d'écriture dans le journal
     }
 }
 try {
     # Script principal
-# Script de nettoyage des fichiers de roadmap
-# Ce script déplace tous les fichiers liés à la roadmap dans le sous-dossier Roadmap
-# et supprime les doublons
+    # Script de nettoyage des fichiers de roadmap
+    # Ce script déplace tous les fichiers liés à la roadmap dans le sous-dossier Roadmap
+    # et supprime les doublons
 
-# Configuration
-$roadmapFolder = "Roadmap"
-$mainFolder = "."
+    # Configuration
+    $roadmapFolder = "Roadmap"
+    $mainFolder = "."
 
-# Vérifier si le dossier Roadmap existe
-if (-not (Test-Path -Path $roadmapFolder)) {
-    New-Item -Path $roadmapFolder -ItemType Directory -Force | Out-Null
-    Write-Host "Dossier '$roadmapFolder' créé." -ForegroundColor Green
-}
+    # Vérifier si le dossier Roadmap existe
+    if (-not (Test-Path -Path $roadmapFolder)) {
+        New-Item -Path $roadmapFolder -ItemType Directory -Force | Out-Null
+        Write-Host "Dossier '$roadmapFolder' créé." -ForegroundColor Green
+    }
 
-# Liste des fichiers liés à la roadmap
-$roadmapFiles = @(
-    ""Roadmap\roadmap_perso.md"",
-    "RoadmapAdmin.ps1",
-    "AugmentExecutor.ps1",
-    "RestartAugment.ps1",
-    "StartRoadmapExecution.ps1",
-    "RoadmapAnalyzer.ps1",
-    "RoadmapGitUpdater.ps1",
-    "RoadmapManager.ps1",
-    "OrganizeRoadmapScripts.ps1",
-    "OrganizeRoadmapScriptsSimple.ps1",
-    "OrganizeRoadmapScriptsBasic.ps1"
-)
+    # Liste des fichiers liés à la roadmap
+    $roadmapFiles = @(
+        "Roadmap\roadmap_perso.md",
+        "RoadmapAdmin.ps1",
+        "AugmentExecutor.ps1",
+        "RestartAugment.ps1",
+        "StartRoadmapExecution.ps1",
+        "RoadmapAnalyzer.ps1",
+        "RoadmapGitUpdater.ps1",
+        "RoadmapManager.ps1",
+        "OrganizeRoadmapScripts.ps1",
+        "OrganizeRoadmapScriptsSimple.ps1",
+        "OrganizeRoadmapScriptsBasic.ps1"
+    )
 
-# Trouver tous les fichiers liés à la roadmap dans le dossier principal
-$otherRoadmapFiles = Get-ChildItem -Path $mainFolder -File | Where-Object { 
-    ($_.Name -like "*roadmap*" -or $_.Name -like "*Roadmap*") -and 
-    $_.Name -ne "CleanupRoadmapFiles.ps1" -and
-    -not $_.FullName.StartsWith((Resolve-Path $roadmapFolder).Path)
-}
+    # Trouver tous les fichiers liés à la roadmap dans le dossier principal
+    $otherRoadmapFiles = Get-ChildItem -Path $mainFolder -File | Where-Object {
+    ($_.Name -like "*roadmap*" -or $_.Name -like "*Roadmap*") -and
+        $_.Name -ne "CleanupRoadmapFiles.ps1" -and
+        -not $_.FullName.StartsWith((Resolve-Path $roadmapFolder).Path)
+    }
 
-# Combiner les listes de fichiers
-$allRoadmapFiles = $roadmapFiles + $otherRoadmapFiles.Name | Select-Object -Unique
+    # Combiner les listes de fichiers
+    $allRoadmapFiles = $roadmapFiles + $otherRoadmapFiles.Name | Select-Object -Unique
 
-# Déplacer les fichiers vers le dossier Roadmap
-foreach ($file in $allRoadmapFiles) {
-    $sourcePath = Join-Path -Path $mainFolder -ChildPath $file
-    $destinationPath = Join-Path -Path $roadmapFolder -ChildPath $file
-    
-    if (Test-Path -Path $sourcePath) {
-        # Vérifier si le fichier existe déjà dans le dossier Roadmap
-        if (Test-Path -Path $destinationPath) {
-            # Comparer les dates de modification
-            $sourceFile = Get-Item -Path $sourcePath
-            $destinationFile = Get-Item -Path $destinationPath
-            
-            if ($sourceFile.LastWriteTime -gt $destinationFile.LastWriteTime) {
-                # Le fichier source est plus récent, le remplacer
-                Move-Item -Path $sourcePath -Destination $destinationPath -Force
-                Write-Host "Fichier '$file' remplacé dans le dossier '$roadmapFolder' (version plus récente)." -ForegroundColor Yellow
+    # Déplacer les fichiers vers le dossier Roadmap
+    foreach ($file in $allRoadmapFiles) {
+        $sourcePath = Join-Path -Path $mainFolder -ChildPath $file
+        $destinationPath = Join-Path -Path $roadmapFolder -ChildPath $file
+
+        if (Test-Path -Path $sourcePath) {
+            # Vérifier si le fichier existe déjà dans le dossier Roadmap
+            if (Test-Path -Path $destinationPath) {
+                # Comparer les dates de modification
+                $sourceFile = Get-Item -Path $sourcePath
+                $destinationFile = Get-Item -Path $destinationPath
+
+                if ($sourceFile.LastWriteTime -gt $destinationFile.LastWriteTime) {
+                    # Le fichier source est plus récent, le remplacer
+                    Move-Item -Path $sourcePath -Destination $destinationPath -Force
+                    Write-Host "Fichier '$file' remplacé dans le dossier '$roadmapFolder' (version plus récente)." -ForegroundColor Yellow
+                } else {
+                    # Le fichier destination est plus récent ou identique, supprimer le fichier source
+                    Remove-Item -Path $sourcePath -Force
+                    Write-Host "Fichier '$file' supprimé du dossier principal (version plus ancienne ou identique)." -ForegroundColor Yellow
+                }
+            } else {
+                # Le fichier n'existe pas dans le dossier Roadmap, le déplacer
+                Move-Item -Path $sourcePath -Destination $destinationPath
+                Write-Host "Fichier '$file' déplacé vers le dossier '$roadmapFolder'." -ForegroundColor Green
             }
-            else {
-                # Le fichier destination est plus récent ou identique, supprimer le fichier source
-                Remove-Item -Path $sourcePath -Force
-                Write-Host "Fichier '$file' supprimé du dossier principal (version plus ancienne ou identique)." -ForegroundColor Yellow
-            }
-        }
-        else {
-            # Le fichier n'existe pas dans le dossier Roadmap, le déplacer
-            Move-Item -Path $sourcePath -Destination $destinationPath
-            Write-Host "Fichier '$file' déplacé vers le dossier '$roadmapFolder'." -ForegroundColor Green
         }
     }
-}
 
-# Créer un fichier README si nécessaire
-$readmePath = Join-Path -Path $roadmapFolder -ChildPath "README.md"
-if (-not (Test-Path -Path $readmePath)) {
-    $readmeContent = @"
+    # Créer un fichier README si nécessaire
+    $readmePath = Join-Path -Path $roadmapFolder -ChildPath "README.md"
+    if (-not (Test-Path -Path $readmePath)) {
+        $readmeContent = @"
 # Roadmap - Scripts et processus
 
 Ce dossier contient tous les scripts liés à la roadmap et à son exécution automatique.
@@ -162,14 +159,14 @@ Pour accéder à toutes les fonctionnalités, exécutez :
    - Fournit des mécanismes de récupération robustes
 "@
 
-    Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-    Write-Host "Fichier README créé : $readmePath" -ForegroundColor Green
-}
+        Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
+        Write-Host "Fichier README créé : $readmePath" -ForegroundColor Green
+    }
 
-# Créer un script de lancement rapide si nécessaire
-$startScriptPath = Join-Path -Path $roadmapFolder -ChildPath "StartRoadmap.ps1"
-if (-not (Test-Path -Path $startScriptPath)) {
-    $startScriptContent = @"
+    # Créer un script de lancement rapide si nécessaire
+    $startScriptPath = Join-Path -Path $roadmapFolder -ChildPath "StartRoadmap.ps1"
+    if (-not (Test-Path -Path $startScriptPath)) {
+        $startScriptContent = @"
 # Script de lancement rapide pour la roadmap
 # Ce script permet de lancer rapidement le gestionnaire de roadmap
 
@@ -177,14 +174,14 @@ if (-not (Test-Path -Path $startScriptPath)) {
 & ".\RoadmapManager.ps1"
 "@
 
-    Set-Content -Path $startScriptPath -Value $startScriptContent -Encoding UTF8
-    Write-Host "Script de lancement rapide créé : $startScriptPath" -ForegroundColor Green
-}
+        Set-Content -Path $startScriptPath -Value $startScriptContent -Encoding UTF8
+        Write-Host "Script de lancement rapide créé : $startScriptPath" -ForegroundColor Green
+    }
 
-# Créer un raccourci dans le dossier principal
-$shortcutPath = Join-Path -Path $mainFolder -ChildPath "StartRoadmap.ps1"
-if (-not (Test-Path -Path $shortcutPath)) {
-    $shortcutContent = @"
+    # Créer un raccourci dans le dossier principal
+    $shortcutPath = Join-Path -Path $mainFolder -ChildPath "StartRoadmap.ps1"
+    if (-not (Test-Path -Path $shortcutPath)) {
+        $shortcutContent = @"
 # Raccourci pour lancer le gestionnaire de roadmap
 # Ce script permet de lancer rapidement le gestionnaire de roadmap depuis le dossier principal
 
@@ -192,26 +189,24 @@ if (-not (Test-Path -Path $shortcutPath)) {
 & "..\D"
 "@
 
-    Set-Content -Path $shortcutPath -Value $shortcutContent -Encoding UTF8
-    Write-Host "Raccourci créé dans le dossier principal : $shortcutPath" -ForegroundColor Green
-}
+        Set-Content -Path $shortcutPath -Value $shortcutContent -Encoding UTF8
+        Write-Host "Raccourci créé dans le dossier principal : $shortcutPath" -ForegroundColor Green
+    }
 
-# Ouvrir le dossier Roadmap
-Invoke-Item $roadmapFolder
+    # Ouvrir le dossier Roadmap
+    Invoke-Item $roadmapFolder
 
-Write-Host "Nettoyage des fichiers de roadmap terminé !" -ForegroundColor Green
-Write-Host "Tous les fichiers liés à la roadmap ont été déplacés dans le dossier '$roadmapFolder'." -ForegroundColor Green
-Write-Host "Pour lancer le gestionnaire de roadmap, exécutez :" -ForegroundColor Cyan
-Write-Host "  - Depuis le dossier principal : .\StartRoadmap.ps1" -ForegroundColor Cyan
-Write-Host "  - Depuis le dossier Roadmap : .\RoadmapManager.ps1" -ForegroundColor Cyan
+    Write-Host "Nettoyage des fichiers de roadmap terminé !" -ForegroundColor Green
+    Write-Host "Tous les fichiers liés à la roadmap ont été déplacés dans le dossier '$roadmapFolder'." -ForegroundColor Green
+    Write-Host "Pour lancer le gestionnaire de roadmap, exécutez :" -ForegroundColor Cyan
+    Write-Host "  - Depuis le dossier principal : .\StartRoadmap.ps1" -ForegroundColor Cyan
+    Write-Host "  - Depuis le dossier Roadmap : .\RoadmapManager.ps1" -ForegroundColor Cyan
 
 
-}
-catch {
+} catch {
     Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
     exit 1
-}
-finally {
+} finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "Exécution du script terminée."
 }
