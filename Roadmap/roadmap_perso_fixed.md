@@ -140,8 +140,20 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 
 ### 1.3.2 Optimisation Dynamique de la Parallélisation
 - [ ] Ajuster dynamiquement le nombre de threads/runspaces en fonction de la charge système observée
+  - [ ] Développer un module PowerShell `Dynamic-ThreadManager.psm1` pour surveiller et ajuster les ressources
+  - [ ] Implémenter une fonction `Get-OptimalThreadCount` qui analyse CPU, mémoire et I/O en temps réel
+  - [ ] Créer un mécanisme d'ajustement progressif pour éviter les oscillations (augmentation/diminution graduelle)
+  - [ ] Intégrer des seuils configurables pour les métriques système (CPU > 80%, mémoire < 20%)
 - [ ] Réorganiser dynamiquement la file d'attente des tâches en priorisant celles qui bloquent souvent d'autres processus
+  - [ ] Développer un système de détection des dépendances entre tâches avec graphe de dépendances
+  - [ ] Implémenter un algorithme de scoring des tâches basé sur l'historique des blocages
+  - [ ] Créer une file d'attente prioritaire avec `System.Collections.Generic.PriorityQueue`
+  - [ ] Ajouter un mécanisme de promotion des tâches longtemps en attente pour éviter la famine
 - [ ] Implémenter un système de feedback pour l'auto-ajustement des paramètres de parallélisation
+  - [ ] Créer une base de données SQLite pour stocker les métriques de performance des exécutions
+  - [ ] Développer un algorithme d'apprentissage qui corrèle paramètres et performances
+  - [ ] Implémenter un mécanisme d'ajustement automatique basé sur les tendances historiques
+  - [ ] Ajouter un système de validation A/B pour confirmer l'efficacité des ajustements
 
 ### 1.3.3 Mise en Cache Prédictive et Adaptative
 - [ ] Utiliser les patterns d'usage pour précharger le cache pour les scripts/données fréquemment accédés
