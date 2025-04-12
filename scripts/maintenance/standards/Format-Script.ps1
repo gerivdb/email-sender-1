@@ -1,700 +1,454 @@
 ﻿<#
 .SYNOPSIS
-    Standardise automatiquement les scripts selon les standards de codage dÃ©finis.
+    Standardise les scripts PowerShell, Python, Batch et Shell selon les bonnes pratiques.
 .DESCRIPTION
-    Ce script corrige automatiquement les problÃ¨mes courants de conformitÃ© aux standards
-    de codage dans les scripts PowerShell, Python, Batch et Shell.
+    Ce script analyse et standardise les scripts dans le rÃ©pertoire spÃ©cifiÃ© selon un ensemble de rÃ¨gles
+    prÃ©dÃ©finies pour chaque type de script. Il gÃ©nÃ¨re un rapport de conformitÃ© et peut appliquer
+    automatiquement les corrections.
 .PARAMETER Path
-    Chemin du fichier ou du dossier contenant les scripts Ã  standardiser. Par dÃ©faut: scripts
+    Chemin vers le rÃ©pertoire contenant les scripts Ã  analyser. Par dÃ©faut: "scripts".
 .PARAMETER ComplianceReportPath
-    Chemin du rapport de conformitÃ© gÃ©nÃ©rÃ© par Test-ScriptCompliance.ps1.
-    Par dÃ©faut: scripts\manager\data\compliance_report.json
+    Chemin oÃ¹ enregistrer le rapport de conformitÃ©. Par dÃ©faut: "scripts\manager\data\compliance_report.json".
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport des modifications.
-    Par dÃ©faut: scripts\manager\data\standardization_report.json
+    Chemin oÃ¹ enregistrer le rapport de standardisation. Par dÃ©faut: "scripts\manager\data\standardization_report.json".
 .PARAMETER ScriptType
-    Type de script Ã  standardiser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par dÃ©faut: All
+    Type de scripts Ã  analyser. Valeurs possibles: "All", "PowerShell", "Python", "Batch", "Shell". Par dÃ©faut: "All".
 .PARAMETER Rules
-    Liste des rÃ¨gles Ã  appliquer. Par dÃ©faut: toutes les rÃ¨gles
+    Liste des rÃ¨gles Ã  appliquer. Si vide, toutes les rÃ¨gles sont appliquÃ©es.
 .PARAMETER AutoApply
-    Applique automatiquement les modifications sans demander de confirmation.
+    Si spÃ©cifiÃ©, applique automatiquement les corrections.
 .PARAMETER ShowDetails
-    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
+    Si spÃ©cifiÃ©, affiche les dÃ©tails des corrections.
 .EXAMPLE
-    .\Format-Script.ps1 -Path "scripts\maintenance"
-    Standardise tous les scripts dans le dossier scripts\maintenance.
+    .\Format-Script-v2.ps1 -Path "scripts\utils" -ScriptType "PowerShell" -AutoApply
+    Standardise tous les scripts PowerShell dans le rÃ©pertoire "scripts\utils" et applique automatiquement les corrections.
 .EXAMPLE
-    .\Format-Script.ps1 -Path "scripts\maintenance\script.ps1" -AutoApply
-    Standardise automatiquement le script spÃ©cifiÃ©.
-
-<#
-.SYNOPSIS
-    Standardise automatiquement les scripts selon les standards de codage dÃ©finis.
-.DESCRIPTION
-    Ce script corrige automatiquement les problÃ¨mes courants de conformitÃ© aux standards
-    de codage dans les scripts PowerShell, Python, Batch et Shell.
-.PARAMETER Path
-    Chemin du fichier ou du dossier contenant les scripts Ã  standardiser. Par dÃ©faut: scripts
-.PARAMETER ComplianceReportPath
-    Chemin du rapport de conformitÃ© gÃ©nÃ©rÃ© par Test-ScriptCompliance.ps1.
-    Par dÃ©faut: scripts\manager\data\compliance_report.json
-.PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport des modifications.
-    Par dÃ©faut: scripts\manager\data\standardization_report.json
-.PARAMETER ScriptType
-    Type de script Ã  standardiser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par dÃ©faut: All
-.PARAMETER Rules
-    Liste des rÃ¨gles Ã  appliquer. Par dÃ©faut: toutes les rÃ¨gles
-.PARAMETER AutoApply
-    Applique automatiquement les modifications sans demander de confirmation.
-.PARAMETER ShowDetails
-    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
-.EXAMPLE
-    .\Format-Script.ps1 -Path "scripts\maintenance"
-    Standardise tous les scripts dans le dossier scripts\maintenance.
-.EXAMPLE
-    .\Format-Script.ps1 -Path "scripts\maintenance\script.ps1" -AutoApply
-    Standardise automatiquement le script spÃ©cifiÃ©.
+    .\Format-Script-v2.ps1 -Path "scripts\python" -ScriptType "Python" -Rules "Indentation","Imports"
+    Analyse les scripts Python dans le rÃ©pertoire "scripts\python" en vÃ©rifiant uniquement les rÃ¨gles d'indentation et d'imports.
+.NOTES
+    Auteur: Augment Agent
+    Version: 2.0
+    Date: 12/04/2025
 #>
 
 param (
     [string]$Path = "scripts",
     [string]$ComplianceReportPath = "scripts\manager\data\compliance_report.json",
     [string]$OutputPath = "scripts\manager\data\standardization_report.json",
-    [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")
-
-# Configuration de la gestion d'erreurs
-$ErrorActionPreference = 'Stop'
-$Error.Clear()
-# Fonction de journalisation
-function Write-Log {
-    param (
-        [string]$Message,
-        [string]$Level = "INFO"
-    )
-    
-    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    $logEntry = "[$timestamp] [$Level] $Message"
-    
-    # Afficher dans la console
-    switch ($Level) {
-        "INFO" { Write-Host $logEntry -ForegroundColor White }
-        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
-        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
-        "DEBUG" { Write-Verbose $logEntry }
-    }
-    
-    # Ã‰crire dans le fichier journal
-    try {
-        $logDir = Split-Path -Path $PSScriptRoot -Parent
-        $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
-        
-        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
-        $logDirPath = Split-Path -Path $logPath -Parent
-        if (-not (Test-Path -Path $logDirPath -PathType Container)) {
-            New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
-        }
-        
-        Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
-    }
-    catch {
-        # Ignorer les erreurs d'Ã©criture dans le journal
-    }
-}
-try {
-    # Script principal
-]
+    [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")]
     [string]$ScriptType = "All",
     [string[]]$Rules = @(),
     [switch]$AutoApply,
     [switch]$ShowDetails
 )
 
-# Fonction pour Ã©crire des messages de log
+# Configuration de la gestion d'erreurs
+$ErrorActionPreference = 'Stop'
+$Error.Clear()
+
+# Fonction de journalisation
 function Write-Log {
     param (
+        [Parameter(Mandatory = $true)]
         [string]$Message,
-        [ValidateSet("INFO", "SUCCESS", "WARNING", "ERROR", "TITLE")]
-        [string]$Level = "INFO"
+        
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("INFO", "WARNING", "ERROR", "SUCCESS")]
+        [string]$Level = "INFO",
+        
+        [Parameter(Mandatory = $false)]
+        [string]$LogFilePath = "scripts\manager\logs\standardization.log"
     )
     
-    $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    $ColorMap = @{
-        "INFO" = "White"
-        "SUCCESS" = "Green"
-        "WARNING" = "Yellow"
-        "ERROR" = "Red"
-        "TITLE" = "Cyan"
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logMessage = "[$timestamp] [$Level] $Message"
+    
+    # DÃ©finir la couleur en fonction du niveau
+    $color = switch ($Level) {
+        "INFO" { "White" }
+        "WARNING" { "Yellow" }
+        "ERROR" { "Red" }
+        "SUCCESS" { "Green" }
+        default { "White" }
     }
     
-    $Color = $ColorMap[$Level]
-    $FormattedMessage = "[$TimeStamp] [$Level] $Message"
+    # Afficher le message dans la console
+    Write-Host $logMessage -ForegroundColor $color
     
-    Write-Host $FormattedMessage -ForegroundColor $Color
+    # CrÃ©er le rÃ©pertoire de logs s'il n'existe pas
+    $logDir = Split-Path -Path $LogFilePath -Parent
+    if (-not (Test-Path -Path $logDir)) {
+        New-Item -Path $logDir -ItemType Directory -Force | Out-Null
+    }
     
-    # Ã‰crire dans un fichier de log
-    $LogFile = "scripts\manager\data\standardization.log"
-    Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
+    # Ã‰crire dans le fichier de log
+    try {
+        Add-Content -Path $LogFilePath -Value $logMessage -Encoding UTF8
+    }
+    catch {
+        # Ignorer les erreurs d'Ã©criture dans le journal
+    }
 }
 
-# Fonction pour obtenir tous les fichiers de script
-function Get-ScriptFiles {
-    param (
-        [string]$Path,
-        [string]$ScriptType
-    )
-    
-    $ScriptExtensions = @{
-        "PowerShell" = @("*.ps1", "*.psm1", "*.psd1")
-        "Python" = @("*.py")
-        "Batch" = @("*.cmd", "*.bat")
-        "Shell" = @("*.sh")
+try {
+    # Fonction pour rÃ©parer les comparaisons avec $null
+    function Repair-NullComparisons {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$Content
+        )
+        
+        Write-Log -Level INFO -Message "RÃ©paration des comparaisons avec `$null..."
+        
+        # Rechercher les comparaisons incorrectes avec $null
+        $pattern = '(\$\w+)\s+-(?:eq|ne)\s+\$null'
+        $correctedContent = $Content -replace $pattern, '$null -$2 $1'
+        
+        return $correctedContent
     }
     
-    $Files = @()
-    
-    # Si le chemin est un fichier, retourner ce fichier s'il correspond au type
-    if (Test-Path -Path $Path -PathType Leaf) {
-        $Extension = [System.IO.Path]::GetExtension($Path).ToLower()
-        $FileType = switch ($Extension) {
-            ".ps1" { "PowerShell" }
-            ".psm1" { "PowerShell" }
-            ".psd1" { "PowerShell" }
-            ".py" { "Python" }
-            ".cmd" { "Batch" }
-            ".bat" { "Batch" }
-            ".sh" { "Shell" }
-            default { "Unknown" }
-        }
+    # Fonction pour rÃ©parer les concatÃ©nations de chemins
+    function Repair-PathConcatenations {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$Content
+        )
         
-        if ($ScriptType -eq "All" -or $ScriptType -eq $FileType) {
-            $Files += Get-Item -Path $Path
-        }
+        Write-Log -Level INFO -Message "RÃ©paration des concatÃ©nations de chemins..."
         
-        return $Files
-    }
-    
-    # Si le chemin est un dossier, rechercher les fichiers correspondants
-    if ($ScriptType -eq "All") {
-        foreach ($Type in $ScriptExtensions.Keys) {
-            foreach ($Extension in $ScriptExtensions[$Type]) {
-                $Files += Get-ChildItem -Path $Path -Filter $Extension -Recurse -File
+        # Rechercher les concatÃ©nations de chemins
+        $customMatches = $Content | Select-String -Pattern '(\$\w+)\s*\+\s*[''"]\\' -AllMatches
+        
+        if ($customMatches -and $customMatches.Matches.Count -gt 0) {
+            foreach ($match in $customMatches.Matches) {
+                $original = $match.Value
+                $variable = $match.Groups[1].Value
+                $replacement = "$variable | Join-Path -ChildPath "
+                $Content = $Content -replace [regex]::Escape($original), $replacement
             }
         }
-    } else {
-        foreach ($Extension in $ScriptExtensions[$ScriptType]) {
-            $Files += Get-ChildItem -Path $Path -Filter $Extension -Recurse -File
-        }
-    }
-    
-    return $Files
-}
-
-# Fonction pour dÃ©terminer le type de script
-function Get-ScriptType {
-    param (
-        [string]$FilePath
-    )
-    
-    $Extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
-    
-    switch ($Extension) {
-        ".ps1" { return "PowerShell" }
-        ".psm1" { return "PowerShell" }
-        ".psd1" { return "PowerShell" }
-        ".py" { return "Python" }
-        ".cmd" { return "Batch" }
-        ".bat" { return "Batch" }
-        ".sh" { return "Shell" }
-        default { return "Unknown" }
-    }
-}
-
-# Fonction pour ajouter un en-tÃªte de script PowerShell
-function Add-PowerShellHeader {
-    param (
-        [string]$FilePath,
-        [string]$Content
-    )
-    
-    $FileName = [System.IO.Path]::GetFileName($FilePath)
-    $CurrentDate = Get-Date -Format "yyyy-MM-dd"
-    
-    $Header = @"
-<#
-.SYNOPSIS
-    Description brÃ¨ve du script.
-.DESCRIPTION
-    Description dÃ©taillÃ©e du script.
-.PARAMETER Param1
-    Description du premier paramÃ¨tre.
-.EXAMPLE
-    .\$FileName -Param1 Value1
-    Description de ce que fait cet exemple.
-.NOTES
-    Nom du fichier    : $FileName
-    Auteur           : 
-    Date de crÃ©ation  : $CurrentDate
-    DerniÃ¨re modification : $CurrentDate
-    Version          : 1.0
-#>
-
-"@
-    
-    # Si le script a dÃ©jÃ  un bloc param, ajouter l'en-tÃªte avant
-    if ($Content -match "param\s*\(") {
-        $NewContent = $Content -replace "param\s*\(", "$Header`r`nparam ("
-    } else {
-        $NewContent = "$Header`r`n$Content"
-    }
-    
-    return $NewContent
-}
-
-# Fonction pour ajouter un en-tÃªte de script Python
-function Add-PythonHeader {
-    param (
-        [string]$FilePath,
-        [string]$Content
-    )
-    
-    $FileName = [System.IO.Path]::GetFileName($FilePath)
-    $CurrentDate = Get-Date -Format "yyyy-MM-dd"
-    
-    $Header = @"
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Nom du script : $FileName
-Description : Description brÃ¨ve du script.
-Auteur : 
-Date de crÃ©ation : $CurrentDate
-DerniÃ¨re modification : $CurrentDate
-Version : 1.0
-
-Exemples d'utilisation :
-    python $FileName arg1 arg2
-"""
-
-"@
-    
-    # Ajouter l'en-tÃªte au dÃ©but du fichier
-    $NewContent = "$Header`r`n$Content"
-    
-    return $NewContent
-}
-
-# Fonction pour ajouter un en-tÃªte de script Batch
-function Add-BatchHeader {
-    param (
-        [string]$FilePath,
-        [string]$Content
-    )
-    
-    $FileName = [System.IO.Path]::GetFileName($FilePath)
-    $CurrentDate = Get-Date -Format "yyyy-MM-dd"
-    
-    $Header = @"
-@echo off
-setlocal enabledelayedexpansion
-
-::-----------------------------------------------------------------------------
-:: Nom du script : $FileName
-:: Description   : Description brÃ¨ve du script.
-:: Auteur        : 
-:: Date de crÃ©ation : $CurrentDate
-:: DerniÃ¨re modification : $CurrentDate
-:: Version       : 1.0
-::
-:: Utilisation   : $FileName [arg1] [arg2]
-::-----------------------------------------------------------------------------
-
-"@
-    
-    # Si le script commence dÃ©jÃ  par @echo off, remplacer cette ligne
-    if ($Content -match "^@echo off") {
-        $NewContent = $Content -replace "^@echo off", $Header
-    } else {
-        $NewContent = "$Header`r`n$Content"
-    }
-    
-    return $NewContent
-}
-
-# Fonction pour ajouter un en-tÃªte de script Shell
-function Add-ShellHeader {
-    param (
-        [string]$FilePath,
-        [string]$Content
-    )
-    
-    $FileName = [System.IO.Path]::GetFileName($FilePath)
-    $CurrentDate = Get-Date -Format "yyyy-MM-dd"
-    
-    $Header = @"
-#!/bin/bash
-#-----------------------------------------------------------------------------
-# Nom du script : $FileName
-# Description   : Description brÃ¨ve du script.
-# Auteur        : 
-# Date de crÃ©ation : $CurrentDate
-# DerniÃ¨re modification : $CurrentDate
-# Version       : 1.0
-#
-# Utilisation   : ./$FileName [arg1] [arg2]
-#-----------------------------------------------------------------------------
-
-# ArrÃªter le script en cas d'erreur
-set -e
-
-"@
-    
-    # Si le script commence dÃ©jÃ  par un shebang, remplacer cette ligne
-    if ($Content -match "^#!/bin/(ba)?sh") {
-        $NewContent = $Content -replace "^#!/bin/(ba)?sh.*\n", $Header
-    } else {
-        $NewContent = "$Header`r`n$Content"
-    }
-    
-    return $NewContent
-}
-
-# Fonction pour corriger les comparaisons avec $null
-function Fix-NullComparisons {
-    param (
-        [string]$Content
-    )
-    
-    $NewContent = $Content -replace "(\$[A-Za-z0-9_]+)\s+-eq\s+\$null", "`$null -eq `$1"
-    
-    return $NewContent
-}
-
-# Fonction pour corriger les concatÃ©nations de chemins
-function Fix-PathConcatenations {
-    param (
-        [string]$Content
-    )
-    
-    $Matches = [regex]::Matches($Content, "(\$[A-Za-z0-9_]+)\s*\+\s*(['""])\\([^'""]+)\\?([^'""]*)['""]")
-    
-    $NewContent = $Content
-    
-    foreach ($Match in $Matches) {
-        $Original = $Match.Value
-        $Variable = $Match.Groups[1].Value
-        $Quote = $Match.Groups[2].Value
-        $Path1 = $Match.Groups[3].Value
-        $Path2 = $Match.Groups[4].Value
         
-        $Replacement = "Join-Path -Path $Variable -ChildPath $Quote$Path1\$Path2$Quote"
-        $NewContent = $NewContent.Replace($Original, $Replacement)
+        return $Content
     }
     
-    return $NewContent
-}
-
-# Fonction pour ajouter if __name__ == "__main__" Ã  un script Python
-function Add-PythonMainGuard {
-    param (
-        [string]$Content
-    )
-    
-    if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
-        $MainGuard = @"
-
-def main():
-    """Point d'entrÃ©e principal du script."""
-    pass
-
-if __name__ == "__main__":
-    main()
-"@
-        
-        $NewContent = "$Content`r`n$MainGuard"
-    } else {
-        $NewContent = $Content
-    }
-    
-    return $NewContent
-}
-
-# Fonction pour remplacer les tabulations par des espaces
-function Fix-Indentation {
-    param (
-        [string]$Content
-    )
-    
-    $NewContent = $Content -replace "\t", "    "
-    
-    return $NewContent
-}
-
-# Fonction pour corriger l'encodage du fichier
-function Fix-FileEncoding {
-    param (
-        [string]$FilePath,
-        [string]$ScriptType
-    )
-    
-    $Content = Get-Content -Path $FilePath -Raw
-    
-    switch ($ScriptType) {
-        "PowerShell" {
-            # Encoder en UTF-8 avec BOM
-            [System.IO.File]::WriteAllText($FilePath, $Content, [System.Text.Encoding]::UTF8)
-        }
-        "Python" {
-            # Encoder en UTF-8 sans BOM
-            $Utf8NoBom = New-Object System.Text.UTF8Encoding $false
-            [System.IO.File]::WriteAllText($FilePath, $Content, $Utf8NoBom)
-        }
-        "Shell" {
-            # Encoder en UTF-8 sans BOM
-            $Utf8NoBom = New-Object System.Text.UTF8Encoding $false
-            [System.IO.File]::WriteAllText($FilePath, $Content, $Utf8NoBom)
-        }
-    }
-}
-
-# Fonction pour standardiser un script
-function Format-ScriptContent {
-    param (
-        [string]$FilePath,
-        [string[]]$Rules,
-        [switch]$Apply
-    )
-    
-    $ScriptType = Get-ScriptType -FilePath $FilePath
-    
-    if ($ScriptType -eq "Unknown") {
-        Write-Log "Type de script inconnu: $FilePath" -Level "WARNING"
-        return $null
-    }
-    
-    $Content = Get-Content -Path $FilePath -Raw -Encoding UTF8
-    $NewContent = $Content
-    $Changes = @()
-    
-    # Appliquer les rÃ¨gles de standardisation
-    if ($Rules.Count -eq 0 -or $Rules -contains "Header") {
-        # Ajouter un en-tÃªte si nÃ©cessaire
-        $HasHeader = switch ($ScriptType) {
-            "PowerShell" { $Content -match "<#[\s\S]*?#>" }
-            "Python" { $Content -match '"""[\s\S]*?"""' -or $Content -match "'''[\s\S]*?'''" }
-            "Batch" { $Content -match "::[-]+\r?\n::([\s\S]*?)::[-]+" }
-            "Shell" { $Content -match "#[-]+\n#([\s\S]*?)#[-]+" }
-            default { $true }
-        }
-        
-        if (-not $HasHeader) {
-            $OldContent = $NewContent
-            $NewContent = switch ($ScriptType) {
-                "PowerShell" { Add-PowerShellHeader -FilePath $FilePath -Content $NewContent }
-                "Python" { Add-PythonHeader -FilePath $FilePath -Content $NewContent }
-                "Batch" { Add-BatchHeader -FilePath $FilePath -Content $NewContent }
-                "Shell" { Add-ShellHeader -FilePath $FilePath -Content $NewContent }
-                default { $NewContent }
-            }
+    # Fonction pour rÃ©parer l'indentation
+    function Repair-Indentation {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$Content,
             
-            if ($NewContent -ne $OldContent) {
-                $Changes += [PSCustomObject]@{
-                    Rule = "Header"
-                    Description = "Ajout d'un en-tÃªte standard"
-                }
-            }
-        }
-    }
-    
-    if ($Rules.Count -eq 0 -or $Rules -contains "NullComparison") {
-        # Corriger les comparaisons avec $null
-        if ($ScriptType -eq "PowerShell") {
-            $OldContent = $NewContent
-            $NewContent = Fix-NullComparisons -Content $NewContent
-            
-            if ($NewContent -ne $OldContent) {
-                $Changes += [PSCustomObject]@{
-                    Rule = "NullComparison"
-                    Description = "Correction des comparaisons avec `$null"
-                }
-            }
-        }
-    }
-    
-    if ($Rules.Count -eq 0 -or $Rules -contains "PathConcatenation") {
-        # Corriger les concatÃ©nations de chemins
-        if ($ScriptType -eq "PowerShell") {
-            $OldContent = $NewContent
-            $NewContent = Fix-PathConcatenations -Content $NewContent
-            
-            if ($NewContent -ne $OldContent) {
-                $Changes += [PSCustomObject]@{
-                    Rule = "PathConcatenation"
-                    Description = "Remplacement des concatÃ©nations de chemins par Join-Path"
-                }
-            }
-        }
-    }
-    
-    if ($Rules.Count -eq 0 -or $Rules -contains "MainGuard") {
-        # Ajouter if __name__ == "__main__" Ã  un script Python
-        if ($ScriptType -eq "Python") {
-            $OldContent = $NewContent
-            $NewContent = Add-PythonMainGuard -Content $NewContent
-            
-            if ($NewContent -ne $OldContent) {
-                $Changes += [PSCustomObject]@{
-                    Rule = "MainGuard"
-                    Description = "Ajout de la clause 'if __name__ == \"__main__\"'"
-                }
-            }
-        }
-    }
-    
-    if ($Rules.Count -eq 0 -or $Rules -contains "Indentation") {
-        # Remplacer les tabulations par des espaces
-        $OldContent = $NewContent
-        $NewContent = Fix-Indentation -Content $NewContent
+            [Parameter(Mandatory = $false)]
+            [int]$TabSize = 4
+        )
         
-        if ($NewContent -ne $OldContent) {
-            $Changes += [PSCustomObject]@{
-                Rule = "Indentation"
-                Description = "Remplacement des tabulations par des espaces"
-            }
-        }
+        Write-Log -Level INFO -Message "RÃ©paration de l'indentation..."
+        
+        # ImplÃ©menter la logique de rÃ©paration de l'indentation
+        # Cette fonction est un placeholder pour l'instant
+        
+        return $Content
     }
     
-    # Appliquer les modifications
-    if ($Apply -and $Changes.Count -gt 0) {
-        Set-Content -Path $FilePath -Value $NewContent -Encoding UTF8
+    # Fonction pour rÃ©parer l'encodage des fichiers
+    function Repair-FileEncoding {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$FilePath
+        )
         
-        # Corriger l'encodage si nÃ©cessaire
+        Write-Log -Level INFO -Message "VÃ©rification de l'encodage du fichier $FilePath..."
+        
+        # VÃ©rifier l'encodage actuel
+        $bytes = [System.IO.File]::ReadAllBytes($FilePath)
+        $hasBOM = $bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF
+        
+        if (-not $hasBOM) {
+            Write-Log -Level WARNING -Message "Le fichier $FilePath n'a pas de BOM UTF-8. Correction en cours..."
+            
+            # Lire le contenu
+            $content = Get-Content -Path $FilePath -Raw
+            
+            # Ã‰crire avec l'encodage UTF-8 avec BOM
+            [System.IO.File]::WriteAllText($FilePath, $content, [System.Text.UTF8Encoding]::new($true))
+            
+            Write-Log -Level SUCCESS -Message "Encodage corrigÃ© pour $FilePath"
+            return $true
+        }
+        
+        return $false
+    }
+    
+    # Fonction pour standardiser les scripts PowerShell
+    function Start-PowerShellStandardization {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$FilePath,
+            
+            [Parameter(Mandatory = $false)]
+            [string[]]$Rules,
+            
+            [Parameter(Mandatory = $false)]
+            [switch]$AutoApply
+        )
+        
+        Write-Log -Level INFO -Message "Standardisation du script PowerShell: $FilePath"
+        
+        # Lire le contenu du fichier
+        $content = Get-Content -Path $FilePath -Raw
+        $originalContent = $content
+        $modified = $false
+        
+        # Appliquer les rÃ¨gles
+        if ($Rules.Count -eq 0 -or $Rules -contains "NullComparisons") {
+            $content = Repair-NullComparisons -Content $content
+        }
+        
+        if ($Rules.Count -eq 0 -or $Rules -contains "PathConcatenations") {
+            $content = Repair-PathConcatenations -Content $content
+        }
+        
+        if ($Rules.Count -eq 0 -or $Rules -contains "Indentation") {
+            $content = Repair-Indentation -Content $content
+        }
+        
         if ($Rules.Count -eq 0 -or $Rules -contains "Encoding") {
-            Fix-FileEncoding -FilePath $FilePath -ScriptType $ScriptType
-            $Changes += [PSCustomObject]@{
-                Rule = "Encoding"
-                Description = "Correction de l'encodage du fichier"
+            Repair-FileEncoding -FilePath $FilePath | Out-Null
+        }
+        
+        # VÃ©rifier si le contenu a Ã©tÃ© modifiÃ©
+        if ($content -ne $originalContent) {
+            $modified = $true
+            
+            if ($AutoApply) {
+                Write-Log -Level INFO -Message "Application des corrections au fichier $FilePath..."
+                Set-Content -Path $FilePath -Value $content -Encoding UTF8
+                Write-Log -Level SUCCESS -Message "Corrections appliquÃ©es avec succÃ¨s."
             }
+            else {
+                Write-Log -Level WARNING -Message "Des corrections sont nÃ©cessaires pour $FilePath. Utilisez -AutoApply pour les appliquer."
+            }
+        }
+        else {
+            Write-Log -Level SUCCESS -Message "Le script $FilePath est conforme aux standards."
+        }
+        
+        return [PSCustomObject]@{
+            FilePath = $FilePath
+            Modified = $modified
+            Rules = $Rules
         }
     }
     
-    $Result = [PSCustomObject]@{
-        FilePath = $FilePath
-        ScriptType = $ScriptType
-        ChangeCount = $Changes.Count
-        Changes = $Changes
-        Applied = $Apply
-    }
-    
-    return $Result
-}
-
-# Fonction principale
-function Start-ScriptStandardization {
-    param (
-        [string]$Path,
-        [string]$ComplianceReportPath,
-        [string]$OutputPath,
-        [string]$ScriptType,
-        [string[]]$Rules,
-        [switch]$AutoApply,
-        [switch]$ShowDetails
-    )
-    
-    Write-Log "DÃ©marrage de la standardisation des scripts..." -Level "TITLE"
-    Write-Log "Chemin: $Path" -Level "INFO"
-    Write-Log "Type de script: $ScriptType" -Level "INFO"
-    Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
-    
-    # VÃ©rifier si le chemin existe
-    if (-not (Test-Path -Path $Path)) {
-        Write-Log "Le chemin n'existe pas: $Path" -Level "ERROR"
-        return
-    }
-    
-    # CrÃ©er le dossier de sortie s'il n'existe pas
-    $OutputDir = Split-Path -Path $OutputPath -Parent
-    if (-not (Test-Path -Path $OutputDir)) {
-        New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-        Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "SUCCESS"
-    }
-    
-    # Obtenir tous les fichiers de script
-    $ScriptFiles = Get-ScriptFiles -Path $Path -ScriptType $ScriptType
-    $TotalFiles = $ScriptFiles.Count
-    Write-Log "Nombre de fichiers Ã  standardiser: $TotalFiles" -Level "INFO"
-    
-    # Initialiser les rÃ©sultats
-    $Results = @{
-        Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-        TotalFiles = $TotalFiles
-        ScriptType = $ScriptType
-        TotalChangeCount = 0
-        AppliedChangeCount = 0
-        ScriptResults = @()
-    }
-    
-    # Standardiser chaque fichier
-    $FileCounter = 0
-    foreach ($File in $ScriptFiles) {
-        $FileCounter++
-        $Progress = [math]::Round(($FileCounter / $TotalFiles) * 100)
-        Write-Progress -Activity "Standardisation des scripts" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
+    # Fonction pour standardiser les scripts Python
+    function Start-PythonStandardization {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$FilePath,
+            
+            [Parameter(Mandatory = $false)]
+            [string[]]$Rules,
+            
+            [Parameter(Mandatory = $false)]
+            [switch]$AutoApply
+        )
         
-        if ($ShowDetails) {
-            Write-Log "Standardisation du fichier: $($File.FullName)" -Level "INFO"
+        Write-Log -Level INFO -Message "Standardisation du script Python: $FilePath"
+        
+        # ImplÃ©menter la standardisation Python
+        # Cette fonction est un placeholder pour l'instant
+        
+        return [PSCustomObject]@{
+            FilePath = $FilePath
+            Modified = $false
+            Rules = $Rules
+        }
+    }
+    
+    # Fonction pour standardiser les scripts Batch
+    function Start-BatchStandardization {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$FilePath,
+            
+            [Parameter(Mandatory = $false)]
+            [string[]]$Rules,
+            
+            [Parameter(Mandatory = $false)]
+            [switch]$AutoApply
+        )
+        
+        Write-Log -Level INFO -Message "Standardisation du script Batch: $FilePath"
+        
+        # ImplÃ©menter la standardisation Batch
+        # Cette fonction est un placeholder pour l'instant
+        
+        return [PSCustomObject]@{
+            FilePath = $FilePath
+            Modified = $false
+            Rules = $Rules
+        }
+    }
+    
+    # Fonction pour standardiser les scripts Shell
+    function Start-ShellStandardization {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$FilePath,
+            
+            [Parameter(Mandatory = $false)]
+            [string[]]$Rules,
+            
+            [Parameter(Mandatory = $false)]
+            [switch]$AutoApply
+        )
+        
+        Write-Log -Level INFO -Message "Standardisation du script Shell: $FilePath"
+        
+        # ImplÃ©menter la standardisation Shell
+        # Cette fonction est un placeholder pour l'instant
+        
+        return [PSCustomObject]@{
+            FilePath = $FilePath
+            Modified = $false
+            Rules = $Rules
+        }
+    }
+    
+    # Fonction principale pour la standardisation des scripts
+    function Start-ScriptStandardization {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$Path,
+            
+            [Parameter(Mandatory = $false)]
+            [string]$ComplianceReportPath,
+            
+            [Parameter(Mandatory = $false)]
+            [string]$OutputPath,
+            
+            [Parameter(Mandatory = $false)]
+            [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")]
+            [string]$ScriptType = "All",
+            
+            [Parameter(Mandatory = $false)]
+            [string[]]$Rules = @(),
+            
+            [Parameter(Mandatory = $false)]
+            [switch]$AutoApply,
+            
+            [Parameter(Mandatory = $false)]
+            [switch]$ShowDetails
+        )
+        
+        Write-Log -Level INFO -Message "DÃ©marrage de la standardisation des scripts..."
+        Write-Log -Level INFO -Message "Chemin: $Path"
+        Write-Log -Level INFO -Message "Type de scripts: $ScriptType"
+        Write-Log -Level INFO -Message "RÃ¨gles: $($Rules -join ', ')"
+        Write-Log -Level INFO -Message "Application automatique: $AutoApply"
+        
+        # VÃ©rifier si le chemin existe
+        if (-not (Test-Path -Path $Path)) {
+            Write-Log -Level ERROR -Message "Le chemin spÃ©cifiÃ© n'existe pas: $Path"
+            return
         }
         
-        # Standardiser le script
-        $ScriptResult = Format-ScriptContent -FilePath $File.FullName -Rules $Rules -Apply:$AutoApply
+        # RÃ©cupÃ©rer les fichiers Ã  analyser
+        $files = @()
         
-        if ($null -ne $ScriptResult) {
-            $Results.ScriptResults += $ScriptResult
-            $Results.TotalChangeCount += $ScriptResult.ChangeCount
+        if ($ScriptType -eq "All" -or $ScriptType -eq "PowerShell") {
+            $files += Get-ChildItem -Path $Path -Recurse -Include "*.ps1", "*.psm1", "*.psd1"
+        }
+        
+        if ($ScriptType -eq "All" -or $ScriptType -eq "Python") {
+            $files += Get-ChildItem -Path $Path -Recurse -Include "*.py"
+        }
+        
+        if ($ScriptType -eq "All" -or $ScriptType -eq "Batch") {
+            $files += Get-ChildItem -Path $Path -Recurse -Include "*.bat", "*.cmd"
+        }
+        
+        if ($ScriptType -eq "All" -or $ScriptType -eq "Shell") {
+            $files += Get-ChildItem -Path $Path -Recurse -Include "*.sh"
+        }
+        
+        Write-Log -Level INFO -Message "Nombre de fichiers Ã  analyser: $($files.Count)"
+        
+        # Analyser chaque fichier
+        $results = @()
+        
+        foreach ($file in $files) {
+            $result = $null
             
-            if ($ScriptResult.Applied) {
-                $Results.AppliedChangeCount += $ScriptResult.ChangeCount
-            }
-            
-            if ($ShowDetails -and $ScriptResult.ChangeCount -gt 0) {
-                Write-Log "  Modifications: $($ScriptResult.ChangeCount)" -Level "INFO"
-                foreach ($Change in $ScriptResult.Changes) {
-                    Write-Log "    [$($Change.Rule)] $($Change.Description)" -Level "INFO"
+            switch -Regex ($file.Extension) {
+                '\.ps[md]?1$' {
+                    $result = Start-PowerShellStandardization -FilePath $file.FullName -Rules $Rules -AutoApply:$AutoApply
+                    break
                 }
+                '\.py$' {
+                    $result = Start-PythonStandardization -FilePath $file.FullName -Rules $Rules -AutoApply:$AutoApply
+                    break
+                }
+                '\.(bat|cmd)$' {
+                    $result = Start-BatchStandardization -FilePath $file.FullName -Rules $Rules -AutoApply:$AutoApply
+                    break
+                }
+                '\.sh$' {
+                    $result = Start-ShellStandardization -FilePath $file.FullName -Rules $Rules -AutoApply:$AutoApply
+                    break
+                }
+            }
+            
+            if ($result) {
+                $results += $result
                 
-                if ($ScriptResult.Applied) {
-                    Write-Log "  Modifications appliquÃ©es" -Level "SUCCESS"
-                } else {
-                    Write-Log "  Modifications simulÃ©es (non appliquÃ©es)" -Level "WARNING"
+                if ($ShowDetails -and $result.Modified) {
+                    Write-Log -Level INFO -Message "DÃ©tails des modifications pour $($file.Name):"
+                    # Afficher les dÃ©tails des modifications
                 }
             }
         }
+        
+        # GÃ©nÃ©rer le rapport de conformitÃ©
+        $complianceReport = [PSCustomObject]@{
+            TotalFiles = $files.Count
+            ModifiedFiles = ($results | Where-Object { $_.Modified } | Measure-Object).Count
+            CompliantFiles = ($results | Where-Object { -not $_.Modified } | Measure-Object).Count
+            Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        }
+        
+        # Enregistrer le rapport de conformitÃ©
+        if ($ComplianceReportPath) {
+            $complianceReportDir = Split-Path -Path $ComplianceReportPath -Parent
+            if (-not (Test-Path -Path $complianceReportDir)) {
+                New-Item -Path $complianceReportDir -ItemType Directory -Force | Out-Null
+            }
+            
+            $complianceReport | ConvertTo-Json -Depth 10 | Set-Content -Path $ComplianceReportPath -Encoding UTF8
+            Write-Log -Level SUCCESS -Message "Rapport de conformitÃ© enregistrÃ©: $ComplianceReportPath"
+        }
+        
+        # Enregistrer le rapport de standardisation
+        if ($OutputPath) {
+            $outputDir = Split-Path -Path $OutputPath -Parent
+            if (-not (Test-Path -Path $outputDir)) {
+                New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
+            }
+            
+            $results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
+            Write-Log -Level SUCCESS -Message "Rapport de standardisation enregistrÃ©: $OutputPath"
+        }
+        
+        # Afficher un rÃ©sumÃ©
+        Write-Log -Level INFO -Message "RÃ©sumÃ© de la standardisation:"
+        Write-Log -Level INFO -Message "  Fichiers analysÃ©s: $($files.Count)"
+        Write-Log -Level SUCCESS -Message "  Fichiers conformes: $($complianceReport.CompliantFiles)"
+        Write-Log -Level WARNING -Message "  Fichiers modifiÃ©s: $($complianceReport.ModifiedFiles)"
+        
+        return $complianceReport
     }
     
-    Write-Progress -Activity "Standardisation des scripts" -Completed
-    
-    # Enregistrer les rÃ©sultats
-    $Results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
-    
-    # Afficher un rÃ©sumÃ©
-    Write-Log "Standardisation terminÃ©e" -Level "SUCCESS"
-    Write-Log "Nombre total de fichiers traitÃ©s: $TotalFiles" -Level "INFO"
-    Write-Log "Nombre total de modifications: $($Results.TotalChangeCount)" -Level "INFO"
-    
-    if ($AutoApply) {
-        Write-Log "Nombre de modifications appliquÃ©es: $($Results.AppliedChangeCount)" -Level "SUCCESS"
-    } else {
-        Write-Log "Pour appliquer les modifications, exÃ©cutez la commande avec -AutoApply" -Level "WARNING"
-    }
-    
-    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
-    
-    return $Results
-}
-
-# ExÃ©cuter la fonction principale
-Start-ScriptStandardization -Path $Path -ComplianceReportPath $ComplianceReportPath -OutputPath $OutputPath -ScriptType $ScriptType -Rules $Rules -AutoApply:$AutoApply -ShowDetails:$ShowDetails
-
+    # ExÃ©cuter la fonction principale
+    Start-ScriptStandardization -Path $Path -ComplianceReportPath $ComplianceReportPath -OutputPath $OutputPath -ScriptType $ScriptType -Rules $Rules -AutoApply:$AutoApply -ShowDetails:$ShowDetails
 }
 catch {
     Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"

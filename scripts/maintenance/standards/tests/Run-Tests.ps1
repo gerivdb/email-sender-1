@@ -1,9 +1,9 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests unitaires pour Inspect-ScriptPreventively.ps1.
+    ExÃ©cute les tests unitaires pour Inspect-ScriptPreventively.ps1.
 .DESCRIPTION
-    Ce script exécute les tests unitaires pour vérifier le bon fonctionnement
+    Ce script exÃ©cute les tests unitaires pour vÃ©rifier le bon fonctionnement
     du script Inspect-ScriptPreventively.ps1.
 .NOTES
     Author: Augment Agent
@@ -13,7 +13,7 @@
 
 # Importer Pester
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
@@ -28,19 +28,19 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $PSScriptRoot -ChildPath "TestResults.xml"
 $pesterConfig.TestResult.OutputFormat = 'NUnitXml'
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires pour Inspect-ScriptPreventively.ps1..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires pour Inspect-ScriptPreventively.ps1..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis: $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "  Tests ignorés: $($testResults.SkippedCount)" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $($testResults.SkippedCount)" -ForegroundColor Yellow
 
 # Afficher le chemin du rapport
-Write-Host "`nRapport généré: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor White
+Write-Host "`nRapport gÃ©nÃ©rÃ©: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor White
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $testResults

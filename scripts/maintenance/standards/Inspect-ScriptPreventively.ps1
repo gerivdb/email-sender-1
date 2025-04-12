@@ -1,36 +1,36 @@
-<#
+﻿<#
 .SYNOPSIS
-Analyse préventivement les scripts PowerShell pour détecter les problèmes potentiels et les non-conformités aux bonnes pratiques.
+Analyse prÃ©ventivement les scripts PowerShell pour dÃ©tecter les problÃ¨mes potentiels et les non-conformitÃ©s aux bonnes pratiques.
 
 .DESCRIPTION
-Ce script utilise PSScriptAnalyzer pour inspecter des fichiers ou des répertoires de scripts PowerShell spécifiés.
-Il identifie des problèmes tels que les variables non utilisées, l'utilisation de verbes non approuvés,
-les comparaisons incorrectes avec $null, et d'autres règles définies par PSScriptAnalyzer.
-L'objectif est de détecter ces problèmes de manière proactive avant qu'ils ne causent des erreurs ou
-ne soient signalés par l'IDE, contribuant ainsi à maintenir une haute qualité de code.
+Ce script utilise PSScriptAnalyzer pour inspecter des fichiers ou des rÃ©pertoires de scripts PowerShell spÃ©cifiÃ©s.
+Il identifie des problÃ¨mes tels que les variables non utilisÃ©es, l'utilisation de verbes non approuvÃ©s,
+les comparaisons incorrectes avec $null, et d'autres rÃ¨gles dÃ©finies par PSScriptAnalyzer.
+L'objectif est de dÃ©tecter ces problÃ¨mes de maniÃ¨re proactive avant qu'ils ne causent des erreurs ou
+ne soient signalÃ©s par l'IDE, contribuant ainsi Ã  maintenir une haute qualitÃ© de code.
 
-Le script retourne des objets détaillés pour chaque problème trouvé, facilitant l'intégration
+Le script retourne des objets dÃ©taillÃ©s pour chaque problÃ¨me trouvÃ©, facilitant l'intÃ©gration
 dans des processus d'automatisation ou de reporting.
 
 .PARAMETER Path
-Chemin(s) vers le(s) fichier(s) de script (.ps1) ou le(s) répertoire(s) à analyser.
-Accepte les caractères génériques. Obligatoire.
+Chemin(s) vers le(s) fichier(s) de script (.ps1) ou le(s) rÃ©pertoire(s) Ã  analyser.
+Accepte les caractÃ¨res gÃ©nÃ©riques. Obligatoire.
 
 .PARAMETER Recurse
-Si spécifié, analyse les scripts dans les sous-répertoires du chemin fourni.
+Si spÃ©cifiÃ©, analyse les scripts dans les sous-rÃ©pertoires du chemin fourni.
 
 .PARAMETER IncludeRule
-Spécifie un ou plusieurs noms de règles PSScriptAnalyzer à inclure exclusivement dans l'analyse.
+SpÃ©cifie un ou plusieurs noms de rÃ¨gles PSScriptAnalyzer Ã  inclure exclusivement dans l'analyse.
 
 .PARAMETER ExcludeRule
-Spécifie un ou plusieurs noms de règles PSScriptAnalyzer à exclure de l'analyse.
+SpÃ©cifie un ou plusieurs noms de rÃ¨gles PSScriptAnalyzer Ã  exclure de l'analyse.
 
 .PARAMETER Severity
-Filtre les résultats pour n'afficher que les problèmes ayant une sévérité spécifique ou supérieure.
+Filtre les rÃ©sultats pour n'afficher que les problÃ¨mes ayant une sÃ©vÃ©ritÃ© spÃ©cifique ou supÃ©rieure.
 Les valeurs possibles sont : Information, Warning, Error.
 
 .PARAMETER ShowSummary
-Si spécifié, affiche un résumé du nombre de problèmes trouvés par fichier et par sévérité.
+Si spÃ©cifiÃ©, affiche un rÃ©sumÃ© du nombre de problÃ¨mes trouvÃ©s par fichier et par sÃ©vÃ©ritÃ©.
 
 .EXAMPLE
 PS> .\Inspect-ScriptPreventively.ps1 -Path "C:\Scripts\MonScript.ps1"
@@ -38,34 +38,34 @@ Analyse le fichier MonScript.ps1.
 
 .EXAMPLE
 PS> .\Inspect-ScriptPreventively.ps1 -Path "C:\Projet\*.ps1" -Severity Warning -ShowSummary
-Analyse tous les fichiers .ps1 dans C:\Projet, affiche seulement les avertissements et erreurs, et fournit un résumé.
+Analyse tous les fichiers .ps1 dans C:\Projet, affiche seulement les avertissements et erreurs, et fournit un rÃ©sumÃ©.
 
 .EXAMPLE
 PS> Get-ChildItem "C:\Modules" -Filter *.psm1 -Recurse | .\Inspect-ScriptPreventively.ps1 -ExcludeRule PSUseApprovedVerbs
-Analyse tous les fichiers .psm1 récursivement dans C:\Modules via le pipeline, en excluant la règle sur les verbes approuvés.
+Analyse tous les fichiers .psm1 rÃ©cursivement dans C:\Modules via le pipeline, en excluant la rÃ¨gle sur les verbes approuvÃ©s.
 
 .OUTPUTS
 PSScriptAnalyzer.DiagnosticRecord
-Retourne des objets DiagnosticRecord pour chaque problème détecté par Invoke-ScriptAnalyzer.
+Retourne des objets DiagnosticRecord pour chaque problÃ¨me dÃ©tectÃ© par Invoke-ScriptAnalyzer.
 
 .NOTES
-Auteur        : Votre Nom/Équipe
-Date Création : 2024-08-01
+Auteur        : Votre Nom/Ã‰quipe
+Date CrÃ©ation : 2024-08-01
 Version       : 2.0
-Dépendances   : Module PSScriptAnalyzer requis. (Install-Module -Name PSScriptAnalyzer -Scope CurrentUser)
-Encodage      : Assurez-vous que ce script est enregistré en UTF-8 avec BOM.
+DÃ©pendances   : Module PSScriptAnalyzer requis. (Install-Module -Name PSScriptAnalyzer -Scope CurrentUser)
+Encodage      : Assurez-vous que ce script est enregistrÃ© en UTF-8 avec BOM.
 
 Historique des modifications :
 v2.0 - 2024-08-01 - Refonte majeure :
-    - Utilisation d'une fonction avancée avec CmdletBinding et paramètres validés.
-    - Renommage en 'Invoke-ScriptAnalysis' (verbe approuvé).
-    - Correction des problèmes PSScriptAnalyzer internes (verbes, variables, comparaison null).
-    - Amélioration de la gestion des erreurs.
-    - Ajout de paramètres pour filtrer les règles et la sévérité.
-    - Ajout d'une option de résumé.
-    - Sortie d'objets structurés pour une meilleure intégration.
-    - Amélioration de l'aide et des commentaires.
-v1.0 - [Date Précédente] - Version initiale.
+    - Utilisation d'une fonction avancÃ©e avec CmdletBinding et paramÃ¨tres validÃ©s.
+    - Renommage en 'Invoke-ScriptAnalysis' (verbe approuvÃ©).
+    - Correction des problÃ¨mes PSScriptAnalyzer internes (verbes, variables, comparaison null).
+    - AmÃ©lioration de la gestion des erreurs.
+    - Ajout de paramÃ¨tres pour filtrer les rÃ¨gles et la sÃ©vÃ©ritÃ©.
+    - Ajout d'une option de rÃ©sumÃ©.
+    - Sortie d'objets structurÃ©s pour une meilleure intÃ©gration.
+    - AmÃ©lioration de l'aide et des commentaires.
+v1.0 - [Date PrÃ©cÃ©dente] - Version initiale.
 
 .COMPONENT
 Maintenance des Standards
@@ -91,7 +91,7 @@ param(
 
     [Parameter()]
     [ValidateSet('Information', 'Warning', 'Error')]
-    [string]$Severity = 'Information', # Défaut à Information pour tout voir au départ
+    [string]$Severity = 'Information', # DÃ©faut Ã  Information pour tout voir au dÃ©part
 
     [Parameter()]
     [switch]$ShowSummary,
@@ -101,26 +101,26 @@ param(
 )
 
 begin {
-    Write-Verbose "Début de l'analyse préventive des scripts."
+    Write-Verbose "DÃ©but de l'analyse prÃ©ventive des scripts."
 
-    # Vérifier la disponibilité de PSScriptAnalyzer
+    # VÃ©rifier la disponibilitÃ© de PSScriptAnalyzer
     if (-not (Get-Module -ListAvailable -Name PSScriptAnalyzer)) {
-        Write-Error "Le module PSScriptAnalyzer n'est pas installé. Veuillez l'installer avec 'Install-Module -Name PSScriptAnalyzer -Scope CurrentUser'."
+        Write-Error "Le module PSScriptAnalyzer n'est pas installÃ©. Veuillez l'installer avec 'Install-Module -Name PSScriptAnalyzer -Scope CurrentUser'."
         # On pourrait stopper ici, mais PSScriptAnalyzer est souvent inclus, donc on continue prudemment.
         # $PSCmdlet.ThrowTerminatingError(...) # Option plus stricte
     }
 
-    # Convertir la sévérité en tableau pour Invoke-ScriptAnalyzer
+    # Convertir la sÃ©vÃ©ritÃ© en tableau pour Invoke-ScriptAnalyzer
     $SeverityFilter = @()
     switch ($Severity) {
         'Error' { $SeverityFilter = @('Error') }
         'Warning' { $SeverityFilter = @('Warning', 'Error') }
         'Information' { $SeverityFilter = @('Information', 'Warning', 'Error') }
-        default { $SeverityFilter = @('Information', 'Warning', 'Error') } # Sécurité
+        default { $SeverityFilter = @('Information', 'Warning', 'Error') } # SÃ©curitÃ©
     }
-    Write-Verbose "Filtre de sévérité appliqué : $($SeverityFilter -join ', ')"
+    Write-Verbose "Filtre de sÃ©vÃ©ritÃ© appliquÃ© : $($SeverityFilter -join ', ')"
 
-    # Initialiser la collection pour le résumé
+    # Initialiser la collection pour le rÃ©sumÃ©
     $scriptResults = [System.Collections.Generic.List[object]]::new()
 }
 
@@ -128,10 +128,10 @@ process {
     foreach ($itemPath in $Path) {
         Write-Verbose "Traitement du chemin : $itemPath"
         try {
-            # Résoudre le chemin pour gérer les caractères génériques
+            # RÃ©soudre le chemin pour gÃ©rer les caractÃ¨res gÃ©nÃ©riques
             $resolvedPaths = Resolve-Path $itemPath -ErrorAction Stop
         } catch {
-            Write-Warning "Impossible de résoudre le chemin '$itemPath'. Erreur : $($_.Exception.Message)"
+            Write-Warning "Impossible de rÃ©soudre le chemin '$itemPath'. Erreur : $($_.Exception.Message)"
             continue # Passe au chemin suivant
         }
 
@@ -139,20 +139,20 @@ process {
             $filesToAnalyze = [System.Collections.Generic.List[System.IO.FileInfo]]::new()
 
             if (Test-Path -Path $resolvedItem.ProviderPath -PathType Container) {
-                # C'est un répertoire
-                Write-Verbose "Analyse du répertoire : $($resolvedItem.ProviderPath)"
+                # C'est un rÃ©pertoire
+                Write-Verbose "Analyse du rÃ©pertoire : $($resolvedItem.ProviderPath)"
                 $getParams = @{
                     Path        = $resolvedItem.ProviderPath
-                    Filter      = '*.ps1' # Analyse seulement les .ps1 par défaut
+                    Filter      = '*.ps1' # Analyse seulement les .ps1 par dÃ©faut
                     Recurse     = $Recurse
                     File        = $true
-                    ErrorAction = 'SilentlyContinue' # Gérer les erreurs d'accès
+                    ErrorAction = 'SilentlyContinue' # GÃ©rer les erreurs d'accÃ¨s
                 }
                 $foundFiles = Get-ChildItem @getParams
                 if ($null -ne $foundFiles) {
                     $foundFiles.ForEach({ $filesToAnalyze.Add($_) })
                 } else {
-                    Write-Verbose "Aucun fichier .ps1 trouvé dans $($resolvedItem.ProviderPath) (ou accès refusé)."
+                    Write-Verbose "Aucun fichier .ps1 trouvÃ© dans $($resolvedItem.ProviderPath) (ou accÃ¨s refusÃ©)."
                 }
 
             } elseif ((Test-Path -Path $resolvedItem.ProviderPath -PathType Leaf) -and ($resolvedItem.ProviderPath -like '*.ps1')) {
@@ -160,21 +160,21 @@ process {
                 Write-Verbose "Ajout du fichier : $($resolvedItem.ProviderPath)"
                 $filesToAnalyze.Add((Get-Item $resolvedItem.ProviderPath))
             } else {
-                Write-Warning "Le chemin '$($resolvedItem.ProviderPath)' n'est ni un répertoire ni un fichier .ps1 valide. Ignoré."
+                Write-Warning "Le chemin '$($resolvedItem.ProviderPath)' n'est ni un rÃ©pertoire ni un fichier .ps1 valide. IgnorÃ©."
                 continue
             }
 
-            # Analyser chaque fichier trouvé
+            # Analyser chaque fichier trouvÃ©
             foreach ($file in $filesToAnalyze) {
                 $filePath = $file.FullName
                 Write-Verbose "Analyse du fichier : $filePath"
 
                 if (-not ($PSCmdlet.ShouldProcess($filePath, "Analyser avec PSScriptAnalyzer"))) {
-                    Write-Verbose "Opération annulée par l'utilisateur pour le fichier : $filePath"
+                    Write-Verbose "OpÃ©ration annulÃ©e par l'utilisateur pour le fichier : $filePath"
                     continue
                 }
 
-                # Préparer les paramètres pour Invoke-ScriptAnalyzer
+                # PrÃ©parer les paramÃ¨tres pour Invoke-ScriptAnalyzer
                 $analyzerParams = @{
                     Path        = $filePath
                     Recurse     = $false # On traite fichier par fichier
@@ -188,28 +188,28 @@ process {
                     $analysisResults = Invoke-ScriptAnalyzer @analyzerParams
 
                     if ($null -ne $analysisResults) {
-                        Write-Verbose "Problèmes trouvés dans '$filePath' : $($analysisResults.Count)"
-                        # Ajouter le chemin du fichier aux résultats pour le résumé
+                        Write-Verbose "ProblÃ¨mes trouvÃ©s dans '$filePath' : $($analysisResults.Count)"
+                        # Ajouter le chemin du fichier aux rÃ©sultats pour le rÃ©sumÃ©
                         $resultsWithFilePath = $analysisResults | Select-Object *, @{Name = 'FilePath'; Expression = { $filePath } }
                         $scriptResults.AddRange($resultsWithFilePath)
-                        # Retourner les résultats au pipeline
+                        # Retourner les rÃ©sultats au pipeline
                         $resultsWithFilePath | Write-Output
                     } else {
-                        Write-Verbose "Aucun problème trouvé dans '$filePath' avec les filtres actuels."
+                        Write-Verbose "Aucun problÃ¨me trouvÃ© dans '$filePath' avec les filtres actuels."
                     }
                 } catch {
                     Write-Warning "Erreur lors de l'analyse du fichier '$filePath'. Erreur PSScriptAnalyzer : $($_.Exception.Message)"
                 }
 
-                # Corriger les problèmes si demandé
+                # Corriger les problÃ¨mes si demandÃ©
                 if ($Fix -and $results.Count -gt 0) {
-                    Write-Verbose "Correction des problèmes dans le fichier '$filePath'..."
+                    Write-Verbose "Correction des problÃ¨mes dans le fichier '$filePath'..."
 
-                    # Créer une sauvegarde du fichier original
+                    # CrÃ©er une sauvegarde du fichier original
                     $backupPath = "$filePath.bak"
                     if (-not (Test-Path -Path $backupPath)) {
                         Copy-Item -Path $filePath -Destination $backupPath -Force
-                        Write-Verbose "Sauvegarde créée: $backupPath"
+                        Write-Verbose "Sauvegarde crÃ©Ã©e: $backupPath"
                     }
 
                     # Lire le contenu du fichier
@@ -225,10 +225,10 @@ process {
                         $modified = $true
                     }
 
-                    # Corriger les variables non utilisées
+                    # Corriger les variables non utilisÃ©es
                     $unusedVarIssues = $results | Where-Object { $_.RuleName -eq "PSUseDeclaredVarsMoreThanAssignments" }
                     if ($unusedVarIssues.Count -gt 0) {
-                        Write-Verbose "Correction des variables non utilisées..."
+                        Write-Verbose "Correction des variables non utilisÃ©es..."
                         $lines = $content -split "`r`n|`r|`n"
 
                         foreach ($issue in $unusedVarIssues) {
@@ -254,7 +254,7 @@ process {
 
                                     $lines[$lineIndex] = $newLine
                                     $modified = $true
-                                    Write-Verbose "Corrigé: Ligne $($issue.Line) - Variable non utilisée '$varName'"
+                                    Write-Verbose "CorrigÃ©: Ligne $($issue.Line) - Variable non utilisÃ©e '$varName'"
                                 }
                             }
                         }
@@ -267,9 +267,9 @@ process {
                     # Enregistrer les modifications
                     if ($modified) {
                         Set-Content -Path $filePath -Value $content -Encoding UTF8
-                        Write-Host "Fichier corrigé: $filePath" -ForegroundColor Green
+                        Write-Host "Fichier corrigÃ©: $filePath" -ForegroundColor Green
                     } else {
-                        Write-Verbose "Aucune correction automatique n'a été appliquée à $filePath"
+                        Write-Verbose "Aucune correction automatique n'a Ã©tÃ© appliquÃ©e Ã  $filePath"
                     }
                 }
             }
@@ -278,13 +278,13 @@ process {
 }
 
 end {
-    Write-Verbose "Analyse préventive terminée."
+    Write-Verbose "Analyse prÃ©ventive terminÃ©e."
 
-    # Afficher le résumé si demandé
+    # Afficher le rÃ©sumÃ© si demandÃ©
     if ($ShowSummary -and $scriptResults.Count -gt 0) {
-        Write-Host "`n--- Résumé de l'Analyse Préventive ---" -ForegroundColor Yellow
+        Write-Host "`n--- RÃ©sumÃ© de l'Analyse PrÃ©ventive ---" -ForegroundColor Yellow
 
-        # Grouper par fichier puis par sévérité
+        # Grouper par fichier puis par sÃ©vÃ©ritÃ©
         $summary = $scriptResults | Group-Object FilePath | ForEach-Object {
             $fileGroup = $_
             $fileSummary = $fileGroup.Group | Group-Object Severity | Select-Object @{Name = 'Severity'; Expression = { $_.Name } }, Count
@@ -298,7 +298,7 @@ end {
             }
         } | Sort-Object FilePath
 
-        # Afficher le tableau de résumé
+        # Afficher le tableau de rÃ©sumÃ©
         $summary | Format-Table -AutoSize
 
         $totalErrors = ($summary.Errors | Measure-Object -Sum).Sum
@@ -307,15 +307,15 @@ end {
         $totalFilesAnalyzed = ($summary.FilePath | Select-Object -Unique).Count
         $totalFilesWithIssues = $summary.Count
 
-        Write-Host "`nTotal Fichiers Analysés : $totalFilesAnalyzed"
-        Write-Host "Total Fichiers avec Problèmes : $totalFilesWithIssues"
+        Write-Host "`nTotal Fichiers AnalysÃ©s : $totalFilesAnalyzed"
+        Write-Host "Total Fichiers avec ProblÃ¨mes : $totalFilesWithIssues"
         Write-Host "Total Erreurs   : $totalErrors" -ForegroundColor Red
         Write-Host "Total Avertissements : $totalWarnings" -ForegroundColor Yellow
         Write-Host "Total Informations  : $totalInformation" -ForegroundColor Cyan
         Write-Host "------------------------------------" -ForegroundColor Yellow
     } elseif ($ShowSummary) {
-        Write-Host "`n--- Résumé de l'Analyse Préventive ---" -ForegroundColor Yellow
-        Write-Host "Aucun problème détecté avec les paramètres actuels."
+        Write-Host "`n--- RÃ©sumÃ© de l'Analyse PrÃ©ventive ---" -ForegroundColor Yellow
+        Write-Host "Aucun problÃ¨me dÃ©tectÃ© avec les paramÃ¨tres actuels."
         Write-Host "------------------------------------" -ForegroundColor Yellow
     }
 }

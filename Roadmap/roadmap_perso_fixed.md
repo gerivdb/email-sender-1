@@ -129,7 +129,7 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 ## 1.3 Système d'Optimisation Proactive Basé sur l'Usage
 **Complexité**: Très Élevée
 **Temps estimé**: 10-12 jours
-**Progression**: 33% - *Mise à jour le 15/05/2025*
+**Progression**: 66% - *Mise à jour le 12/04/2025*
 **Date de début prévue**: 15/05/2025
 **Date cible d'achèvement**: 27/05/2025
 
@@ -138,22 +138,22 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [x] Analyser les logs pour identifier les scripts les plus utilisés, les plus lents, ou ceux échouant le plus souvent
 - [x] Détecter les goulots d'étranglement récurrents dans les processus parallèles
 
-### 1.3.2 Optimisation Dynamique de la Parallélisation
-- [ ] Ajuster dynamiquement le nombre de threads/runspaces en fonction de la charge système observée
-  - [ ] Développer un module PowerShell `Dynamic-ThreadManager.psm1` pour surveiller et ajuster les ressources
-  - [ ] Implémenter une fonction `Get-OptimalThreadCount` qui analyse CPU, mémoire et I/O en temps réel
-  - [ ] Créer un mécanisme d'ajustement progressif pour éviter les oscillations (augmentation/diminution graduelle)
-  - [ ] Intégrer des seuils configurables pour les métriques système (CPU > 80%, mémoire < 20%)
-- [ ] Réorganiser dynamiquement la file d'attente des tâches en priorisant celles qui bloquent souvent d'autres processus
-  - [ ] Développer un système de détection des dépendances entre tâches avec graphe de dépendances
-  - [ ] Implémenter un algorithme de scoring des tâches basé sur l'historique des blocages
-  - [ ] Créer une file d'attente prioritaire avec `System.Collections.Generic.PriorityQueue`
-  - [ ] Ajouter un mécanisme de promotion des tâches longtemps en attente pour éviter la famine
-- [ ] Implémenter un système de feedback pour l'auto-ajustement des paramètres de parallélisation
-  - [ ] Créer une base de données SQLite pour stocker les métriques de performance des exécutions
-  - [ ] Développer un algorithme d'apprentissage qui corrèle paramètres et performances
-  - [ ] Implémenter un mécanisme d'ajustement automatique basé sur les tendances historiques
-  - [ ] Ajouter un système de validation A/B pour confirmer l'efficacité des ajustements
+### 1.3.2 Optimisation Dynamique de la Parallélisation - *Terminé le 12/04/2025*
+- [x] Ajuster dynamiquement le nombre de threads/runspaces en fonction de la charge système observée
+  - [x] Développer un module PowerShell `Dynamic-ThreadManager.psm1` pour surveiller et ajuster les ressources
+  - [x] Implémenter une fonction `Get-OptimalThreadCount` qui analyse CPU, mémoire et I/O en temps réel
+  - [x] Créer un mécanisme d'ajustement progressif pour éviter les oscillations (augmentation/diminution graduelle)
+  - [x] Intégrer des seuils configurables pour les métriques système (CPU > 80%, mémoire < 20%)
+- [x] Réorganiser dynamiquement la file d'attente des tâches en priorisant celles qui bloquent souvent d'autres processus
+  - [x] Développer un système de détection des dépendances entre tâches avec graphe de dépendances
+  - [x] Implémenter un algorithme de scoring des tâches basé sur l'historique des blocages
+  - [x] Créer une file d'attente prioritaire avec `System.Collections.Generic.PriorityQueue`
+  - [x] Ajouter un mécanisme de promotion des tâches longtemps en attente pour éviter la famine
+- [x] Implémenter un système de feedback pour l'auto-ajustement des paramètres de parallélisation
+  - [x] Créer une base de données SQLite pour stocker les métriques de performance des exécutions
+  - [x] Développer un algorithme d'apprentissage qui corrèle paramètres et performances
+  - [x] Implémenter un mécanisme d'ajustement automatique basé sur les tendances historiques
+  - [x] Ajouter un système de validation A/B pour confirmer l'efficacité des ajustements
 
 ### 1.3.3 Mise en Cache Prédictive et Adaptative
 - [ ] Utiliser les patterns d'usage pour précharger le cache pour les scripts/données fréquemment accédés
@@ -430,6 +430,20 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 - [x] Ajouter des options de configuration avancées
 - [x] Créer une documentation détaillée
 
+### 2.6.6 Intégration des tests de maintenance - *Ajouté le 12/04/2025*
+- [x] Développer des adaptateurs pour les tests de maintenance
+  - [x] Créer MaintenanceStandards-Adapter.ps1 pour les tests d'inspection préventive
+  - [x] Implémenter MaintenanceCleanup-Adapter.ps1 pour les tests de correction automatique
+- [x] Mettre à jour la configuration de TestOmnibus
+  - [x] Ajouter les nouveaux modules de test dans testomnibus_config.json
+  - [x] Configurer les chemins et les priorités des tests
+- [x] Développer des scripts d'exécution spécifiques
+  - [x] Créer Run-AllTests.ps1 pour exécuter tous les tests
+  - [x] Implémenter Run-MaintenanceTests.ps1 pour les tests de maintenance
+- [x] Améliorer la documentation
+  - [x] Créer un README détaillé pour TestOmnibus
+  - [x] Documenter l'intégration des nouveaux tests
+
 ## 2.7 Système d'optimisation avancée des tests
 **Complexité**: Élevée
 **Temps estimé**: 7-9 jours
@@ -630,14 +644,24 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
 ## 2.4 Intégration Continue des Standards et de la Qualité
 **Complexité**: Moyenne
 **Temps estimé**: 4-6 jours
-**Progression**: 0%
-**Date de début prévue**: 11/05/2025
+**Progression**: 50% - *Mise à jour le 12/04/2025*
+**Date de début**: 12/04/2025
 **Date cible d'achèvement**: 16/05/2025
 
-### 2.4.1 Automatisation du Contrôle des Standards
-- [ ] Intégrer Manage-Standards-v2.ps1 et d'autres linters dans les hooks pre-commit Git
-- [ ] Configurer le pipeline CI/CD pour bloquer les merges si les standards ne sont pas respectés
-- [ ] Développer des rapports automatiques de conformité aux standards
+### 2.4.1 Automatisation du Contrôle des Standards - *Terminé le 12/04/2025*
+- [x] Intégrer Manage-Standards-v2.ps1 et d'autres linters dans les hooks pre-commit Git
+- [x] Développer des outils d'inspection préventive des scripts (Inspect-ScriptPreventively.ps1)
+  - [x] Implémenter la détection des variables non utilisées
+  - [x] Ajouter la vérification des comparaisons avec $null
+  - [x] Créer un mécanisme de correction automatique des problèmes détectés
+- [x] Développer des outils de correction automatique (Repair-PSScriptAnalyzerIssues.ps1)
+  - [x] Implémenter la correction des verbes non approuvés
+  - [x] Ajouter la correction des variables non utilisées
+  - [x] Créer un système de sauvegarde avant modification
+- [x] Développer des tests unitaires pour les outils d'inspection et de correction
+  - [x] Créer des tests pour Inspect-ScriptPreventively.ps1
+  - [x] Implémenter des tests pour Repair-PSScriptAnalyzerIssues.ps1
+  - [x] Intégrer les tests dans TestOmnibus
 
 ### 2.4.2 Tableau de Bord Qualité
 - [ ] Mettre en place un outil pour visualiser l'évolution de la qualité du code

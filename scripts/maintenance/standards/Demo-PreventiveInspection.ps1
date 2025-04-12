@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Démontre l'utilisation du script Inspect-ScriptPreventively.ps1.
+    DÃ©montre l'utilisation du script Inspect-ScriptPreventively.ps1.
 .DESCRIPTION
     Ce script montre comment utiliser Inspect-ScriptPreventively.ps1 dans un flux
-    de travail de développement pour détecter et corriger les problèmes dans les
+    de travail de dÃ©veloppement pour dÃ©tecter et corriger les problÃ¨mes dans les
     scripts PowerShell.
 .EXAMPLE
     .\Demo-PreventiveInspection.ps1
-    Exécute la démonstration avec les paramètres par défaut.
+    ExÃ©cute la dÃ©monstration avec les paramÃ¨tres par dÃ©faut.
 .NOTES
     Author: Augment Agent
     Version: 1.0
@@ -18,18 +18,18 @@
 # Chemin du script d'inspection
 $inspectScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Inspect-ScriptPreventively.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path $inspectScriptPath)) {
     throw "Le script d'inspection n'existe pas: $inspectScriptPath"
 }
 
-# Créer un répertoire temporaire pour la démonstration
+# CrÃ©er un rÃ©pertoire temporaire pour la dÃ©monstration
 $demoDir = Join-Path -Path $env:TEMP -ChildPath "PreventiveInspectionDemo"
 if (-not (Test-Path -Path $demoDir)) {
     New-Item -Path $demoDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer des scripts de démonstration avec différents problèmes
+# CrÃ©er des scripts de dÃ©monstration avec diffÃ©rents problÃ¨mes
 $scripts = @{
     "NullComparison.ps1" = @'
 function Test-NullComparison {
@@ -44,11 +44,11 @@ function Test-NullComparison {
 '@
     "UnusedVariable.ps1" = @'
 function Test-UnusedVariable {
-    # Variable non utilisée
-    $unused = "Cette variable n'est jamais utilisée"
+    # Variable non utilisÃ©e
+    $unused = "Cette variable n'est jamais utilisÃ©e"
     
-    # Variable utilisée
-    $used = "Cette variable est utilisée"
+    # Variable utilisÃ©e
+    $used = "Cette variable est utilisÃ©e"
     return $used
 }
 '@
@@ -59,7 +59,7 @@ function Test-WriteHost {
     # Utilisation de Write-Host
     Write-Host "Message: $message" -ForegroundColor Green
     
-    return "Message traité: $message"
+    return "Message traitÃ©: $message"
 }
 '@
     "PluralNoun.ps1" = @'
@@ -81,11 +81,11 @@ function Test-SwitchDefault {
 '@
 }
 
-# Créer les scripts de démonstration
+# CrÃ©er les scripts de dÃ©monstration
 foreach ($script in $scripts.Keys) {
     $scriptPath = Join-Path -Path $demoDir -ChildPath $script
     Set-Content -Path $scriptPath -Value $scripts[$script] -Force
-    Write-Host "Script créé: $scriptPath" -ForegroundColor Green
+    Write-Host "Script crÃ©Ã©: $scriptPath" -ForegroundColor Green
 }
 
 # Fonction pour afficher un titre de section
@@ -97,14 +97,14 @@ function Show-SectionTitle {
     Write-Host "$('=' * 80)" -ForegroundColor Cyan
 }
 
-# Démonstration 1: Analyser un script spécifique
-Show-SectionTitle "Démonstration 1: Analyser un script spécifique"
+# DÃ©monstration 1: Analyser un script spÃ©cifique
+Show-SectionTitle "DÃ©monstration 1: Analyser un script spÃ©cifique"
 $scriptPath = Join-Path -Path $demoDir -ChildPath "NullComparison.ps1"
 Write-Host "Analyse du script: $scriptPath" -ForegroundColor Yellow
 & $inspectScriptPath -Path $scriptPath
 
-# Démonstration 2: Analyser et corriger un script
-Show-SectionTitle "Démonstration 2: Analyser et corriger un script"
+# DÃ©monstration 2: Analyser et corriger un script
+Show-SectionTitle "DÃ©monstration 2: Analyser et corriger un script"
 $scriptPath = Join-Path -Path $demoDir -ChildPath "UnusedVariable.ps1"
 Write-Host "Contenu original:" -ForegroundColor Yellow
 Get-Content -Path $scriptPath | ForEach-Object { Write-Host "  $_" }
@@ -112,33 +112,33 @@ Get-Content -Path $scriptPath | ForEach-Object { Write-Host "  $_" }
 Write-Host "`nAnalyse et correction du script..." -ForegroundColor Yellow
 & $inspectScriptPath -Path $scriptPath -Fix
 
-Write-Host "`nContenu corrigé:" -ForegroundColor Yellow
+Write-Host "`nContenu corrigÃ©:" -ForegroundColor Yellow
 Get-Content -Path $scriptPath | ForEach-Object { Write-Host "  $_" }
 
-# Démonstration 3: Analyser tous les scripts dans un dossier
-Show-SectionTitle "Démonstration 3: Analyser tous les scripts dans un dossier"
+# DÃ©monstration 3: Analyser tous les scripts dans un dossier
+Show-SectionTitle "DÃ©monstration 3: Analyser tous les scripts dans un dossier"
 Write-Host "Analyse de tous les scripts dans: $demoDir" -ForegroundColor Yellow
 $results = & $inspectScriptPath -Path $demoDir -Recurse
 
-# Afficher un résumé des résultats
+# Afficher un rÃ©sumÃ© des rÃ©sultats
 $summary = $results | Group-Object RuleName | Select-Object Name, Count
-Write-Host "`nRésumé des problèmes détectés:" -ForegroundColor Yellow
+Write-Host "`nRÃ©sumÃ© des problÃ¨mes dÃ©tectÃ©s:" -ForegroundColor Yellow
 $summary | ForEach-Object {
     Write-Host "  $($_.Name): $($_.Count) occurrence(s)" -ForegroundColor White
 }
 
-# Démonstration 4: Filtrer par règle
-Show-SectionTitle "Démonstration 4: Filtrer par règle"
+# DÃ©monstration 4: Filtrer par rÃ¨gle
+Show-SectionTitle "DÃ©monstration 4: Filtrer par rÃ¨gle"
 Write-Host "Analyse avec filtre sur PSUseSingularNouns:" -ForegroundColor Yellow
 & $inspectScriptPath -Path $demoDir -Recurse -IncludeRule PSUseSingularNouns
 
-# Démonstration 5: Filtrer par sévérité
-Show-SectionTitle "Démonstration 5: Filtrer par sévérité"
-Write-Host "Analyse avec filtre sur la sévérité Warning:" -ForegroundColor Yellow
+# DÃ©monstration 5: Filtrer par sÃ©vÃ©ritÃ©
+Show-SectionTitle "DÃ©monstration 5: Filtrer par sÃ©vÃ©ritÃ©"
+Write-Host "Analyse avec filtre sur la sÃ©vÃ©ritÃ© Warning:" -ForegroundColor Yellow
 & $inspectScriptPath -Path $demoDir -Recurse -Severity Warning
 
-# Nettoyer les fichiers de démonstration
-Write-Host "`nNettoyage des fichiers de démonstration..." -ForegroundColor Yellow
+# Nettoyer les fichiers de dÃ©monstration
+Write-Host "`nNettoyage des fichiers de dÃ©monstration..." -ForegroundColor Yellow
 Remove-Item -Path $demoDir -Recurse -Force
 
-Write-Host "`nDémonstration terminée!" -ForegroundColor Green
+Write-Host "`nDÃ©monstration terminÃ©e!" -ForegroundColor Green

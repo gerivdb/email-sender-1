@@ -1,42 +1,100 @@
-﻿{
-    "ScriptType":  "PowerShell",
-    "Timestamp":  "2025-04-08 18:57:51",
-    "AppliedChangeCount":  0,
-    "TotalFiles":  3,
-    "TotalChangeCount":  0,
-    "ScriptResults":  [
-                          {
-                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Find-CodeDuplication.ps1",
-                              "ScriptType":  "PowerShell",
-                              "ChangeCount":  0,
-                              "Changes":  [
+﻿[
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\tests\\Inspect-ScriptPreventively.Tests.ps1",
+        "Modified":  true,
+        "Rules":  [
 
-                                          ],
-                              "Applied":  {
-                                              "IsPresent":  false
-                                          }
-                          },
-                          {
-                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Manage-Duplications.ps1",
-                              "ScriptType":  "PowerShell",
-                              "ChangeCount":  0,
-                              "Changes":  [
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\tests\\Run-Tests.ps1",
+        "Modified":  false,
+        "Rules":  [
 
-                                          ],
-                              "Applied":  {
-                                              "IsPresent":  false
-                                          }
-                          },
-                          {
-                              "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\duplication\\Merge-SimilarScripts.ps1",
-                              "ScriptType":  "PowerShell",
-                              "ChangeCount":  0,
-                              "Changes":  [
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Demo-PreventiveInspection.ps1",
+        "Modified":  true,
+        "Rules":  [
 
-                                          ],
-                              "Applied":  {
-                                              "IsPresent":  false
-                                          }
-                          }
-                      ]
-}
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Format-Script-Fixed.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Format-Script-v2.fixed.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Format-Script-v2.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Format-Script.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Inspect-ScriptPreventively.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Manage-Standards-Fixed.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Manage-Standards-v2.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Manage-Standards.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Test-ScriptCompliance-Fixed.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Test-ScriptCompliance-v2.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    },
+    {
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\maintenance\\standards\\Test-ScriptCompliance.ps1",
+        "Modified":  false,
+        "Rules":  [
+
+                  ]
+    }
+]
