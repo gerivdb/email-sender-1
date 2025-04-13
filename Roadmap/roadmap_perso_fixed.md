@@ -1,11 +1,11 @@
 # Roadmap personnelle d'amélioration du projet
 
 ## État d'avancement global
-- **Tâches prioritaires**: 40% terminées (2/5 sections principales)
+- **Tâches prioritaires**: 60% terminées (3/5 sections principales)
 - **Tâches de priorité moyenne**: 29% terminées (2/7 sections principales)
 - **Tâches de priorité basse**: 0% terminées (0/4 sections principales)
-- **Tâches terminées**: 11/24 (46%)
-- **Progression globale**: 38%
+- **Tâches terminées**: 12/24 (50%)
+- **Progression globale**: 42%
 
 ## Vue d'ensemble des tâches par priorité et complexité
 
@@ -203,10 +203,35 @@ Ce document présente une feuille de route organisée par ordre de priorité dé
     - [x] Développer des mécanismes de limitation de charge avec `PreloadManager.psm1`
     - [x] Créer des stratégies de nettoyage proactif avec TTL adaptatifs
 
-### 1.3.4 Suggestions de Refactorisation Intelligentes
-- [ ] Coupler l'analyse d'usage avec l'analyse statique pour suggérer proactivement la refactorisation
-- [ ] Identifier automatiquement les candidats à la refactorisation basés sur des métriques objectives
-- [ ] Générer des rapports de recommandation avec justifications et bénéfices attendus
+### 1.3.4 Suggestions de Refactorisation Intelligentes - *Terminé le 13/04/2025*
+- [x] Développer des tests unitaires complets pour le système de cache prédictif
+  - [x] Créer un framework de test modulaire pour les composants du cache prédictif
+    - [x] Implémenter des tests pour le `CacheManager` avec vérification des opérations de base
+    - [x] Développer des tests pour l'`UsageCollector` avec analyse des patterns d'utilisation
+    - [x] Créer des tests pour le `PredictionEngine` avec validation des prédictions
+  - [x] Implémenter des tests pour les cas limites et scénarios d'erreur
+    - [x] Développer des tests pour le `TTLOptimizer` avec valeurs extrêmes
+    - [x] Créer des tests pour le `DependencyManager` avec dépendances circulaires
+    - [x] Implémenter des tests de performance pour le `PreloadManager`
+  - [x] Intégrer avec le système TestOmnibus pour une exécution centralisée
+    - [x] Développer un script d'intégration avec TestOmnibus
+    - [x] Créer un générateur de rapports de couverture HTML
+    - [x] Implémenter l'analyse de couverture de code avec recommandations
+
+- [x] Coupler l'analyse d'usage avec l'analyse statique pour suggérer proactivement la refactorisation
+  - [x] Développer un système d'analyse des résultats de tests pour identifier les points faibles
+  - [x] Créer un mécanisme de détection des patterns problématiques dans le code
+  - [x] Implémenter un générateur de suggestions basé sur les métriques de test
+
+- [x] Identifier automatiquement les candidats à la refactorisation basés sur des métriques objectives
+  - [x] Analyser la couverture de code pour identifier les zones sous-testées
+  - [x] Détecter les fonctions avec des temps d'exécution anormalement longs
+  - [x] Identifier les composants avec des taux d'échec de test élevés
+
+- [x] Générer des rapports de recommandation avec justifications et bénéfices attendus
+  - [x] Créer des rapports HTML interactifs avec visualisations
+  - [x] Implémenter un système de priorisation des recommandations
+  - [x] Développer un mécanisme d'estimation des gains de performance
 
 ## 1.4 Extension du Système d'Apprentissage des Erreurs
 **Complexité**: Élevée
