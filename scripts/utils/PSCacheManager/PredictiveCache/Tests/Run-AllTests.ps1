@@ -19,6 +19,10 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module Pester -MinimumVersion 5.0
 
+# Importer le module de types simulés
+$mockTypesPath = Join-Path -Path $PSScriptRoot -ChildPath "MockTypes.psm1"
+Import-Module $mockTypesPath -Force
+
 # Définir le répertoire des tests
 $testDirectory = $PSScriptRoot
 $moduleDirectory = Split-Path -Path $testDirectory -Parent

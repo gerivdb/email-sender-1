@@ -17,11 +17,9 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer les modules à tester
-$usageCollectorPath = Join-Path -Path $PSScriptRoot -ChildPath "..\UsageCollector.psm1"
-$predictionEnginePath = Join-Path -Path $PSScriptRoot -ChildPath "..\PredictionEngine.psm1"
-Import-Module $usageCollectorPath -Force
-Import-Module $predictionEnginePath -Force
+# Importer le module de types simulés
+$mockTypesPath = Join-Path -Path $PSScriptRoot -ChildPath "MockTypes.psm1"
+Import-Module $mockTypesPath -Force
 
 # Créer un chemin temporaire pour la base de données de test
 $testDatabasePath = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests\PredictionEngine_Test.db"
