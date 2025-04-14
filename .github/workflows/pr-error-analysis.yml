@@ -1,0 +1,68 @@
+name: Pull Request Error Analysis
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - '**/*.ps1'
+      - '**/*.psm1'
+      - '**/*.psd1'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request Number'
+        required: true
+        type: number
+
+jobs:
+  analyze:
+    name: Analyze Pull Request
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Récupérer tout l'historique pour comparer les branches
+        
+      - name: Set up PowerShell
+        uses: actions/setup-powershell@v1
+        with:
+          powershell-version: '7.2'
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+      
+      - name: Install PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+      
+      - name: Set environment variables
+        shell: pwsh
+        run: |
+          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "GITHUB_REPO=${{ github.repository }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "GITHUB_OWNER=${{ github.repository_owner }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+      
+      - name: Analyze Pull Request
+        shell: pwsh
+        run: |
+          $prNumber = ${{ github.event.pull_request.number || github.event.inputs.pr_number }}
+          
+          # Exécuter l'analyse
+          .\git-hooks\Analyze-PullRequest.ps1 -Action Comment -PullRequestNumber $prNumber
+      
+      - name: Upload Analysis Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: pr-analysis-report
+          path: git-hooks/reports/pr-*.md

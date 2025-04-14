@@ -1,0 +1,27 @@
+#!/bin/sh
+# Hook pre-commit pour l'analyse des patterns d'erreurs
+# Ce hook analyse les fichiers PowerShell modifiés pour détecter les erreurs potentielles
+# avant de les committer.
+
+# Chemin vers le script PowerShell qui effectue l'analyse
+SCRIPT_PATH="$(git rev-parse --show-toplevel)/git-hooks/Analyze-StagedFiles.ps1"
+
+# Vérifier si le script existe
+if [ ! -f "$SCRIPT_PATH" ]; then
+    echo "Erreur: Script d'analyse non trouvé: $SCRIPT_PATH"
+    exit 1
+fi
+
+# Exécuter le script PowerShell
+powershell.exe -ExecutionPolicy Bypass -NoProfile -File "$SCRIPT_PATH"
+EXIT_CODE=$?
+
+# Si le script retourne un code d'erreur, annuler le commit
+if [ $EXIT_CODE -ne 0 ]; then
+    echo "Erreur: L'analyse des fichiers a détecté des problèmes potentiels."
+    echo "Veuillez corriger les problèmes avant de committer."
+    exit 1
+fi
+
+# Tout est OK, continuer avec le commit
+exit 0

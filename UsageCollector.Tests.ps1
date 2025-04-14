@@ -1,38 +1,38 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module UsageCollector.
 .DESCRIPTION
     Ce script contient des tests unitaires pour le module UsageCollector
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 13/04/2025
 #>
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path -Parent $scriptPath
 $mockTypesPath = Join-Path -Path $scriptDir -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
-# Créer un chemin temporaire pour les tests
+# CrÃ©er un chemin temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests"
 $testDatabasePath = Join-Path -Path $testDir -ChildPath "Usage.db"
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force -ErrorAction SilentlyContinue
 }
 
-# Créer le répertoire parent si nécessaire
+# CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
 Describe "UsageCollector Module Tests" {
     BeforeAll {
-        # Créer un UsageCollector pour les tests
+        # CrÃ©er un UsageCollector pour les tests
         $script:usageCollector = New-MockUsageCollector -DatabasePath $testDatabasePath -CacheName "TestCache"
     }
 

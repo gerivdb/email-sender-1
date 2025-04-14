@@ -1,0 +1,27 @@
+#!/bin/sh
+# Hook post-commit pour l'enrichissement du journal de développement
+# Ce hook analyse les fichiers PowerShell modifiés après un commit et enrichit
+# le journal de développement avec les résultats d'analyse.
+
+# Chemin vers le script PowerShell qui effectue l'analyse
+SCRIPT_PATH="$(git rev-parse --show-toplevel)/git-hooks/Enrich-DevelopmentLog.ps1"
+
+# Vérifier si le script existe
+if [ ! -f "$SCRIPT_PATH" ]; then
+    echo "Erreur: Script d'enrichissement non trouvé: $SCRIPT_PATH"
+    exit 1
+fi
+
+# Exécuter le script PowerShell
+powershell.exe -ExecutionPolicy Bypass -NoProfile -File "$SCRIPT_PATH"
+EXIT_CODE=$?
+
+# Si le script retourne un code d'erreur, afficher un message d'erreur
+if [ $EXIT_CODE -ne 0 ]; then
+    echo "Erreur: L'enrichissement du journal de développement a échoué."
+    echo "Veuillez vérifier le journal d'erreurs pour plus de détails."
+    exit 1
+fi
+
+# Tout est OK
+exit 0

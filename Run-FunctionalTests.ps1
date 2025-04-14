@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'exécution des tests fonctionnels pour le cache prédictif.
+    Script d'exÃ©cution des tests fonctionnels pour le cache prÃ©dictif.
 .DESCRIPTION
-    Ce script exécute les tests fonctionnels du cache prédictif
-    et génère un rapport HTML des résultats.
+    Ce script exÃ©cute les tests fonctionnels du cache prÃ©dictif
+    et gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 13/04/2025
 #>
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path -Parent $scriptPath
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests"
 $reportDir = Join-Path -Path $testDir -ChildPath "Reports"
 
-# Créer les répertoires nécessaires
+# CrÃ©er les rÃ©pertoires nÃ©cessaires
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
@@ -33,7 +33,7 @@ function Show-SectionTitle {
     Write-Host "$('=' * 80)" -ForegroundColor Cyan
 }
 
-# Fonction pour exécuter un test et générer un rapport
+# Fonction pour exÃ©cuter un test et gÃ©nÃ©rer un rapport
 function Invoke-TestWithReport {
     param(
         [string]$TestName,
@@ -41,21 +41,21 @@ function Invoke-TestWithReport {
         [string]$ReportPath
     )
     
-    Write-Host "Exécution du test : $TestName" -ForegroundColor Yellow
+    Write-Host "ExÃ©cution du test : $TestName" -ForegroundColor Yellow
     
     $startTime = Get-Date
     $output = & $TestPath
     $endTime = Get-Date
     $duration = ($endTime - $startTime).TotalSeconds
     
-    # Analyser la sortie pour déterminer le résultat
-    $success = $output -match "Tous les tests ont réussi!"
-    $totalTests = ($output | Select-String -Pattern "Tests exécutés: (\d+)" | ForEach-Object { $_.Matches.Groups[1].Value }) -as [int]
-    $passedTests = ($output | Select-String -Pattern "Tests réussis: (\d+)" | ForEach-Object { $_.Matches.Groups[1].Value }) -as [int]
-    $failedTests = ($output | Select-String -Pattern "Tests échoués: (\d+)" | ForEach-Object { $_.Matches.Groups[1].Value }) -as [int]
-    $successRate = ($output | Select-String -Pattern "Taux de réussite: ([\d\.]+)%" | ForEach-Object { $_.Matches.Groups[1].Value }) -as [double]
+    # Analyser la sortie pour dÃ©terminer le rÃ©sultat
+    $success = $output -match "Tous les tests ont rÃ©ussi!"
+    $totalTests = ($output | Select-String -Pattern "Tests exÃ©cutÃ©s: (\d+)" | ForEach-Object { $_.Matches.Groups[1].Value }) -as [int]
+    $passedTests = ($output | Select-String -Pattern "Tests rÃ©ussis: (\d+)" | ForEach-Object { $_.Matches.Groups[1].Value }) -as [int]
+    $failedTests = ($output | Select-String -Pattern "Tests Ã©chouÃ©s: (\d+)" | ForEach-Object { $_.Matches.Groups[1].Value }) -as [int]
+    $successRate = ($output | Select-String -Pattern "Taux de rÃ©ussite: ([\d\.]+)%" | ForEach-Object { $_.Matches.Groups[1].Value }) -as [double]
     
-    # Créer un rapport HTML
+    # CrÃ©er un rapport HTML
     $htmlReport = @"
 <!DOCTYPE html>
 <html>
@@ -125,28 +125,28 @@ function Invoke-TestWithReport {
         <h1>Rapport de test : $TestName</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
-            <p>Date d'exécution : $startTime</p>
-            <p>Durée : $duration secondes</p>
-            <p>Tests exécutés : $totalTests</p>
-            <p>Tests réussis : <span class="success">$passedTests</span></p>
-            <p>Tests échoués : <span class="failure">$failedTests</span></p>
+            <h2>RÃ©sumÃ©</h2>
+            <p>Date d'exÃ©cution : $startTime</p>
+            <p>DurÃ©e : $duration secondes</p>
+            <p>Tests exÃ©cutÃ©s : $totalTests</p>
+            <p>Tests rÃ©ussis : <span class="success">$passedTests</span></p>
+            <p>Tests Ã©chouÃ©s : <span class="failure">$failedTests</span></p>
             
             <div class="progress-bar">
                 <div class="progress" style="width: $successRate%">$successRate%</div>
             </div>
             
-            <p>Résultat global : 
+            <p>RÃ©sultat global : 
                 $(if ($success) {
-                    '<span class="success">SUCCÈS</span>'
+                    '<span class="success">SUCCÃˆS</span>'
                 } else {
-                    '<span class="failure">ÉCHEC</span>'
+                    '<span class="failure">Ã‰CHEC</span>'
                 })
             </p>
         </div>
         
         <div class="details">
-            <h2>Détails</h2>
+            <h2>DÃ©tails</h2>
             <pre>$($output -join "`n")</pre>
         </div>
     </div>
@@ -157,7 +157,7 @@ function Invoke-TestWithReport {
     # Enregistrer le rapport HTML
     $htmlReport | Out-File -FilePath $ReportPath -Encoding UTF8
     
-    # Retourner un objet avec les résultats
+    # Retourner un objet avec les rÃ©sultats
     return [PSCustomObject]@{
         TestName = $TestName
         Success = $success
@@ -170,7 +170,7 @@ function Invoke-TestWithReport {
     }
 }
 
-# Fonction pour générer un rapport global
+# Fonction pour gÃ©nÃ©rer un rapport global
 function New-GlobalReport {
     param(
         [array]$TestResults,
@@ -186,7 +186,7 @@ function New-GlobalReport {
     
     $testRows = $TestResults | ForEach-Object {
         $statusClass = if ($_.Success) { "success" } else { "failure" }
-        $statusText = if ($_.Success) { "SUCCÈS" } else { "ÉCHEC" }
+        $statusText = if ($_.Success) { "SUCCÃˆS" } else { "Ã‰CHEC" }
         
         @"
         <tr>
@@ -207,7 +207,7 @@ function New-GlobalReport {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Rapport global des tests du cache prédictif</title>
+    <title>Rapport global des tests du cache prÃ©dictif</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -275,38 +275,38 @@ function New-GlobalReport {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport global des tests du cache prédictif</h1>
+        <h1>Rapport global des tests du cache prÃ©dictif</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
-            <p>Date d'exécution : $(Get-Date)</p>
-            <p>Durée totale : $totalDuration secondes</p>
-            <p>Tests exécutés : $totalTests</p>
-            <p>Tests réussis : <span class="success">$passedTests</span></p>
-            <p>Tests échoués : <span class="failure">$failedTests</span></p>
+            <h2>RÃ©sumÃ©</h2>
+            <p>Date d'exÃ©cution : $(Get-Date)</p>
+            <p>DurÃ©e totale : $totalDuration secondes</p>
+            <p>Tests exÃ©cutÃ©s : $totalTests</p>
+            <p>Tests rÃ©ussis : <span class="success">$passedTests</span></p>
+            <p>Tests Ã©chouÃ©s : <span class="failure">$failedTests</span></p>
             
             <div class="progress-bar">
                 <div class="progress" style="width: $successRate%">$successRate%</div>
             </div>
             
-            <p>Résultat global : 
+            <p>RÃ©sultat global : 
                 $(if ($allSuccess) {
-                    '<span class="success">SUCCÈS</span>'
+                    '<span class="success">SUCCÃˆS</span>'
                 } else {
-                    '<span class="failure">ÉCHEC</span>'
+                    '<span class="failure">Ã‰CHEC</span>'
                 })
             </p>
         </div>
         
-        <h2>Détails des tests</h2>
+        <h2>DÃ©tails des tests</h2>
         <table>
             <tr>
                 <th>Test</th>
                 <th>Total</th>
-                <th>Réussis</th>
-                <th>Échoués</th>
+                <th>RÃ©ussis</th>
+                <th>Ã‰chouÃ©s</th>
                 <th>Taux</th>
-                <th>Durée</th>
+                <th>DurÃ©e</th>
                 <th>Statut</th>
                 <th>Rapport</th>
             </tr>
@@ -332,8 +332,8 @@ function Open-Report {
     }
 }
 
-# Exécuter les tests
-Show-SectionTitle "Exécution des tests fonctionnels du cache prédictif"
+# ExÃ©cuter les tests
+Show-SectionTitle "ExÃ©cution des tests fonctionnels du cache prÃ©dictif"
 
 $testResults = @()
 
@@ -349,26 +349,26 @@ $completeReportPath = Join-Path -Path $reportDir -ChildPath "Complete-Test-Repor
 $completeResult = Invoke-TestWithReport -TestName "Test complet" -TestPath $completeTestPath -ReportPath $completeReportPath
 $testResults += $completeResult
 
-# Générer le rapport global
-Show-SectionTitle "Génération du rapport global"
+# GÃ©nÃ©rer le rapport global
+Show-SectionTitle "GÃ©nÃ©ration du rapport global"
 
 $globalReportPath = Join-Path -Path $reportDir -ChildPath "Global-Report.html"
 New-GlobalReport -TestResults $testResults -ReportPath $globalReportPath
 
-Write-Host "Rapport global généré : $globalReportPath" -ForegroundColor Green
+Write-Host "Rapport global gÃ©nÃ©rÃ© : $globalReportPath" -ForegroundColor Green
 
-# Afficher le résumé
-Show-SectionTitle "Résumé des tests"
+# Afficher le rÃ©sumÃ©
+Show-SectionTitle "RÃ©sumÃ© des tests"
 
 $totalTests = ($testResults | Measure-Object -Property TotalTests -Sum).Sum
 $passedTests = ($testResults | Measure-Object -Property PassedTests -Sum).Sum
 $failedTests = ($testResults | Measure-Object -Property FailedTests -Sum).Sum
 $successRate = if ($totalTests -gt 0) { [Math]::Round(($passedTests / $totalTests) * 100, 2) } else { 0 }
 
-Write-Host "Tests exécutés : $totalTests" -ForegroundColor White
-Write-Host "Tests réussis : $passedTests" -ForegroundColor Green
-Write-Host "Tests échoués : $failedTests" -ForegroundColor Red
-Write-Host "Taux de réussite : $successRate%" -ForegroundColor Cyan
+Write-Host "Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor White
+Write-Host "Tests rÃ©ussis : $passedTests" -ForegroundColor Green
+Write-Host "Tests Ã©chouÃ©s : $failedTests" -ForegroundColor Red
+Write-Host "Taux de rÃ©ussite : $successRate%" -ForegroundColor Cyan
 
 # Ouvrir le rapport global
 $openReport = Read-Host "Voulez-vous ouvrir le rapport global dans votre navigateur ? (O/N)"
@@ -376,11 +376,11 @@ if ($openReport -eq "O" -or $openReport -eq "o") {
     Open-Report -ReportPath $globalReportPath
 }
 
-# Résultat final
+# RÃ©sultat final
 if ($failedTests -eq 0) {
-    Write-Host "`nTous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi!" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

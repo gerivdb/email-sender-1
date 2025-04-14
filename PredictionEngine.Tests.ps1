@@ -1,27 +1,27 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module PredictionEngine.
 .DESCRIPTION
     Ce script contient des tests unitaires pour le module PredictionEngine
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 13/04/2025
 #>
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path -Parent $scriptPath
 $mockTypesPath = Join-Path -Path $scriptDir -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
-# Créer un chemin temporaire pour les tests
+# CrÃ©er un chemin temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests"
 $testCachePath = Join-Path -Path $testDir -ChildPath "Cache"
 $testDatabasePath = Join-Path -Path $testDir -ChildPath "Usage.db"
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testCachePath) {
     Remove-Item -Path $testCachePath -Recurse -Force -ErrorAction SilentlyContinue
 }
@@ -29,25 +29,25 @@ if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force -ErrorAction SilentlyContinue
 }
 
-# Créer le répertoire du cache
+# CrÃ©er le rÃ©pertoire du cache
 New-Item -Path $testCachePath -ItemType Directory -Force | Out-Null
 
 Describe "PredictionEngine Module Tests" {
     BeforeAll {
-        # Créer un CacheManager et un UsageCollector pour les tests
+        # CrÃ©er un CacheManager et un UsageCollector pour les tests
         $script:baseCache = New-MockCacheManager -Name "TestCache" -CachePath $testCachePath
         $script:usageCollector = New-MockUsageCollector -DatabasePath $testDatabasePath -CacheName "TestCache"
 
-        # Créer un DependencyManager pour les tests
+        # CrÃ©er un DependencyManager pour les tests
         $script:dependencyManager = New-MockDependencyManager -BaseCache $script:baseCache -UsageCollector $script:usageCollector
 
-        # Ajouter des dépendances de test
+        # Ajouter des dÃ©pendances de test
         $script:dependencyManager.AddDependency("SourceKey", "TargetKey1", 0.8)
         $script:dependencyManager.AddDependency("SourceKey", "TargetKey2", 0.6)
         $script:dependencyManager.AddDependency("SourceKey", "TargetKey3", 0.4)
         $script:dependencyManager.AddDependency("SourceKey", "TargetKey4", 0.2)
 
-        # Créer un PredictionEngine pour les tests
+        # CrÃ©er un PredictionEngine pour les tests
         $script:predictionEngine = New-MockPredictionEngine -UsageCollector $script:usageCollector -DependencyManager $script:dependencyManager
     }
 
@@ -86,7 +86,7 @@ Describe "PredictionEngine Module Tests" {
         It "Should update predictions" {
             $script:predictionEngine.UpdatePredictions()
 
-            # Vérifier que la mise à jour a été effectuée
+            # VÃ©rifier que la mise Ã  jour a Ã©tÃ© effectuÃ©e
             $script:predictionEngine.LastUpdate | Should -Not -BeNullOrEmpty
         }
 

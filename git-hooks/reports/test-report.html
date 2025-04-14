@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport de tests unitaires - Hooks Git</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .summary {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .passed {
+            color: green;
+        }
+        .failed {
+            color: red;
+        }
+        .skipped {
+            color: orange;
+        }
+        .not-run {
+            color: gray;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rapport de tests unitaires - Hooks Git</h1>
+    
+    <div class="summary">
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s: 12</p>
+        <p class="passed">Tests rÃ©ussis: 0</p>
+        <p class="failed">Tests Ã©chouÃ©s: 12</p>
+        <p class="skipped">Tests ignorÃ©s: 0</p>
+        <p class="not-run">Tests non exÃ©cutÃ©s: 0</p>
+    </div>
+    
+    <h2>DÃ©tails des tests</h2>
+    <table>
+        <tr>
+            <th>Nom du test</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
+        </tr>        <tr>
+            <td>Devrait filtrer les fichiers exclus</td>
+            <td class="failed">Failed</td>
+            <td>717,08</td>
+        </tr>        <tr>
+            <td>Devrait analyser les fichiers PowerShell modifiÃ©s</td>
+            <td class="failed">Failed</td>
+            <td>77,67</td>
+        </tr>        <tr>
+            <td>Devrait gÃ©nÃ©rer un rapport d'analyse</td>
+            <td class="failed">Failed</td>
+            <td>219,01</td>
+        </tr>        <tr>
+            <td>Devrait gÃ©rer les erreurs lors du chargement de la configuration</td>
+            <td class="failed">Failed</td>
+            <td>104,44</td>
+        </tr>        <tr>
+            <td>Devrait installer les hooks Git</td>
+            <td class="failed">Failed</td>
+            <td>0,00</td>
+        </tr>        <tr>
+            <td>Devrait remplacer les hooks existants avec -Force</td>
+            <td class="failed">Failed</td>
+            <td>0,00</td>
+        </tr>        <tr>
+            <td>Ne devrait pas remplacer les hooks existants sans -Force</td>
+            <td class="failed">Failed</td>
+            <td>0,00</td>
+        </tr>        <tr>
+            <td>Devrait gÃ©rer les erreurs lorsque le rÃ©pertoire des hooks n'existe pas</td>
+            <td class="failed">Failed</td>
+            <td>0,00</td>
+        </tr>        <tr>
+            <td>Devrait gÃ©rer les erreurs lorsque le rÃ©pertoire source n'existe pas</td>
+            <td class="failed">Failed</td>
+            <td>0,00</td>
+        </tr>        <tr>
+            <td>Devrait dÃ©tecter des erreurs dans un fichier avec erreurs</td>
+            <td class="failed">Failed</td>
+            <td>206,37</td>
+        </tr>        <tr>
+            <td>Ne devrait pas dÃ©tecter d'erreurs dans un fichier sans erreurs</td>
+            <td class="failed">Failed</td>
+            <td>162,41</td>
+        </tr>        <tr>
+            <td>Devrait gÃ©rer les erreurs lorsque le fichier n'existe pas</td>
+            <td class="failed">Failed</td>
+            <td>171,65</td>
+        </tr>    </table>
+    
+    <h2>Informations sur l'exÃ©cution</h2>
+    <p>Date d'exÃ©cution: 2025-04-14 07:57:55</p>
+    <p>DurÃ©e totale: 7,99 secondes</p>
+</body>
+</html>

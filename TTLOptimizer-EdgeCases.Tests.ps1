@@ -1,27 +1,27 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests des cas limites pour le module TTLOptimizer.
 .DESCRIPTION
     Ce script contient des tests pour les cas limites du module TTLOptimizer
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 13/04/2025
 #>
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path -Parent $scriptPath
 $mockTypesPath = Join-Path -Path $scriptDir -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
-# Créer un chemin temporaire pour les tests
+# CrÃ©er un chemin temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests"
 $testCachePath = Join-Path -Path $testDir -ChildPath "Cache"
 $testDatabasePath = Join-Path -Path $testDir -ChildPath "Usage.db"
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testCachePath) {
     Remove-Item -Path $testCachePath -Recurse -Force -ErrorAction SilentlyContinue
 }
@@ -29,16 +29,16 @@ if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force -ErrorAction SilentlyContinue
 }
 
-# Créer le répertoire du cache
+# CrÃ©er le rÃ©pertoire du cache
 New-Item -Path $testCachePath -ItemType Directory -Force | Out-Null
 
 Describe "TTLOptimizer Edge Cases Tests" {
     BeforeAll {
-        # Créer un CacheManager et un UsageCollector pour les tests
+        # CrÃ©er un CacheManager et un UsageCollector pour les tests
         $script:baseCache = New-MockCacheManager -Name "TestCache" -CachePath $testCachePath
         $script:usageCollector = New-MockUsageCollector -DatabasePath $testDatabasePath -CacheName "TestCache"
 
-        # Créer un TTLOptimizer pour les tests
+        # CrÃ©er un TTLOptimizer pour les tests
         $script:ttlOptimizer = New-MockTTLOptimizer -BaseCache $script:baseCache -UsageCollector $script:usageCollector
     }
 

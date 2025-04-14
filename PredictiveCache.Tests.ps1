@@ -1,27 +1,27 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module PredictiveCache.
 .DESCRIPTION
     Ce script contient des tests unitaires pour le module PredictiveCache
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 13/04/2025
 #>
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path -Parent $scriptPath
 $mockTypesPath = Join-Path -Path $scriptDir -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
-# Créer un chemin temporaire pour les tests
+# CrÃ©er un chemin temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests"
 $testCachePath = Join-Path -Path $testDir -ChildPath "Cache"
 $testDatabasePath = Join-Path -Path $testDir -ChildPath "Usage.db"
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testCachePath) {
     Remove-Item -Path $testCachePath -Recurse -Force -ErrorAction SilentlyContinue
 }
@@ -29,19 +29,19 @@ if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force -ErrorAction SilentlyContinue
 }
 
-# Créer le répertoire du cache
+# CrÃ©er le rÃ©pertoire du cache
 New-Item -Path $testCachePath -ItemType Directory -Force | Out-Null
 
 Describe "PredictiveCache Module Tests" {
     BeforeAll {
-        # Créer un PredictiveCache pour les tests
+        # CrÃ©er un PredictiveCache pour les tests
         $script:predictiveCache = New-MockPredictiveCache -Name "TestCache" -CachePath $testCachePath -DatabasePath $testDatabasePath
 
         # Configurer le PreloadManager
         $generator = { return "PreloadedValue" }
         $script:predictiveCache.PreloadManager.RegisterPreloadGenerator("Preload:*", $generator)
 
-        # Ajouter des dépendances
+        # Ajouter des dÃ©pendances
         $script:predictiveCache.DependencyManager.AddDependency("Key1", "Key2", 0.8)
         $script:predictiveCache.DependencyManager.AddDependency("Key1", "Key3", 0.6)
     }
@@ -94,7 +94,7 @@ Describe "PredictiveCache Module Tests" {
             $script:predictiveCache.Set("SourceKey", "SourceValue")
             $script:predictiveCache.Get("SourceKey")
 
-            # Vérifier que les dépendances sont traitées
+            # VÃ©rifier que les dÃ©pendances sont traitÃ©es
             $script:predictiveCache.ProcessDependencies("SourceKey")
         }
 
@@ -105,7 +105,7 @@ Describe "PredictiveCache Module Tests" {
             $script:predictiveCache.Set("TriggerKey", "TriggerValue")
             $script:predictiveCache.Get("TriggerKey")
 
-            # Vérifier que le préchargement est effectué
+            # VÃ©rifier que le prÃ©chargement est effectuÃ©
             $script:predictiveCache.ProcessDependencies("TriggerKey")
 
             $value = $script:predictiveCache.Get("Preload:123")

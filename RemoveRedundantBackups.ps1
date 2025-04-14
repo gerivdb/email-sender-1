@@ -1,5 +1,5 @@
-# Script pour supprimer les dossiers d'archive et de backup redondants
-# Ces dossiers sont inutiles puisque tous les fichiers sont déjà versionnés dans Git
+﻿# Script pour supprimer les dossiers d'archive et de backup redondants
+# Ces dossiers sont inutiles puisque tous les fichiers sont dÃ©jÃ  versionnÃ©s dans Git
 
 # Configuration
 $archiveFolder = "Roadmap\scripts\archive"
@@ -25,11 +25,11 @@ function Write-Log {
     }
 }
 
-# Vérifier si les dossiers existent
+# VÃ©rifier si les dossiers existent
 if (Test-Path -Path $archiveFolder) {
     Write-Log "Suppression du dossier d'archive redondant: $archiveFolder" "INFO"
     Remove-Item -Path $archiveFolder -Recurse -Force
-    Write-Log "Dossier d'archive supprimé avec succès" "SUCCESS"
+    Write-Log "Dossier d'archive supprimÃ© avec succÃ¨s" "SUCCESS"
 } else {
     Write-Log "Le dossier d'archive n'existe pas: $archiveFolder" "INFO"
 }
@@ -37,10 +37,10 @@ if (Test-Path -Path $archiveFolder) {
 if (Test-Path -Path $backupFolder) {
     Write-Log "Suppression du dossier de backup redondant: $backupFolder" "INFO"
     Remove-Item -Path $backupFolder -Recurse -Force
-    Write-Log "Dossier de backup supprimé avec succès" "SUCCESS"
+    Write-Log "Dossier de backup supprimÃ© avec succÃ¨s" "SUCCESS"
 } else {
     Write-Log "Le dossier de backup n'existe pas: $backupFolder" "INFO"
 }
 
-Write-Log "Nettoyage terminé. Les dossiers redondants ont été supprimés." "SUCCESS"
+Write-Log "Nettoyage terminÃ©. Les dossiers redondants ont Ã©tÃ© supprimÃ©s." "SUCCESS"
 Write-Log "Tous les fichiers restent accessibles via l'historique Git." "INFO"

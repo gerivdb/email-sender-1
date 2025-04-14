@@ -24,6 +24,27 @@
             "Adapter": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/utils/TestOmnibus/Adapters/MaintenanceCleanup-Adapter.ps1",
             "Priority": 3,
             "Tags": ["PowerShell", "Maintenance", "Cleanup"]
+        },
+        {
+            "Name": "EncodingErrorDetection",
+            "Path": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/tests/TestOmnibus",
+            "Adapter": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/utils/TestOmnibus/Adapters/EncodingErrorDetection-Adapter.ps1",
+            "Priority": 4,
+            "Tags": ["PowerShell", "Maintenance", "Encoding", "ErrorDetection"]
+        },
+        {
+            "Name": "PerformanceCounterManager",
+            "Path": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/tests",
+            "Adapter": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/utils/TestOmnibus/Adapters/PerformanceCounterManager-Adapter.ps1",
+            "Priority": 5,
+            "Tags": ["PowerShell", "Performance", "Monitoring", "ErrorHandling"]
+        },
+        {
+            "Name": "PathResolver",
+            "Path": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/tests",
+            "Adapter": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/utils/TestOmnibus/Adapters/PathResolver-Adapter.ps1",
+            "Priority": 6,
+            "Tags": ["PowerShell", "Paths", "FileSystem", "ErrorHandling"]
         }
     ]
 }

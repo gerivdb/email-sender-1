@@ -1,0 +1,16 @@
+{
+    "IgnorePatterns": [
+        "PSAvoidUsingWriteHost",
+        "PSAvoidUsingPositionalParameters"
+    ],
+    "SeverityLevel": "Warning",
+    "MaxErrors": 10,
+    "ExcludePaths": [
+        "node_modules",
+        "vendor",
+        "dist",
+        "out",
+        "tests",
+        "examples"
+    ]
+}
