@@ -2,69 +2,62 @@
 # Script ameliore pour creer des entrees de journal avec analyse des erreurs
 
 # Parametres
+$Title = "Entree de journal"
+$JournalFile = "journal.md"
+$LogDirectory = "logs"
+$IncludeErrorAnalysis = $false
+$IncludeRoadmapProgress = $false
 
-# Create-JournalEntry-Enhanced.ps1
-# Script ameliore pour creer des entrees de journal avec analyse des erreurs
-
-# Parametres
-param (
-    [Parameter(Mandatory = $false)
+# Traiter les arguments de ligne de commande
+for ($i = 0; $i -lt $args.Count; $i++) {
+    switch ($args[$i]) {
+        "-Title" { $Title = $args[++$i] }
+        "-JournalFile" { $JournalFile = $args[++$i] }
+        "-LogDirectory" { $LogDirectory = $args[++$i] }
+        "-IncludeErrorAnalysis" { $IncludeErrorAnalysis = $true }
+        "-IncludeRoadmapProgress" { $IncludeRoadmapProgress = $true }
+    }
+}
 
 # Configuration de la gestion d'erreurs
 $ErrorActionPreference = 'Stop'
 $Error.Clear()
+
 # Fonction de journalisation
 function Write-Log {
     param (
         [string]$Message,
         [string]$Level = "INFO"
     )
-    
+
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] [$Level] $Message"
-    
+
     # Afficher dans la console
     switch ($Level) {
-        "INFO" { Write-Host $logEntry -ForegroundColor White }
-        "WARNING" { Write-Host $logEntry -ForegroundColor Yellow }
-        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "INFO" { Write-Output $logEntry }
+        "WARNING" { Write-Warning $logEntry }
+        "ERROR" { Write-Error $logEntry }
         "DEBUG" { Write-Verbose $logEntry }
     }
-    
+
     # Écrire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
-        
+
         # Créer le répertoire de logs si nécessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
         }
-        
+
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
-    }
-    catch {
+    } catch {
         # Ignorer les erreurs d'écriture dans le journal
+        Write-Verbose "Erreur lors de l'écriture dans le journal: $_"
     }
 }
-try {
-    # Script principal
-]
-    [string]$Title = "Entree de journal",
-
-    [Parameter(Mandatory = $false)]
-    [string]$JournalFile = "journal.md",
-
-    [Parameter(Mandatory = $false)]
-    [string]$LogDirectory = "logs",
-
-    [Parameter(Mandatory = $false)]
-    [switch]$IncludeErrorAnalysis,
-
-    [Parameter(Mandatory = $false)]
-    [switch]$IncludeRoadmapProgress
-)
 
 # Fonction pour obtenir la date et l'heure actuelles
 function Get-FormattedDateTime {
@@ -144,8 +137,7 @@ function Add-ErrorAnalysis {
         Remove-Item -Path $tempFile -Force
 
         return $updatedTemplate
-    }
-    else {
+    } else {
         Write-Warning "Script d'analyse des erreurs non trouve: $errorAnalysisScript"
         return $Template
     }
@@ -158,7 +150,7 @@ function Add-RoadmapProgress {
     )
 
     # Trouver le fichier roadmap
-    $roadmapFile = "Roadmap\roadmap_perso.md"""
+    $roadmapFile = "Roadmap\roadmap_perso.md"
 
     if (Test-Path -Path $roadmapFile) {
         $roadmapContent = Get-Content -Path $roadmapFile -Raw
@@ -186,8 +178,7 @@ function Add-RoadmapProgress {
 
         # Ajouter la section de progression au template
         $Template += "`n$progressSection"
-    }
-    else {
+    } else {
         Write-Warning "Fichier roadmap non trouve: $roadmapFile"
     }
 
@@ -212,24 +203,21 @@ function Main {
     # Enregistrer l'entree de journal
     if ([string]::IsNullOrEmpty($JournalFile)) {
         # Afficher le template
-        Write-Host $template
-    }
-    else {
+        Write-Output $template
+    } else {
         # Enregistrer dans un fichier
         Set-Content -Path $JournalFile -Value $template
-        Write-Host "Entree de journal creee: $JournalFile" -ForegroundColor Green
+        Write-Output "Entree de journal creee: $JournalFile"
     }
 }
 
-# Executer la fonction principale
-Main
-
-}
-catch {
+try {
+    # Executer la fonction principale
+    Main
+} catch {
     Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
     exit 1
-}
-finally {
+} finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "Exécution du script terminée."
 }
