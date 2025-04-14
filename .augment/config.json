@@ -15,6 +15,16 @@
       "type": "custom",
       "command": "python scripts/python/journal/journal_rag_simple.py --query \"${query}\"",
       "working_directory": "${workspace_root}"
+    },
+    {
+      "name": "guidelines",
+      "type": "file",
+      "path": ".augment/guidelines/*.md"
+    },
+    {
+      "name": "context",
+      "type": "file",
+      "path": ".augment/context/*.md"
     }
   ]
 }
