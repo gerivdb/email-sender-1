@@ -1,0 +1,306 @@
+﻿{
+    "tool_version":  "1.0",
+    "tool_name":  "CodeAnalysis",
+    "issues":  [
+                   {
+                       "description":  "File \u0027test_script.ps1\u0027 uses Write-Host. Avoid using Write-Host because it might not work in all hosts, does not work when there is no host, and (prior to PS 5.0) cannot be suppressed, captured, or redirected. Instead, use Write-Output, Write-Verbose, or Write-Information.",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSAvoidUsingWriteHost",
+                       "type":  "issue",
+                       "severity":  2,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  14,
+                                                                        "column":  5
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  14,
+                                                                      "column":  6
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          ""
+                                      ]
+                   },
+                   {
+                       "description":  "The parameter \u0027Parameter\u0027 has been declared but not used.",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSReviewUnusedParameter",
+                       "type":  "issue",
+                       "severity":  2,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  5,
+                                                                        "column":  17
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  5,
+                                                                      "column":  18
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          "Parameter"
+                                      ]
+                   },
+                   {
+                       "description":  "Line has trailing whitespace",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSAvoidTrailingWhitespace",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  7,
+                                                                        "column":  1
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  7,
+                                                                      "column":  2
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          ""
+                                      ]
+                   },
+                   {
+                       "description":  "Line has trailing whitespace",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSAvoidTrailingWhitespace",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  9,
+                                                                        "column":  1
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  9,
+                                                                      "column":  2
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          ""
+                                      ]
+                   },
+                   {
+                       "description":  "Line has trailing whitespace",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSAvoidTrailingWhitespace",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  10,
+                                                                        "column":  40
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  10,
+                                                                      "column":  41
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          ""
+                                      ]
+                   },
+                   {
+                       "description":  "Line has trailing whitespace",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSAvoidTrailingWhitespace",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  11,
+                                                                        "column":  1
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  11,
+                                                                      "column":  2
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          ""
+                                      ]
+                   },
+                   {
+                       "description":  "Line has trailing whitespace",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSAvoidTrailingWhitespace",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  13,
+                                                                        "column":  1
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  13,
+                                                                      "column":  2
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          ""
+                                      ]
+                   },
+                   {
+                       "description":  "Line has trailing whitespace",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSAvoidTrailingWhitespace",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  15,
+                                                                        "column":  1
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  15,
+                                                                      "column":  2
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          ""
+                                      ]
+                   },
+                   {
+                       "description":  "Line has trailing whitespace",
+                       "engine_name":  "PSScriptAnalyzer",
+                       "check_name":  "PSAvoidTrailingWhitespace",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  17,
+                                                                        "column":  1
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  17,
+                                                                      "column":  2
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          ""
+                                      ]
+                   },
+                   {
+                       "description":  "TODO: Add more robust error handling",
+                       "engine_name":  "TodoAnalyzer",
+                       "check_name":  "Todo.TODO",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  8,
+                                                                        "column":  6
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  8,
+                                                                      "column":  7
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          "Documentation"
+                                      ]
+                   },
+                   {
+                       "description":  "FIXME: Fix performance issue",
+                       "engine_name":  "TodoAnalyzer",
+                       "check_name":  "Todo.FIXME",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  12,
+                                                                        "column":  6
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  12,
+                                                                      "column":  7
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          "Documentation"
+                                      ]
+                   },
+                   {
+                       "description":  "HACK: Temporary workaround for bug #123",
+                       "engine_name":  "TodoAnalyzer",
+                       "check_name":  "Todo.HACK",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  16,
+                                                                        "column":  6
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  16,
+                                                                      "column":  7
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          "Documentation"
+                                      ]
+                   },
+                   {
+                       "description":  "NOTE: This function could be improved",
+                       "engine_name":  "TodoAnalyzer",
+                       "check_name":  "Todo.NOTE",
+                       "type":  "issue",
+                       "severity":  3,
+                       "location":  {
+                                        "positions":  {
+                                                          "begin":  {
+                                                                        "line":  18,
+                                                                        "column":  6
+                                                                    },
+                                                          "end":  {
+                                                                      "line":  18,
+                                                                      "column":  7
+                                                                  }
+                                                      },
+                                        "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1"
+                                    },
+                       "categories":  [
+                                          "Documentation"
+                                      ]
+                   }
+               ],
+    "version":  "2.0"
+}
