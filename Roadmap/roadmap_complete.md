@@ -1,9 +1,9 @@
 # Roadmap personnelle d'amélioration du projet
 
 ## État d'avancement global
-- **Tâches terminées**: 23/34 (68%)
-- **Sous-tâches détaillées**: 142/300 (47%)
-- **Progression globale**: 58%
+- **Tâches terminées**: 25/40 (62.5%)
+- **Sous-tâches détaillées**: 163/345 (47%)
+- **Progression globale**: 55%
 
 ## Vue d'ensemble des tâches par priorité et complexité
 
@@ -71,6 +71,11 @@ Ce document présente une feuille de route organisée par ordre de priorité bas
   - [x] Développer un script `Run-AllTests.ps1` avec parallélisation et reporting
   - [x] Intégrer avec TestOmnibus via `Register-PRTestsWithOmnibus.ps1`
   - [x] Générer des rapports de couverture de code (cible: >90%)
+  - [ ] Utiliser des approches alternatives pour les tests unitaires
+    - [ ] Implémenter des tests avec fichiers temporaires réels au lieu de mocks
+    - [ ] Développer des wrappers pour les fonctions système difficiles à mocker
+    - [ ] Créer des environnements de test isolés pour les tests d'intégration
+    - [ ] Documenter les meilleures pratiques pour les tests sans mocking
 
 ### 1.1.2 Optimisation des performances du système d'analyse
 
@@ -225,22 +230,47 @@ Ce document présente une feuille de route organisée par ordre de priorité bas
     - [x] Tester les fonctions principales de chaque script
 
 ##### C.2.4 Intégration avec des outils d'analyse tiers
-- [ ] Intégrer avec des outils d'analyse tiers pour améliorer la couverture
-  - [ ] Développer des connecteurs pour des outils populaires
-    - [ ] Créer `Connect-PSScriptAnalyzer.ps1` pour PSScriptAnalyzer
-    - [ ] Implémenter `Connect-ESLint.ps1` pour ESLint (JavaScript)
-    - [ ] Développer `Connect-Pylint.ps1` pour Pylint (Python)
-    - [ ] Créer des adaptateurs pour SonarQube et autres outils
-  - [ ] Unifier les résultats d'analyse de différentes sources
-    - [ ] Développer `Merge-AnalysisResults.ps1` pour consolider les résultats
-    - [ ] Créer un format de données unifié pour les résultats
-    - [ ] Implémenter un système de déduplication des problèmes
-    - [ ] Développer des filtres de priorité pour les résultats combinés
-  - [ ] Implémenter un système de plugins extensible
-    - [ ] Créer `Register-AnalysisPlugin.ps1` pour l'enregistrement de plugins
-    - [ ] Développer une API standardisée pour les plugins
-    - [ ] Implémenter un mécanisme de découverte automatique
-    - [ ] Créer un référentiel de plugins partageables
+- [x] Intégrer avec des outils d'analyse tiers pour améliorer la couverture
+  - [x] Développer des connecteurs pour des outils populaires
+    - [x] Créer `Start-CodeAnalysis.ps1` pour PSScriptAnalyzer et autres outils
+    - [x] Implémenter l'intégration avec ESLint (JavaScript)
+    - [x] Développer l'intégration avec Pylint (Python)
+    - [x] Créer des adaptateurs pour SonarQube et autres outils avec `Integrate-ThirdPartyTools.ps1`
+  - [x] Unifier les résultats d'analyse de différentes sources
+    - [x] Développer le module `UnifiedResultsFormat.psm1` pour consolider les résultats
+    - [x] Créer un format de données unifié pour les résultats
+    - [x] Implémenter un système de déduplication des problèmes
+    - [x] Développer des filtres de priorité pour les résultats combinés
+  - [x] Implémenter un système de plugins extensible
+    - [x] Créer un système d'intégration pour les plugins d'analyse
+    - [x] Développer une API standardisée pour les plugins
+    - [x] Implémenter un mécanisme de correction d'encodage avec `Fix-HtmlReportEncoding.ps1`
+    - [x] Créer une documentation complète pour l'utilisation du système
+  - [x] Améliorer les tests unitaires pour l'intégration avec des outils tiers
+    - [x] Utiliser des approches alternatives pour les tests unitaires
+      - [x] Implémenter des tests avec fichiers temporaires réels au lieu de mocks
+      - [x] Développer des wrappers pour les fonctions système difficiles à mocker
+      - [x] Créer un module `TestHelpers.psm1` pour faciliter les tests
+      - [x] Implémenter des environnements de test isolés avec `New-TestEnvironment`
+    - [x] Ajouter plus de tests d'intégration
+      - [x] Créer des tests pour les scénarios d'erreur et de récupération
+      - [x] Développer des tests pour les cas limites et les conditions exceptionnelles
+      - [ ] Implémenter des tests pour les intégrations avec des systèmes externes
+      - [ ] Créer des tests de compatibilité entre différentes versions
+    - [ ] Améliorer les tests de performance
+      - [ ] Implémenter des tests pour mesurer l'utilisation de la mémoire
+      - [ ] Développer des tests pour mesurer l'utilisation du CPU
+      - [ ] Créer des tests pour mesurer les performances d'E/S
+      - [ ] Implémenter des tests pour mesurer les temps de réponse
+    - [ ] Intégrer les tests dans un pipeline CI/CD
+      - [ ] Créer des workflows GitHub Actions pour l'exécution automatique des tests
+      - [ ] Développer des scripts d'intégration avec Azure DevOps
+      - [ ] Implémenter des rapports de test automatisés
+      - [ ] Configurer des notifications en cas d'échec des tests
+    - [ ] Ajouter des tests de régression
+      - [ ] Développer `Test-PerformanceRegression.ps1` pour comparer les performances
+      - [ ] Implémenter un système de suivi des performances dans le temps
+      - [ ] Créer des seuils d'alerte pour les régressions significatives
 
 #### D. Mise en cache des résultats
 - [ ] Implémenter un système de cache multi-niveaux pour éviter les analyses redondantes
@@ -309,6 +339,11 @@ Ce document présente une feuille de route organisée par ordre de priorité bas
   - [ ] Implémenter des tests de flux complets avec `Test-CompleteWorkflow.ps1`
   - [ ] Créer des tests de résilience avec `Test-SystemResilience.ps1`
   - [ ] Développer des tests de limites avec `Test-SystemBoundaries.ps1`
+  - [ ] Ajouter des tests d'intégration pour couvrir d'autres aspects du système
+    - [ ] Implémenter des tests pour les scénarios d'erreur et de récupération
+    - [ ] Créer des tests pour les cas limites et les conditions exceptionnelles
+    - [ ] Développer des tests pour les intégrations avec des systèmes externes
+    - [ ] Implémenter des tests de compatibilité entre différentes versions
 
 #### B. Intégration avec GitHub Actions
 - [ ] Tester l'intégration avec GitHub Actions dans différents scénarios
@@ -317,6 +352,26 @@ Ce document présente une feuille de route organisée par ordre de priorité bas
   - [ ] Implémenter des tests de webhooks avec `Test-GitHubWebhooks.ps1`
   - [ ] Développer des tests d'authentification avec `Test-GitHubAuthentication.ps1`
   - [ ] Créer des tests de gestion des secrets avec `Test-GitHubSecrets.ps1`
+
+#### C. Tests de performance avancés
+- [ ] Améliorer les tests de performance pour mesurer d'autres aspects
+  - [ ] Implémenter des tests pour mesurer l'utilisation de la mémoire avec `Measure-MemoryUsage.ps1`
+  - [ ] Développer des tests pour mesurer l'utilisation du CPU avec `Measure-CpuUsage.ps1`
+  - [ ] Créer des tests pour mesurer les performances d'E/S avec `Measure-IOPerformance.ps1`
+  - [ ] Implémenter des tests pour mesurer les temps de réponse avec `Measure-ResponseTime.ps1`
+  - [ ] Développer des tests de charge avec `Start-LoadTest.ps1`
+
+#### D. Intégration CI/CD et tests de régression
+- [ ] Intégrer les tests dans un pipeline CI/CD pour automatiser l'exécution
+  - [ ] Créer des workflows GitHub Actions pour l'exécution automatique des tests
+  - [ ] Développer des scripts d'intégration avec Azure DevOps
+  - [ ] Implémenter des rapports de test automatisés
+  - [ ] Configurer des notifications en cas d'échec des tests
+- [ ] Ajouter des tests de régression pour détecter les régressions de performance
+  - [ ] Développer `Test-PerformanceRegression.ps1` pour comparer les performances
+  - [ ] Implémenter un système de suivi des performances dans le temps
+  - [ ] Créer des seuils d'alerte pour les régressions significatives
+  - [ ] Développer des rapports de tendance de performance
 
 ## Avantages des améliorations de parallélisation
 
@@ -362,8 +417,52 @@ Ce document présente une feuille de route organisée par ordre de priorité bas
 
 8. **Documentation des meilleures pratiques** : Documenter les meilleures pratiques pour le développement PowerShell compatible avec différentes versions.
 
+9. **Amélioration des tests unitaires** : ✅ Utiliser des approches alternatives pour les tests unitaires, comme l'utilisation de fichiers temporaires réels au lieu de mocker les fonctions système.
 
+10. **Extension des tests d'intégration** : ✅ Ajouter plus de tests d'intégration pour couvrir d'autres aspects du système, notamment les scénarios d'erreur et les cas limites.
 
+11. **Amélioration des tests de performance** : Étendre les tests de performance pour mesurer d'autres aspects comme l'utilisation de la mémoire et du CPU.
 
+12. **Intégration CI/CD des tests** : Intégrer tous les tests dans un pipeline CI/CD pour automatiser l'exécution et la génération de rapports.
+
+13. **Tests de régression de performance** : Implémenter des tests de régression pour détecter automatiquement les régressions de performance.
+
+## Améliorations des tests unitaires réalisées
+
+### Utilisation de fichiers temporaires réels
+
+- **Problème résolu** : Les mocks des fonctions système en PowerShell 5.1 présentaient des limitations et des problèmes de fiabilité.
+- **Solution implémentée** : Utilisation de fichiers temporaires réels au lieu de mocker les fonctions système.
+- **Avantages** :
+  - Tests plus robustes et fiables
+  - Conditions de test plus proches de l'environnement réel
+  - Évite les problèmes liés aux limitations de PowerShell 5.1 pour le mocking
+  - Permet d'atteindre 100% de réussite pour les tests unitaires
+
+### Module TestHelpers.psm1
+
+- **Fonctionnalités implémentées** :
+  - `New-TestEnvironment` : Crée un environnement de test isolé avec des fichiers temporaires
+  - `Invoke-ScriptWithParams` : Exécute un script avec des paramètres spécifiés
+  - Fonctions de mock pour les outils d'analyse tiers
+- **Avantages** :
+  - Facilite la création de tests unitaires
+  - Standardise l'approche de test
+  - Réduit la duplication de code dans les tests
+
+### Tests pour Fix-HtmlReportEncoding.ps1
+
+- **Améliorations** :
+  - Utilisation de fichiers HTML réels avec encodage ASCII
+  - Vérification de la correction de l'encodage avec BOM UTF-8
+  - Tests de correction récursive des fichiers HTML dans un répertoire
+
+### Tests pour Integrate-ThirdPartyTools.ps1
+
+- **Améliorations** :
+  - Utilisation de fichiers JSON réels pour les résultats d'analyse
+  - Tests de conversion vers différents formats (GitHub, SonarQube, AzureDevOps)
+  - Tests de gestion des erreurs
+  - Vérification du contenu des fichiers générés
 
 
