@@ -1,0 +1,80 @@
+﻿{
+    "MinResponseMs":  854.0014,
+    "MaxResponseMs":  1032.6462000000001,
+    "Performance":  [
+                        {
+                            "Timestamp":  "2025-04-15 03:00:44.578",
+                            "CPU":  31.59375,
+                            "WorkingSet":  180826112,
+                            "PrivateMemory":  156180480,
+                            "Handles":  1041,
+                            "Threads":  35,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "4e43a6ce-f879-4b50-bf21-dc384fb51e6f",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "3c23096c-089c-473d-b287-e05e8fe5cf06"
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 03:00:45.661",
+                            "CPU":  31.71875,
+                            "WorkingSet":  180867072,
+                            "PrivateMemory":  156213248,
+                            "Handles":  1030,
+                            "Threads":  35,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "4e43a6ce-f879-4b50-bf21-dc384fb51e6f",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "3c23096c-089c-473d-b287-e05e8fe5cf06"
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 03:00:46.676",
+                            "CPU":  31.71875,
+                            "WorkingSet":  180850688,
+                            "PrivateMemory":  156184576,
+                            "Handles":  1029,
+                            "Threads":  34,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "4e43a6ce-f879-4b50-bf21-dc384fb51e6f",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "3c23096c-089c-473d-b287-e05e8fe5cf06"
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 03:00:47.734",
+                            "CPU":  31.71875,
+                            "WorkingSet":  180867072,
+                            "PrivateMemory":  156213248,
+                            "Handles":  1030,
+                            "Threads":  35,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "4e43a6ce-f879-4b50-bf21-dc384fb51e6f",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "3c23096c-089c-473d-b287-e05e8fe5cf06"
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 03:00:48.752",
+                            "CPU":  31.71875,
+                            "WorkingSet":  180867072,
+                            "PrivateMemory":  156213248,
+                            "Handles":  1030,
+                            "Threads":  35,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "4e43a6ce-f879-4b50-bf21-dc384fb51e6f",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "3c23096c-089c-473d-b287-e05e8fe5cf06"
+                        }
+                    ],
+    "TotalExecTime":  1.5785806999999998,
+    "Concurrency":  1,
+    "AvgResponseMs":  936.21586666666678,
+    "TotalRequests":  3,
+    "System":  {
+                   "Memory":  23.98,
+                   "PSVersion":  "5.1.19041.5737",
+                   "OS":  "Microsoft Windows NT 10.0.19045.0",
+                   "ProcessorCount":  8
+               },
+    "StartTime":  "2025-04-15 03:00:43",
+    "ErrorCount":  0,
+    "Duration":  5,
+    "SuccessCount":  3
+}
