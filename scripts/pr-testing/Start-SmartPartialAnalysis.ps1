@@ -209,7 +209,7 @@ function Get-FileDiff {
     }
 }
 
-# Fonction pour analyser partiellement un fichier
+# Fonction pour analyser partiellement un fichier avec optimisation des performances
 function Invoke-PartialFileAnalysis {
     [CmdletBinding()]
     param(
@@ -235,25 +235,42 @@ function Invoke-PartialFileAnalysis {
         [string]$HeadBranch,
 
         [Parameter(Mandatory = $true)]
-        [int]$Context
+        [int]$Context,
+
+        [Parameter()]
+        [bool]$UseIntelligentContext = $true,
+
+        [Parameter()]
+        [bool]$IncludeSymbolContext = $true
     )
 
     try {
+        # Démarrer le chronomètre pour mesurer les performances
+        $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
         # Créer un objet pour stocker les résultats
         $result = [PSCustomObject]@{
-            FilePath      = $File.path
-            Issues        = @()
-            StartTime     = Get-Date
-            EndTime       = $null
-            Duration      = $null
-            Success       = $false
-            FromCache     = $false
-            ChangedLines  = 0
-            AnalyzedLines = 0
+            FilePath        = $File.path
+            Issues          = @()
+            StartTime       = Get-Date
+            EndTime         = $null
+            Duration        = $null
+            Success         = $false
+            FromCache       = $false
+            ChangedLines    = 0
+            AnalyzedLines   = 0
+            AnalysisTimeMs  = 0
+            DiffTimeMs      = 0
+            ContextTimeMs   = 0
+            FilterTimeMs    = 0
+            TotalTimeMs     = 0
+            FileSize        = 0
+            SymbolsAnalyzed = 0
+            ContextStrategy = "Standard"
         }
 
         # Générer une clé de cache unique
-        $cacheKey = "PartialAnalysis:$($File.path):$($File.sha):$Context"
+        $cacheKey = "PartialAnalysis:$($File.path):$($File.sha):${Context}:${UseIntelligentContext}:${IncludeSymbolContext}"
 
         # Essayer d'obtenir les résultats du cache
         if ($UseFileCache) {
@@ -261,6 +278,8 @@ function Invoke-PartialFileAnalysis {
             if ($null -ne $cachedResult) {
                 # Ajouter des informations sur l'utilisation du cache
                 $cachedResult | Add-Member -MemberType NoteProperty -Name "FromCache" -Value $true -Force
+                $stopwatch.Stop()
+                $cachedResult.TotalTimeMs = $stopwatch.ElapsedMilliseconds
 
                 return $cachedResult
             }
@@ -274,14 +293,30 @@ function Invoke-PartialFileAnalysis {
             $result.EndTime = Get-Date
             $result.Duration = $result.EndTime - $result.StartTime
             $result.Success = $false
+            $stopwatch.Stop()
+            $result.TotalTimeMs = $stopwatch.ElapsedMilliseconds
             return $result
         }
 
+        # Obtenir la taille du fichier
+        $fileInfo = Get-Item -Path $filePath
+        $result.FileSize = $fileInfo.Length
+
+        # Chronométrer l'obtention des différences
+        $diffStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
         # Obtenir les lignes modifiées
         $changedLines = Get-FileDiff -RepoPath $RepoPath -FilePath $File.path -BaseBranch $BaseBranch -HeadBranch $HeadBranch
-        if ($null -eq $changedLines) {
+
+        $diffStopwatch.Stop()
+        $result.DiffTimeMs = $diffStopwatch.ElapsedMilliseconds
+
+        if ($null -eq $changedLines -or $changedLines.Count -eq 0) {
             # Analyser le fichier complet si nous ne pouvons pas obtenir les différences
+            $analysisStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $issues = $Analyzer.AnalyzeFile($filePath)
+            $analysisStopwatch.Stop()
+            $result.AnalysisTimeMs = $analysisStopwatch.ElapsedMilliseconds
 
             # Mettre à jour les résultats
             $result.Issues = $issues
@@ -290,34 +325,134 @@ function Invoke-PartialFileAnalysis {
             $result.Success = $true
             $result.ChangedLines = 0
             $result.AnalyzedLines = (Get-Content -Path $filePath).Count
+            $result.ContextStrategy = "FullFile"
+
+            $stopwatch.Stop()
+            $result.TotalTimeMs = $stopwatch.ElapsedMilliseconds
 
             return $result
         }
 
+        # Chronométrer la détermination du contexte
+        $contextStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
         # Déterminer les plages de lignes à analyser
         $linesToAnalyze = [System.Collections.Generic.HashSet[int]]::new()
 
+        # Ajouter les lignes modifiées et leur contexte
         foreach ($line in $changedLines) {
             # Ajouter la ligne modifiée
             $linesToAnalyze.Add($line.LineNumber) | Out-Null
 
-            # Ajouter les lignes de contexte
+            # Ajouter les lignes de contexte standard
             for ($i = [Math]::Max(1, $line.LineNumber - $Context); $i -le $line.LineNumber + $Context; $i++) {
                 $linesToAnalyze.Add($i) | Out-Null
             }
         }
 
+        # Utiliser un contexte intelligent si demandé
+        if ($UseIntelligentContext) {
+            $result.ContextStrategy = "Intelligent"
+
+            # Lire le contenu du fichier
+            $content = Get-Content -Path $filePath -Raw
+
+            # Trouver les blocs logiques (fonctions, classes, etc.)
+            $extension = [System.IO.Path]::GetExtension($filePath).ToLower()
+
+            # Utiliser des expressions régulières spécifiques au langage pour trouver les blocs
+            $blockPatterns = @{
+                ".ps1"  = '(?i)function\s+([a-z0-9_-]+)\s*\{|\s*class\s+([a-z0-9_-]+)\s*\{'
+                ".psm1" = '(?i)function\s+([a-z0-9_-]+)\s*\{|\s*class\s+([a-z0-9_-]+)\s*\{'
+                ".py"   = '(?i)def\s+([a-z0-9_]+)|\s*class\s+([a-z0-9_]+)'
+                ".js"   = '(?i)function\s+([a-z0-9_$]+)|\s*class\s+([a-z0-9_$]+)|([a-z0-9_$]+)\s*=\s*function'
+                ".html" = '<([a-z][a-z0-9]*)\b[^>]*>|</([a-z][a-z0-9]*)>'
+                ".css"  = '([.#][a-z0-9_-]+)\s*\{'
+            }
+
+            if ($blockPatterns.ContainsKey($extension)) {
+                $pattern = $blockPatterns[$extension]
+                $blockMatches = [regex]::Matches($content, $pattern)
+
+                # Pour chaque bloc trouvé, vérifier s'il contient des lignes modifiées
+                foreach ($match in $blockMatches) {
+                    $blockStartLine = $content.Substring(0, $match.Index).Split("`n").Count
+
+                    # Trouver la fin du bloc (accolade fermante ou indentation)
+                    $blockEndLine = $blockStartLine
+
+                    # Vérifier si une ligne modifiée est dans ce bloc
+                    $blockContainsChanges = $changedLines | Where-Object { $_.LineNumber -ge $blockStartLine -and $_.LineNumber -le $blockEndLine }
+
+                    if ($blockContainsChanges.Count -gt 0) {
+                        # Ajouter toutes les lignes du bloc au contexte
+                        for ($i = $blockStartLine; $i -le $blockEndLine; $i++) {
+                            $linesToAnalyze.Add($i) | Out-Null
+                        }
+                    }
+                }
+            }
+        }
+
+        # Ajouter le contexte des symboles si demandé
+        if ($IncludeSymbolContext) {
+            # Utiliser l'indexeur pour trouver les symboles (fonctions, variables, etc.)
+            $indexer = New-FileContentIndexer
+            $index = $indexer.IndexFile($filePath)
+
+            if ($null -ne $index) {
+                $result.SymbolsAnalyzed = $index.Symbols.Count
+
+                # Pour chaque ligne modifiée, trouver les symboles utilisés
+                foreach ($line in $changedLines) {
+                    $lineNumber = $line.LineNumber
+
+                    # Trouver les symboles utilisés dans cette ligne
+                    $lineSymbols = $index.Symbols.GetEnumerator() | Where-Object { $_.Value -eq $lineNumber }
+
+                    # Ajouter les lignes où ces symboles sont définis ou utilisés
+                    foreach ($symbol in $lineSymbols) {
+                        $symbolName = $symbol.Key
+
+                        # Trouver toutes les occurrences de ce symbole
+                        $symbolOccurrences = $index.Symbols.GetEnumerator() | Where-Object { $_.Key -eq $symbolName }
+
+                        foreach ($occurrence in $symbolOccurrences) {
+                            $linesToAnalyze.Add($occurrence.Value) | Out-Null
+                        }
+                    }
+                }
+            }
+        }
+
+        $contextStopwatch.Stop()
+        $result.ContextTimeMs = $contextStopwatch.ElapsedMilliseconds
+
         # Vérifier que le fichier existe et est lisible
         if (-not (Test-Path -Path $filePath -PathType Leaf)) {
             Write-Warning "Le fichier $filePath n'existe pas ou n'est pas accessible."
+            $stopwatch.Stop()
+            $result.TotalTimeMs = $stopwatch.ElapsedMilliseconds
             return $result
         }
+
+        # Chronométrer l'analyse
+        $analysisStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
         # Analyser le fichier complet
         $allIssues = $Analyzer.AnalyzeFile($filePath)
 
+        $analysisStopwatch.Stop()
+        $result.AnalysisTimeMs = $analysisStopwatch.ElapsedMilliseconds
+
+        # Chronométrer le filtrage
+        $filterStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
         # Filtrer les problèmes pour ne garder que ceux dans les lignes à analyser
         $filteredIssues = $allIssues | Where-Object { $linesToAnalyze.Contains($_.Line) }
+
+        $filterStopwatch.Stop()
+        $result.FilterTimeMs = $filterStopwatch.ElapsedMilliseconds
 
         # Mettre à jour les résultats
         $result.Issues = $filteredIssues
@@ -332,6 +467,9 @@ function Invoke-PartialFileAnalysis {
             $Cache.Set($cacheKey, $result)
         }
 
+        $stopwatch.Stop()
+        $result.TotalTimeMs = $stopwatch.ElapsedMilliseconds
+
         return $result
     } catch {
         # Gérer les erreurs
@@ -340,6 +478,9 @@ function Invoke-PartialFileAnalysis {
         $result.Success = $false
 
         Write-Error "Erreur lors de l'analyse partielle du fichier $($File.path) : $_"
+
+        $stopwatch.Stop()
+        $result.TotalTimeMs = $stopwatch.ElapsedMilliseconds
 
         return $result
     }
@@ -517,7 +658,12 @@ function New-AnalysisReport {
                 <th>Problèmes</th>
                 <th>Lignes modifiées</th>
                 <th>Lignes analysées</th>
-                <th>Durée (ms)</th>
+                <th>Taille (KB)</th>
+                <th>Stratégie</th>
+                <th>Durée totale (ms)</th>
+                <th>Analyse (ms)</th>
+                <th>Contexte (ms)</th>
+                <th>Diff (ms)</th>
                 <th>Mis en cache</th>
             </tr>
 "@
@@ -529,7 +675,12 @@ function New-AnalysisReport {
                 <td>$($result.Issues.Count)</td>
                 <td>$($result.ChangedLines)</td>
                 <td>$($result.AnalyzedLines)</td>
-                <td>$([Math]::Round($result.Duration.TotalMilliseconds, 2))</td>
+                <td>$([Math]::Round($result.FileSize / 1KB, 2))</td>
+                <td>$($result.ContextStrategy)</td>
+                <td>$($result.TotalTimeMs)</td>
+                <td>$($result.AnalysisTimeMs)</td>
+                <td>$($result.ContextTimeMs)</td>
+                <td>$($result.DiffTimeMs)</td>
                 <td>$($result.FromCache)</td>
             </tr>
 "@

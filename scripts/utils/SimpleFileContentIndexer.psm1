@@ -1,6 +1,6 @@
 #
-# Module FileContentIndexer
-# Indexeur de contenu de fichier pour l'analyse prédictive
+# Module SimpleFileContentIndexer
+# Compatible avec PowerShell 5.1 et PowerShell 7
 #
 
 # Variables globales du module
@@ -17,17 +17,17 @@ function New-FileContentIndexer {
     param(
         [Parameter()]
         [string]$IndexPath = "",
-        
+
         [Parameter()]
         [bool]$PersistIndices = $false,
-        
+
         [Parameter()]
         [int]$MaxConcurrentIndexing = 4,
-        
+
         [Parameter()]
         [bool]$EnableIncrementalIndexing = $true
     )
-    
+
     # Initialiser les variables globales
     $script:indexPath = $IndexPath
     $script:persistIndices = $PersistIndices
@@ -35,30 +35,30 @@ function New-FileContentIndexer {
     $script:enableIncrementalIndexing = $EnableIncrementalIndexing
     $script:fileIndices = @{}
     $script:symbolMap = @{}
-    
+
     # Créer et retourner un objet indexeur
     $indexer = [PSCustomObject]@{
-        IndexPath = $IndexPath
-        PersistIndices = $PersistIndices
-        MaxConcurrentIndexing = $MaxConcurrentIndexing
+        IndexPath                 = $IndexPath
+        PersistIndices            = $PersistIndices
+        MaxConcurrentIndexing     = $MaxConcurrentIndexing
         EnableIncrementalIndexing = $EnableIncrementalIndexing
-        PSTypeName = "FileContentIndexer"
+        PSTypeName                = "FileContentIndexer"
     }
-    
+
     # Ajouter des méthodes à l'indexeur
     $indexer | Add-Member -MemberType ScriptMethod -Name "GetFileIndices" -Value {
         return $script:fileIndices
     }
-    
+
     $indexer | Add-Member -MemberType ScriptMethod -Name "GetSymbolMap" -Value {
         return $script:symbolMap
     }
-    
+
     $indexer | Add-Member -MemberType ScriptMethod -Name "ClearIndices" -Value {
         $script:fileIndices = @{}
         $script:symbolMap = @{}
     }
-    
+
     return $indexer
 }
 
@@ -68,37 +68,37 @@ function New-FileIndex {
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Indexer,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$FilePath
     )
-    
+
     # Vérifier que le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier n'existe pas: $FilePath"
         return $null
     }
-    
+
     # Obtenir l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
-    
+
     # Créer un objet index
     $index = [PSCustomObject]@{
-        FilePath = $FilePath
-        IndexedAt = Get-Date
-        FileSize = (Get-Item -Path $FilePath).Length
-        Extension = $extension
-        Symbols = @{}
-        Functions = @()
-        Classes = @()
-        Variables = @()
-        Lines = @()
-        Content = $null
-        IsPartialIndex = $false
-        ChangedLines = @()
+        FilePath         = $FilePath
+        IndexedAt        = Get-Date
+        FileSize         = (Get-Item -Path $FilePath).Length
+        Extension        = $extension
+        Symbols          = @{}
+        Functions        = @()
+        Classes          = @()
+        Variables        = @()
+        Lines            = @()
+        Content          = $null
+        IsPartialIndex   = $false
+        ChangedLines     = @()
         ChangedFunctions = @()
     }
-    
+
     # Lire le contenu du fichier
     try {
         $content = Get-Content -Path $FilePath -Raw -ErrorAction Stop
@@ -108,7 +108,7 @@ function New-FileIndex {
         Write-Error "Erreur lors de la lecture du fichier $FilePath : $_"
         return $null
     }
-    
+
     # Indexer le fichier selon son extension
     switch ($extension) {
         ".ps1" { $index = Add-PowerShellIndex -Index $index }
@@ -119,10 +119,10 @@ function New-FileIndex {
         ".css" { $index = Add-CSSIndex -Index $index }
         default { $index = Add-GenericIndex -Index $index }
     }
-    
+
     # Ajouter l'index au dictionnaire
     $script:fileIndices[$FilePath] = $index
-    
+
     # Mettre à jour la carte des symboles
     foreach ($symbol in $index.Symbols.Keys) {
         if (-not $script:symbolMap.ContainsKey($symbol)) {
@@ -130,21 +130,21 @@ function New-FileIndex {
         }
         $script:symbolMap[$symbol][$FilePath] = $index.Symbols[$symbol]
     }
-    
+
     # Persister l'index si demandé
     if ($script:persistIndices -and $script:indexPath) {
         $indexFileName = [System.IO.Path]::GetFileNameWithoutExtension($FilePath) + "_index.xml"
         $indexFilePath = Join-Path -Path $script:indexPath -ChildPath $indexFileName
-        
+
         # Créer le répertoire s'il n'existe pas
         if (-not (Test-Path -Path $script:indexPath)) {
             New-Item -Path $script:indexPath -ItemType Directory -Force | Out-Null
         }
-        
+
         # Sauvegarder l'index
         $index | Export-Clixml -Path $indexFilePath -Force
     }
-    
+
     return $index
 }
 
@@ -154,58 +154,58 @@ function New-IncrementalFileIndex {
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Indexer,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$OldContent,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$NewContent
     )
-    
+
     # Vérifier que l'indexation incrémentale est activée
     if (-not $script:enableIncrementalIndexing) {
         return New-FileIndex -Indexer $Indexer -FilePath $FilePath
     }
-    
+
     # Créer un objet index partiel
     $index = [PSCustomObject]@{
-        FilePath = $FilePath
-        IndexedAt = Get-Date
-        FileSize = $NewContent.Length
-        Extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
-        Symbols = @{}
-        Functions = @()
-        Classes = @()
-        Variables = @()
-        Lines = $NewContent -split "`n"
-        Content = $NewContent
-        IsPartialIndex = $true
-        ChangedLines = @()
+        FilePath         = $FilePath
+        IndexedAt        = Get-Date
+        FileSize         = $NewContent.Length
+        Extension        = [System.IO.Path]::GetExtension($FilePath).ToLower()
+        Symbols          = @{}
+        Functions        = @()
+        Classes          = @()
+        Variables        = @()
+        Lines            = $NewContent -split "`n"
+        Content          = $NewContent
+        IsPartialIndex   = $true
+        ChangedLines     = @()
         ChangedFunctions = @()
     }
-    
+
     # Trouver les lignes modifiées
     $oldLines = $OldContent -split "`n"
     $newLines = $NewContent -split "`n"
-    
+
     # Utiliser un algorithme simple pour détecter les lignes modifiées
     $changedLines = @()
     $maxLines = [Math]::Max($oldLines.Count, $newLines.Count)
-    
+
     for ($i = 0; $i -lt $maxLines; $i++) {
         $oldLine = if ($i -lt $oldLines.Count) { $oldLines[$i] } else { $null }
         $newLine = if ($i -lt $newLines.Count) { $newLines[$i] } else { $null }
-        
+
         if ($oldLine -ne $newLine) {
             $changedLines += $i + 1  # Lignes numérotées à partir de 1
         }
     }
-    
+
     $index.ChangedLines = $changedLines
-    
+
     # Indexer le fichier selon son extension
     switch ($index.Extension) {
         ".ps1" { $index = Add-PowerShellIndex -Index $index -IncrementalMode $true }
@@ -216,10 +216,10 @@ function New-IncrementalFileIndex {
         ".css" { $index = Add-CSSIndex -Index $index -IncrementalMode $true }
         default { $index = Add-GenericIndex -Index $index -IncrementalMode $true }
     }
-    
+
     # Ajouter l'index au dictionnaire
     $script:fileIndices[$FilePath] = $index
-    
+
     # Mettre à jour la carte des symboles
     foreach ($symbol in $index.Symbols.Keys) {
         if (-not $script:symbolMap.ContainsKey($symbol)) {
@@ -227,33 +227,33 @@ function New-IncrementalFileIndex {
         }
         $script:symbolMap[$symbol][$FilePath] = $index.Symbols[$symbol]
     }
-    
+
     return $index
 }
 
-# Fonction pour indexer plusieurs fichiers
+# Fonction pour indexer plusieurs fichiers en parallèle
 function New-ParallelFileIndices {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Indexer,
-        
+
         [Parameter(Mandatory = $true)]
         [string[]]$FilePaths
     )
-    
+
     # Initialiser les résultats
     $results = @{}
-    
+
     # Méthode simple et compatible avec toutes les versions
     foreach ($filePath in $FilePaths) {
         # Indexer le fichier
         $index = New-FileIndex -Indexer $Indexer -FilePath $filePath
-        
+
         # Ajouter le résultat
         $results[$filePath] = $index
     }
-    
+
     return $results
 }
 
@@ -263,55 +263,55 @@ function Add-PowerShellIndex {
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Index,
-        
+
         [Parameter()]
         [bool]$IncrementalMode = $false
     )
-    
+
     # Expressions régulières pour trouver les fonctions, classes et variables
     $functionRegex = '(?i)function\s+([a-z0-9_-]+)'
     $classRegex = '(?i)class\s+([a-z0-9_-]+)'
     $variableRegex = '(?i)\$([a-z0-9_]+)\s*='
-    
+
     # Analyser le contenu
     $content = $Index.Content
     $lineNumber = 0
-    
+
     # Trouver les fonctions
     $functionMatches = [regex]::Matches($content, $functionRegex)
     foreach ($match in $functionMatches) {
         $functionName = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Functions += $functionName
         $Index.Symbols[$functionName] = $lineNumber
-        
+
         # Vérifier si cette fonction a été modifiée (pour l'indexation incrémentale)
         if ($IncrementalMode -and $Index.ChangedLines -contains $lineNumber) {
             $Index.ChangedFunctions += $functionName
         }
     }
-    
+
     # Trouver les classes
     $classMatches = [regex]::Matches($content, $classRegex)
     foreach ($match in $classMatches) {
         $className = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Classes += $className
         $Index.Symbols[$className] = $lineNumber
     }
-    
+
     # Trouver les variables
     $variableMatches = [regex]::Matches($content, $variableRegex)
     foreach ($match in $variableMatches) {
         $variableName = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Variables += $variableName
         $Index.Symbols[$variableName] = $lineNumber
     }
-    
+
     return $Index
 }
 
@@ -321,51 +321,51 @@ function Add-PythonIndex {
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Index,
-        
+
         [Parameter()]
         [bool]$IncrementalMode = $false
     )
-    
+
     # Expressions régulières pour trouver les fonctions, classes et variables
     $functionRegex = '(?i)def\s+([a-z0-9_]+)'
     $classRegex = '(?i)class\s+([a-z0-9_]+)'
     $variableRegex = '(?i)([a-z0-9_]+)\s*='
-    
+
     # Analyser le contenu
     $content = $Index.Content
     $lineNumber = 0
-    
+
     # Trouver les fonctions
     $functionMatches = [regex]::Matches($content, $functionRegex)
     foreach ($match in $functionMatches) {
         $functionName = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Functions += $functionName
         $Index.Symbols[$functionName] = $lineNumber
-        
+
         # Vérifier si cette fonction a été modifiée (pour l'indexation incrémentale)
         if ($IncrementalMode -and $Index.ChangedLines -contains $lineNumber) {
             $Index.ChangedFunctions += $functionName
         }
     }
-    
+
     # Trouver les classes
     $classMatches = [regex]::Matches($content, $classRegex)
     foreach ($match in $classMatches) {
         $className = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Classes += $className
         $Index.Symbols[$className] = $lineNumber
     }
-    
+
     # Trouver les variables
     $variableMatches = [regex]::Matches($content, $variableRegex)
     foreach ($match in $variableMatches) {
         $variableName = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         # Ignorer les mots-clés Python
         $pythonKeywords = @("if", "else", "elif", "for", "while", "try", "except", "finally", "with", "as", "def", "class", "return", "import", "from")
         if ($pythonKeywords -notcontains $variableName) {
@@ -373,7 +373,7 @@ function Add-PythonIndex {
             $Index.Symbols[$variableName] = $lineNumber
         }
     }
-    
+
     return $Index
 }
 
@@ -383,55 +383,55 @@ function Add-JavaScriptIndex {
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Index,
-        
+
         [Parameter()]
         [bool]$IncrementalMode = $false
     )
-    
+
     # Expressions régulières pour trouver les fonctions, classes et variables
     $functionRegex = '(?i)function\s+([a-z0-9_$]+)|([a-z0-9_$]+)\s*=\s*function'
     $classRegex = '(?i)class\s+([a-z0-9_$]+)'
     $variableRegex = '(?i)(let|var|const)\s+([a-z0-9_$]+)\s*='
-    
+
     # Analyser le contenu
     $content = $Index.Content
     $lineNumber = 0
-    
+
     # Trouver les fonctions
     $functionMatches = [regex]::Matches($content, $functionRegex)
     foreach ($match in $functionMatches) {
         $functionName = if ($match.Groups[1].Success) { $match.Groups[1].Value } else { $match.Groups[2].Value }
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Functions += $functionName
         $Index.Symbols[$functionName] = $lineNumber
-        
+
         # Vérifier si cette fonction a été modifiée (pour l'indexation incrémentale)
         if ($IncrementalMode -and $Index.ChangedLines -contains $lineNumber) {
             $Index.ChangedFunctions += $functionName
         }
     }
-    
+
     # Trouver les classes
     $classMatches = [regex]::Matches($content, $classRegex)
     foreach ($match in $classMatches) {
         $className = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Classes += $className
         $Index.Symbols[$className] = $lineNumber
     }
-    
+
     # Trouver les variables
     $variableMatches = [regex]::Matches($content, $variableRegex)
     foreach ($match in $variableMatches) {
         $variableName = $match.Groups[2].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Variables += $variableName
         $Index.Symbols[$variableName] = $lineNumber
     }
-    
+
     return $Index
 }
 
@@ -441,51 +441,51 @@ function Add-HTMLIndex {
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Index,
-        
+
         [Parameter()]
         [bool]$IncrementalMode = $false
     )
-    
+
     # Expressions régulières pour trouver les balises et les identifiants
     $tagRegex = '<([a-z][a-z0-9]*)\b[^>]*>'
     $idRegex = 'id=["'']([a-z0-9_-]+)["'']'
     $classRegex = 'class=["'']([a-z0-9_\s-]+)["'']'
-    
+
     # Analyser le contenu
     $content = $Index.Content
     $lineNumber = 0
-    
+
     # Trouver les balises
     $tagMatches = [regex]::Matches($content, $tagRegex)
     foreach ($match in $tagMatches) {
         $tagName = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Symbols["tag:$tagName"] = $lineNumber
     }
-    
+
     # Trouver les identifiants
     $idMatches = [regex]::Matches($content, $idRegex)
     foreach ($match in $idMatches) {
         $idName = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Symbols["id:$idName"] = $lineNumber
     }
-    
+
     # Trouver les classes
     $classMatches = [regex]::Matches($content, $classRegex)
     foreach ($match in $classMatches) {
         $className = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         # Séparer les classes multiples
         $classNames = $className -split '\s+'
         foreach ($name in $classNames) {
             $Index.Symbols["class:$name"] = $lineNumber
         }
     }
-    
+
     return $Index
 }
 
@@ -495,27 +495,27 @@ function Add-CSSIndex {
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Index,
-        
+
         [Parameter()]
         [bool]$IncrementalMode = $false
     )
-    
+
     # Expressions régulières pour trouver les sélecteurs
     $selectorRegex = '([.#]?[a-z0-9_-]+)\s*\{'
-    
+
     # Analyser le contenu
     $content = $Index.Content
     $lineNumber = 0
-    
+
     # Trouver les sélecteurs
     $selectorMatches = [regex]::Matches($content, $selectorRegex)
     foreach ($match in $selectorMatches) {
         $selectorName = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
-        
+
         $Index.Symbols[$selectorName] = $lineNumber
     }
-    
+
     return $Index
 }
 
@@ -525,18 +525,69 @@ function Add-GenericIndex {
     param(
         [Parameter(Mandatory = $true)]
         [PSObject]$Index,
-        
+
         [Parameter()]
         [bool]$IncrementalMode = $false
     )
-    
+
     # Pour les fichiers génériques, nous indexons simplement les lignes
     for ($i = 0; $i -lt $Index.Lines.Count; $i++) {
         $lineNumber = $i + 1
         $Index.Symbols["line:$lineNumber"] = $lineNumber
     }
-    
+
     return $Index
+}
+
+# Fonction pour créer un nouvel indexeur de contenu de fichier
+function New-FileContentIndexer {
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [string]$IndexPath = "",
+
+        [Parameter()]
+        [bool]$PersistIndices = $false,
+
+        [Parameter()]
+        [int]$MaxConcurrentIndexing = 4,
+
+        [Parameter()]
+        [bool]$EnableIncrementalIndexing = $true
+    )
+
+    # Initialiser les variables globales
+    $script:indexPath = $IndexPath
+    $script:persistIndices = $PersistIndices
+    $script:maxConcurrentIndexing = $MaxConcurrentIndexing
+    $script:enableIncrementalIndexing = $EnableIncrementalIndexing
+    $script:fileIndices = @{}
+    $script:symbolMap = @{}
+
+    # Créer et retourner un objet indexeur
+    $indexer = [PSCustomObject]@{
+        IndexPath                 = $IndexPath
+        PersistIndices            = $PersistIndices
+        MaxConcurrentIndexing     = $MaxConcurrentIndexing
+        EnableIncrementalIndexing = $EnableIncrementalIndexing
+        PSTypeName                = "FileContentIndexer"
+    }
+
+    # Ajouter des méthodes à l'indexeur
+    $indexer | Add-Member -MemberType ScriptMethod -Name "GetFileIndices" -Value {
+        return $script:fileIndices
+    }
+
+    $indexer | Add-Member -MemberType ScriptMethod -Name "GetSymbolMap" -Value {
+        return $script:symbolMap
+    }
+
+    $indexer | Add-Member -MemberType ScriptMethod -Name "ClearIndices" -Value {
+        $script:fileIndices = @{}
+        $script:symbolMap = @{}
+    }
+
+    return $indexer
 }
 
 # Exporter les fonctions

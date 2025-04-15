@@ -97,7 +97,7 @@ function Get-PullRequestInfo {
     param(
         [Parameter(Mandatory = $true)]
         [string]$RepoPath,
-        
+
         [Parameter()]
         [int]$PRNumber = 0
     )
@@ -114,13 +114,13 @@ function Get-PullRequestInfo {
         try {
             # Si aucun numéro de PR n'est spécifié, utiliser la dernière PR
             if ($PRNumber -eq 0) {
-                $prs = gh pr list --json number,title,headRefName,baseRefName,createdAt --limit 1 | ConvertFrom-Json
+                $prs = gh pr list --json number, title, headRefName, baseRefName, createdAt --limit 1 | ConvertFrom-Json
                 if ($prs.Count -eq 0) {
                     throw "Aucune pull request trouvée dans le dépôt."
                 }
                 $pr = $prs[0]
             } else {
-                $pr = gh pr view $PRNumber --json number,title,headRefName,baseRefName,createdAt | ConvertFrom-Json
+                $pr = gh pr view $PRNumber --json number, title, headRefName, baseRefName, createdAt | ConvertFrom-Json
                 if ($null -eq $pr) {
                     throw "Pull request #$PRNumber non trouvée."
                 }
@@ -154,40 +154,59 @@ function Get-PullRequestInfo {
     }
 }
 
-# Fonction pour analyser un fichier
+# Fonction pour analyser un fichier avec optimisation des performances
 function Invoke-FileAnalysis {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [object]$File,
-        
+
         [Parameter(Mandatory = $true)]
         [object]$Analyzer,
-        
+
         [Parameter(Mandatory = $true)]
         [object]$Cache,
-        
+
         [Parameter(Mandatory = $true)]
         [bool]$UseFileCache,
-        
+
         [Parameter(Mandatory = $true)]
-        [string]$RepoPath
+        [string]$RepoPath,
+
+        [Parameter()]
+        [bool]$CollectPerformanceMetrics = $true,
+
+        [Parameter()]
+        [bool]$UseParallelAnalysis = $false,
+
+        [Parameter()]
+        [int]$SignificanceScore = 0
     )
 
     try {
+        # Démarrer le chronomètre pour mesurer les performances
+        $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
         # Créer un objet pour stocker les résultats
         $result = [PSCustomObject]@{
-            FilePath = $File.path
-            Issues = @()
-            StartTime = Get-Date
-            EndTime = $null
-            Duration = $null
-            Success = $false
-            FromCache = $false
+            FilePath          = $File.path
+            Issues            = @()
+            StartTime         = Get-Date
+            EndTime           = $null
+            Duration          = $null
+            Success           = $false
+            FromCache         = $false
+            FileSize          = 0
+            AnalysisTimeMs    = 0
+            TotalTimeMs       = 0
+            SignificanceScore = $SignificanceScore
+            FileExtension     = [System.IO.Path]::GetExtension($File.path)
+            IssuesByType      = @{}
+            IssuesBySeverity  = @{}
         }
 
         # Générer une clé de cache unique
-        $cacheKey = "IncrementalAnalysis:$($File.path):$($File.sha)"
+        $cacheKey = "IncrementalAnalysis:${File.path}:${File.sha}:$CollectPerformanceMetrics"
 
         # Essayer d'obtenir les résultats du cache
         if ($UseFileCache) {
@@ -195,35 +214,67 @@ function Invoke-FileAnalysis {
             if ($null -ne $cachedResult) {
                 # Ajouter des informations sur l'utilisation du cache
                 $cachedResult | Add-Member -MemberType NoteProperty -Name "FromCache" -Value $true -Force
-                
+                $stopwatch.Stop()
+                $cachedResult.TotalTimeMs = $stopwatch.ElapsedMilliseconds
+
                 return $cachedResult
             }
         }
 
         # Construire le chemin complet du fichier
         $filePath = Join-Path -Path $RepoPath -ChildPath $File.path
-        
+
         # Vérifier si le fichier existe
         if (-not (Test-Path -Path $filePath)) {
             $result.EndTime = Get-Date
             $result.Duration = $result.EndTime - $result.StartTime
             $result.Success = $false
+            $stopwatch.Stop()
+            $result.TotalTimeMs = $stopwatch.ElapsedMilliseconds
             return $result
         }
 
+        # Obtenir la taille du fichier
+        $fileInfo = Get-Item -Path $filePath
+        $result.FileSize = $fileInfo.Length
+
+        # Chronométrer l'analyse
+        $analysisStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
         # Analyser le fichier
-        $issues = $Analyzer.AnalyzeFile($filePath)
-        
+        if ($UseParallelAnalysis -and $result.FileSize -gt 100KB) {
+            # Pour les gros fichiers, utiliser l'analyse parallèle
+            $issues = $Analyzer.AnalyzeFiles(@($filePath))[$filePath]
+        } else {
+            # Pour les petits fichiers, utiliser l'analyse séquentielle
+            $issues = $Analyzer.AnalyzeFile($filePath)
+        }
+
+        $analysisStopwatch.Stop()
+        $result.AnalysisTimeMs = $analysisStopwatch.ElapsedMilliseconds
+
         # Mettre à jour les résultats
         $result.Issues = $issues
         $result.EndTime = Get-Date
         $result.Duration = $result.EndTime - $result.StartTime
         $result.Success = $true
 
+        # Collecter des métriques supplémentaires si demandé
+        if ($CollectPerformanceMetrics) {
+            # Grouper les problèmes par type
+            $result.IssuesByType = $issues | Group-Object -Property Type -AsHashTable -AsString
+
+            # Grouper les problèmes par sévérité
+            $result.IssuesBySeverity = $issues | Group-Object -Property Severity -AsHashTable -AsString
+        }
+
         # Stocker les résultats dans le cache
         if ($UseFileCache) {
             $Cache.Set($cacheKey, $result)
         }
+
+        $stopwatch.Stop()
+        $result.TotalTimeMs = $stopwatch.ElapsedMilliseconds
 
         return $result
     } catch {
@@ -231,9 +282,12 @@ function Invoke-FileAnalysis {
         $result.EndTime = Get-Date
         $result.Duration = $result.EndTime - $result.StartTime
         $result.Success = $false
-        
+
         Write-Error "Erreur lors de l'analyse du fichier $($File.path) : $_"
-        
+
+        $stopwatch.Stop()
+        $result.TotalTimeMs = $stopwatch.ElapsedMilliseconds
+
         return $result
     }
 }
@@ -244,13 +298,13 @@ function New-AnalysisReport {
     param(
         [Parameter(Mandatory = $true)]
         [object[]]$Results,
-        
+
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$PullRequestInfo,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$OutputDir,
-        
+
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$SignificantChanges
     )
@@ -275,21 +329,21 @@ function New-AnalysisReport {
 
         # Créer le rapport
         $reportData = [PSCustomObject]@{
-            PullRequest = $PullRequestInfo
-            Timestamp = Get-Date
-            TotalFiles = $totalFiles
-            TotalIssues = $totalIssues
-            TotalDurationMs = $totalDuration
-            AverageDurationMs = $averageDuration
-            MaxDurationMs = $maxDuration
-            MinDurationMs = $minDuration
-            SuccessCount = $successCount
-            FailureCount = $failureCount
-            CachedCount = $cachedCount
-            IssuesByType = $issuesByType
-            Results = $Results
+            PullRequest        = $PullRequestInfo
+            Timestamp          = Get-Date
+            TotalFiles         = $totalFiles
+            TotalIssues        = $totalIssues
+            TotalDurationMs    = $totalDuration
+            AverageDurationMs  = $averageDuration
+            MaxDurationMs      = $maxDuration
+            MinDurationMs      = $minDuration
+            SuccessCount       = $successCount
+            FailureCount       = $failureCount
+            CachedCount        = $cachedCount
+            IssuesByType       = $issuesByType
+            Results            = $Results
             SignificantChanges = $SignificantChanges
-            AnalysisType = "Incremental"
+            AnalysisType       = "Incremental"
         }
 
         # Enregistrer le rapport au format JSON
@@ -363,7 +417,7 @@ function New-AnalysisReport {
 <body>
     <div class="container">
         <h1>Rapport d'Analyse Incrémentale - Pull Request #$($PullRequestInfo.Number)</h1>
-        
+
         <div class="summary">
             <h2>Résumé</h2>
             <p><strong>Titre:</strong> $($PullRequestInfo.Title)</p>
@@ -376,7 +430,7 @@ function New-AnalysisReport {
             <p><strong>Fichiers mis en cache:</strong> $cachedCount</p>
             <p><strong>Fichiers avec changements significatifs:</strong> $($SignificantChanges.SignificantFiles) sur $($SignificantChanges.TotalFiles) ($($SignificantChanges.SignificantRatio)%)</p>
         </div>
-        
+
         <h2>Problèmes par Type</h2>
         <table>
             <tr>
@@ -396,13 +450,17 @@ function New-AnalysisReport {
 
         $html += @"
         </table>
-        
+
         <h2>Fichiers avec Problèmes</h2>
         <table>
             <tr>
                 <th>Fichier</th>
                 <th>Problèmes</th>
-                <th>Durée (ms)</th>
+                <th>Taille (KB)</th>
+                <th>Extension</th>
+                <th>Durée totale (ms)</th>
+                <th>Analyse (ms)</th>
+                <th>Score</th>
                 <th>Mis en cache</th>
                 <th>Changement significatif</th>
             </tr>
@@ -411,12 +469,16 @@ function New-AnalysisReport {
         foreach ($result in ($Results | Where-Object { $_.Success -and $_.Issues.Count -gt 0 } | Sort-Object -Property { $_.Issues.Count } -Descending)) {
             $isSignificant = ($SignificantChanges.Results | Where-Object { $_.FilePath -eq $result.FilePath -and $_.IsSignificant }).Count -gt 0
             $significantClass = if ($isSignificant) { "info" } else { "" }
-            
+
             $html += @"
             <tr>
                 <td>$($result.FilePath)</td>
                 <td>$($result.Issues.Count)</td>
-                <td>$([Math]::Round($result.Duration.TotalMilliseconds, 2))</td>
+                <td>$([Math]::Round($result.FileSize / 1KB, 2))</td>
+                <td>$($result.FileExtension)</td>
+                <td>$($result.TotalTimeMs)</td>
+                <td>$($result.AnalysisTimeMs)</td>
+                <td>$($result.SignificanceScore)</td>
                 <td>$($result.FromCache)</td>
                 <td class="$significantClass">$isSignificant</td>
             </tr>
@@ -425,7 +487,7 @@ function New-AnalysisReport {
 
         $html += @"
         </table>
-        
+
         <h2>Détails des Problèmes</h2>
 "@
 
@@ -451,7 +513,7 @@ function New-AnalysisReport {
                     "Information" { "info" }
                     default { "" }
                 }
-                
+
                 $html += @"
             <tr>
                 <td>$($issue.Type)</td>
@@ -523,25 +585,25 @@ try {
 
     # Détecter les changements significatifs
     Write-Host "`nDétection des changements significatifs..." -ForegroundColor Cyan
-    
+
     $significantChangesPath = Join-Path -Path $OutputPath -ChildPath "significant_changes_$($prInfo.Number).json"
     $significantChangesScript = Join-Path -Path $PSScriptRoot -ChildPath "Test-SignificantChanges.ps1"
-    
+
     if (Test-Path -Path $significantChangesScript) {
         & $significantChangesScript -RepositoryPath $RepositoryPath -PullRequestNumber $prInfo.Number -OutputPath $significantChangesPath -ThresholdRatio $ThresholdRatio -MinimumChanges $MinimumChanges -DetailLevel "Detailed"
     } else {
         Write-Error "Script de détection des changements significatifs non trouvé: $significantChangesScript"
         exit 1
     }
-    
+
     # Charger les résultats de l'analyse des changements significatifs
     if (-not (Test-Path -Path $significantChangesPath)) {
         Write-Error "Résultats de l'analyse des changements significatifs non trouvés: $significantChangesPath"
         exit 1
     }
-    
+
     $significantChanges = Get-Content -Path $significantChangesPath -Raw | ConvertFrom-Json
-    
+
     # Créer l'analyseur syntaxique
     $analyzer = New-SyntaxAnalyzer -UseCache $UseCache -Cache $cache
     if ($null -eq $analyzer) {
@@ -566,44 +628,71 @@ try {
     foreach ($file in $prInfo.Files) {
         $i++
         $filePath = $file.path
-        
+
         # Vérifier si le fichier a des changements significatifs
         $fileChanges = $significantChanges.Results | Where-Object { $_.FilePath -eq $filePath }
         $isSignificant = $null -ne $fileChanges -and $fileChanges.IsSignificant
-        
+
         # Décider si le fichier doit être analysé
         $shouldAnalyze = $isSignificant -or $ForceFullAnalysis
-        
+
         # Afficher la progression
         Write-Progress -Activity "Analyse incrémentale" -Status "Fichier $i/$totalFiles" -PercentComplete (($i / $totalFiles) * 100)
-        
+
         if ($shouldAnalyze) {
+            # Obtenir le score de significativité si disponible
+            $significanceScore = 0
+            $fileChanges = $significantChanges.Results | Where-Object { $_.FilePath -eq $filePath }
+            if ($null -ne $fileChanges -and $null -ne $fileChanges.Score) {
+                $significanceScore = $fileChanges.Score
+            }
+
+            # Déterminer si l'analyse parallèle doit être utilisée
+            $useParallel = $false
+            if ($file.additions + $file.deletions -gt 100) {
+                # Pour les fichiers avec beaucoup de changements, utiliser l'analyse parallèle
+                $useParallel = $true
+            }
+
             # Analyser le fichier
-            $fileResult = Invoke-FileAnalysis -File $file -Analyzer $analyzer -Cache $cache -UseFileCache $UseCache -RepoPath $RepositoryPath
-            
+            $fileResult = Invoke-FileAnalysis -File $file -Analyzer $analyzer -Cache $cache -UseFileCache $UseCache -RepoPath $RepositoryPath -SignificanceScore $significanceScore -UseParallelAnalysis $useParallel
+
             # Ajouter le résultat à la liste
             $results.Add($fileResult)
-            
+
             # Mettre à jour le compteur
             $analyzedFiles++
+
+            # Afficher des informations sur l'analyse
+            Write-Verbose "Analyse de ${filePath}: $($fileResult.Issues.Count) problèmes, $($fileResult.TotalTimeMs) ms, $([Math]::Round($fileResult.FileSize / 1KB, 2)) KB"
         } else {
             # Créer un résultat vide pour le fichier ignoré
             $emptyResult = [PSCustomObject]@{
-                FilePath = $filePath
-                Issues = @()
-                StartTime = Get-Date
-                EndTime = Get-Date
-                Duration = [TimeSpan]::Zero
-                Success = $true
-                FromCache = $false
-                Skipped = $true
+                FilePath          = $filePath
+                Issues            = @()
+                StartTime         = Get-Date
+                EndTime           = Get-Date
+                Duration          = [TimeSpan]::Zero
+                Success           = $true
+                FromCache         = $false
+                Skipped           = $true
+                FileSize          = 0
+                AnalysisTimeMs    = 0
+                TotalTimeMs       = 0
+                SignificanceScore = 0
+                FileExtension     = [System.IO.Path]::GetExtension($filePath)
+                IssuesByType      = @{}
+                IssuesBySeverity  = @{}
             }
-            
+
             # Ajouter le résultat à la liste
             $results.Add($emptyResult)
-            
+
             # Mettre à jour le compteur
             $skippedFiles++
+
+            # Afficher des informations sur le fichier ignoré
+            Write-Verbose "Fichier ignoré: ${filePath} (pas de changements significatifs)"
         }
     }
 
@@ -624,12 +713,12 @@ try {
     Write-Host "  Fichiers analysés: $analyzedFiles" -ForegroundColor White
     Write-Host "  Fichiers ignorés: $skippedFiles" -ForegroundColor White
     Write-Host "  Problèmes détectés: $(($results | Where-Object { $_.Success } | ForEach-Object { $_.Issues.Count } | Measure-Object -Sum).Sum)" -ForegroundColor White
-    
+
     if ($UseCache) {
         $cacheHits = ($results | Where-Object { $_.FromCache } | Measure-Object).Count
         Write-Host "  Fichiers mis en cache: $cacheHits" -ForegroundColor White
     }
-    
+
     Write-Host "  Rapport JSON: $($reportPaths.JsonPath)" -ForegroundColor White
     Write-Host "  Rapport HTML: $($reportPaths.HtmlPath)" -ForegroundColor White
 

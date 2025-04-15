@@ -90,7 +90,7 @@ function Get-PullRequestInfo {
     param(
         [Parameter(Mandatory = $true)]
         [string]$RepoPath,
-        
+
         [Parameter()]
         [int]$PRNumber = 0
     )
@@ -107,13 +107,13 @@ function Get-PullRequestInfo {
         try {
             # Si aucun numéro de PR n'est spécifié, utiliser la dernière PR
             if ($PRNumber -eq 0) {
-                $prs = gh pr list --json number,title,headRefName,baseRefName,createdAt --limit 1 | ConvertFrom-Json
+                $prs = gh pr list --json number, title, headRefName, baseRefName, createdAt --limit 1 | ConvertFrom-Json
                 if ($prs.Count -eq 0) {
                     throw "Aucune pull request trouvée dans le dépôt."
                 }
                 $pr = $prs[0]
             } else {
-                $pr = gh pr view $PRNumber --json number,title,headRefName,baseRefName,createdAt | ConvertFrom-Json
+                $pr = gh pr view $PRNumber --json number, title, headRefName, baseRefName, createdAt | ConvertFrom-Json
                 if ($null -eq $pr) {
                     throw "Pull request #$PRNumber non trouvée."
                 }
@@ -153,13 +153,13 @@ function Get-FileVersions {
     param(
         [Parameter(Mandatory = $true)]
         [string]$RepoPath,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$BaseBranch,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$HeadBranch
     )
@@ -171,7 +171,7 @@ function Get-FileVersions {
         try {
             $baseContent = $null
             $headContent = $null
-            
+
             # Obtenir le contenu de la version de base
             try {
                 $baseContent = git show "$BaseBranch`:$FilePath" 2>$null
@@ -179,7 +179,7 @@ function Get-FileVersions {
                 # Le fichier n'existe peut-être pas dans la branche de base
                 $baseContent = ""
             }
-            
+
             # Obtenir le contenu de la version de tête
             try {
                 $headContent = git show "$HeadBranch`:$FilePath" 2>$null
@@ -187,15 +187,15 @@ function Get-FileVersions {
                 # Le fichier n'existe peut-être pas dans la branche de tête
                 $headContent = ""
             }
-            
+
             return [PSCustomObject]@{
-                BaseBranch = $BaseBranch
-                HeadBranch = $HeadBranch
-                FilePath = $FilePath
-                BaseContent = $baseContent
-                HeadContent = $headContent
-                IsNewFile = [string]::IsNullOrEmpty($baseContent) -and -not [string]::IsNullOrEmpty($headContent)
-                IsDeletedFile = -not [string]::IsNullOrEmpty($baseContent) -and [string]::IsNullOrEmpty($headContent)
+                BaseBranch     = $BaseBranch
+                HeadBranch     = $HeadBranch
+                FilePath       = $FilePath
+                BaseContent    = $baseContent
+                HeadContent    = $headContent
+                IsNewFile      = [string]::IsNullOrEmpty($baseContent) -and -not [string]::IsNullOrEmpty($headContent)
+                IsDeletedFile  = -not [string]::IsNullOrEmpty($baseContent) -and [string]::IsNullOrEmpty($headContent)
                 IsModifiedFile = -not [string]::IsNullOrEmpty($baseContent) -and -not [string]::IsNullOrEmpty($headContent) -and ($baseContent -ne $headContent)
             }
         } finally {
@@ -214,13 +214,13 @@ function Test-FileChanges {
     param(
         [Parameter(Mandatory = $true)]
         [object]$FileVersions,
-        
+
         [Parameter(Mandatory = $true)]
         [object]$Indexer,
-        
+
         [Parameter(Mandatory = $true)]
         [double]$Threshold,
-        
+
         [Parameter(Mandatory = $true)]
         [int]$MinChanges
     )
@@ -228,82 +228,129 @@ function Test-FileChanges {
     try {
         # Créer l'objet de résultat
         $result = [PSCustomObject]@{
-            FilePath = $FileVersions.FilePath
-            IsNewFile = $FileVersions.IsNewFile
-            IsDeletedFile = $FileVersions.IsDeletedFile
+            FilePath       = $FileVersions.FilePath
+            IsNewFile      = $FileVersions.IsNewFile
+            IsDeletedFile  = $FileVersions.IsDeletedFile
             IsModifiedFile = $FileVersions.IsModifiedFile
-            IsSignificant = $false
-            Reason = ""
-            Details = $null
+            IsSignificant  = $false
+            Reason         = ""
+            Details        = $null
+            Score          = 0 # Score de significativité
         }
-        
+
         # Vérifier si le fichier est nouveau ou supprimé
         if ($FileVersions.IsNewFile) {
             $result.IsSignificant = $true
             $result.Reason = "Nouveau fichier"
+            $result.Score = 100
             return $result
         }
-        
+
         if ($FileVersions.IsDeletedFile) {
             $result.IsSignificant = $true
             $result.Reason = "Fichier supprimé"
+            $result.Score = 100
             return $result
         }
-        
+
         # Comparer les versions
         $comparison = Compare-FileVersions -Indexer $Indexer -FilePath $FileVersions.FilePath -OldContent $FileVersions.BaseContent -NewContent $FileVersions.HeadContent
-        
+
         # Stocker les détails de la comparaison
         $result.Details = $comparison
-        
+
         # Vérifier si les changements sont significatifs
         $isSignificant = $false
         $reasons = @()
-        
+        $score = 0
+
         # Vérifier les fonctions ajoutées, supprimées ou modifiées
         if ($comparison.AddedFunctions.Count -gt 0) {
             $isSignificant = $true
             $reasons += "Fonctions ajoutées: $($comparison.AddedFunctions.Count)"
+            $score += 20 * $comparison.AddedFunctions.Count
         }
-        
+
         if ($comparison.RemovedFunctions.Count -gt 0) {
             $isSignificant = $true
             $reasons += "Fonctions supprimées: $($comparison.RemovedFunctions.Count)"
+            $score += 20 * $comparison.RemovedFunctions.Count
         }
-        
+
         if ($comparison.ModifiedFunctions.Count -gt 0) {
             $isSignificant = $true
             $reasons += "Fonctions modifiées: $($comparison.ModifiedFunctions.Count)"
+            $score += 15 * $comparison.ModifiedFunctions.Count
         }
-        
+
         # Vérifier les classes ajoutées ou supprimées
         if ($comparison.AddedClasses.Count -gt 0) {
             $isSignificant = $true
             $reasons += "Classes ajoutées: $($comparison.AddedClasses.Count)"
+            $score += 25 * $comparison.AddedClasses.Count
         }
-        
+
         if ($comparison.RemovedClasses.Count -gt 0) {
             $isSignificant = $true
             $reasons += "Classes supprimées: $($comparison.RemovedClasses.Count)"
+            $score += 25 * $comparison.RemovedClasses.Count
         }
-        
+
+        # Vérifier les imports ajoutés ou supprimés
+        if ($comparison.AddedImports.Count -gt 0) {
+            $reasons += "Imports ajoutés: $($comparison.AddedImports.Count)"
+            $score += 5 * $comparison.AddedImports.Count
+
+            # Vérifier si les imports sont significatifs (frameworks importants)
+            $importantImports = @('System', 'Microsoft', 'Threading', 'Parallel', 'Async', 'Task', 'Reflection')
+            foreach ($import in $comparison.AddedImports) {
+                foreach ($important in $importantImports) {
+                    if ($import.Name -like "*$important*") {
+                        $isSignificant = $true
+                        $score += 10
+                        break
+                    }
+                }
+            }
+        }
+
+        if ($comparison.RemovedImports.Count -gt 0) {
+            $reasons += "Imports supprimés: $($comparison.RemovedImports.Count)"
+            $score += 5 * $comparison.RemovedImports.Count
+        }
+
         # Vérifier le ratio de changement
         if ($comparison.ChangeRatio -ge $Threshold) {
             $isSignificant = $true
             $reasons += "Ratio de changement élevé: $([Math]::Round($comparison.ChangeRatio * 100, 2))%"
+            $score += [Math]::Min(50, [Math]::Round($comparison.ChangeRatio * 100))
         }
-        
+
         # Vérifier le nombre minimum de lignes modifiées
         $totalChanges = $comparison.AddedLines + $comparison.RemovedLines
         if ($totalChanges -ge $MinChanges) {
             $isSignificant = $true
             $reasons += "Nombre de lignes modifiées: $totalChanges"
+            $score += [Math]::Min(30, $totalChanges)
         }
-        
+
+        # Vérifier les mots-clés importants dans les modifications
+        $keywords = @('security', 'performance', 'optimization', 'critical', 'fix', 'bug', 'error', 'exception', 'crash', 'memory', 'leak')
+        $content = $FileVersions.HeadContent
+        foreach ($keyword in $keywords) {
+            if ($content -match $keyword) {
+                $isSignificant = $true
+                $reasons += "Mot-clé important détecté: $keyword"
+                $score += 15
+                break
+            }
+        }
+
         # Mettre à jour le résultat
         $result.IsSignificant = $isSignificant
         $result.Reason = $reasons -join ", "
-        
+        $result.Score = [Math]::Min(100, $score)
+
         return $result
     } catch {
         Write-Error "Erreur lors de l'analyse des changements du fichier $($FileVersions.FilePath) : $_"
@@ -352,27 +399,27 @@ try {
     foreach ($file in $prInfo.Files) {
         $i++
         $filePath = $file.path
-        
+
         # Afficher la progression
         Write-Progress -Activity "Analyse des changements significatifs" -Status "Fichier $i/$totalFiles" -PercentComplete (($i / $totalFiles) * 100)
-        
+
         # Obtenir les versions du fichier
         $fileVersions = Get-FileVersions -RepoPath $RepositoryPath -FilePath $filePath -BaseBranch $prInfo.BaseBranch -HeadBranch $prInfo.HeadBranch
         if ($null -eq $fileVersions) {
             Write-Warning "Impossible d'obtenir les versions du fichier: $filePath"
             continue
         }
-        
+
         # Analyser les changements
         $fileResult = Test-FileChanges -FileVersions $fileVersions -Indexer $indexer -Threshold $ThresholdRatio -MinChanges $MinimumChanges
         if ($null -eq $fileResult) {
             Write-Warning "Impossible d'analyser les changements du fichier: $filePath"
             continue
         }
-        
+
         # Ajouter le résultat à la liste
         $results.Add($fileResult)
-        
+
         # Mettre à jour le compteur de fichiers significatifs
         if ($fileResult.IsSignificant) {
             $significantFiles++
@@ -389,20 +436,20 @@ try {
 
     # Créer l'objet de résultat final
     $finalResult = [PSCustomObject]@{
-        PullRequest = [PSCustomObject]@{
-            Number = $prInfo.Number
-            Title = $prInfo.Title
+        PullRequest      = [PSCustomObject]@{
+            Number     = $prInfo.Number
+            Title      = $prInfo.Title
             HeadBranch = $prInfo.HeadBranch
             BaseBranch = $prInfo.BaseBranch
-            CreatedAt = $prInfo.CreatedAt
+            CreatedAt  = $prInfo.CreatedAt
         }
-        TotalFiles = $totalFiles
+        TotalFiles       = $totalFiles
         SignificantFiles = $significantFiles
         SignificantRatio = if ($totalFiles -gt 0) { [Math]::Round(($significantFiles / $totalFiles) * 100, 2) } else { 0 }
-        ThresholdRatio = [Math]::Round($ThresholdRatio * 100, 2)
-        MinimumChanges = $MinimumChanges
-        DetailLevel = $DetailLevel
-        Results = $results
+        ThresholdRatio   = [Math]::Round($ThresholdRatio * 100, 2)
+        MinimumChanges   = $MinimumChanges
+        DetailLevel      = $DetailLevel
+        Results          = $results
     }
 
     # Filtrer les détails en fonction du niveau de détail
@@ -415,20 +462,25 @@ try {
             if ($null -ne $result.Details) {
                 # Conserver uniquement les informations essentielles
                 $result.Details = [PSCustomObject]@{
-                    AddedLines = $result.Details.AddedLines
-                    RemovedLines = $result.Details.RemovedLines
-                    ModifiedLines = $result.Details.ModifiedLines
-                    ChangeRatio = $result.Details.ChangeRatio
-                    AddedFunctions = $result.Details.AddedFunctions.Count
-                    RemovedFunctions = $result.Details.RemovedFunctions.Count
-                    ModifiedFunctions = $result.Details.ModifiedFunctions.Count
-                    AddedClasses = $result.Details.AddedClasses.Count
-                    RemovedClasses = $result.Details.RemovedClasses.Count
+                    AddedLines         = $result.Details.AddedLines
+                    RemovedLines       = $result.Details.RemovedLines
+                    ModifiedLines      = $result.Details.ModifiedLines
+                    ChangeRatio        = $result.Details.ChangeRatio
+                    AddedFunctions     = $result.Details.AddedFunctions.Count
+                    RemovedFunctions   = $result.Details.RemovedFunctions.Count
+                    ModifiedFunctions  = $result.Details.ModifiedFunctions.Count
+                    AddedClasses       = $result.Details.AddedClasses.Count
+                    RemovedClasses     = $result.Details.RemovedClasses.Count
+                    AddedImports       = $result.Details.AddedImports.Count
+                    RemovedImports     = $result.Details.RemovedImports.Count
                     SignificantChanges = $result.Details.SignificantChanges
                 }
             }
         }
     }
+
+    # Trier les résultats par score
+    $finalResult.Results = $finalResult.Results | Sort-Object -Property Score -Descending
 
     # Enregistrer le résultat
     $finalResult | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
@@ -442,8 +494,15 @@ try {
     # Afficher les fichiers avec changements significatifs
     if ($significantFiles -gt 0) {
         Write-Host "`nFichiers avec changements significatifs:" -ForegroundColor Yellow
-        foreach ($result in ($results | Where-Object { $_.IsSignificant })) {
+        foreach ($result in ($results | Where-Object { $_.IsSignificant } | Sort-Object -Property Score -Descending)) {
+            $scoreColor = switch ($result.Score) {
+                { $_ -ge 80 } { "Red" }
+                { $_ -ge 50 } { "Yellow" }
+                default { "White" }
+            }
+
             Write-Host "  $($result.FilePath)" -ForegroundColor White
+            Write-Host "    Score: $($result.Score)/100" -ForegroundColor $scoreColor
             Write-Host "    Raison: $($result.Reason)" -ForegroundColor Gray
         }
     }
