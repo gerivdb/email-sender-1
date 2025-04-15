@@ -1,0 +1,85 @@
+{
+  "Patterns": {
+    "Utilisation de eval() (risque d'injection)": {
+      "Count": 2,
+      "Files": {
+        "javascript\\test_with_errors.js": 1,
+        "python\\test_with_errors.py": 1
+      },
+      "LastOccurrence": "2025-04-15 06:11:42"
+    },
+    "Utilisation d'alias de cmdlet": {
+      "Count": 1,
+      "Files": {
+        "powershell\\test_with_errors.ps1": 1
+      },
+      "LastOccurrence": "2025-04-15 06:11:42"
+    },
+    "Utilisation de Invoke-Expression (risque d'injection)": {
+      "Count": 1,
+      "Files": {
+        "powershell\\test_with_errors.ps1": 1
+      },
+      "LastOccurrence": "2025-04-15 06:11:42"
+    }
+  },
+  "Files": {
+    "css\\test_with_errors.css": {
+      "IssueHistory": [],
+      "IssueCount": 0,
+      "LastIssues": null
+    },
+    "html\\test_with_errors.html": {
+      "IssueHistory": [],
+      "IssueCount": 0,
+      "LastIssues": null
+    },
+    "javascript\\test_with_errors.js": {
+      "IssueHistory": [],
+      "IssueCount": 1,
+      "LastIssues": {
+        "Line": 1,
+        "Column": 1,
+        "Message": "Utilisation de eval() (risque d'injection)",
+        "Type": "Security",
+        "Date": "2025-04-15 06:11:42",
+        "Severity": "Error"
+      }
+    },
+    "powershell\\test_with_errors.ps1": {
+      "IssueHistory": [],
+      "IssueCount": 2,
+      "LastIssues": [
+        {
+          "Line": 1,
+          "Column": 1,
+          "Message": "Utilisation d'alias de cmdlet",
+          "Type": "Style",
+          "Date": "2025-04-15 06:11:42",
+          "Severity": "Warning"
+        },
+        {
+          "Line": 1,
+          "Column": 1,
+          "Message": "Utilisation de Invoke-Expression (risque d'injection)",
+          "Type": "Security",
+          "Date": "2025-04-15 06:11:42",
+          "Severity": "Error"
+        }
+      ]
+    },
+    "python\\test_with_errors.py": {
+      "IssueHistory": [],
+      "IssueCount": 1,
+      "LastIssues": {
+        "Line": 1,
+        "Column": 1,
+        "Message": "Utilisation de eval() (risque d'injection)",
+        "Type": "Security",
+        "Date": "2025-04-15 06:11:42",
+        "Severity": "Error"
+      }
+    }
+  },
+  "LastUpdated": "2025-04-15 06:11:42"
+}
