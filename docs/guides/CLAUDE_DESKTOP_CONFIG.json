@@ -1,0 +1,21 @@
+{
+    "mcpServers":  {
+                       "filesystem":  {
+                                          "args":  [
+                                                       "-y",
+                                                       "@modelcontextprotocol/server-filesystem",
+                                                       "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\"
+                                                   ],
+                                          "command":  "npx"
+                                      },
+                       "github":  {
+                                      "args":  [
+                                                   "-y",
+                                                   "@modelcontextprotocol/server-github",
+                                                   "--config",
+                                                   "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\mcp-servers\\github\\config.json"
+                                               ],
+                                      "command":  "npx"
+                                  }
+                   }
+}

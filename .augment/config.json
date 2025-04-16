@@ -25,6 +25,55 @@
       "name": "context",
       "type": "file",
       "path": ".augment/context/*.md"
+    },
+    {
+      "name": "project_source",
+      "type": "file",
+      "path": "**/*.{js,py,ps1,json,md,yaml,yml}"
+    },
+    {
+      "name": "n8n_workflows",
+      "type": "file",
+      "path": "workflows/**/*.json"
+    },
+    {
+      "name": "mcp_configs",
+      "type": "file",
+      "path": "mcp-servers/**/*.{json,js,cmd}"
+    },
+    {
+      "name": "documentation",
+      "type": "file",
+      "path": "docs/**/*.md"
     }
-  ]
+  ],
+  "exclude_patterns": [
+    "node_modules/**",
+    ".git/**",
+    "**/*.min.js",
+    "**/*.bundle.js",
+    "**/*.map",
+    "**/dist/**",
+    "**/build/**",
+    "**/.n8n/**"
+  ],
+  "indexing": {
+    "max_file_size_kb": 5000,
+    "enable_incremental": true,
+    "mcp_integration": true
+  },
+  "mcp_servers": {
+    "filesystem": {
+      "enabled": true,
+      "root_path": "${workspace_root}"
+    },
+    "github": {
+      "enabled": true
+    },
+    "gcp": {
+      "enabled": true,
+      "project_id": "gen-lang-client-0391388747"
+    }
+  }
 }
+

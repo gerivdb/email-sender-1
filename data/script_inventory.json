@@ -1,0 +1,78 @@
+[
+    {
+        "Author":  "Test Author",
+        "Version":  "1",
+        "Description":  "Ce script est utilise pour tester la classification des scripts",
+        "Tags":  [
+                     "Fonctions"
+                 ],
+        "Category":  "Core",
+        "SubCategory":  "Initialisation",
+        "IsDuplicate":  false,
+        "DuplicateOf":  "",
+        "SimilarityScore":  0,
+        "FileName":  "Test-Core.ps1",
+        "FullPath":  "C:\\Users\\user\\AppData\\Local\\Temp\\ScriptInventoryTest_1869443504\\Test-Core.ps1",
+        "Language":  "PowerShell",
+        "LastModified":  "\/Date(1744769370234)\/",
+        "LineCount":  16,
+        "Hash":  "AA70D64190A0865A9138A358B658F0C24C5FC8368763025F5489885B2D704967"
+    },
+    {
+        "Author":  "",
+        "Version":  "",
+        "Description":  "",
+        "Tags":  [
+                     "Fonctions"
+                 ],
+        "Category":  "Non classÃ©",
+        "SubCategory":  "Autre",
+        "IsDuplicate":  false,
+        "DuplicateOf":  "",
+        "SimilarityScore":  0,
+        "FileName":  "Test-Duplicate1.ps1",
+        "FullPath":  "C:\\Users\\user\\AppData\\Local\\Temp\\ScriptInventoryTest_1869443504\\Test-Duplicate1.ps1",
+        "Language":  "PowerShell",
+        "LastModified":  "\/Date(1744769370473)\/",
+        "LineCount":  4,
+        "Hash":  "0BA0337FFD6F8C60EC8846F81E384AF62EBD3434C7AE9488E66F394B62C35F1B"
+    },
+    {
+        "Author":  "",
+        "Version":  "",
+        "Description":  "",
+        "Tags":  [
+                     "Fonctions"
+                 ],
+        "Category":  "Non classÃ©",
+        "SubCategory":  "Autre",
+        "IsDuplicate":  true,
+        "DuplicateOf":  "C:\\Users\\user\\AppData\\Local\\Temp\\ScriptInventoryTest_1869443504\\Test-Duplicate1.ps1",
+        "SimilarityScore":  100,
+        "FileName":  "Test-Duplicate2.ps1",
+        "FullPath":  "C:\\Users\\user\\AppData\\Local\\Temp\\ScriptInventoryTest_1869443504\\Test-Duplicate2.ps1",
+        "Language":  "PowerShell",
+        "LastModified":  "\/Date(1744769370362)\/",
+        "LineCount":  4,
+        "Hash":  "0BA0337FFD6F8C60EC8846F81E384AF62EBD3434C7AE9488E66F394B62C35F1B"
+    },
+    {
+        "Author":  "Test Author",
+        "Version":  "1",
+        "Description":  "Ce script est utilise pour tester la classification des scripts",
+        "Tags":  [
+                     "Fonctions"
+                 ],
+        "Category":  "Gestion",
+        "SubCategory":  "Admin",
+        "IsDuplicate":  false,
+        "DuplicateOf":  "",
+        "SimilarityScore":  0,
+        "FileName":  "Test-Gestion.ps1",
+        "FullPath":  "C:\\Users\\user\\AppData\\Local\\Temp\\ScriptInventoryTest_1869443504\\Test-Gestion.ps1",
+        "Language":  "PowerShell",
+        "LastModified":  "\/Date(1744769370215)\/",
+        "LineCount":  16,
+        "Hash":  "A6C56954C0B082953A31A6A900A5A63226C5A75669D07414581ACD1140C30D82"
+    }
+]
