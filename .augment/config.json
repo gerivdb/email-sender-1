@@ -74,6 +74,21 @@
       "enabled": true,
       "project_id": "gen-lang-client-0391388747"
     }
+  },
+  "agent_auto": {
+    "input_segmentation": {
+      "enabled": true,
+      "max_input_size_kb": 10,
+      "chunk_size_kb": 5,
+      "preserve_lines": true,
+      "state_path": "${workspace_root}/cache/agent_auto_state.json"
+    },
+    "error_prevention": {
+      "cycle_detection": {
+        "enabled": true,
+        "max_recursion_depth": 10,
+        "logs_path": "${workspace_root}/logs/cycles"
+      }
+    }
   }
 }
-

@@ -1,0 +1,57 @@
+{
+    "id": "1.3.2",
+    "title": "Intégration avec n8n",
+    "status": "Completed",
+    "createdAt": "2025-05-25T10:00:00.0000000Z",
+    "updatedAt": "2025-05-25T16:45:00.0000000Z",
+    "metadata": {
+        "complexity": 3,
+        "estimatedHours": 24,
+        "progress": 100,
+        "dueDate": "2025-05-30T00:00:00.0000000",
+        "startDate": "2025-05-22T00:00:00.0000000",
+        "completionDate": "2025-05-25T00:00:00.0000000",
+        "owner": "EMAIL_SENDER_1 Team"
+    },
+    "description": "Intégration du cache prédictif avec n8n pour permettre l'utilisation du cache dans les workflows n8n via l'objet global $predictiveCache.",
+    "subTasks": [
+        {
+            "id": "1.3.2.1",
+            "title": "Développer le script d'initialisation pour n8n",
+            "status": "Completed",
+            "progress": 100
+        },
+        {
+            "id": "1.3.2.2",
+            "title": "Créer l'objet global $predictiveCache",
+            "status": "Completed",
+            "progress": 100
+        },
+        {
+            "id": "1.3.2.3",
+            "title": "Implémenter les méthodes d'accès au cache",
+            "status": "Completed",
+            "progress": 100
+        },
+        {
+            "id": "1.3.2.4",
+            "title": "Développer des workflows d'exemple",
+            "status": "Completed",
+            "progress": 100
+        }
+    ],
+    "parentId": "1.3",
+    "files": [
+        "scripts/n8n/cache/Initialize-N8nPredictiveCache.ps1",
+        "scripts/n8n/cache/Register-N8nCacheHooks.ps1",
+        "scripts/n8n/examples/PredictiveCacheExample.json",
+        "scripts/tests/Test-N8nPredictiveCache.ps1",
+        "docs/user-guides/PredictiveCache.md"
+    ],
+    "tags": [
+        "cache",
+        "n8n",
+        "integration",
+        "workflow"
+    ]
+}

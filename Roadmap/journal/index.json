@@ -1,0 +1,32 @@
+﻿{
+    "version":  "1.0.0",
+    "lastUpdated":  "2025-04-17T10:04:14.5258479+02:00",
+    "entries":  {
+                    "1.1.2.5":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\modules\\..\\Roadmap\\journal\\sections\\1_section\\1.1.2.5.json",
+                    "1.1.2.6":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\modules\\..\\Roadmap\\journal\\sections\\1_section\\1.1.2.6.json",
+                    "1.1.2.7":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\modules\\..\\Roadmap\\journal\\sections\\1_section\\1.1.2.7.json",
+                    "1.3.1":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\1_intelligence\\1.3.1.json",
+                    "1.3.2":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\1_intelligence\\1.3.2.json",
+                    "2.1.1":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\2_devex\\2.1.1.json",
+                    "2.1.2":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\2_devex\\2.1.2.json",
+                    "1.1.3":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\1_section\\1.1.3.json",
+                    "1.1.4":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\1_section\\1.1.4.json",
+                    "1.2.1":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\1_section\\1.2.1.json",
+                    "1.2.2":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\1_section\\1.2.2.json",
+                    "2.2.1":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\2_section\\2.2.1.json",
+                    "2.2.2":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\2_section\\2.2.2.json",
+                    "3.1.1":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\3_section\\3.1.1.json",
+                    "3.1.2":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\3_section\\3.1.2.json",
+                    "4.1.1":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\4_section\\4.1.1.json",
+                    "4.1.2":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\4_section\\4.1.2.json",
+                    "5.1.1":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\5_section\\5.1.1.json",
+                    "5.1.2":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\journal\\sections\\5_section\\5.1.2.json"
+                },
+    "statistics":  {
+                       "totalEntries":  19,
+                       "notStarted":  1,
+                       "inProgress":  0,
+                       "completed":  18,
+                       "blocked":  0
+                   }
+}

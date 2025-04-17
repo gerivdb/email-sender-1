@@ -1,0 +1,32 @@
+﻿{
+    "version":  "1.0.0",
+    "name":  "EMAIL_SENDER_1 Roadmap Journal",
+    "description":  "SystÃ¨me de journalisation de la roadmap pour le projet EMAIL_SENDER_1",
+    "created":  "2025-04-16T21:12:00Z",
+    "lastSync":  "2025-04-17T03:08:00.7905067Z",
+    "roadmapFile":  "Roadmap/roadmap_final.md",
+    "settings":  {
+                     "archiveCompletedTasks":  true,
+                     "archiveFormat":  "monthly",
+                     "notificationEnabled":  true,
+                     "autoSync":  true,
+                     "syncInterval":  3600
+                 },
+    "schema":  {
+                   "version":  "1.0.0",
+                   "taskIdPattern":  "^\\d+(\\.\\d+)*$",
+                   "statuses":  [
+                                    "NotStarted",
+                                    "InProgress",
+                                    "Completed",
+                                    "Blocked"
+                                ],
+                   "complexityLevels":  [
+                                            1,
+                                            2,
+                                            3,
+                                            4,
+                                            5
+                                        ]
+               }
+}

@@ -1,0 +1,58 @@
+{
+    "id": "2.1.1",
+    "title": "Implémentation du traitement parallèle",
+    "status": "Completed",
+    "createdAt": "2025-05-25T09:00:00.0000000Z",
+    "updatedAt": "2025-05-25T14:15:00.0000000Z",
+    "metadata": {
+        "complexity": 4,
+        "estimatedHours": 32,
+        "progress": 100,
+        "dueDate": "2025-05-28T00:00:00.0000000",
+        "startDate": "2025-05-18T00:00:00.0000000",
+        "completionDate": "2025-05-25T00:00:00.0000000",
+        "owner": "EMAIL_SENDER_1 Team"
+    },
+    "description": "Implémentation de fonctionnalités de traitement parallèle pour améliorer les performances des scripts PowerShell en exécutant des tâches simultanément.",
+    "subTasks": [
+        {
+            "id": "2.1.1.1",
+            "title": "Développer le script Optimize-ParallelExecution.ps1",
+            "status": "Completed",
+            "progress": 100
+        },
+        {
+            "id": "2.1.1.2",
+            "title": "Implémenter le traitement avec Runspace Pool",
+            "status": "Completed",
+            "progress": 100
+        },
+        {
+            "id": "2.1.1.3",
+            "title": "Créer le traitement par lots",
+            "status": "Completed",
+            "progress": 100
+        },
+        {
+            "id": "2.1.1.4",
+            "title": "Développer les tests unitaires",
+            "status": "Completed",
+            "progress": 100
+        }
+    ],
+    "parentId": "2.1",
+    "files": [
+        "scripts/performance/Optimize-ParallelExecution.ps1",
+        "scripts/performance/Invoke-RunspacePoolProcessing.ps1",
+        "scripts/performance/Invoke-BatchParallelProcessing.ps1",
+        "scripts/tests/Test-ParallelExecution.ps1",
+        "docs/user-guides/ParallelProcessing.md",
+        "docs/technical/ParallelProcessing.md"
+    ],
+    "tags": [
+        "performance",
+        "parallel",
+        "runspace",
+        "optimization"
+    ]
+}
