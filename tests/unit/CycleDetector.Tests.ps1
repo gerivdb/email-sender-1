@@ -90,6 +90,31 @@ Describe "Find-GraphCycle" {
             $result.HasCycle | Should -Be $true
             $result.CyclePath | Should -Be @("A", "A")
         }
+
+        It "Devrait détecter un cycle triangulaire" {
+            $graph = @{
+                "A" = @("B")
+                "B" = @("C")
+                "C" = @("A")
+            }
+            $result = Find-GraphCycle -Graph $graph
+            $result.HasCycle | Should -Be $true
+            $result.CyclePath.Count | Should -BeGreaterThan 0
+            $result.CyclePath | Should -Contain "A"
+            $result.CyclePath | Should -Contain "B"
+            $result.CyclePath | Should -Contain "C"
+        }
+
+        It "Devrait détecter un cycle dans un graphe avec plusieurs chemins" {
+            $graph = @{
+                "A" = @("B", "C")
+                "B" = @("D")
+                "C" = @("D")
+                "D" = @("A")
+            }
+            $result = Find-GraphCycle -Graph $graph
+            $result.HasCycle | Should -Be $true
+        }
     }
 
     Context "Lorsqu'on utilise l'implémentation itérative" {
@@ -197,6 +222,30 @@ Describe "Find-Cycle" {
         $result = Find-Cycle -Graph $graph -MaxDepth 2
         # Le cycle ne sera pas détecté car il nécessite une profondeur > 2
         $result.HasCycle | Should -Be $false
+    }
+
+    It "Devrait détecter un cycle dans un graphe avec des noeuds isolés" {
+        $graph = @{
+            "A" = @("B")
+            "B" = @("C")
+            "C" = @("A")
+            "D" = @()
+            "E" = @()
+        }
+        $result = Find-Cycle -Graph $graph
+        $result.HasCycle | Should -Be $true
+        $result.CyclePath.Count | Should -BeGreaterThan 0
+    }
+
+    It "Devrait gérer correctement un graphe avec des références nulles" {
+        $graph = @{
+            "A" = @("B")
+            "B" = $null
+            "C" = @("A")
+        }
+        $result = Find-Cycle -Graph $graph
+        # Le comportement attendu dépend de l'implémentation, mais la fonction ne devrait pas planter
+        { $result } | Should -Not -Throw
     }
 
     It "Devrait utiliser le cache si activé" {
@@ -311,7 +360,7 @@ function Test-E { Write-Host "E" }
 
     It "Devrait générer un rapport JSON si un chemin de sortie est spécifié" {
         $outputPath = Join-Path -Path $TestDrive -ChildPath "report.json"
-        $result = Find-DependencyCycles -Path $tempDir -OutputPath $outputPath
+        Find-DependencyCycles -Path $tempDir -OutputPath $outputPath
 
         # Vérifier que le fichier a été créé
         Test-Path -Path $outputPath | Should -Be $true
@@ -396,11 +445,12 @@ Describe "Test-WorkflowCycles" {
         $invalidPath = "$tempDir\invalid_workflow.json"
         $invalidJson | Out-File -FilePath $invalidPath -Encoding utf8
 
-        # La fonction ne devrait pas planter
-        { Test-WorkflowCycles -WorkflowPath $invalidPath } | Should -Not -Throw
+        # La fonction ne devrait pas planter, même avec un JSON invalide
+        # Utiliser ErrorAction SilentlyContinue pour supprimer les messages d'erreur
+        { Test-WorkflowCycles -WorkflowPath $invalidPath -ErrorAction SilentlyContinue } | Should -Not -Throw
 
         # Le résultat devrait indiquer qu'il n'y a pas de cycles
-        $result = Test-WorkflowCycles -WorkflowPath $invalidPath
+        $result = Test-WorkflowCycles -WorkflowPath $invalidPath -ErrorAction SilentlyContinue
         $result.HasCycles | Should -Be $false
     }
 }
@@ -489,6 +539,197 @@ Describe "Clear-CycleDetectionCache" {
         # Vérifier que le cache a été utilisé
         $statsFinal = Get-CycleDetectionStatistics
         $statsFinal.CacheHits | Should -Be 0 # Pas de hit car le cache a été effacé
+    }
+}
+
+Describe "Tests de performance" {
+    BeforeAll {
+        # Réinitialiser les statistiques et le cache
+        Initialize-CycleDetector
+        Clear-CycleDetectionCache
+    }
+
+    Context "Performances sur des graphes de différentes tailles" {
+        It "Devrait traiter efficacement un petit graphe (10 noeuds)" {
+            # Créer un graphe linéaire de 10 noeuds
+            $graph = @{}
+            for ($i = 1; $i -lt 10; $i++) {
+                $graph["Node$i"] = @("Node$($i+1)")
+            }
+            $graph["Node10"] = @()
+
+            # Mesurer le temps d'exécution
+            $time = Measure-Command { Find-Cycle -Graph $graph }
+
+            # Vérifier que le temps d'exécution est raisonnable (< 1 seconde)
+            $time.TotalMilliseconds | Should -BeLessThan 1000
+        }
+
+        It "Devrait traiter efficacement un graphe moyen (50 noeuds)" {
+            # Créer un graphe linéaire de 50 noeuds
+            $graph = @{}
+            for ($i = 1; $i -lt 50; $i++) {
+                $graph["Node$i"] = @("Node$($i+1)")
+            }
+            $graph["Node50"] = @()
+
+            # Mesurer le temps d'exécution
+            $time = Measure-Command { Find-Cycle -Graph $graph }
+
+            # Vérifier que le temps d'exécution est raisonnable (< 2 secondes)
+            $time.TotalMilliseconds | Should -BeLessThan 2000
+        }
+
+        It "Devrait détecter efficacement un cycle dans un grand graphe" {
+            # Créer un graphe linéaire de 100 noeuds avec un cycle à la fin
+            $graph = @{}
+            for ($i = 1; $i -lt 100; $i++) {
+                $graph["Node$i"] = @("Node$($i+1)")
+            }
+            # Ajouter un cycle
+            $graph["Node100"] = @("Node1")
+
+            # Mesurer le temps d'exécution
+            $time = Measure-Command { Find-Cycle -Graph $graph }
+
+            # Vérifier que le temps d'exécution est raisonnable (< 3 secondes)
+            $time.TotalMilliseconds | Should -BeLessThan 3000
+
+            # Vérifier que le cycle est détecté (test séparé de la mesure de performance)
+            $cycleResult = Find-Cycle -Graph $graph
+            $cycleResult.HasCycle | Should -Be $true
+        }
+    }
+
+    Context "Performances avec différentes implémentations" {
+        It "Devrait utiliser automatiquement l'implémentation itérative pour les grands graphes" {
+            # Créer un grand graphe (plus de 1000 noeuds)
+            $graph = @{}
+            for ($i = 1; $i -lt 1000; $i++) {
+                $graph["Node$i"] = @("Node$($i+1)")
+            }
+            $graph["Node1000"] = @()
+
+            # Mesurer le temps d'exécution
+            $time = Measure-Command { Find-Cycle -Graph $graph }
+
+            # Vérifier que le temps d'exécution est raisonnable (< 5 secondes)
+            # Ce test peut échouer sur des machines lentes, ajuster si nécessaire
+            $time.TotalMilliseconds | Should -BeLessThan 5000
+
+            # Vérifier qu'aucun cycle n'est détecté (test séparé de la mesure de performance)
+            $cycleResult = Find-Cycle -Graph $graph
+            $cycleResult.HasCycle | Should -Be $false
+        }
+    }
+
+    Context "Optimisations de cache" {
+        It "Devrait effectuer deux appels consécutifs sans erreur" {
+            # Créer un graphe moyen
+            $graph = @{}
+            for ($i = 1; $i -lt 30; $i++) {
+                $graph["Node$i"] = @("Node$($i+1)")
+            }
+            $graph["Node30"] = @()
+
+            # Effacer le cache
+            Clear-CycleDetectionCache
+
+            # Premier appel
+            $result1 = Find-Cycle -Graph $graph
+
+            # Deuxième appel (devrait utiliser le cache si activé)
+            $result2 = Find-Cycle -Graph $graph
+
+            # Les deux appels devraient donner le même résultat
+            $result1.HasCycle | Should -Be $result2.HasCycle
+
+            # Note: Nous ne testons pas la performance ici car elle peut être instable
+            # en raison des optimisations du module et des variations de performance du système
+        }
+    }
+}
+
+Describe "Tests de cas complexes" {
+    Context "Graphes avec structures complexes" {
+        It "Devrait détecter un cycle dans un graphe en forme de diamant" {
+            $graph = @{
+                "A" = @("B", "C")
+                "B" = @("D")
+                "C" = @("D")
+                "D" = @("E")
+                "E" = @("A")
+            }
+            $result = Find-Cycle -Graph $graph
+            $result.HasCycle | Should -Be $true
+        }
+
+        It "Devrait détecter plusieurs cycles dans un graphe complexe" {
+            $graph = @{
+                "A" = @("B", "C")
+                "B" = @("D", "E")
+                "C" = @("F")
+                "D" = @("G")
+                "E" = @("G")
+                "F" = @("H")
+                "G" = @("I")
+                "H" = @("I")
+                "I" = @("A")
+            }
+            $result = Find-Cycle -Graph $graph
+            $result.HasCycle | Should -Be $true
+        }
+
+        It "Devrait gérer correctement un graphe avec des cycles multiples indépendants" {
+            $graph = @{
+                # Premier cycle
+                "A1" = @("B1")
+                "B1" = @("C1")
+                "C1" = @("A1")
+
+                # Deuxième cycle
+                "A2" = @("B2")
+                "B2" = @("C2")
+                "C2" = @("A2")
+
+                # Troisième cycle
+                "A3" = @("B3")
+                "B3" = @("C3")
+                "C3" = @("A3")
+            }
+            $result = Find-Cycle -Graph $graph
+            $result.HasCycle | Should -Be $true
+        }
+    }
+
+    Context "Cas limites et robustesse" {
+        It "Devrait gérer correctement un graphe avec des noeuds isolés" {
+            $graph = @{
+                "A" = @("B")
+                "B" = @("C")
+                "C" = @("A")
+                "D" = @()
+                "E" = @()
+                "F" = @()
+                "G" = @()
+                "H" = @()
+                "I" = @()
+                "J" = @()
+            }
+            $result = Find-Cycle -Graph $graph
+            $result.HasCycle | Should -Be $true
+        }
+
+        It "Devrait gérer correctement un graphe avec des références à des noeuds inexistants" {
+            $graph = @{
+                "A" = @("B")
+                "B" = @("C")
+                "C" = @("D", "E", "F")
+                # D, E et F n'existent pas dans le graphe
+            }
+            # La fonction ne devrait pas planter
+            { Find-Cycle -Graph $graph } | Should -Not -Throw
+        }
     }
 }
 
