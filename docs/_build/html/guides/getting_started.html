@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide de démarrage rapide &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Guides d’utilisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical/index.html">Documentation technique</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide de démarrage rapide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/getting_started.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-de-demarrage-rapide">
+<h1>Guide de démarrage rapide<a class="headerlink" href="#guide-de-demarrage-rapide" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Bienvenue dans le projet EMAIL_SENDER_1 ! Ce guide de démarrage rapide vous aidera à comprendre les bases du projet, à installer les modules nécessaires et à commencer à utiliser les fonctionnalités principales. Que vous soyez un développeur, un administrateur système ou un utilisateur final, ce guide vous fournira les informations essentielles pour démarrer rapidement.</p>
+</section>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<p>Avant de commencer, assurez-vous de disposer des éléments suivants :</p>
+<ul class="simple">
+<li><p>PowerShell 5.1 ou PowerShell 7+ installé</p></li>
+<li><p>Python 3.11+ installé (pour certaines fonctionnalités)</p></li>
+<li><p>Accès au dépôt du projet</p></li>
+<li><p>Droits d’administrateur sur votre système (pour certaines installations)</p></li>
+<li><p>Visual Studio Code (recommandé pour le développement)</p></li>
+</ul>
+</section>
+<section id="structure-du-projet">
+<h2>Structure du projet<a class="headerlink" href="#structure-du-projet" title="Link to this heading"></a></h2>
+<p>Le projet EMAIL_SENDER_1 est organisé comme suit :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>EMAIL_SENDER_1/
+├── modules/              # Modules PowerShell principaux
+├── scripts/              # Scripts PowerShell et Python
+├── tests/                # Tests unitaires et d&#39;intégration
+├── docs/                 # Documentation
+│   ├── api/              # Documentation API
+│   ├── guides/           # Guides d&#39;utilisation
+│   └── technical/        # Documentation technique
+├── n8n/                  # Workflows et nodes n8n
+└── config/               # Fichiers de configuration
+</pre></div>
+</div>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Pour installer le projet, suivez ces étapes :</p>
+<ol class="simple">
+<li><p>Clonez le dépôt :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">votre-organisation</span><span class="p">/</span><span class="n">EMAIL_SENDER_1</span><span class="p">.</span><span class="n">git</span>
+<span class="nb">cd </span><span class="n">EMAIL_SENDER_1</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Importez les modules principaux :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer tous les modules</span>
+<span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\*.</span><span class="n">psm1</span> <span class="p">|</span> <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span>
+    <span class="nb">Import-Module</span> <span class="nv">$_</span><span class="p">.</span><span class="n">FullName</span> <span class="n">-Force</span>
+<span class="p">}</span>
+
+<span class="c"># Ou importer des modules spécifiques</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">CycleDetector</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">DependencyManager</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">MCPManager</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmenter</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Initialisez les modules :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser les modules avec les paramètres par défaut</span>
+<span class="nb">Initialize-CycleDetector</span>
+<span class="nb">Initialize-DependencyManager</span>
+<span class="nb">Initialize-MCPManager</span>
+<span class="nb">Initialize-InputSegmentation</span>
+
+<span class="c"># Ou avec des paramètres personnalisés</span>
+<span class="nb">Initialize-CycleDetector</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span>
+</pre></div>
+</div>
+</section>
+<section id="modules-principaux">
+<h2>Modules principaux<a class="headerlink" href="#modules-principaux" title="Link to this heading"></a></h2>
+<p>Le projet EMAIL_SENDER_1 comprend plusieurs modules principaux :</p>
+<section id="cycledetector">
+<h3>CycleDetector<a class="headerlink" href="#cycledetector" title="Link to this heading"></a></h3>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> permet de détecter et de corriger les cycles dans différents types de graphes, notamment les dépendances de scripts et les workflows n8n.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Exemple d&#39;utilisation de base</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dependencymanager">
+<h3>DependencyManager<a class="headerlink" href="#dependencymanager" title="Link to this heading"></a></h3>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">DependencyManager</span></code> permet de gérer les dépendances entre les scripts, les modules et les workflows.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Exemple d&#39;utilisation de base</span>
+<span class="nv">$dependencies</span> <span class="p">=</span> <span class="nb">Get-ScriptDependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts\main.ps1&quot;</span>
+<span class="nv">$order</span> <span class="p">=</span> <span class="nb">Resolve-DependencyOrder</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span>
+</pre></div>
+</div>
+</section>
+<section id="mcpmanager">
+<h3>MCPManager<a class="headerlink" href="#mcpmanager" title="Link to this heading"></a></h3>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">MCPManager</span></code> permet de gérer les serveurs MCP (Model Context Protocol), de détecter les serveurs disponibles et d’interagir avec eux.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Exemple d&#39;utilisation de base</span>
+<span class="nv">$servers</span> <span class="p">=</span> <span class="nb">Find-MCPServers</span> <span class="n">-ScanLocalPorts</span>
+<span class="nv">$server</span> <span class="p">=</span> <span class="nb">Start-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span> <span class="n">-Wait</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPCommand</span> <span class="n">-Command</span> <span class="s2">&quot;get_status&quot;</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+</pre></div>
+</div>
+</section>
+<section id="inputsegmenter">
+<h3>InputSegmenter<a class="headerlink" href="#inputsegmenter" title="Link to this heading"></a></h3>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">InputSegmenter</span></code> permet de segmenter automatiquement les entrées volumineuses en morceaux plus petits et gérables.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Exemple d&#39;utilisation de base</span>
+<span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &quot;</span> <span class="p">*</span> <span class="n">1000</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-TextInput</span> <span class="n">-Text</span> <span class="nv">$text</span> <span class="n">-SegmentSizeKB</span> <span class="n">10</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="premiers-pas">
+<h2>Premiers pas<a class="headerlink" href="#premiers-pas" title="Link to this heading"></a></h2>
+<p>Voici quelques exemples pour vous aider à démarrer avec le projet EMAIL_SENDER_1 :</p>
+<section id="exemple-1-analyser-les-dependances-d-un-script">
+<h3>Exemple 1 : Analyser les dépendances d’un script<a class="headerlink" href="#exemple-1-analyser-les-dependances-d-un-script" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules nécessaires</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">CycleDetector</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">DependencyManager</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser les modules</span>
+<span class="nb">Initialize-CycleDetector</span>
+<span class="nb">Initialize-DependencyManager</span>
+
+<span class="c"># Analyser les dépendances d&#39;un script</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Find-ScriptDependencyCycles</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-GenerateGraph</span> <span class="n">-GraphOutputPath</span> <span class="s2">&quot;.\dependency_graph.html&quot;</span>
+
+<span class="c"># Afficher les résultats</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycles</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycles détectés dans les scripts suivants:&quot;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$cycle</span> <span class="k">in</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Cycles</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$cycle</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Aucun cycle détecté dans les scripts&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-demarrer-un-serveur-mcp-et-executer-une-commande">
+<h3>Exemple 2 : Démarrer un serveur MCP et exécuter une commande<a class="headerlink" href="#exemple-2-demarrer-un-serveur-mcp-et-executer-une-commande" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module nécessaire</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">MCPManager</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser le module</span>
+<span class="nb">Initialize-MCPManager</span>
+
+<span class="c"># Démarrer un serveur MCP local</span>
+<span class="nv">$server</span> <span class="p">=</span> <span class="nb">Start-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span> <span class="n">-Wait</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;running&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP démarré avec succès: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+    
+    <span class="c"># Exécuter une commande sur le serveur</span>
+    <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPCommand</span> <span class="n">-Command</span> <span class="s2">&quot;get_status&quot;</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Statut du serveur: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">status</span><span class="p">)</span><span class="s2">&quot;</span>
+    
+    <span class="c"># Arrêter le serveur</span>
+    <span class="nb">Stop-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-3-segmenter-un-texte-volumineux">
+<h3>Exemple 3 : Segmenter un texte volumineux<a class="headerlink" href="#exemple-3-segmenter-un-texte-volumineux" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module nécessaire</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmenter</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser le module</span>
+<span class="nb">Initialize-InputSegmentation</span>
+
+<span class="c"># Créer un texte volumineux</span>
+<span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &quot;</span> <span class="p">*</span> <span class="n">1000</span>
+
+<span class="c"># Mesurer la taille du texte</span>
+<span class="nv">$textSize</span> <span class="p">=</span> <span class="nb">Measure-InputSize</span> <span class="n">-Input</span> <span class="nv">$text</span> <span class="n">-InputType</span> <span class="s2">&quot;Text&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Taille du texte: </span><span class="p">$(</span><span class="nv">$textSize</span><span class="p">.</span><span class="n">SizeKB</span><span class="p">)</span><span class="s2"> KB&quot;</span>
+
+<span class="c"># Segmenter le texte</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-TextInput</span> <span class="n">-Text</span> <span class="nv">$text</span> <span class="n">-SegmentSizeKB</span> <span class="n">10</span>
+
+<span class="c"># Afficher des informations sur les segments</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="etapes-suivantes">
+<h2>Étapes suivantes<a class="headerlink" href="#etapes-suivantes" title="Link to this heading"></a></h2>
+<p>Maintenant que vous avez compris les bases du projet EMAIL_SENDER_1, voici quelques suggestions pour approfondir vos connaissances :</p>
+<ol class="simple">
+<li><p>Consultez les guides spécifiques à chaque module :</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cycle_detection.html"><span class="doc">Guide de détection de cycles</span></a></p></li>
+<li><p><a class="reference internal" href="dependency_management.html"><span class="doc">Guide de gestion des dépendances</span></a></p></li>
+<li><p><a class="reference internal" href="mcp_integration.html"><span class="doc">Guide d’intégration MCP</span></a></p></li>
+<li><p><a class="reference internal" href="input_segmentation.html"><span class="doc">Guide de segmentation des entrées</span></a></p></li>
+</ul>
+</li>
+<li><p>Explorez la documentation API pour une référence complète des fonctions disponibles :</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../api/CycleDetector.html">API CycleDetector</a></p></li>
+<li><p><a class="reference external" href="../api/DependencyManager.html">API DependencyManager</a></p></li>
+<li><p><a class="reference external" href="../api/MCPManager.html">API MCPManager</a></p></li>
+<li><p><a class="reference external" href="../api/InputSegmenter.html">API InputSegmenter</a></p></li>
+</ul>
+</li>
+<li><p>Consultez les exemples d’utilisation pour des cas d’utilisation plus avancés :</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../api/examples/CycleDetector_Examples.html">Exemples CycleDetector</a></p></li>
+<li><p><a class="reference external" href="../api/examples/DependencyManager_Examples.html">Exemples DependencyManager</a></p></li>
+<li><p><a class="reference external" href="../api/examples/MCPManager_Examples.html">Exemples MCPManager</a></p></li>
+<li><p><a class="reference external" href="../api/examples/InputSegmenter_Examples.html">Exemples InputSegmenter</a></p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="probleme-les-modules-ne-s-importent-pas-correctement">
+<h3>Problème : Les modules ne s’importent pas correctement<a class="headerlink" href="#probleme-les-modules-ne-s-importent-pas-correctement" title="Link to this heading"></a></h3>
+<p>Assurez-vous que vous êtes dans le répertoire racine du projet et que les chemins sont corrects. Utilisez des chemins absolus si nécessaire.</p>
+</section>
+<section id="probleme-erreurs-lors-de-l-initialisation-des-modules">
+<h3>Problème : Erreurs lors de l’initialisation des modules<a class="headerlink" href="#probleme-erreurs-lors-de-l-initialisation-des-modules" title="Link to this heading"></a></h3>
+<p>Vérifiez que vous avez les droits d’administrateur nécessaires et que tous les prérequis sont installés.</p>
+</section>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="../index.html">Documentation complète du projet</a></p></li>
+<li><p><a class="reference external" href="https://github.com/votre-organisation/EMAIL_SENDER_1">Dépôt GitHub du projet</a></p></li>
+<li><p><a class="reference external" href="https://github.com/votre-organisation/EMAIL_SENDER_1/issues">Signaler un problème</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

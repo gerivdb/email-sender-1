@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide de détection de cycles &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Guides d’utilisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical/index.html">Documentation technique</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide de détection de cycles</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/cycle_detection.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-de-detection-de-cycles">
+<h1>Guide de détection de cycles<a class="headerlink" href="#guide-de-detection-de-cycles" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>La détection de cycles est un aspect crucial dans de nombreux systèmes informatiques, en particulier ceux qui impliquent des dépendances entre composants. Un cycle de dépendances peut entraîner des boucles infinies, des blocages ou des comportements imprévisibles. Le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> fournit des outils puissants pour détecter et résoudre ces cycles dans différents contextes, notamment les dépendances de scripts PowerShell et les workflows n8n.</p>
+<p>Ce guide vous expliquera comment utiliser efficacement le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> pour identifier et résoudre les cycles dans vos projets.</p>
+</section>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<p>Avant de commencer, assurez-vous de disposer des éléments suivants :</p>
+<ul class="simple">
+<li><p>PowerShell 5.1 ou PowerShell 7+ installé</p></li>
+<li><p>Le module <code class="docutils literal notranslate"><span class="pre">CycleDetector.psm1</span></code> disponible dans votre projet</p></li>
+<li><p>Connaissances de base sur les graphes et les dépendances</p></li>
+</ul>
+</section>
+<section id="installation-et-configuration">
+<h2>Installation et configuration<a class="headerlink" href="#installation-et-configuration" title="Link to this heading"></a></h2>
+<section id="installation-du-module">
+<h3>Installation du module<a class="headerlink" href="#installation-du-module" title="Link to this heading"></a></h3>
+<p>Pour utiliser le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code>, vous devez d’abord l’importer dans votre session PowerShell :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\CycleDetector.psm1&quot;</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+</section>
+<section id="initialisation-du-module">
+<h3>Initialisation du module<a class="headerlink" href="#initialisation-du-module" title="Link to this heading"></a></h3>
+<p>Après avoir importé le module, vous devez l’initialiser avec les paramètres souhaités :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialisation avec les paramètres par défaut</span>
+<span class="nb">Initialize-CycleDetector</span>
+
+<span class="c"># Ou avec des paramètres personnalisés</span>
+<span class="nb">Initialize-CycleDetector</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span>
+</pre></div>
+</div>
+<p>Les paramètres disponibles sont :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Enabled</span></code> : Active ou désactive le détecteur de cycles (par défaut : $true)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MaxDepth</span></code> : Profondeur maximale de recherche pour la détection de cycles (par défaut : 100)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CacheEnabled</span></code> : Active ou désactive la mise en cache des résultats (par défaut : $true)</p></li>
+</ul>
+</section>
+</section>
+<section id="concepts-de-base">
+<h2>Concepts de base<a class="headerlink" href="#concepts-de-base" title="Link to this heading"></a></h2>
+<section id="qu-est-ce-qu-un-cycle">
+<h3>Qu’est-ce qu’un cycle ?<a class="headerlink" href="#qu-est-ce-qu-un-cycle" title="Link to this heading"></a></h3>
+<p>Un cycle dans un graphe est un chemin qui commence et se termine au même nœud. Dans le contexte des dépendances, un cycle signifie qu’un composant dépend directement ou indirectement de lui-même, ce qui peut causer des problèmes.</p>
+<p>Par exemple, si le script A dépend du script B, qui dépend du script C, qui dépend à son tour du script A, nous avons un cycle A → B → C → A.</p>
+</section>
+<section id="types-de-cycles-detectes">
+<h3>Types de cycles détectés<a class="headerlink" href="#types-de-cycles-detectes" title="Link to this heading"></a></h3>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> peut détecter des cycles dans différents contextes :</p>
+<ol class="simple">
+<li><p><strong>Cycles dans des graphes génériques</strong> : Détection de cycles dans n’importe quel graphe représenté sous forme de table de hachage.</p></li>
+<li><p><strong>Cycles de dépendances de scripts</strong> : Détection de cycles dans les dépendances entre scripts PowerShell.</p></li>
+<li><p><strong>Cycles dans les workflows n8n</strong> : Détection de cycles dans les workflows n8n.</p></li>
+</ol>
+</section>
+</section>
+<section id="utilisation-de-base">
+<h2>Utilisation de base<a class="headerlink" href="#utilisation-de-base" title="Link to this heading"></a></h2>
+<section id="detection-de-cycles-dans-un-graphe-generique">
+<h3>Détection de cycles dans un graphe générique<a class="headerlink" href="#detection-de-cycles-dans-un-graphe-generique" title="Link to this heading"></a></h3>
+<p>Pour détecter des cycles dans un graphe générique, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Find-Cycle</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un graphe avec un cycle</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c"># Détecter les cycles</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>
+
+<span class="c"># Afficher le résultat</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Aucun cycle détecté&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="detection-de-cycles-dans-les-dependances-de-scripts">
+<h3>Détection de cycles dans les dépendances de scripts<a class="headerlink" href="#detection-de-cycles-dans-les-dependances-de-scripts" title="Link to this heading"></a></h3>
+<p>Pour détecter des cycles dans les dépendances entre scripts PowerShell, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Find-ScriptDependencyCycles</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Analyser les dépendances dans un dossier de scripts</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Find-ScriptDependencyCycles</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-GenerateGraph</span> <span class="n">-GraphOutputPath</span> <span class="s2">&quot;.\dependency_graph.html&quot;</span>
+
+<span class="c"># Afficher les résultats</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycles</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycles détectés dans les scripts suivants:&quot;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$cycle</span> <span class="k">in</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Cycles</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$cycle</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Aucun cycle détecté dans les scripts&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Les paramètres disponibles sont :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Path</span></code> : Chemin du dossier ou fichier à analyser</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Recursive</span></code> : Analyse récursivement les sous-dossiers</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GenerateGraph</span></code> : Génère une visualisation du graphe de dépendances</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GraphOutputPath</span></code> : Chemin de sortie pour la visualisation du graphe</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SkipCache</span></code> : Ignore la mise en cache des résultats</p></li>
+</ul>
+</section>
+<section id="detection-de-cycles-dans-les-workflows-n8n">
+<h3>Détection de cycles dans les workflows n8n<a class="headerlink" href="#detection-de-cycles-dans-les-workflows-n8n" title="Link to this heading"></a></h3>
+<p>Pour détecter des cycles dans les workflows n8n, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Test-WorkflowCycles</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Tester un workflow n8n pour détecter les cycles</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Test-WorkflowCycles</span> <span class="n">-WorkflowPath</span> <span class="s2">&quot;.\workflows\my_workflow.json&quot;</span>
+
+<span class="c"># Afficher le résultat</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté dans le workflow: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Aucun cycle détecté dans le workflow&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="exemples-avances">
+<h2>Exemples avancés<a class="headerlink" href="#exemples-avances" title="Link to this heading"></a></h2>
+<section id="exemple-1-suppression-automatique-des-cycles">
+<h3>Exemple 1 : Suppression automatique des cycles<a class="headerlink" href="#exemple-1-suppression-automatique-des-cycles" title="Link to this heading"></a></h3>
+<p>Vous pouvez utiliser la fonction <code class="docutils literal notranslate"><span class="pre">Remove-Cycle</span></code> pour supprimer automatiquement un cycle détecté :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un graphe avec un cycle</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c"># Détecter les cycles</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>
+
+<span class="c"># Supprimer le cycle si détecté</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="nv">$removed</span> <span class="p">=</span> <span class="nb">Remove-Cycle</span> <span class="n">-CycleResult</span> <span class="nv">$result</span> <span class="n">-Force</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$removed</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle supprimé avec succès&quot;</span>
+        
+        <span class="c"># Vérifier que le cycle a bien été supprimé</span>
+        <span class="nv">$newResult</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$newResult</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Le graphe ne contient plus de cycle&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-generation-d-un-rapport-de-dependances">
+<h3>Exemple 2 : Génération d’un rapport de dépendances<a class="headerlink" href="#exemple-2-generation-d-un-rapport-de-dependances" title="Link to this heading"></a></h3>
+<p>Vous pouvez générer un rapport détaillé sur les dépendances entre les scripts avec la fonction <code class="docutils literal notranslate"><span class="pre">Get-ScriptDependencyReport</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Générer un rapport de dépendances</span>
+<span class="nv">$report</span> <span class="p">=</span> <span class="nb">Get-ScriptDependencyReport</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-GenerateGraph</span> <span class="n">-GraphOutputPath</span> <span class="s2">&quot;.\dependency_graph.html&quot;</span>
+
+<span class="c"># Afficher les statistiques</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total de scripts: </span><span class="p">$(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Result</span><span class="p">.</span><span class="n">ScriptFiles</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de scripts avec des cycles: </span><span class="p">$(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Result</span><span class="p">.</span><span class="n">Cycles</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Statistics</span><span class="p">.</span><span class="n">MostDependencies</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Script avec le plus de dépendances: </span><span class="p">$(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Statistics</span><span class="p">.</span><span class="n">MostDependencies</span><span class="p">.</span><span class="n">Script</span><span class="p">)</span><span class="s2"> (</span><span class="p">$(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Statistics</span><span class="p">.</span><span class="n">MostDependencies</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> dépendances)&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-3-utilisation-du-cache-pour-ameliorer-les-performances">
+<h3>Exemple 3 : Utilisation du cache pour améliorer les performances<a class="headerlink" href="#exemple-3-utilisation-du-cache-pour-ameliorer-les-performances" title="Link to this heading"></a></h3>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> utilise un système de cache pour améliorer les performances lors de l’analyse de grands graphes. Voici comment l’utiliser efficacement :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser le détecteur de cycles avec cache activé</span>
+<span class="nb">Initialize-CycleDetector</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span>
+
+<span class="c"># Créer un graphe complexe</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{}</span>
+<span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">=</span> <span class="n">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-le</span> <span class="n">100</span><span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span>
+    <span class="nv">$graph</span><span class="p">[</span><span class="s2">&quot;Node$i&quot;</span><span class="p">]</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nv">$j</span> <span class="p">=</span> <span class="n">1</span><span class="p">;</span> <span class="nv">$j</span> <span class="o">-le</span> <span class="n">5</span><span class="p">;</span> <span class="nv">$j</span><span class="p">++)</span> <span class="p">{</span>
+        <span class="nv">$target</span> <span class="p">=</span> <span class="s2">&quot;Node</span><span class="p">$(((</span><span class="nv">$i</span> <span class="p">+</span> <span class="nv">$j</span><span class="p">)</span> <span class="p">%</span> <span class="n">100</span><span class="p">)</span> <span class="p">+</span> <span class="n">1</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="nv">$graph</span><span class="p">[</span><span class="s2">&quot;Node$i&quot;</span><span class="p">]</span> <span class="p">+=</span> <span class="nv">$target</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Mesurer le temps d&#39;exécution sans cache</span>
+<span class="nv">$stopwatch</span> <span class="p">=</span> <span class="no">[System.Diagnostics.Stopwatch]</span><span class="p">::</span><span class="n">StartNew</span><span class="p">()</span>
+<span class="nv">$result1</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span> <span class="n">-SkipCache</span>
+<span class="nv">$stopwatch</span><span class="p">.</span><span class="n">Stop</span><span class="p">()</span>
+<span class="nv">$timeWithoutCache</span> <span class="p">=</span> <span class="nv">$stopwatch</span><span class="p">.</span><span class="n">ElapsedMilliseconds</span>
+
+<span class="c"># Mesurer le temps d&#39;exécution avec cache</span>
+<span class="nv">$stopwatch</span> <span class="p">=</span> <span class="no">[System.Diagnostics.Stopwatch]</span><span class="p">::</span><span class="n">StartNew</span><span class="p">()</span>
+<span class="nv">$result2</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>  <span class="c"># Utilise le cache</span>
+<span class="nv">$stopwatch</span><span class="p">.</span><span class="n">Stop</span><span class="p">()</span>
+<span class="nv">$timeWithCache</span> <span class="p">=</span> <span class="nv">$stopwatch</span><span class="p">.</span><span class="n">ElapsedMilliseconds</span>
+
+<span class="c"># Afficher les résultats</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Temps d&#39;exécution sans cache: $timeWithoutCache ms&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Temps d&#39;exécution avec cache: $timeWithCache ms&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Amélioration des performances: </span><span class="p">$(</span><span class="n">100</span> <span class="p">-</span> <span class="p">(</span><span class="nv">$timeWithCache</span> <span class="p">/</span> <span class="nv">$timeWithoutCache</span> <span class="p">*</span> <span class="n">100</span><span class="p">))</span><span class="s2">%&quot;</span>
+
+<span class="c"># Afficher les statistiques du cache</span>
+<span class="nv">$stats</span> <span class="p">=</span> <span class="nb">Get-CycleDetectionStatistics</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total d&#39;appels: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">TotalCalls</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de hits du cache: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">CacheHits</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de misses du cache: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">CacheMisses</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Taux de succès du cache: </span><span class="p">$((</span><span class="nv">$stats</span><span class="p">.</span><span class="n">CacheHits</span> <span class="p">/</span> <span class="p">(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">CacheHits</span> <span class="p">+</span> <span class="nv">$stats</span><span class="p">.</span><span class="n">CacheMisses</span><span class="p">))</span> <span class="p">*</span> <span class="n">100</span><span class="p">)</span><span class="s2">%&quot;</span>
+
+<span class="c"># Vider le cache si nécessaire</span>
+<span class="nb">Clear-CycleDetectionCache</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-4-visualisation-des-graphes-de-dependances">
+<h3>Exemple 4 : Visualisation des graphes de dépendances<a class="headerlink" href="#exemple-4-visualisation-des-graphes-de-dependances" title="Link to this heading"></a></h3>
+<p>Vous pouvez générer des visualisations des graphes de dépendances pour mieux comprendre les relations entre les composants :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un graphe</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;Module A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Module B&quot;</span><span class="p">,</span> <span class="s2">&quot;Module C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;Module B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Module D&quot;</span><span class="p">,</span> <span class="s2">&quot;Module E&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;Module C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Module F&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;Module D&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Module G&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;Module E&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Module G&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;Module F&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Module G&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;Module G&quot;</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">}</span>
+
+<span class="c"># Exporter la visualisation au format HTML</span>
+<span class="nb">Export-CycleVisualization</span> <span class="n">-Graph</span> <span class="nv">$graph</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\graph.html&quot;</span> <span class="n">-Format</span> <span class="s2">&quot;HTML&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Visualisation HTML exportée avec succès: .\graph.html&quot;</span>
+
+<span class="c"># Exporter la visualisation au format DOT (pour Graphviz)</span>
+<span class="nb">Export-CycleVisualization</span> <span class="n">-Graph</span> <span class="nv">$graph</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\graph.dot&quot;</span> <span class="n">-Format</span> <span class="s2">&quot;DOT&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Visualisation DOT exportée avec succès: .\graph.dot&quot;</span>
+
+<span class="c"># Si Graphviz est installé, convertir le fichier DOT en PNG</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">Get-Command</span> <span class="s2">&quot;dot&quot;</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dot</span> <span class="n">-Tpng</span> <span class="n">-o</span> <span class="s2">&quot;.\graph.png&quot;</span> <span class="s2">&quot;.\graph.dot&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Visualisation PNG exportée avec succès: .\graph.png&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-avec-d-autres-modules">
+<h2>Intégration avec d’autres modules<a class="headerlink" href="#integration-avec-d-autres-modules" title="Link to this heading"></a></h2>
+<section id="integration-avec-le-module-dependencymanager">
+<h3>Intégration avec le module DependencyManager<a class="headerlink" href="#integration-avec-le-module-dependencymanager" title="Link to this heading"></a></h3>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> s’intègre parfaitement avec le module <code class="docutils literal notranslate"><span class="pre">DependencyManager</span></code> pour une gestion complète des dépendances :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\CycleDetector.psm1&quot;</span> <span class="n">-Force</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\DependencyManager.psm1&quot;</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser les modules</span>
+<span class="nb">Initialize-CycleDetector</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span>
+<span class="nb">Initialize-DependencyManager</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span>
+
+<span class="c"># Analyser les dépendances dans un dossier de scripts</span>
+<span class="nv">$dependencies</span> <span class="p">=</span> <span class="nb">Get-ScriptDependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span>
+
+<span class="c"># Détecter les cycles dans le graphe de dépendances</span>
+<span class="nv">$cycleResult</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$dependencies</span><span class="p">.</span><span class="n">DependencyGraph</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$cycleResult</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté dans les dépendances: </span><span class="p">$(</span><span class="nv">$cycleResult</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    
+    <span class="c"># Résoudre l&#39;ordre d&#39;exécution en tenant compte des cycles</span>
+    <span class="nv">$order</span> <span class="p">=</span> <span class="nb">Resolve-DependencyOrder</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\execution_order.json&quot;</span> <span class="n">-Format</span> <span class="s2">&quot;JSON&quot;</span>
+    
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Ordre d&#39;exécution résolu:&quot;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$script</span> <span class="k">in</span> <span class="nv">$order</span><span class="p">.</span><span class="n">ExecutionOrder</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;- $script&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="probleme-faux-positifs-dans-la-detection-de-cycles">
+<h3>Problème : Faux positifs dans la détection de cycles<a class="headerlink" href="#probleme-faux-positifs-dans-la-detection-de-cycles" title="Link to this heading"></a></h3>
+<p>Si vous obtenez des faux positifs (cycles détectés qui n’existent pas réellement), essayez d’augmenter la profondeur maximale de recherche :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-CycleDetector</span> <span class="n">-MaxDepth</span> <span class="n">200</span>
+</pre></div>
+</div>
+</section>
+<section id="probleme-performances-lentes-sur-de-grands-graphes">
+<h3>Problème : Performances lentes sur de grands graphes<a class="headerlink" href="#probleme-performances-lentes-sur-de-grands-graphes" title="Link to this heading"></a></h3>
+<p>Si les performances sont lentes sur de grands graphes, assurez-vous que le cache est activé :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-CycleDetector</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span>
+</pre></div>
+</div>
+<p>Vous pouvez également vider le cache si nécessaire :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Clear-CycleDetectionCache</span>
+</pre></div>
+</div>
+</section>
+<section id="probleme-erreurs-lors-de-la-generation-de-visualisations">
+<h3>Problème : Erreurs lors de la génération de visualisations<a class="headerlink" href="#probleme-erreurs-lors-de-la-generation-de-visualisations" title="Link to this heading"></a></h3>
+<p>Si vous rencontrez des erreurs lors de la génération de visualisations, assurez-vous que vous avez les droits d’écriture dans le dossier de sortie et que le chemin est valide.</p>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Utilisez la mise en cache</strong> pour améliorer les performances sur les grands graphes.</p></li>
+<li><p><strong>Générez des visualisations</strong> pour mieux comprendre les dépendances et les cycles.</p></li>
+<li><p><strong>Intégrez avec le module DependencyManager</strong> pour une gestion complète des dépendances.</p></li>
+<li><p><strong>Utilisez des chemins absolus</strong> pour éviter les problèmes de résolution de chemins relatifs.</p></li>
+<li><p><strong>Vérifiez régulièrement</strong> la présence de cycles dans vos projets pour éviter les problèmes.</p></li>
+</ul>
+</section>
+<section id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Link to this heading"></a></h2>
+<section id="quelle-est-la-difference-entre-find-cycle-et-find-scriptdependencycycles">
+<h3>Quelle est la différence entre Find-Cycle et Find-ScriptDependencyCycles ?<a class="headerlink" href="#quelle-est-la-difference-entre-find-cycle-et-find-scriptdependencycycles" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Find-Cycle</span></code> est une fonction générique qui détecte les cycles dans n’importe quel graphe représenté sous forme de table de hachage. <code class="docutils literal notranslate"><span class="pre">Find-ScriptDependencyCycles</span></code> est spécifique aux dépendances entre scripts PowerShell et analyse automatiquement les fichiers pour construire le graphe de dépendances.</p>
+</section>
+<section id="comment-le-module-detecte-t-il-les-dependances-entre-scripts">
+<h3>Comment le module détecte-t-il les dépendances entre scripts ?<a class="headerlink" href="#comment-le-module-detecte-t-il-les-dependances-entre-scripts" title="Link to this heading"></a></h3>
+<p>Le module analyse le contenu des scripts PowerShell pour détecter les appels à d’autres scripts, les importations de modules, etc. Il construit ensuite un graphe de dépendances et utilise l’algorithme de détection de cycles pour identifier les cycles.</p>
+</section>
+<section id="puis-je-utiliser-le-module-pour-detecter-des-cycles-dans-d-autres-types-de-graphes">
+<h3>Puis-je utiliser le module pour détecter des cycles dans d’autres types de graphes ?<a class="headerlink" href="#puis-je-utiliser-le-module-pour-detecter-des-cycles-dans-d-autres-types-de-graphes" title="Link to this heading"></a></h3>
+<p>Oui, la fonction <code class="docutils literal notranslate"><span class="pre">Find-Cycle</span></code> peut être utilisée pour détecter des cycles dans n’importe quel graphe représenté sous forme de table de hachage, où les clés sont les nœuds et les valeurs sont des tableaux de nœuds adjacents.</p>
+</section>
+<section id="comment-resoudre-automatiquement-les-cycles-detectes">
+<h3>Comment résoudre automatiquement les cycles détectés ?<a class="headerlink" href="#comment-resoudre-automatiquement-les-cycles-detectes" title="Link to this heading"></a></h3>
+<p>Vous pouvez utiliser la fonction <code class="docutils literal notranslate"><span class="pre">Remove-Cycle</span></code> pour supprimer automatiquement un cycle détecté. Cette fonction supprime une arête du cycle pour le briser. Vous pouvez également utiliser le module <code class="docutils literal notranslate"><span class="pre">DependencyManager</span></code> pour des stratégies de résolution plus avancées.</p>
+</section>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="../api/CycleDetector.html">Documentation API du module CycleDetector</a></p></li>
+<li><p><a class="reference external" href="../api/examples/CycleDetector_Examples.html">Exemples d’utilisation du module CycleDetector</a></p></li>
+<li><p><a class="reference internal" href="dependency_management.html"><span class="doc">Guide de gestion des dépendances</span></a></p></li>
+<li><p><a class="reference internal" href="../technical/CycleDetector.html"><span class="doc">Documentation technique sur la détection de cycles</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

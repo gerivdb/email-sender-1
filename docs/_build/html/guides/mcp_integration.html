@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’intégration MCP &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Guides d’utilisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical/index.html">Documentation technique</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’intégration MCP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/mcp_integration.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-integration-mcp">
+<h1>Guide d’intégration MCP<a class="headerlink" href="#guide-d-integration-mcp" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Le Model Context Protocol (MCP) est un protocole standardisé qui permet d’interagir avec des modèles d’intelligence artificielle de manière cohérente et efficace. Le module <code class="docutils literal notranslate"><span class="pre">MCPManager</span></code> fournit des outils puissants pour gérer les serveurs MCP, détecter les serveurs disponibles et interagir avec eux. Ce guide vous expliquera comment utiliser efficacement le module <code class="docutils literal notranslate"><span class="pre">MCPManager</span></code> pour intégrer des fonctionnalités d’IA dans vos projets.</p>
+</section>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<p>Avant de commencer, assurez-vous de disposer des éléments suivants :</p>
+<ul class="simple">
+<li><p>PowerShell 5.1 ou PowerShell 7+ installé</p></li>
+<li><p>Python 3.11+ installé (pour certaines fonctionnalités)</p></li>
+<li><p>Le module <code class="docutils literal notranslate"><span class="pre">MCPManager.psm1</span></code> disponible dans votre projet</p></li>
+<li><p>Connaissances de base sur les API et les protocoles de communication</p></li>
+</ul>
+</section>
+<section id="installation-et-configuration">
+<h2>Installation et configuration<a class="headerlink" href="#installation-et-configuration" title="Link to this heading"></a></h2>
+<section id="installation-du-module">
+<h3>Installation du module<a class="headerlink" href="#installation-du-module" title="Link to this heading"></a></h3>
+<p>Pour utiliser le module <code class="docutils literal notranslate"><span class="pre">MCPManager</span></code>, vous devez d’abord l’importer dans votre session PowerShell :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\MCPManager.psm1&quot;</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+</section>
+<section id="initialisation-du-module">
+<h3>Initialisation du module<a class="headerlink" href="#initialisation-du-module" title="Link to this heading"></a></h3>
+<p>Après avoir importé le module, vous devez l’initialiser avec les paramètres souhaités :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialisation avec les paramètres par défaut</span>
+<span class="nb">Initialize-MCPManager</span>
+
+<span class="c"># Ou avec des paramètres personnalisés</span>
+<span class="nb">Initialize-MCPManager</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-ConfigPath</span> <span class="s2">&quot;.\config\custom_mcp_config.json&quot;</span> <span class="n">-LogPath</span> <span class="s2">&quot;.\logs\mcp.log&quot;</span> <span class="n">-LogLevel</span> <span class="s2">&quot;DEBUG&quot;</span>
+</pre></div>
+</div>
+<p>Les paramètres disponibles sont :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Enabled</span></code> : Active ou désactive le gestionnaire MCP (par défaut : $true)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ConfigPath</span></code> : Chemin du fichier de configuration (par défaut : “.\config\mcp_manager.json”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LogPath</span></code> : Chemin du fichier de log (par défaut : “.\logs\mcp_manager.log”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LogLevel</span></code> : Niveau de log (DEBUG, INFO, WARNING, ERROR) (par défaut : “INFO”)</p></li>
+</ul>
+</section>
+<section id="installation-des-dependances">
+<h3>Installation des dépendances<a class="headerlink" href="#installation-des-dependances" title="Link to this heading"></a></h3>
+<p>Avant d’utiliser les fonctionnalités MCP, vous devez installer les dépendances nécessaires :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Installer les dépendances pour un serveur MCP local</span>
+<span class="nv">$installed</span> <span class="p">=</span> <span class="nb">Install-MCPDependencies</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$installed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Dépendances installées avec succès&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de l&#39;installation des dépendances&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="concepts-de-base">
+<h2>Concepts de base<a class="headerlink" href="#concepts-de-base" title="Link to this heading"></a></h2>
+<section id="qu-est-ce-que-mcp">
+<h3>Qu’est-ce que MCP ?<a class="headerlink" href="#qu-est-ce-que-mcp" title="Link to this heading"></a></h3>
+<p>Le Model Context Protocol (MCP) est un protocole standardisé qui définit comment les applications peuvent communiquer avec des modèles d’intelligence artificielle. Il permet d’envoyer des requêtes aux modèles et de recevoir des réponses de manière cohérente, indépendamment du modèle ou du fournisseur spécifique.</p>
+</section>
+<section id="types-de-serveurs-mcp">
+<h3>Types de serveurs MCP<a class="headerlink" href="#types-de-serveurs-mcp" title="Link to this heading"></a></h3>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">MCPManager</span></code> prend en charge plusieurs types de serveurs MCP :</p>
+<ol class="simple">
+<li><p><strong>Serveur local</strong> : Un serveur MCP exécuté localement sur votre machine.</p></li>
+<li><p><strong>Serveur n8n</strong> : Un serveur MCP intégré à n8n pour l’automatisation des flux de travail.</p></li>
+<li><p><strong>Serveur Notion</strong> : Un serveur MCP intégré à Notion pour la gestion des connaissances.</p></li>
+<li><p><strong>Serveur Gateway</strong> : Un serveur MCP qui agit comme une passerelle vers d’autres serveurs MCP.</p></li>
+<li><p><strong>Serveur Git Ingest</strong> : Un serveur MCP spécialisé dans l’ingestion de données à partir de dépôts Git.</p></li>
+</ol>
+</section>
+</section>
+<section id="utilisation-de-base">
+<h2>Utilisation de base<a class="headerlink" href="#utilisation-de-base" title="Link to this heading"></a></h2>
+<section id="recherche-de-serveurs-mcp">
+<h3>Recherche de serveurs MCP<a class="headerlink" href="#recherche-de-serveurs-mcp" title="Link to this heading"></a></h3>
+<p>Pour rechercher les serveurs MCP disponibles sur votre réseau, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Find-MCPServers</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Rechercher les serveurs MCP locaux</span>
+<span class="nv">$localServers</span> <span class="p">=</span> <span class="nb">Find-MCPServers</span> <span class="n">-ScanLocalPorts</span>
+
+<span class="c"># Afficher les serveurs détectés</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$server</span> <span class="k">in</span> <span class="nv">$localServers</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP détecté: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Type</span><span class="p">)</span><span class="s2"> sur </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Host</span><span class="p">)</span><span class="s2">:</span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Port</span><span class="p">)</span><span class="s2"> - </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Status</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Rechercher les serveurs MCP sur des hôtes distants</span>
+<span class="nv">$remoteServers</span> <span class="p">=</span> <span class="nb">Find-MCPServers</span> <span class="n">-ScanRemoteHosts</span> <span class="p">@(</span><span class="s2">&quot;server1.example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;server2.example.com&quot;</span><span class="p">)</span> <span class="n">-PortRange</span> <span class="p">@(</span><span class="n">8000</span><span class="p">,</span> <span class="n">8001</span><span class="p">,</span> <span class="n">8002</span><span class="p">)</span>
+
+<span class="c"># Afficher les serveurs distants détectés</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$server</span> <span class="k">in</span> <span class="nv">$remoteServers</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP distant détecté: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Type</span><span class="p">)</span><span class="s2"> sur </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Host</span><span class="p">)</span><span class="s2">:</span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Port</span><span class="p">)</span><span class="s2"> - </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Status</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Les paramètres disponibles sont :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ScanLocalPorts</span></code> : Analyse les ports locaux pour détecter les serveurs MCP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ScanRemoteHosts</span></code> : Tableau d’hôtes distants à analyser</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PortRange</span></code> : Plage de ports à analyser (par défaut : 8000-8100)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Timeout</span></code> : Délai d’attente en millisecondes (par défaut : 1000)</p></li>
+</ul>
+</section>
+<section id="creation-d-une-configuration-mcp">
+<h3>Création d’une configuration MCP<a class="headerlink" href="#creation-d-une-configuration-mcp" title="Link to this heading"></a></h3>
+<p>Pour créer une configuration pour un serveur MCP, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">New-MCPConfiguration</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer une configuration pour un serveur MCP local</span>
+<span class="nv">$configCreated</span> <span class="p">=</span> <span class="nb">New-MCPConfiguration</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\config\local_mcp_config.json&quot;</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span> <span class="n">-Force</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$configCreated</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Configuration créée avec succès: .\config\local_mcp_config.json&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Créer une configuration pour un serveur MCP n8n</span>
+<span class="nv">$n8nConfigCreated</span> <span class="p">=</span> <span class="nb">New-MCPConfiguration</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\config\n8n_mcp_config.json&quot;</span> <span class="n">-ServerType</span> <span class="s2">&quot;n8n&quot;</span> <span class="n">-Port</span> <span class="n">5678</span> <span class="n">-Host</span> <span class="s2">&quot;localhost&quot;</span> <span class="n">-Force</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$n8nConfigCreated</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Configuration n8n créée avec succès: .\config\n8n_mcp_config.json&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Les paramètres disponibles sont :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">OutputPath</span></code> : Chemin du fichier de configuration à créer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ServerType</span></code> : Type de serveur MCP (local, n8n, notion, gateway, git-ingest)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Port</span></code> : Numéro de port du serveur MCP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Host</span></code> : Nom ou adresse IP de l’hôte</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Force</span></code> : Écrase le fichier de configuration s’il existe déjà</p></li>
+</ul>
+</section>
+<section id="demarrage-d-un-serveur-mcp">
+<h3>Démarrage d’un serveur MCP<a class="headerlink" href="#demarrage-d-un-serveur-mcp" title="Link to this heading"></a></h3>
+<p>Pour démarrer un serveur MCP, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Start-MCPServer</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Démarrer un serveur MCP local</span>
+<span class="nv">$server</span> <span class="p">=</span> <span class="nb">Start-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span> <span class="n">-Wait</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;running&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP démarré avec succès: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;ID du processus: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">ProcessId</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors du démarrage du serveur MCP: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Error</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Démarrer un serveur MCP n8n</span>
+<span class="nv">$n8nServer</span> <span class="p">=</span> <span class="nb">Start-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;n8n&quot;</span> <span class="n">-Port</span> <span class="n">5678</span> <span class="n">-Wait</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$n8nServer</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;running&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP n8n démarré avec succès: </span><span class="p">$(</span><span class="nv">$n8nServer</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Les paramètres disponibles sont :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ServerType</span></code> : Type de serveur MCP (local, n8n, notion, gateway, git-ingest)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Port</span></code> : Numéro de port du serveur MCP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Host</span></code> : Nom ou adresse IP de l’hôte</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ConfigPath</span></code> : Chemin du fichier de configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Wait</span></code> : Attend que le serveur soit prêt avant de retourner</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Timeout</span></code> : Délai d’attente en secondes</p></li>
+</ul>
+</section>
+<section id="execution-de-commandes-mcp">
+<h3>Exécution de commandes MCP<a class="headerlink" href="#execution-de-commandes-mcp" title="Link to this heading"></a></h3>
+<p>Pour exécuter une commande sur un serveur MCP, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Invoke-MCPCommand</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Exécuter une commande sur un serveur MCP local</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPCommand</span> <span class="n">-Command</span> <span class="s2">&quot;get_tools&quot;</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+
+<span class="c"># Afficher les outils disponibles</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Outils disponibles sur le serveur MCP:&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$tool</span> <span class="k">in</span> <span class="nv">$result</span><span class="p">.</span><span class="n">tools</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$tool</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="s2">: </span><span class="p">$(</span><span class="nv">$tool</span><span class="p">.</span><span class="n">description</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Exécuter une commande avec des paramètres</span>
+<span class="nv">$addResult</span> <span class="p">=</span> <span class="nb">Invoke-MCPCommand</span> <span class="n">-Command</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Résultat de l&#39;addition: $addResult&quot;</span>
+</pre></div>
+</div>
+<p>Les paramètres disponibles sont :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Command</span></code> : Commande à exécuter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Parameters</span></code> : Paramètres de la commande</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ServerType</span></code> : Type de serveur MCP (local, n8n, notion, gateway, git-ingest)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Port</span></code> : Numéro de port du serveur MCP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Host</span></code> : Nom ou adresse IP de l’hôte</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Timeout</span></code> : Délai d’attente en secondes</p></li>
+</ul>
+</section>
+<section id="arret-d-un-serveur-mcp">
+<h3>Arrêt d’un serveur MCP<a class="headerlink" href="#arret-d-un-serveur-mcp" title="Link to this heading"></a></h3>
+<p>Pour arrêter un serveur MCP, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Stop-MCPServer</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Arrêter un serveur MCP local</span>
+<span class="nv">$stopped</span> <span class="p">=</span> <span class="nb">Stop-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$stopped</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP arrêté avec succès&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de l&#39;arrêt du serveur MCP&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Arrêter un serveur MCP par son ID de processus</span>
+<span class="nv">$stoppedById</span> <span class="p">=</span> <span class="nb">Stop-MCPServer</span> <span class="n">-ProcessId</span> <span class="n">1234</span> <span class="n">-Force</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$stoppedById</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP avec l&#39;ID de processus 1234 arrêté avec succès&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Les paramètres disponibles sont :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ServerType</span></code> : Type de serveur MCP (local, n8n, notion, gateway, git-ingest)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Port</span></code> : Numéro de port du serveur MCP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Host</span></code> : Nom ou adresse IP de l’hôte</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProcessId</span></code> : ID du processus du serveur MCP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Force</span></code> : Force l’arrêt du serveur</p></li>
+</ul>
+</section>
+</section>
+<section id="exemples-avances">
+<h2>Exemples avancés<a class="headerlink" href="#exemples-avances" title="Link to this heading"></a></h2>
+<section id="exemple-1-utilisation-de-plusieurs-serveurs-mcp">
+<h3>Exemple 1 : Utilisation de plusieurs serveurs MCP<a class="headerlink" href="#exemple-1-utilisation-de-plusieurs-serveurs-mcp" title="Link to this heading"></a></h3>
+<p>Vous pouvez gérer plusieurs serveurs MCP simultanément :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Fonction pour démarrer un serveur MCP</span>
+<span class="k">function</span> <span class="nb">Start-TestMCPServer</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="no">[string]</span><span class="nv">$ServerType</span><span class="p">,</span>
+        <span class="no">[int]</span><span class="nv">$Port</span>
+    <span class="p">)</span>
+    
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Démarrage du serveur MCP $ServerType sur le port $Port...&quot;</span>
+    <span class="nv">$server</span> <span class="p">=</span> <span class="nb">Start-MCPServer</span> <span class="n">-ServerType</span> <span class="nv">$ServerType</span> <span class="n">-Port</span> <span class="nv">$Port</span> <span class="n">-Wait</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;running&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP $ServerType démarré avec succès: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;ID du processus: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">ProcessId</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nv">$server</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors du démarrage du serveur MCP $ServerType: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Error</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nv">$null</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Démarrer plusieurs serveurs MCP</span>
+<span class="nv">$servers</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="nv">$servers</span> <span class="p">+=</span> <span class="nb">Start-TestMCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+<span class="nv">$servers</span> <span class="p">+=</span> <span class="nb">Start-TestMCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;n8n&quot;</span> <span class="n">-Port</span> <span class="n">5678</span>
+
+<span class="c"># Attendre quelques secondes</span>
+<span class="nb">Start-Sleep</span> <span class="n">-Seconds</span> <span class="n">5</span>
+
+<span class="c"># Tester tous les serveurs</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Test de tous les serveurs MCP...&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$server</span> <span class="k">in</span> <span class="nv">$servers</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$server</span> <span class="o">-ne</span> <span class="nv">$null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$testResult</span> <span class="p">=</span> <span class="nb">Test-MCPServer</span> <span class="n">-ServerType</span> <span class="nv">$server</span><span class="p">.</span><span class="n">ServerType</span> <span class="n">-Port</span> <span class="nv">$server</span><span class="p">.</span><span class="n">Port</span> <span class="n">-Host</span> <span class="nv">$server</span><span class="p">.</span><span class="n">Host</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$testResult</span><span class="p">.</span><span class="n">Available</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">ServerType</span><span class="p">)</span><span class="s2"> disponible: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Temps de réponse: </span><span class="p">$(</span><span class="nv">$testResult</span><span class="p">.</span><span class="n">ResponseTime</span><span class="p">)</span><span class="s2"> ms&quot;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">ServerType</span><span class="p">)</span><span class="s2"> non disponible: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Arrêter tous les serveurs</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Arrêt de tous les serveurs MCP...&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$server</span> <span class="k">in</span> <span class="nv">$servers</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$server</span> <span class="o">-ne</span> <span class="nv">$null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$stopped</span> <span class="p">=</span> <span class="nb">Stop-MCPServer</span> <span class="n">-ProcessId</span> <span class="nv">$server</span><span class="p">.</span><span class="n">ProcessId</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$stopped</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">ServerType</span><span class="p">)</span><span class="s2"> arrêté avec succès: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de l&#39;arrêt du serveur MCP </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">ServerType</span><span class="p">)</span><span class="s2">: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-integration-avec-des-scripts-python">
+<h3>Exemple 2 : Intégration avec des scripts Python<a class="headerlink" href="#exemple-2-integration-avec-des-scripts-python" title="Link to this heading"></a></h3>
+<p>Vous pouvez intégrer le module <code class="docutils literal notranslate"><span class="pre">MCPManager</span></code> avec des scripts Python :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Vérifier si Python est installé</span>
+<span class="nv">$pythonInstalled</span> <span class="p">=</span> <span class="nb">Get-Command</span> <span class="n">python</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$pythonInstalled</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Python n&#39;est pas installé ou n&#39;est pas dans le PATH&quot;</span>
+    <span class="k">return</span>
+<span class="p">}</span>
+
+<span class="c"># Créer un script Python simple pour tester l&#39;intégration</span>
+<span class="nv">$pythonScriptPath</span> <span class="p">=</span> <span class="s2">&quot;.\scripts\mcp_test.py&quot;</span>
+<span class="nv">$pythonScript</span> <span class="p">=</span> <span class="sh">@&quot;</span>
+<span class="sh">import sys</span>
+<span class="sh">import json</span>
+<span class="sh">import requests</span>
+
+<span class="sh">def main():</span>
+<span class="sh">    server_type = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;local&quot;</span>
+<span class="sh">    port = int(sys.argv[2]) if len(sys.argv) &gt; 2 else 8000</span>
+<span class="sh">    </span>
+<span class="sh">    print(f&quot;Testing MCP server: {server_type} on port {port}&quot;)</span>
+<span class="sh">    </span>
+<span class="sh">    try:</span>
+<span class="sh">        response = requests.get(f&quot;http://localhost:{port}/health&quot;, timeout=2)</span>
+<span class="sh">        if response.status_code == 200:</span>
+<span class="sh">            print(f&quot;Server is healthy: {response.json()}&quot;)</span>
+<span class="sh">            return 0</span>
+<span class="sh">        else:</span>
+<span class="sh">            print(f&quot;Server returned status code: {response.status_code}&quot;)</span>
+<span class="sh">            return 1</span>
+<span class="sh">    except Exception as e:</span>
+<span class="sh">        print(f&quot;Error connecting to server: {e}&quot;)</span>
+<span class="sh">        return 1</span>
+
+<span class="sh">if __name__ == &quot;__main__&quot;:</span>
+<span class="sh">    sys.exit(main())</span>
+<span class="sh">&quot;@</span>
+
+<span class="nb">Set-Content</span> <span class="n">-Path</span> <span class="nv">$pythonScriptPath</span> <span class="n">-Value</span> <span class="nv">$pythonScript</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Script Python créé: $pythonScriptPath&quot;</span>
+
+<span class="c"># Démarrer un serveur MCP local</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Démarrage d&#39;un serveur MCP local...&quot;</span>
+<span class="nv">$server</span> <span class="p">=</span> <span class="nb">Start-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span> <span class="n">-Wait</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;running&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP démarré avec succès: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+    
+    <span class="c"># Exécuter le script Python</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Exécution du script Python...&quot;</span>
+    <span class="nv">$pythonResult</span> <span class="p">=</span> <span class="n">python</span> <span class="nv">$pythonScriptPath</span> <span class="s2">&quot;local&quot;</span> <span class="n">8000</span>
+    
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Résultat du script Python:&quot;</span>
+    <span class="nb">Write-Host</span> <span class="nv">$pythonResult</span>
+    
+    <span class="c"># Arrêter le serveur</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Arrêt du serveur MCP...&quot;</span>
+    <span class="nv">$stopped</span> <span class="p">=</span> <span class="nb">Stop-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$stopped</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP arrêté avec succès&quot;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de l&#39;arrêt du serveur MCP&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors du démarrage du serveur MCP: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Error</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Supprimer le script Python</span>
+<span class="nb">Remove-Item</span> <span class="n">-Path</span> <span class="nv">$pythonScriptPath</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Script Python supprimé: $pythonScriptPath&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-3-utilisation-de-mcp-avec-n8n">
+<h3>Exemple 3 : Utilisation de MCP avec n8n<a class="headerlink" href="#exemple-3-utilisation-de-mcp-avec-n8n" title="Link to this heading"></a></h3>
+<p>Vous pouvez intégrer MCP avec n8n pour l’automatisation des flux de travail :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer une configuration pour un serveur MCP n8n</span>
+<span class="nv">$n8nConfigCreated</span> <span class="p">=</span> <span class="nb">New-MCPConfiguration</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\config\n8n_mcp_config.json&quot;</span> <span class="n">-ServerType</span> <span class="s2">&quot;n8n&quot;</span> <span class="n">-Port</span> <span class="n">5678</span> <span class="n">-Host</span> <span class="s2">&quot;localhost&quot;</span> <span class="n">-Force</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$n8nConfigCreated</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Configuration n8n créée avec succès: .\config\n8n_mcp_config.json&quot;</span>
+    
+    <span class="c"># Démarrer un serveur MCP n8n</span>
+    <span class="nv">$n8nServer</span> <span class="p">=</span> <span class="nb">Start-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;n8n&quot;</span> <span class="n">-Port</span> <span class="n">5678</span> <span class="n">-Wait</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$n8nServer</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;running&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP n8n démarré avec succès: </span><span class="p">$(</span><span class="nv">$n8nServer</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+        
+        <span class="c"># Exécuter une commande sur le serveur n8n</span>
+        <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPCommand</span> <span class="n">-Command</span> <span class="s2">&quot;get_workflows&quot;</span> <span class="n">-ServerType</span> <span class="s2">&quot;n8n&quot;</span> <span class="n">-Port</span> <span class="n">5678</span>
+        
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Workflows disponibles sur le serveur n8n:&quot;</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$workflow</span> <span class="k">in</span> <span class="nv">$result</span><span class="p">.</span><span class="n">workflows</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$workflow</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="s2">: </span><span class="p">$(</span><span class="nv">$workflow</span><span class="p">.</span><span class="n">id</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="p">}</span>
+        
+        <span class="c"># Exécuter un workflow spécifique</span>
+        <span class="nv">$workflowResult</span> <span class="p">=</span> <span class="nb">Invoke-MCPCommand</span> <span class="n">-Command</span> <span class="s2">&quot;execute_workflow&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> 
+            <span class="n">workflow_id</span> <span class="p">=</span> <span class="s2">&quot;12345&quot;</span>
+            <span class="n">input</span> <span class="p">=</span> <span class="p">@{</span>
+                <span class="n">message</span> <span class="p">=</span> <span class="s2">&quot;Hello from MCP!&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="n">-ServerType</span> <span class="s2">&quot;n8n&quot;</span> <span class="n">-Port</span> <span class="n">5678</span>
+        
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Résultat de l&#39;exécution du workflow: </span><span class="p">$(</span><span class="nv">$workflowResult</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Depth</span> <span class="n">3</span><span class="p">)</span><span class="s2">&quot;</span>
+        
+        <span class="c"># Arrêter le serveur</span>
+        <span class="nv">$stopped</span> <span class="p">=</span> <span class="nb">Stop-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;n8n&quot;</span> <span class="n">-Port</span> <span class="n">5678</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$stopped</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP n8n arrêté avec succès&quot;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de l&#39;arrêt du serveur MCP n8n&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors du démarrage du serveur MCP n8n: </span><span class="p">$(</span><span class="nv">$n8nServer</span><span class="p">.</span><span class="n">Error</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de la création de la configuration n8n&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-avec-d-autres-modules">
+<h2>Intégration avec d’autres modules<a class="headerlink" href="#integration-avec-d-autres-modules" title="Link to this heading"></a></h2>
+<section id="integration-avec-le-module-inputsegmenter">
+<h3>Intégration avec le module InputSegmenter<a class="headerlink" href="#integration-avec-le-module-inputsegmenter" title="Link to this heading"></a></h3>
+<p>Vous pouvez intégrer le module <code class="docutils literal notranslate"><span class="pre">MCPManager</span></code> avec le module <code class="docutils literal notranslate"><span class="pre">InputSegmenter</span></code> pour traiter des entrées volumineuses :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\MCPManager.psm1&quot;</span> <span class="n">-Force</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\InputSegmenter.psm1&quot;</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser les modules</span>
+<span class="nb">Initialize-MCPManager</span>
+<span class="nb">Initialize-InputSegmentation</span>
+
+<span class="c"># Démarrer un serveur MCP local</span>
+<span class="nv">$server</span> <span class="p">=</span> <span class="nb">Start-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span> <span class="n">-Wait</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;running&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP démarré avec succès: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+    
+    <span class="c"># Créer un texte volumineux</span>
+    <span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &quot;</span> <span class="p">*</span> <span class="n">1000</span>
+    
+    <span class="c"># Segmenter le texte</span>
+    <span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-TextInput</span> <span class="n">-Text</span> <span class="nv">$text</span> <span class="n">-SegmentSizeKB</span> <span class="n">10</span>
+    
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+    
+    <span class="c"># Traiter chaque segment avec MCP</span>
+    <span class="nv">$results</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$segment</span> <span class="k">in</span> <span class="nv">$segments</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPCommand</span> <span class="n">-Command</span> <span class="s2">&quot;process_text&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> 
+            <span class="n">text</span> <span class="p">=</span> <span class="nv">$segment</span>
+        <span class="p">}</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+        
+        <span class="nv">$results</span> <span class="p">+=</span> <span class="nv">$result</span>
+    <span class="p">}</span>
+    
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Résultats du traitement: </span><span class="p">$(</span><span class="nv">$results</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> segments traités&quot;</span>
+    
+    <span class="c"># Arrêter le serveur</span>
+    <span class="nv">$stopped</span> <span class="p">=</span> <span class="nb">Stop-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$stopped</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP arrêté avec succès&quot;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de l&#39;arrêt du serveur MCP&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors du démarrage du serveur MCP: </span><span class="p">$(</span><span class="nv">$server</span><span class="p">.</span><span class="n">Error</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="probleme-le-serveur-mcp-ne-demarre-pas">
+<h3>Problème : Le serveur MCP ne démarre pas<a class="headerlink" href="#probleme-le-serveur-mcp-ne-demarre-pas" title="Link to this heading"></a></h3>
+<p>Si le serveur MCP ne démarre pas, vérifiez les points suivants :</p>
+<ol class="simple">
+<li><p>Assurez-vous que toutes les dépendances sont installées :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Install-MCPDependencies</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Vérifiez que le port n’est pas déjà utilisé :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Vérifier si le port est déjà utilisé</span>
+<span class="nv">$portInUse</span> <span class="p">=</span> <span class="nb">Get-NetTCPConnection</span> <span class="n">-LocalPort</span> <span class="n">8000</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$portInUse</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Le port 8000 est déjà utilisé par le processus </span><span class="p">$(</span><span class="nv">$portInUse</span><span class="p">.</span><span class="n">OwningProcess</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Le port 8000 est disponible&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Vérifiez les logs pour plus d’informations :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s2">&quot;.\logs\mcp_manager.log&quot;</span> <span class="n">-Tail</span> <span class="n">20</span>
+</pre></div>
+</div>
+</section>
+<section id="probleme-erreurs-lors-de-l-execution-de-commandes-mcp">
+<h3>Problème : Erreurs lors de l’exécution de commandes MCP<a class="headerlink" href="#probleme-erreurs-lors-de-l-execution-de-commandes-mcp" title="Link to this heading"></a></h3>
+<p>Si vous rencontrez des erreurs lors de l’exécution de commandes MCP, vérifiez les points suivants :</p>
+<ol class="simple">
+<li><p>Assurez-vous que le serveur est en cours d’exécution :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$testResult</span> <span class="p">=</span> <span class="nb">Test-MCPServer</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$testResult</span><span class="p">.</span><span class="n">Available</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP disponible: </span><span class="p">$(</span><span class="nv">$testResult</span><span class="p">.</span><span class="n">Url</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Serveur MCP non disponible&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Vérifiez que la commande et les paramètres sont corrects :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Obtenir la liste des commandes disponibles</span>
+<span class="nv">$commands</span> <span class="p">=</span> <span class="nb">Invoke-MCPCommand</span> <span class="n">-Command</span> <span class="s2">&quot;get_commands&quot;</span> <span class="n">-ServerType</span> <span class="s2">&quot;local&quot;</span> <span class="n">-Port</span> <span class="n">8000</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Commandes disponibles:&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$command</span> <span class="k">in</span> <span class="nv">$commands</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;- $command&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Augmentez le niveau de log pour obtenir plus d’informations :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-MCPManager</span> <span class="n">-LogLevel</span> <span class="s2">&quot;DEBUG&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Utilisez des configurations séparées</strong> pour chaque type de serveur MCP.</p></li>
+<li><p><strong>Gérez proprement les ressources</strong> en arrêtant les serveurs MCP lorsque vous avez terminé.</p></li>
+<li><p><strong>Utilisez le paramètre Wait</strong> lors du démarrage des serveurs pour vous assurer qu’ils sont prêts avant de les utiliser.</p></li>
+<li><p><strong>Journalisez les actions importantes</strong> pour faciliter le débogage.</p></li>
+<li><p><strong>Testez régulièrement</strong> la disponibilité des serveurs MCP.</p></li>
+<li><p><strong>Utilisez des délais d’attente appropriés</strong> pour éviter les blocages.</p></li>
+<li><p><strong>Intégrez avec d’autres modules</strong> pour des fonctionnalités avancées.</p></li>
+</ul>
+</section>
+<section id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Link to this heading"></a></h2>
+<section id="quelle-est-la-difference-entre-les-differents-types-de-serveurs-mcp">
+<h3>Quelle est la différence entre les différents types de serveurs MCP ?<a class="headerlink" href="#quelle-est-la-difference-entre-les-differents-types-de-serveurs-mcp" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Serveur local</strong> : Un serveur MCP exécuté localement sur votre machine, idéal pour le développement et les tests.</p></li>
+<li><p><strong>Serveur n8n</strong> : Un serveur MCP intégré à n8n, permettant d’utiliser MCP dans les workflows n8n.</p></li>
+<li><p><strong>Serveur Notion</strong> : Un serveur MCP intégré à Notion, permettant d’utiliser MCP avec les bases de données Notion.</p></li>
+<li><p><strong>Serveur Gateway</strong> : Un serveur MCP qui agit comme une passerelle vers d’autres serveurs MCP, permettant de centraliser les requêtes.</p></li>
+<li><p><strong>Serveur Git Ingest</strong> : Un serveur MCP spécialisé dans l’ingestion de données à partir de dépôts Git, utile pour l’analyse de code.</p></li>
+</ul>
+</section>
+<section id="comment-puis-je-creer-mon-propre-serveur-mcp">
+<h3>Comment puis-je créer mon propre serveur MCP ?<a class="headerlink" href="#comment-puis-je-creer-mon-propre-serveur-mcp" title="Link to this heading"></a></h3>
+<p>Vous pouvez créer votre propre serveur MCP en utilisant le SDK Python MCP. Voici un exemple simple :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mcp</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
+
+<span class="c1"># Créer un serveur MCP</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
+
+<span class="c1"># Définir une fonction de traitement</span>
+<span class="nd">@server</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;processed&quot;</span><span class="p">:</span> <span class="n">text</span><span class="o">.</span><span class="n">upper</span><span class="p">()}</span>
+
+<span class="c1"># Démarrer le serveur</span>
+<span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="comment-puis-je-securiser-mon-serveur-mcp">
+<h3>Comment puis-je sécuriser mon serveur MCP ?<a class="headerlink" href="#comment-puis-je-securiser-mon-serveur-mcp" title="Link to this heading"></a></h3>
+<p>Vous pouvez sécuriser votre serveur MCP en utilisant HTTPS et en ajoutant une authentification. Voici quelques recommandations :</p>
+<ol class="simple">
+<li><p>Utilisez HTTPS pour chiffrer les communications.</p></li>
+<li><p>Ajoutez une authentification par clé API ou OAuth.</p></li>
+<li><p>Limitez l’accès au serveur à des adresses IP spécifiques.</p></li>
+<li><p>Utilisez un pare-feu pour protéger le serveur.</p></li>
+<li><p>Journalisez toutes les requêtes pour détecter les activités suspectes.</p></li>
+</ol>
+</section>
+<section id="puis-je-utiliser-mcp-avec-d-autres-langages-de-programmation">
+<h3>Puis-je utiliser MCP avec d’autres langages de programmation ?<a class="headerlink" href="#puis-je-utiliser-mcp-avec-d-autres-langages-de-programmation" title="Link to this heading"></a></h3>
+<p>Oui, MCP est un protocole indépendant du langage. Il existe des SDK pour plusieurs langages, notamment :</p>
+<ul class="simple">
+<li><p>Python : <code class="docutils literal notranslate"><span class="pre">mcp</span></code> et <code class="docutils literal notranslate"><span class="pre">FastMCP</span></code></p></li>
+<li><p>JavaScript/TypeScript : <code class="docutils literal notranslate"><span class="pre">mcp-js</span></code></p></li>
+<li><p>Java : <code class="docutils literal notranslate"><span class="pre">mcp-java</span></code></p></li>
+<li><p>Go : <code class="docutils literal notranslate"><span class="pre">mcp-go</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="../api/MCPManager.html">Documentation API du module MCPManager</a></p></li>
+<li><p><a class="reference external" href="../api/examples/MCPManager_Examples.html">Exemples d’utilisation du module MCPManager</a></p></li>
+<li><p><a class="reference internal" href="../technical/MCPManager.html"><span class="doc">Documentation technique sur MCP</span></a></p></li>
+<li><p><a class="reference external" href="https://mcp-protocol.org">Site officiel de MCP</a></p></li>
+<li><p><a class="reference external" href="https://github.com/mcp-protocol/mcp-python">SDK Python MCP</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
