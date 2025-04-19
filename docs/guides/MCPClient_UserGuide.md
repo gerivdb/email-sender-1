@@ -236,7 +236,7 @@ function Invoke-RemoteCommand {
     )
 
     $result = Invoke-MCPPowerShell -Command $Command
-    
+
     if ($result.exit_code -eq 0) {
         Write-Host "Commande exécutée avec succès" -ForegroundColor Green
         return $result.output
@@ -331,25 +331,25 @@ Il est important de gérer les erreurs lors de l'utilisation du module `MCPClien
 try {
     # Initialiser la connexion
     $connected = Initialize-MCPConnection -ServerUrl "http://localhost:8000"
-    
+
     if (-not $connected) {
         throw "Impossible de se connecter au serveur MCP"
     }
-    
+
     # Récupérer la liste des outils disponibles
     $tools = Get-MCPTools
-    
+
     if (-not $tools) {
         throw "Impossible de récupérer la liste des outils"
     }
-    
+
     # Exécuter un outil
     $result = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 }
-    
+
     if (-not $result) {
         throw "Erreur lors de l'exécution de l'outil"
     }
-    
+
     Write-Host "Résultat : $($result.result)"
 } catch {
     Write-Host "Erreur : $_" -ForegroundColor Red
@@ -373,9 +373,106 @@ Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 }
 Set-MCPClientConfiguration -LogLevel "INFO"
 ```
 
-### Performance
+## Performance
 
-Pour améliorer les performances, vous pouvez :
+### Mise en cache
+
+Le module MCPClient prend en charge la mise en cache des résultats pour améliorer les performances. Par défaut, le cache est activé avec une durée de vie de 5 minutes (300 secondes).
+
+```powershell
+# Configurer le cache
+Set-MCPClientConfiguration -CacheEnabled $true -CacheTTL 600  # 10 minutes
+
+# Exécuter un outil (le résultat sera mis en cache)
+$result1 = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 }
+
+# Exécuter le même outil (le résultat sera récupéré du cache)
+$result2 = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 }
+
+# Désactiver le cache pour un appel spécifique
+$result3 = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 } -NoCache
+
+# Forcer le rafraîchissement du cache
+$result4 = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 } -ForceRefresh
+
+# Nettoyer le cache
+Clear-MCPCache
+
+# Vider complètement le cache
+Clear-MCPCache -Force
+```
+
+### Compression des données
+
+Le module MCPClient prend en charge la compression des données pour réduire la taille des requêtes HTTP. Par défaut, la compression est activée pour les corps de requête de plus de 1 Ko.
+
+```powershell
+# Activer la compression des données
+Set-MCPClientConfiguration -CompressionEnabled $true
+
+# Exécuter un outil avec un grand volume de données (sera compressé automatiquement)
+$largeData = @{ data = 1..1000 }
+$result = Invoke-MCPTool -ToolName "process_data" -Parameters $largeData
+```
+
+### Exécution parallèle
+
+Le module MCPClient prend en charge l'exécution parallèle des outils MCP pour améliorer les performances lors du traitement de plusieurs requêtes.
+
+```powershell
+# Exécuter plusieurs outils en parallèle
+$toolNames = @("add", "subtract", "multiply", "divide")
+$parametersList = @(
+    @{ a = 10; b = 5 },
+    @{ a = 10; b = 5 },
+    @{ a = 10; b = 5 },
+    @{ a = 10; b = 5 }
+)
+
+$results = Invoke-MCPToolParallel -ToolNames $toolNames -ParametersList $parametersList -ThrottleLimit 4
+
+# Exécuter plusieurs commandes PowerShell en parallèle
+$commands = @(
+    "Get-Process | Select-Object -First 5",
+    "Get-Service | Select-Object -First 5",
+    "Get-ChildItem -Path C:\ | Select-Object -First 5"
+)
+
+$results = Invoke-MCPPowerShellParallel -Commands $commands -ThrottleLimit 3
+```
+
+### Traitement par lots
+
+Le module MCPClient prend en charge le traitement par lots pour améliorer les performances lors du traitement d'un grand nombre d'objets.
+
+```powershell
+# Créer un grand nombre d'objets à traiter
+$inputObjects = 1..100 | ForEach-Object {
+    [PSCustomObject]@{ Value = $_ }
+}
+
+# Définir le script block pour traiter chaque lot
+$scriptBlock = {
+    param($batch)
+
+    $results = @()
+    foreach ($item in $batch) {
+        # Traiter chaque élément du lot
+        $result = Invoke-MCPTool -ToolName "square" -Parameters @{ value = $item.Value }
+        $results += [PSCustomObject]@{
+            Input = $item.Value
+            Output = $result.result
+        }
+    }
+
+    return $results
+}
+
+# Traiter les objets par lots
+$results = Invoke-MCPBatch -ScriptBlock $scriptBlock -InputObjects $inputObjects -BatchSize 10
+```
+
+### Autres optimisations
 
 1. Réutiliser la connexion au serveur MCP :
 

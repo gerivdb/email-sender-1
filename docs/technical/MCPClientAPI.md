@@ -36,6 +36,32 @@ Initialize-MCPConnection [-ServerUrl] <string> [[-Timeout] <int>] [[-RetryCount]
 | LogLevel | string | Le niveau de journalisation (DEBUG, INFO, WARNING, ERROR). Par défaut : INFO. |
 | LogPath | string | Le chemin du fichier de log. Par défaut : %TEMP%\MCPClient.log. |
 
+### Set-MCPClientConfiguration
+
+Configure le module MCPClient avec des options avancées de performance.
+
+#### Syntaxe
+
+```powershell
+Set-MCPClientConfiguration [[-Timeout] <int>] [[-RetryCount] <int>] [[-RetryDelay] <int>] [[-LogEnabled] <bool>] [[-LogLevel] <string>] [[-LogPath] <string>] [[-CacheEnabled] <bool>] [[-CacheTTL] <int>] [[-MaxConcurrentRequests] <int>] [[-BatchSize] <int>] [[-CompressionEnabled] <bool>] [<CommonParameters>]
+```
+
+#### Paramètres
+
+| Nom | Type | Description |
+|-----|------|-------------|
+| Timeout | int | Le délai d'attente en secondes pour les requêtes HTTP. |
+| RetryCount | int | Le nombre de tentatives en cas d'échec. |
+| RetryDelay | int | Le délai en secondes entre les tentatives. |
+| LogEnabled | bool | Indique si la journalisation est activée. |
+| LogLevel | string | Le niveau de journalisation (DEBUG, INFO, WARNING, ERROR). |
+| LogPath | string | Le chemin du fichier de log. |
+| CacheEnabled | bool | Indique si le cache est activé. Par défaut : $true. |
+| CacheTTL | int | Durée de vie du cache en secondes. Par défaut : 300 (5 minutes). |
+| MaxConcurrentRequests | int | Nombre maximum de requêtes simultanées. Par défaut : 5. |
+| BatchSize | int | Taille des lots pour le traitement par lots. Par défaut : 10. |
+| CompressionEnabled | bool | Indique si la compression des données est activée. Par défaut : $true. |
+
 #### Valeur de retour
 
 Retourne $true si la connexion est établie avec succès, $false sinon.
@@ -57,8 +83,15 @@ Récupère la liste des outils disponibles sur le serveur MCP.
 #### Syntaxe
 
 ```powershell
-Get-MCPTools [<CommonParameters>]
+Get-MCPTools [[-NoCache]] [[-ForceRefresh]] [<CommonParameters>]
 ```
+
+#### Paramètres
+
+| Nom | Type | Description |
+|-----|------|-------------|
+| NoCache | switch | Indique de ne pas utiliser le cache pour cette requête. |
+| ForceRefresh | switch | Force le rafraîchissement du cache même si l'entrée n'est pas expirée. |
 
 #### Valeur de retour
 
@@ -79,7 +112,7 @@ Exécute un outil sur le serveur MCP.
 #### Syntaxe
 
 ```powershell
-Invoke-MCPTool [-ToolName] <string> [[-Parameters] <hashtable>] [<CommonParameters>]
+Invoke-MCPTool [-ToolName] <string> [[-Parameters] <hashtable>] [[-NoCache]] [[-ForceRefresh]] [<CommonParameters>]
 ```
 
 #### Paramètres
@@ -88,6 +121,8 @@ Invoke-MCPTool [-ToolName] <string> [[-Parameters] <hashtable>] [<CommonParamete
 |-----|------|-------------|
 | ToolName | string | Le nom de l'outil à exécuter. |
 | Parameters | hashtable | Les paramètres à passer à l'outil. |
+| NoCache | switch | Indique de ne pas utiliser le cache pour cette requête. |
+| ForceRefresh | switch | Force le rafraîchissement du cache même si l'entrée n'est pas expirée. |
 
 #### Valeur de retour
 
@@ -253,30 +288,25 @@ $result = Invoke-MCPHttpRequest -Url "https://api.example.com/data" -Method "POS
 $result.status_code
 ```
 
-### Set-MCPClientConfiguration
+### Clear-MCPCache
 
-Configure le module MCPClient.
+Nettoie le cache du module MCPClient.
 
 #### Syntaxe
 
 ```powershell
-Set-MCPClientConfiguration [[-Timeout] <int>] [[-RetryCount] <int>] [[-RetryDelay] <int>] [[-LogEnabled] <bool>] [[-LogLevel] <string>] [[-LogPath] <string>] [<CommonParameters>]
+Clear-MCPCache [[-Force]] [<CommonParameters>]
 ```
 
 #### Paramètres
 
 | Nom | Type | Description |
 |-----|------|-------------|
-| Timeout | int | Le délai d'attente en secondes pour les requêtes HTTP. |
-| RetryCount | int | Le nombre de tentatives en cas d'échec. |
-| RetryDelay | int | Le délai en secondes entre les tentatives. |
-| LogEnabled | bool | Indique si la journalisation est activée. |
-| LogLevel | string | Le niveau de journalisation (DEBUG, INFO, WARNING, ERROR). |
-| LogPath | string | Le chemin du fichier de log. |
+| Force | switch | Force le vidage complet du cache, même pour les entrées non expirées. |
 
 #### Valeur de retour
 
-Retourne $true si la configuration est mise à jour avec succès.
+Retourne $true si le cache a été nettoyé avec succès.
 
 #### Exemples
 
@@ -308,6 +338,119 @@ $config.Timeout
 $config.RetryCount
 $config.LogLevel
 ```
+
+### Fonctions de traitement parallèle
+
+#### Invoke-MCPToolParallel
+
+Exécute plusieurs outils MCP en parallèle.
+
+##### Syntaxe
+
+```powershell
+Invoke-MCPToolParallel [-ToolNames] <string[]> [[-ParametersList] <hashtable[]>] [[-ThrottleLimit] <int>] [<CommonParameters>]
+```
+
+##### Paramètres
+
+| Nom | Type | Description |
+|-----|------|-------------|
+| ToolNames | string[] | Les noms des outils à exécuter. |
+| ParametersList | hashtable[] | Les listes de paramètres à passer aux outils. |
+| ThrottleLimit | int | Le nombre maximum de requêtes simultanées. Par défaut : 5. |
+
+##### Valeur de retour
+
+Retourne un tableau des résultats de l'exécution des outils.
+
+#### Invoke-MCPPowerShellParallel
+
+Exécute plusieurs commandes PowerShell en parallèle via le serveur MCP.
+
+##### Syntaxe
+
+```powershell
+Invoke-MCPPowerShellParallel [-Commands] <string[]> [[-ThrottleLimit] <int>] [<CommonParameters>]
+```
+
+##### Paramètres
+
+| Nom | Type | Description |
+|-----|------|-------------|
+| Commands | string[] | Les commandes PowerShell à exécuter. |
+| ThrottleLimit | int | Le nombre maximum de requêtes simultanées. Par défaut : 5. |
+
+##### Valeur de retour
+
+Retourne un tableau des résultats de l'exécution des commandes PowerShell.
+
+#### Invoke-MCPPythonParallel
+
+Exécute plusieurs scripts Python en parallèle via le serveur MCP.
+
+##### Syntaxe
+
+```powershell
+Invoke-MCPPythonParallel [-Scripts] <string[]> [[-ArgumentsList] <string[][]>] [[-ThrottleLimit] <int>] [<CommonParameters>]
+```
+
+##### Paramètres
+
+| Nom | Type | Description |
+|-----|------|-------------|
+| Scripts | string[] | Les scripts Python à exécuter. |
+| ArgumentsList | string[][] | Les listes d'arguments à passer aux scripts Python. |
+| ThrottleLimit | int | Le nombre maximum de requêtes simultanées. Par défaut : 5. |
+
+##### Valeur de retour
+
+Retourne un tableau des résultats de l'exécution des scripts Python.
+
+#### Invoke-MCPHttpRequestParallel
+
+Exécute plusieurs requêtes HTTP en parallèle via le serveur MCP.
+
+##### Syntaxe
+
+```powershell
+Invoke-MCPHttpRequestParallel [-Urls] <string[]> [[-Methods] <string[]>] [[-HeadersList] <hashtable[]>] [[-Bodies] <object[]>] [[-ThrottleLimit] <int>] [<CommonParameters>]
+```
+
+##### Paramètres
+
+| Nom | Type | Description |
+|-----|------|-------------|
+| Urls | string[] | Les URLs des requêtes. |
+| Methods | string[] | Les méthodes HTTP (GET, POST, PUT, DELETE). |
+| HeadersList | hashtable[] | Les listes d'en-têtes HTTP. |
+| Bodies | object[] | Les corps des requêtes. |
+| ThrottleLimit | int | Le nombre maximum de requêtes simultanées. Par défaut : 5. |
+
+##### Valeur de retour
+
+Retourne un tableau des résultats des requêtes HTTP.
+
+#### Invoke-MCPBatch
+
+Traite des données par lots.
+
+##### Syntaxe
+
+```powershell
+Invoke-MCPBatch [-ScriptBlock] <scriptblock> [-InputObjects] <object[]> [[-BatchSize] <int>] [<CommonParameters>]
+```
+
+##### Paramètres
+
+| Nom | Type | Description |
+|-----|------|-------------|
+| ScriptBlock | scriptblock | Le script à exécuter pour chaque lot. |
+| InputObjects | object[] | Les objets d'entrée à traiter par lots. |
+| BatchSize | int | La taille des lots. Par défaut : 10. |
+
+##### Valeur de retour
+
+Retourne un tableau des résultats du traitement par lots.
 
 ## Exemples d'utilisation
 
@@ -344,7 +487,107 @@ Write-Host "Résultat :"
 $result.output
 ```
 
-### Exemple 3 : Exécution d'un script Python via le serveur MCP
+### Exemple 3 : Utilisation du cache et de la compression
+
+```powershell
+# Importer le module
+Import-Module -Name ".\modules\MCPClient.psm1"
+
+# Initialiser la connexion
+Initialize-MCPConnection -ServerUrl "http://localhost:8000"
+
+# Configurer les options de performance
+Set-MCPClientConfiguration -CacheEnabled $true -CacheTTL 600 -CompressionEnabled $true
+
+# Exécuter un outil avec mise en cache
+$result1 = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 }
+Write-Host "Premier appel (sans cache) : $($result1.result)"
+
+# Exécuter le même outil (récupéré du cache)
+$result2 = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 }
+Write-Host "Deuxième appel (avec cache) : $($result2.result)"
+
+# Forcer le rafraîchissement du cache
+$result3 = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 } -ForceRefresh
+Write-Host "Troisième appel (force refresh) : $($result3.result)"
+
+# Désactiver le cache pour un appel spécifique
+$result4 = Invoke-MCPTool -ToolName "add" -Parameters @{ a = 2; b = 3 } -NoCache
+Write-Host "Quatrième appel (sans cache) : $($result4.result)"
+
+# Nettoyer le cache
+Clear-MCPCache
+Write-Host "Cache nettoyé"
+```
+
+### Exemple 4 : Exécution parallèle d'outils MCP
+
+```powershell
+# Importer le module
+Import-Module -Name ".\modules\MCPClient.psm1"
+
+# Initialiser la connexion
+Initialize-MCPConnection -ServerUrl "http://localhost:8000"
+
+# Définir les outils à exécuter en parallèle
+$toolNames = @("add", "subtract", "multiply", "divide")
+$parametersList = @(
+    @{ a = 10; b = 5 },
+    @{ a = 10; b = 5 },
+    @{ a = 10; b = 5 },
+    @{ a = 10; b = 5 }
+)
+
+# Exécuter les outils en parallèle
+$results = Invoke-MCPToolParallel -ToolNames $toolNames -ParametersList $parametersList -ThrottleLimit 4
+
+# Afficher les résultats
+for ($i = 0; $i -lt $results.Count; $i++) {
+    Write-Host "$($toolNames[$i]) : $($results[$i].result)"
+}
+```
+
+### Exemple 5 : Traitement par lots
+
+```powershell
+# Importer le module
+Import-Module -Name ".\modules\MCPClient.psm1"
+
+# Initialiser la connexion
+Initialize-MCPConnection -ServerUrl "http://localhost:8000"
+
+# Créer un grand nombre d'objets à traiter
+$inputObjects = 1..100 | ForEach-Object {
+    [PSCustomObject]@{ Value = $_ }
+}
+
+# Définir le script block pour traiter chaque lot
+$scriptBlock = {
+    param($batch)
+
+    $results = @()
+    foreach ($item in $batch) {
+        # Traiter chaque élément du lot
+        $result = Invoke-MCPTool -ToolName "square" -Parameters @{ value = $item.Value }
+        $results += [PSCustomObject]@{
+            Input = $item.Value
+            Output = $result.result
+        }
+    }
+
+    return $results
+}
+
+# Traiter les objets par lots
+$results = Invoke-MCPBatch -ScriptBlock $scriptBlock -InputObjects $inputObjects -BatchSize 10
+
+# Afficher les résultats
+Write-Host "Nombre total de résultats : $($results.Count)"
+Write-Host "Premiers résultats :"
+$results | Select-Object -First 5 | Format-Table
+```
+
+### Exemple 6 : Exécution d'un script Python via le serveur MCP
 
 ```powershell
 # Importer le module

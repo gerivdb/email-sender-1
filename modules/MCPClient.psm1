@@ -13,18 +13,31 @@
 
 # Variables globales
 $script:MCPConfig = @{
-    ServerUrl = $null
-    Timeout = 30
-    RetryCount = 3
-    RetryDelay = 2
-    DefaultHeaders = @{
+    ServerUrl             = $null
+    Timeout               = 30
+    RetryCount            = 3
+    RetryDelay            = 2
+    DefaultHeaders        = @{
         "Content-Type" = "application/json"
-        "Accept" = "application/json"
+        "Accept"       = "application/json"
     }
-    LogEnabled = $true
-    LogLevel = "INFO" # DEBUG, INFO, WARNING, ERROR
-    LogPath = Join-Path -Path $env:TEMP -ChildPath "MCPClient.log"
+    LogEnabled            = $true
+    LogLevel              = "INFO" # DEBUG, INFO, WARNING, ERROR
+    LogPath               = Join-Path -Path $env:TEMP -ChildPath "MCPClient.log"
+
+    # Options de performance
+    CacheEnabled          = $true
+    CacheTTL              = 300 # Durée de vie du cache en secondes (5 minutes)
+    MaxConcurrentRequests = 5 # Nombre maximum de requêtes simultanées
+    BatchSize             = 10 # Taille des lots pour le traitement par lots
+    CompressionEnabled    = $true # Activer la compression des données
 }
+
+# Cache pour les résultats des outils
+$script:MCPCache = @{}
+
+# Horodatage du dernier nettoyage du cache
+$script:LastCacheCleanup = Get-Date
 
 # Fonction pour écrire des logs
 function Write-MCPLog {
@@ -44,10 +57,10 @@ function Write-MCPLog {
 
     # Vérifier le niveau de log
     $logLevels = @{
-        "DEBUG" = 0
-        "INFO" = 1
+        "DEBUG"   = 0
+        "INFO"    = 1
         "WARNING" = 2
-        "ERROR" = 3
+        "ERROR"   = 3
     }
 
     if ($logLevels[$Level] -lt $logLevels[$script:MCPConfig.LogLevel]) {
@@ -140,16 +153,16 @@ function Initialize-MCPConnection {
     try {
         $healthEndpoint = "$ServerUrl/health"
         $response = Invoke-RestMethod -Uri $healthEndpoint -Method Get -TimeoutSec $Timeout -ErrorAction Stop
-        
+
         Write-MCPLog "Connexion établie avec le serveur MCP à l'adresse $ServerUrl" -Level "INFO"
         Write-MCPLog "Version du serveur: $($response.version)" -Level "INFO"
         Write-MCPLog "Statut du serveur: $($response.status)" -Level "INFO"
-        
+
         return $true
     } catch {
         Write-MCPLog "Erreur lors de la connexion au serveur MCP à l'adresse $ServerUrl : $_" -Level "ERROR"
         Write-MCPLog "Vérifiez que le serveur MCP est en cours d'exécution et accessible." -Level "WARNING"
-        
+
         return $false
     }
 }
@@ -165,7 +178,13 @@ function Initialize-MCPConnection {
 #>
 function Get-MCPTools {
     [CmdletBinding()]
-    param ()
+    param (
+        [Parameter(Mandatory = $false)]
+        [switch]$NoCache,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$ForceRefresh
+    )
 
     # Vérifier que la connexion est initialisée
     if (-not $script:MCPConfig.ServerUrl) {
@@ -173,36 +192,77 @@ function Get-MCPTools {
         return $null
     }
 
+    # Nettoyer le cache si nécessaire (toutes les 5 minutes)
+    $now = Get-Date
+    if (($now - $script:LastCacheCleanup).TotalMinutes -ge 5) {
+        Clear-MCPCache
+    }
+
+    # Clé de cache pour la liste des outils
+    $cacheKey = "tools-list"
+
+    # Vérifier si la liste des outils est en cache et si le cache est activé
+    if ($script:MCPConfig.CacheEnabled -and -not $NoCache -and -not $ForceRefresh) {
+        if ($script:MCPCache.ContainsKey($cacheKey)) {
+            $cacheEntry = $script:MCPCache[$cacheKey]
+            $expirationTime = $cacheEntry.Timestamp.AddSeconds($script:MCPConfig.CacheTTL)
+
+            # Si l'entrée du cache est encore valide, la retourner
+            if ($now -lt $expirationTime) {
+                Write-MCPLog "Liste des outils récupérée du cache" -Level "DEBUG"
+                return $cacheEntry.Result
+            }
+        }
+    }
+
     # Récupérer la liste des outils
     try {
         $toolsEndpoint = "$($script:MCPConfig.ServerUrl)/tools"
         $response = Invoke-RestMethod -Uri $toolsEndpoint -Method Get -TimeoutSec $script:MCPConfig.Timeout -ErrorAction Stop
-        
+
         Write-MCPLog "Liste des outils récupérée avec succès" -Level "INFO"
         Write-MCPLog "Nombre d'outils disponibles: $($response.tools.Count)" -Level "DEBUG"
-        
+
+        # Mettre en cache la liste des outils si le cache est activé
+        if ($script:MCPConfig.CacheEnabled -and -not $NoCache) {
+            $script:MCPCache[$cacheKey] = @{
+                Result    = $response.tools
+                Timestamp = $now
+            }
+            Write-MCPLog "Liste des outils mise en cache" -Level "DEBUG"
+        }
+
         return $response.tools
     } catch {
         Write-MCPLog "Erreur lors de la récupération de la liste des outils : $_" -Level "ERROR"
-        
+
         # Tentatives de reconnexion
         for ($i = 1; $i -le $script:MCPConfig.RetryCount; $i++) {
             Write-MCPLog "Tentative de reconnexion ($i/$($script:MCPConfig.RetryCount))..." -Level "WARNING"
             Start-Sleep -Seconds $script:MCPConfig.RetryDelay
-            
+
             try {
                 $toolsEndpoint = "$($script:MCPConfig.ServerUrl)/tools"
                 $response = Invoke-RestMethod -Uri $toolsEndpoint -Method Get -TimeoutSec $script:MCPConfig.Timeout -ErrorAction Stop
-                
+
                 Write-MCPLog "Liste des outils récupérée avec succès après $i tentatives" -Level "INFO"
                 Write-MCPLog "Nombre d'outils disponibles: $($response.tools.Count)" -Level "DEBUG"
-                
+
+                # Mettre en cache la liste des outils si le cache est activé
+                if ($script:MCPConfig.CacheEnabled -and -not $NoCache) {
+                    $script:MCPCache[$cacheKey] = @{
+                        Result    = $response.tools
+                        Timestamp = $now
+                    }
+                    Write-MCPLog "Liste des outils mise en cache" -Level "DEBUG"
+                }
+
                 return $response.tools
             } catch {
                 Write-MCPLog "Échec de la tentative $i : $_" -Level "DEBUG"
             }
         }
-        
+
         Write-MCPLog "Échec de la récupération de la liste des outils après $($script:MCPConfig.RetryCount) tentatives" -Level "ERROR"
         return $null
     }
@@ -228,7 +288,13 @@ function Invoke-MCPTool {
         [string]$ToolName,
 
         [Parameter(Mandatory = $false)]
-        [hashtable]$Parameters = @{}
+        [hashtable]$Parameters = @{},
+
+        [Parameter(Mandatory = $false)]
+        [switch]$NoCache,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$ForceRefresh
     )
 
     # Vérifier que la connexion est initialisée
@@ -237,41 +303,112 @@ function Invoke-MCPTool {
         return $null
     }
 
+    # Nettoyer le cache si nécessaire (toutes les 5 minutes)
+    $now = Get-Date
+    if (($now - $script:LastCacheCleanup).TotalMinutes -ge 5) {
+        Clear-MCPCache
+    }
+
+    # Générer une clé de cache unique basée sur l'outil et les paramètres
+    $cacheKey = "$ToolName-" + ($Parameters | ConvertTo-Json -Depth 10 -Compress)
+
+    # Vérifier si l'outil est en cache et si le cache est activé
+    if ($script:MCPConfig.CacheEnabled -and -not $NoCache -and -not $ForceRefresh) {
+        if ($script:MCPCache.ContainsKey($cacheKey)) {
+            $cacheEntry = $script:MCPCache[$cacheKey]
+            $expirationTime = $cacheEntry.Timestamp.AddSeconds($script:MCPConfig.CacheTTL)
+
+            # Si l'entrée du cache est encore valide, la retourner
+            if ($now -lt $expirationTime) {
+                Write-MCPLog "Résultat récupéré du cache pour l'outil '$ToolName'" -Level "DEBUG"
+                return $cacheEntry.Result
+            }
+        }
+    }
+
     # Exécuter l'outil
     try {
         $toolEndpoint = "$($script:MCPConfig.ServerUrl)/tools/$ToolName"
-        
+
         # Convertir les paramètres en JSON
         $body = $Parameters | ConvertTo-Json -Depth 10
-        
+
+        # Compresser le corps si nécessaire
+        if ($script:MCPConfig.CompressionEnabled -and $body.Length -gt 1024) {
+            $compressedBody = Compress-MCPData -Data $body
+            $headers = @{
+                "Content-Encoding" = "gzip"
+                "Content-Type"     = "application/json"
+            }
+            Write-MCPLog "Corps compressé pour l'outil '$ToolName'" -Level "DEBUG"
+        } else {
+            $compressedBody = $body
+            $headers = @{
+                "Content-Type" = "application/json"
+            }
+        }
+
         Write-MCPLog "Exécution de l'outil '$ToolName' avec les paramètres: $body" -Level "DEBUG"
-        
-        $response = Invoke-RestMethod -Uri $toolEndpoint -Method Post -Body $body -ContentType "application/json" -TimeoutSec $script:MCPConfig.Timeout -ErrorAction Stop
-        
+
+        $response = Invoke-RestMethod -Uri $toolEndpoint -Method Post -Body $compressedBody -Headers $headers -TimeoutSec $script:MCPConfig.Timeout -ErrorAction Stop
+
         Write-MCPLog "Outil '$ToolName' exécuté avec succès" -Level "INFO"
-        
+
+        # Mettre en cache le résultat si le cache est activé
+        if ($script:MCPConfig.CacheEnabled -and -not $NoCache) {
+            $script:MCPCache[$cacheKey] = @{
+                Result    = $response
+                Timestamp = $now
+            }
+            Write-MCPLog "Résultat mis en cache pour l'outil '$ToolName'" -Level "DEBUG"
+        }
+
         return $response
     } catch {
         Write-MCPLog "Erreur lors de l'exécution de l'outil '$ToolName' : $_" -Level "ERROR"
-        
+
         # Tentatives de reconnexion
         for ($i = 1; $i -le $script:MCPConfig.RetryCount; $i++) {
             Write-MCPLog "Tentative de reconnexion ($i/$($script:MCPConfig.RetryCount))..." -Level "WARNING"
             Start-Sleep -Seconds $script:MCPConfig.RetryDelay
-            
+
             try {
                 $toolEndpoint = "$($script:MCPConfig.ServerUrl)/tools/$ToolName"
                 $body = $Parameters | ConvertTo-Json -Depth 10
-                $response = Invoke-RestMethod -Uri $toolEndpoint -Method Post -Body $body -ContentType "application/json" -TimeoutSec $script:MCPConfig.Timeout -ErrorAction Stop
-                
+
+                # Compresser le corps si nécessaire
+                if ($script:MCPConfig.CompressionEnabled -and $body.Length -gt 1024) {
+                    $compressedBody = Compress-MCPData -Data $body
+                    $headers = @{
+                        "Content-Encoding" = "gzip"
+                        "Content-Type"     = "application/json"
+                    }
+                } else {
+                    $compressedBody = $body
+                    $headers = @{
+                        "Content-Type" = "application/json"
+                    }
+                }
+
+                $response = Invoke-RestMethod -Uri $toolEndpoint -Method Post -Body $compressedBody -Headers $headers -TimeoutSec $script:MCPConfig.Timeout -ErrorAction Stop
+
                 Write-MCPLog "Outil '$ToolName' exécuté avec succès après $i tentatives" -Level "INFO"
-                
+
+                # Mettre en cache le résultat si le cache est activé
+                if ($script:MCPConfig.CacheEnabled -and -not $NoCache) {
+                    $script:MCPCache[$cacheKey] = @{
+                        Result    = $response
+                        Timestamp = $now
+                    }
+                    Write-MCPLog "Résultat mis en cache pour l'outil '$ToolName'" -Level "DEBUG"
+                }
+
                 return $response
             } catch {
                 Write-MCPLog "Échec de la tentative $i : $_" -Level "DEBUG"
             }
         }
-        
+
         Write-MCPLog "Échec de l'exécution de l'outil '$ToolName' après $($script:MCPConfig.RetryCount) tentatives" -Level "ERROR"
         return $null
     }
@@ -369,7 +506,7 @@ function Invoke-MCPPython {
     )
 
     return Invoke-MCPTool -ToolName "run_python_script" -Parameters @{
-        script = $Script
+        script    = $Script
         arguments = $Arguments
     }
 }
@@ -412,8 +549,8 @@ function Invoke-MCPHttpRequest {
     )
 
     $parameters = @{
-        url = $Url
-        method = $Method
+        url     = $Url
+        method  = $Method
         headers = $Headers
     }
 
@@ -520,5 +657,399 @@ function Get-MCPClientConfiguration {
     return $script:MCPConfig
 }
 
+# Fonction pour nettoyer le cache
+function Clear-MCPCache {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [switch]$Force
+    )
+
+    # Si Force est spécifié, vider complètement le cache
+    if ($Force) {
+        $script:MCPCache = @{}
+        $script:LastCacheCleanup = Get-Date
+        Write-MCPLog "Cache vidé complètement" -Level "INFO"
+        return $true
+    }
+
+    # Sinon, supprimer uniquement les entrées expirées
+    $now = Get-Date
+    $keysToRemove = @()
+
+    foreach ($key in $script:MCPCache.Keys) {
+        $cacheEntry = $script:MCPCache[$key]
+        $expirationTime = $cacheEntry.Timestamp.AddSeconds($script:MCPConfig.CacheTTL)
+
+        if ($now -gt $expirationTime) {
+            $keysToRemove += $key
+        }
+    }
+
+    foreach ($key in $keysToRemove) {
+        $script:MCPCache.Remove($key)
+    }
+
+    $script:LastCacheCleanup = $now
+    Write-MCPLog "$($keysToRemove.Count) entrées supprimées du cache" -Level "DEBUG"
+
+    return $true
+}
+
+# Fonction pour compresser les données
+function Compress-MCPData {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Data
+    )
+
+    if (-not $script:MCPConfig.CompressionEnabled) {
+        return $Data
+    }
+
+    try {
+        $dataBytes = [System.Text.Encoding]::UTF8.GetBytes($Data)
+        $outputStream = New-Object System.IO.MemoryStream
+        $gzipStream = New-Object System.IO.Compression.GZipStream($outputStream, [System.IO.Compression.CompressionMode]::Compress)
+        $gzipStream.Write($dataBytes, 0, $dataBytes.Length)
+        $gzipStream.Close()
+        $outputStream.Close()
+        $compressedBytes = $outputStream.ToArray()
+        $compressedData = [Convert]::ToBase64String($compressedBytes)
+
+        Write-MCPLog "Données compressées : ${$dataBytes.Length} octets -> ${$compressedBytes.Length} octets" -Level "DEBUG"
+
+        return $compressedData
+    } catch {
+        Write-MCPLog "Erreur lors de la compression des données : $_" -Level "WARNING"
+        return $Data
+    }
+}
+
+# Fonction pour décompresser les données
+function Expand-MCPData {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$CompressedData
+    )
+
+    if (-not $script:MCPConfig.CompressionEnabled) {
+        return $CompressedData
+    }
+
+    try {
+        $compressedBytes = [Convert]::FromBase64String($CompressedData)
+        $inputStream = New-Object System.IO.MemoryStream($compressedBytes, 0, $compressedBytes.Length)
+        $gzipStream = New-Object System.IO.Compression.GZipStream($inputStream, [System.IO.Compression.CompressionMode]::Decompress)
+        $outputStream = New-Object System.IO.MemoryStream
+        $buffer = New-Object byte[](4096)
+
+        $count = 0
+        do {
+            $count = $gzipStream.Read($buffer, 0, $buffer.Length)
+            if ($count -gt 0) {
+                $outputStream.Write($buffer, 0, $count)
+            }
+        } while ($count -gt 0)
+
+        $gzipStream.Close()
+        $inputStream.Close()
+        $outputStream.Close()
+
+        $decompressedBytes = $outputStream.ToArray()
+        $decompressedData = [System.Text.Encoding]::UTF8.GetString($decompressedBytes)
+
+        Write-MCPLog "Données décompressées : ${$compressedBytes.Length} octets -> ${$decompressedBytes.Length} octets" -Level "DEBUG"
+
+        return $decompressedData
+    } catch {
+        Write-MCPLog "Erreur lors de la décompression des données : $_" -Level "WARNING"
+        return $CompressedData
+    }
+}
+
+# Fonction pour exécuter des requêtes en parallèle
+function Invoke-MCPParallel {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [scriptblock]$ScriptBlock,
+
+        [Parameter(Mandatory = $true)]
+        [object[]]$InputObjects,
+
+        [Parameter(Mandatory = $false)]
+        [int]$ThrottleLimit = $script:MCPConfig.MaxConcurrentRequests
+    )
+
+    # Vérifier si PowerShell 7+ est disponible pour utiliser ForEach-Object -Parallel
+    $isPowerShell7 = $PSVersionTable.PSVersion.Major -ge 7
+
+    if ($isPowerShell7) {
+        Write-MCPLog "Utilisation de ForEach-Object -Parallel avec PowerShell $($PSVersionTable.PSVersion)" -Level "DEBUG"
+
+        # Utiliser ForEach-Object -Parallel de PowerShell 7+
+        $results = $InputObjects | ForEach-Object -Parallel $ScriptBlock -ThrottleLimit $ThrottleLimit
+        return $results
+    } else {
+        Write-MCPLog "Utilisation de RunspacePool avec PowerShell $($PSVersionTable.PSVersion)" -Level "DEBUG"
+
+        # Utiliser RunspacePool pour PowerShell 5.1
+        $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
+        $runspacePool = [System.Management.Automation.Runspaces.RunspaceFactory]::CreateRunspacePool(1, $ThrottleLimit, $sessionState, $Host)
+        $runspacePool.Open()
+
+        $scriptBlockWithParams = {
+            param($InputObject, $ScriptBlock)
+            & $ScriptBlock $InputObject
+        }
+
+        $runspaces = @()
+        $results = @()
+
+        # Créer et démarrer les runspaces
+        foreach ($inputObject in $InputObjects) {
+            $powershell = [System.Management.Automation.PowerShell]::Create()
+            $powershell.RunspacePool = $runspacePool
+            [void]$powershell.AddScript($scriptBlockWithParams).AddParameter("InputObject", $inputObject).AddParameter("ScriptBlock", $ScriptBlock)
+
+            $runspaces += [PSCustomObject]@{
+                PowerShell  = $powershell
+                AsyncResult = $powershell.BeginInvoke()
+                InputObject = $inputObject
+            }
+        }
+
+        # Récupérer les résultats
+        foreach ($runspace in $runspaces) {
+            $results += $runspace.PowerShell.EndInvoke($runspace.AsyncResult)
+            $runspace.PowerShell.Dispose()
+        }
+
+        $runspacePool.Close()
+        $runspacePool.Dispose()
+
+        return $results
+    }
+}
+
+# Fonction pour exécuter des outils MCP en parallèle
+function Invoke-MCPToolParallel {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string[]]$ToolNames,
+
+        [Parameter(Mandatory = $false)]
+        [hashtable[]]$ParametersList = @(),
+
+        [Parameter(Mandatory = $false)]
+        [int]$ThrottleLimit = $script:MCPConfig.MaxConcurrentRequests
+    )
+
+    # Vérifier que la connexion est initialisée
+    if (-not $script:MCPConfig.ServerUrl) {
+        Write-MCPLog "La connexion au serveur MCP n'est pas initialisée. Utilisez Initialize-MCPConnection." -Level "ERROR"
+        return $null
+    }
+
+    # Préparer les objets d'entrée
+    $inputObjects = @()
+    for ($i = 0; $i -lt $ToolNames.Count; $i++) {
+        $parameters = if ($i -lt $ParametersList.Count) { $ParametersList[$i] } else { @{} }
+        $inputObjects += [PSCustomObject]@{
+            ToolName   = $ToolNames[$i]
+            Parameters = $parameters
+        }
+    }
+
+    # Définir le script block pour exécuter l'outil MCP
+    $scriptBlock = {
+        param($InputObject)
+        Invoke-MCPTool -ToolName $InputObject.ToolName -Parameters $InputObject.Parameters
+    }
+
+    # Exécuter les outils en parallèle
+    $results = Invoke-MCPParallel -ScriptBlock $scriptBlock -InputObjects $inputObjects -ThrottleLimit $ThrottleLimit
+
+    return $results
+}
+
+# Fonction pour exécuter des commandes PowerShell en parallèle
+function Invoke-MCPPowerShellParallel {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string[]]$Commands,
+
+        [Parameter(Mandatory = $false)]
+        [int]$ThrottleLimit = $script:MCPConfig.MaxConcurrentRequests
+    )
+
+    # Préparer les objets d'entrée
+    $inputObjects = $Commands | ForEach-Object {
+        [PSCustomObject]@{
+            ToolName   = "run_powershell_command"
+            Parameters = @{ command = $_ }
+        }
+    }
+
+    # Définir le script block pour exécuter l'outil MCP
+    $scriptBlock = {
+        param($InputObject)
+        Invoke-MCPTool -ToolName $InputObject.ToolName -Parameters $InputObject.Parameters
+    }
+
+    # Exécuter les commandes en parallèle
+    $results = Invoke-MCPParallel -ScriptBlock $scriptBlock -InputObjects $inputObjects -ThrottleLimit $ThrottleLimit
+
+    return $results
+}
+
+# Fonction pour exécuter des scripts Python en parallèle
+function Invoke-MCPPythonParallel {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string[]]$Scripts,
+
+        [Parameter(Mandatory = $false)]
+        [string[][]]$ArgumentsList = @(),
+
+        [Parameter(Mandatory = $false)]
+        [int]$ThrottleLimit = $script:MCPConfig.MaxConcurrentRequests
+    )
+
+    # Préparer les objets d'entrée
+    $inputObjects = @()
+    for ($i = 0; $i -lt $Scripts.Count; $i++) {
+        $arguments = if ($i -lt $ArgumentsList.Count) { $ArgumentsList[$i] } else { @() }
+        $inputObjects += [PSCustomObject]@{
+            ToolName   = "run_python_script"
+            Parameters = @{
+                script    = $Scripts[$i]
+                arguments = $arguments
+            }
+        }
+    }
+
+    # Définir le script block pour exécuter l'outil MCP
+    $scriptBlock = {
+        param($InputObject)
+        Invoke-MCPTool -ToolName $InputObject.ToolName -Parameters $InputObject.Parameters
+    }
+
+    # Exécuter les scripts en parallèle
+    $results = Invoke-MCPParallel -ScriptBlock $scriptBlock -InputObjects $inputObjects -ThrottleLimit $ThrottleLimit
+
+    return $results
+}
+
+# Fonction pour exécuter des requêtes HTTP en parallèle
+function Invoke-MCPHttpRequestParallel {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string[]]$Urls,
+
+        [Parameter(Mandatory = $false)]
+        [string[]]$Methods = @(),
+
+        [Parameter(Mandatory = $false)]
+        [hashtable[]]$HeadersList = @(),
+
+        [Parameter(Mandatory = $false)]
+        [object[]]$Bodies = @(),
+
+        [Parameter(Mandatory = $false)]
+        [int]$ThrottleLimit = $script:MCPConfig.MaxConcurrentRequests
+    )
+
+    # Préparer les objets d'entrée
+    $inputObjects = @()
+    for ($i = 0; $i -lt $Urls.Count; $i++) {
+        $method = if ($i -lt $Methods.Count) { $Methods[$i] } else { "GET" }
+        $headers = if ($i -lt $HeadersList.Count) { $HeadersList[$i] } else { @{} }
+        $body = if ($i -lt $Bodies.Count) { $Bodies[$i] } else { $null }
+
+        $parameters = @{
+            url     = $Urls[$i]
+            method  = $method
+            headers = $headers
+        }
+
+        if ($body) {
+            $parameters.body = $body
+        }
+
+        $inputObjects += [PSCustomObject]@{
+            ToolName   = "http_request"
+            Parameters = $parameters
+        }
+    }
+
+    # Définir le script block pour exécuter l'outil MCP
+    $scriptBlock = {
+        param($InputObject)
+        Invoke-MCPTool -ToolName $InputObject.ToolName -Parameters $InputObject.Parameters
+    }
+
+    # Exécuter les requêtes en parallèle
+    $results = Invoke-MCPParallel -ScriptBlock $scriptBlock -InputObjects $inputObjects -ThrottleLimit $ThrottleLimit
+
+    return $results
+}
+
+# Fonction pour traiter des données par lots
+function Invoke-MCPBatch {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [scriptblock]$ScriptBlock,
+
+        [Parameter(Mandatory = $true)]
+        [object[]]$InputObjects,
+
+        [Parameter(Mandatory = $false)]
+        [int]$BatchSize = $script:MCPConfig.BatchSize
+    )
+
+    $results = @()
+    $batches = [Math]::Ceiling($InputObjects.Count / $BatchSize)
+
+    Write-MCPLog "Traitement de $($InputObjects.Count) objets en $batches lots de $BatchSize" -Level "DEBUG"
+
+    for ($i = 0; $i -lt $batches; $i++) {
+        $start = $i * $BatchSize
+        $end = [Math]::Min(($i + 1) * $BatchSize - 1, $InputObjects.Count - 1)
+        $batchItems = $InputObjects[$start..$end]
+
+        Write-MCPLog "Traitement du lot $($i + 1)/$batches ($($batchItems.Count) objets)" -Level "DEBUG"
+
+        $batchResults = & $ScriptBlock $batchItems
+        $results += $batchResults
+    }
+
+    return $results
+}
+
+<#
+.SYNOPSIS
+    Récupère la configuration actuelle du module MCPClient.
+.DESCRIPTION
+    Cette fonction récupère la configuration actuelle du module MCPClient.
+.EXAMPLE
+    Get-MCPClientConfiguration
+    Récupère la configuration actuelle du module MCPClient.
+#>
+function Get-MCPClientConfiguration {
+    [CmdletBinding()]
+    param ()
+
+    return $script:MCPConfig
+}
+
 # Exportation des fonctions
-Export-ModuleMember -Function Initialize-MCPConnection, Get-MCPTools, Invoke-MCPTool, Invoke-MCPPowerShell, Get-MCPSystemInfo, Find-MCPServers, Invoke-MCPPython, Invoke-MCPHttpRequest, Set-MCPClientConfiguration, Get-MCPClientConfiguration
+Export-ModuleMember -Function Initialize-MCPConnection, Get-MCPTools, Invoke-MCPTool, Invoke-MCPPowerShell, Get-MCPSystemInfo, Find-MCPServers, Invoke-MCPPython, Invoke-MCPHttpRequest, Set-MCPClientConfiguration, Get-MCPClientConfiguration, Clear-MCPCache, Invoke-MCPToolParallel, Invoke-MCPPowerShellParallel, Invoke-MCPPythonParallel, Invoke-MCPHttpRequestParallel, Invoke-MCPBatch
