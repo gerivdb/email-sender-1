@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Système d’Inventaire et de Classification des Scripts &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Système d’Inventaire et de Classification des Scripts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/ScriptInventorySystem.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="systeme-d-inventaire-et-de-classification-des-scripts">
+<h1>Système d’Inventaire et de Classification des Scripts<a class="headerlink" href="#systeme-d-inventaire-et-de-classification-des-scripts" title="Link to this heading"></a></h1>
+<section id="objectifs">
+<h2>Objectifs<a class="headerlink" href="#objectifs" title="Link to this heading"></a></h2>
+<p>Ce système permet de :</p>
+<ul class="simple">
+<li><p>Centraliser l’inventaire de tous les scripts PowerShell et Python du projet</p></li>
+<li><p>Détecter les scripts redondants ou similaires</p></li>
+<li><p>Classifier automatiquement les scripts selon une taxonomie définie</p></li>
+<li><p>Générer des rapports d’analyse</p></li>
+</ul>
+</section>
+<section id="composants-principaux">
+<h2>Composants principaux<a class="headerlink" href="#composants-principaux" title="Link to this heading"></a></h2>
+<section id="module-scriptinventorymanager">
+<h3>1. Module ScriptInventoryManager<a class="headerlink" href="#module-scriptinventorymanager" title="Link to this heading"></a></h3>
+<p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">modules/ScriptInventoryManager.psm1</span></code></p>
+<p>Fonctionnalités :</p>
+<ul class="simple">
+<li><p>Scan des répertoires pour trouver les scripts</p></li>
+<li><p>Extraction des métadonnées (auteur, version, description, tags)</p></li>
+<li><p>Sauvegarde de l’inventaire dans un fichier JSON</p></li>
+<li><p>Recherche et filtrage des scripts</p></li>
+</ul>
+<p>Commandes disponibles :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-ScriptInventory</span> <span class="p">[</span><span class="n">-Path</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-ForceRescan</span><span class="p">]</span>
+<span class="nb">Update-ScriptInventory</span> <span class="p">[</span><span class="n">-Path</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span>
+<span class="nb">Find-Script</span> <span class="p">[</span><span class="n">-Name</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Author</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Tag</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Language</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="scripts-d-analyse">
+<h3>2. Scripts d’analyse<a class="headerlink" href="#scripts-d-analyse" title="Link to this heading"></a></h3>
+<section id="show-scriptinventory-ps1">
+<h4>Show-ScriptInventory.ps1<a class="headerlink" href="#show-scriptinventory-ps1" title="Link to this heading"></a></h4>
+<p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">scripts/manager/Show-ScriptInventory.ps1</span></code></p>
+<p>Affiche l’inventaire avec options de filtrage et d’export.</p>
+<p>Exemple :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="nb">Show-ScriptInventory</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Author</span> <span class="s2">&quot;TestUser&quot;</span> <span class="n">-ExportFormat</span> <span class="n">HTML</span>
+</pre></div>
+</div>
+</section>
+<section id="find-redundantscripts-ps1">
+<h4>Find-RedundantScripts.ps1<a class="headerlink" href="#find-redundantscripts-ps1" title="Link to this heading"></a></h4>
+<p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">scripts/analysis/Find-RedundantScripts.ps1</span></code></p>
+<p>Détecte les scripts similaires ou redondants.</p>
+<p>Exemple :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="nb">Find-RedundantScripts</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-SimilarityThreshold</span> <span class="n">85</span> <span class="n">-ReportFormat</span> <span class="n">HTML</span>
+</pre></div>
+</div>
+</section>
+<section id="classify-scripts-ps1">
+<h4>Classify-Scripts.ps1<a class="headerlink" href="#classify-scripts-ps1" title="Link to this heading"></a></h4>
+<p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">scripts/analysis/Classify-Scripts.ps1</span></code></p>
+<p>Classifie les scripts et peut réorganiser la structure des dossiers.</p>
+<p>Exemple :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">Classify-Scripts</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-UpdateStructure</span> <span class="n">-ReportFormat</span> <span class="n">JSON</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tests">
+<h3>3. Tests<a class="headerlink" href="#tests" title="Link to this heading"></a></h3>
+<p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">scripts/tests/Test-ScriptInventory.ps1</span></code></p>
+<p>Tests unitaires et d’intégration pour valider le système.</p>
+<p>Exécution :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-Pester</span> <span class="p">.\</span><span class="nb">Test-ScriptInventory</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="workflow-recommande">
+<h2>Workflow recommandé<a class="headerlink" href="#workflow-recommande" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Mettre à jour l’inventaire :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Update-ScriptInventory</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Analyser les scripts redondants :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="nb">Find-RedundantScripts</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-SimilarityThreshold</span> <span class="n">80</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Classifier et réorganiser les scripts :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">Classify-Scripts</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-UpdateStructure</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Générer un rapport complet :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="nb">Show-ScriptInventory</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-ExportFormat</span> <span class="n">HTML</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-avec-git">
+<h2>Intégration avec Git<a class="headerlink" href="#integration-avec-git" title="Link to this heading"></a></h2>
+<p>Des hooks Git peuvent être configurés pour :</p>
+<ul class="simple">
+<li><p>Mettre à jour automatiquement l’inventaire après un commit</p></li>
+<li><p>Vérifier les métadonnées des nouveaux scripts</p></li>
+<li><p>Empêcher l’ajout de scripts sans métadonnées minimales</p></li>
+</ul>
+<p>Exemple de hook (à placer dans <code class="docutils literal notranslate"><span class="pre">.git/hooks/post-commit</span></code>) :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c">#!/usr/bin/env pwsh</span>
+<span class="nb">Import-Module</span> <span class="p">./</span><span class="n">modules</span><span class="p">/</span><span class="n">ScriptInventoryManager</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Update-ScriptInventory</span>
+</pre></div>
+</div>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ol>
+<li><p><strong>Métadonnées</strong> :
+Toujours inclure dans les scripts :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;#</span>
+<span class="cm">.Author: VotreNom</span>
+<span class="cm">.Version: 1.0</span>
+<span class="sd">.Description</span><span class="cm">: Description du script</span>
+<span class="cm">.Tags: tag1,tag2</span>
+<span class="cm">#&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Classification</strong> :
+Utiliser des noms explicites qui correspondent aux catégories définies.</p></li>
+<li><p><strong>Mises à jour</strong> :
+Exécuter <code class="docutils literal notranslate"><span class="pre">Update-ScriptInventory</span></code> après des modifications importantes.</p></li>
+<li><p><strong>Tests</strong> :
+Lancer les tests avant de pousser des modifications sur le système d’inventaire.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

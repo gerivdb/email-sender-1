@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation du MCP GitHub &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation du MCP GitHub</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/mcp/GITHUB_MCP.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-du-mcp-github">
+<h1>Guide d’utilisation du MCP GitHub<a class="headerlink" href="#guide-d-utilisation-du-mcp-github" title="Link to this heading"></a></h1>
+<p>Ce document explique comment configurer et utiliser le serveur MCP GitHub pour accéder aux dépôts GitHub depuis n8n et les modèles d’IA comme Claude.</p>
+<section id="qu-est-ce-que-le-mcp-github">
+<h2>Qu’est-ce que le MCP GitHub ?<a class="headerlink" href="#qu-est-ce-que-le-mcp-github" title="Link to this heading"></a></h2>
+<p>Le MCP GitHub est une implémentation du Model Context Protocol (MCP) qui permet aux modèles d’IA d’interagir avec les dépôts GitHub. Il offre les fonctionnalités suivantes :</p>
+<ul class="simple">
+<li><p>Exploration des dépôts GitHub</p></li>
+<li><p>Lecture des fichiers dans les dépôts</p></li>
+<li><p>Recherche de code dans les dépôts</p></li>
+<li><p>Accès aux issues et pull requests</p></li>
+<li><p>Et plus encore</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Le serveur MCP GitHub peut être installé globalement via npm :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@modelcontextprotocol/server-github
+</pre></div>
+</div>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="token-github">
+<h3>Token GitHub<a class="headerlink" href="#token-github" title="Link to this heading"></a></h3>
+<p>Pour un accès optimal, il est recommandé de configurer un token GitHub. Vous pouvez le faire de plusieurs façons :</p>
+<ol>
+<li><p><strong>Utiliser le script de configuration</strong> : Exécutez le script suivant qui vous guidera pas à pas :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="n">configure-github-token</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Variable d’environnement</strong> : Définissez la variable d’environnement <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code></p></li>
+<li><p><strong>Fichier .env</strong> : Créez manuellement un fichier <code class="docutils literal notranslate"><span class="pre">.env</span></code> à la racine du projet avec le contenu suivant :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GITHUB_TOKEN</span><span class="o">=</span><span class="n">votre_token_github</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Lors de l’exécution</strong> : Le script vous demandera un token s’il n’en trouve pas</p></li>
+</ol>
+<section id="creation-d-un-token-github">
+<h4>Création d’un token GitHub<a class="headerlink" href="#creation-d-un-token-github" title="Link to this heading"></a></h4>
+<p>Pour créer un token GitHub, suivez ces étapes :</p>
+<ol class="simple">
+<li><p>Connectez-vous à votre compte GitHub</p></li>
+<li><p>Accédez aux paramètres de votre compte (cliquez sur votre photo de profil en haut à droite, puis sur “Settings”)</p></li>
+<li><p>Dans le menu de gauche, cliquez sur “Developer settings”</p></li>
+<li><p>Cliquez sur “Personal access tokens” puis “Tokens (classic)”</p></li>
+<li><p>Cliquez sur “Generate new token” puis “Generate new token (classic)”</p></li>
+<li><p>Donnez un nom à votre token (par exemple “MCP GitHub Access”)</p></li>
+<li><p>Sélectionnez les autorisations nécessaires :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">repo</span></code> (accès complet aux dépôts)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read:org</span></code> (lecture des informations sur l’organisation)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read:user</span></code> (lecture des informations sur l’utilisateur)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read:project</span></code> (lecture des projets)</p></li>
+</ul>
+</li>
+<li><p>Cliquez sur “Generate token”</p></li>
+<li><p><strong>Important</strong> : Copiez le token généré, car vous ne pourrez plus le voir après avoir quitté cette page</p></li>
+</ol>
+</section>
+</section>
+<section id="integration-avec-n8n">
+<h3>Intégration avec n8n<a class="headerlink" href="#integration-avec-n8n" title="Link to this heading"></a></h3>
+<p>Pour utiliser le MCP GitHub dans n8n, exécutez le script de configuration :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="n">mcp</span><span class="p">\</span><span class="n">configure-mcp-github</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p>Ce script va :</p>
+<ul class="simple">
+<li><p>Créer les fichiers batch nécessaires</p></li>
+<li><p>Configurer les identifiants dans n8n</p></li>
+<li><p>Mettre à jour la base de données des identifiants</p></li>
+</ul>
+</section>
+</section>
+<section id="utilisation">
+<h2>Utilisation<a class="headerlink" href="#utilisation" title="Link to this heading"></a></h2>
+<section id="demarrage-manuel">
+<h3>Démarrage manuel<a class="headerlink" href="#demarrage-manuel" title="Link to this heading"></a></h3>
+<p>Pour démarrer manuellement le serveur MCP GitHub, utilisez l’une des commandes suivantes :</p>
+<ul class="simple">
+<li><p><strong>PowerShell</strong> : <code class="docutils literal notranslate"><span class="pre">.\scripts\mcp\Start-McpGithub.ps1</span></code></p></li>
+<li><p><strong>Batch</strong> : <code class="docutils literal notranslate"><span class="pre">.\scripts\mcp\start-mcp-github.cmd</span></code></p></li>
+</ul>
+</section>
+<section id="utilisation-avec-augment">
+<h3>Utilisation avec Augment<a class="headerlink" href="#utilisation-avec-augment" title="Link to this heading"></a></h3>
+<p>Pour utiliser le MCP GitHub avec Augment, ajoutez la configuration suivante à votre fichier de configuration Augment :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;augment.mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MCP GitHub&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;command&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D:\\chemin\\vers\\votre\\projet\\scripts\\cmd\\augment\\augment-mcp-github.cmd&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="utilisation-avec-n8n">
+<h3>Utilisation avec n8n<a class="headerlink" href="#utilisation-avec-n8n" title="Link to this heading"></a></h3>
+<p>Dans n8n, vous pouvez utiliser le MCP GitHub via le nœud “MCP Client” :</p>
+<ol class="simple">
+<li><p>Ajoutez un nœud “MCP Client”</p></li>
+<li><p>Sélectionnez l’identifiant “MCP GitHub”</p></li>
+<li><p>Configurez les paramètres selon vos besoins</p></li>
+</ol>
+</section>
+</section>
+<section id="exemples-d-utilisation">
+<h2>Exemples d’utilisation<a class="headerlink" href="#exemples-d-utilisation" title="Link to this heading"></a></h2>
+<section id="exploration-d-un-depot">
+<h3>Exploration d’un dépôt<a class="headerlink" href="#exploration-d-un-depot" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tool&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;github_list_files&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;repo_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://github.com/utilisateur/depot&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="lecture-d-un-fichier">
+<h3>Lecture d’un fichier<a class="headerlink" href="#lecture-d-un-fichier" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tool&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;github_read_file&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;repo_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://github.com/utilisateur/depot&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;file_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/fichier.txt&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="recherche-de-code">
+<h3>Recherche de code<a class="headerlink" href="#recherche-de-code" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tool&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;github_search_code&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;repo_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://github.com/utilisateur/depot&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fonction recherchée&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="problemes-d-authentification">
+<h3>Problèmes d’authentification<a class="headerlink" href="#problemes-d-authentification" title="Link to this heading"></a></h3>
+<p>Si vous rencontrez des problèmes d’authentification :</p>
+<ol class="simple">
+<li><p>Vérifiez que votre token GitHub est valide</p></li>
+<li><p>Assurez-vous que le token a les permissions nécessaires</p></li>
+<li><p>Vérifiez que la variable d’environnement <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code> est correctement définie</p></li>
+</ol>
+</section>
+<section id="limites-de-taux">
+<h3>Limites de taux<a class="headerlink" href="#limites-de-taux" title="Link to this heading"></a></h3>
+<p>Sans authentification, GitHub impose des limites de taux strictes. Si vous rencontrez des erreurs de limite de taux :</p>
+<ol class="simple">
+<li><p>Configurez un token GitHub</p></li>
+<li><p>Réduisez la fréquence de vos requêtes</p></li>
+<li><p>Mettez en place une logique de retry avec backoff exponentiel</p></li>
+</ol>
+</section>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/anthropics/anthropic-cookbook/tree/main/mcp">Documentation officielle du MCP</a></p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/rest">API GitHub</a></p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">Création de tokens GitHub</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

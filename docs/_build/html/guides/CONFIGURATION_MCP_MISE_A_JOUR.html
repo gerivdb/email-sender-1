@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration mise à jour des MCP dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Configuration mise à jour des MCP dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/CONFIGURATION_MCP_MISE_A_JOUR.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration-mise-a-jour-des-mcp-dans-n8n">
+<h1>Configuration mise à jour des MCP dans n8n<a class="headerlink" href="#configuration-mise-a-jour-des-mcp-dans-n8n" title="Link to this heading"></a></h1>
+<section id="probleme-des-toasts-d-erreur-au-demarrage">
+<h2>Problème des toasts d’erreur au démarrage<a class="headerlink" href="#probleme-des-toasts-d-erreur-au-demarrage" title="Link to this heading"></a></h2>
+<p>Si vous voyez des toasts d’erreur indiquant que les MCP n’ont pas démarré, suivez ces instructions pour résoudre le problème.</p>
+</section>
+<section id="mcp-standard-n8n-nodes-mcp">
+<h2>1. MCP Standard (n8n-nodes-mcp)<a class="headerlink" href="#mcp-standard-n8n-nodes-mcp" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ouvrez n8n et accédez à “Credentials”</p></li>
+<li><p>Créez un nouvel identifiant “MCP Client (STDIO) API”</p></li>
+<li><p>Configurez-le comme suit :</p>
+<ul class="simple">
+<li><p><strong>Credential Name</strong>: MCP Standard</p></li>
+<li><p><strong>Command</strong>: D:\DO\WEB\N8N tests\scripts json ? tester\EMAIL SENDER 1\mcp-standard.cmd</p></li>
+<li><p><strong>Arguments</strong>: (laissez vide)</p></li>
+<li><p><strong>Environments</strong>: N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true,OPENROUTER_API_KEY=sk-or-v1-…</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="mcp-notion-server">
+<h2>2. MCP Notion Server<a class="headerlink" href="#mcp-notion-server" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ouvrez n8n et accédez à “Credentials”</p></li>
+<li><p>Créez un nouvel identifiant “MCP Client (STDIO) API”</p></li>
+<li><p>Configurez-le comme suit :</p>
+<ul class="simple">
+<li><p><strong>Credential Name</strong>: MCP Notion</p></li>
+<li><p><strong>Command</strong>: D:\DO\WEB\N8N tests\scripts json ? tester\EMAIL SENDER 1\mcp-notion.cmd</p></li>
+<li><p><strong>Arguments</strong>: (laissez vide)</p></li>
+<li><p><strong>Environments</strong>: N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true,NOTION_API_TOKEN=secret_…</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="mcp-gateway">
+<h2>3. MCP Gateway<a class="headerlink" href="#mcp-gateway" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ouvrez n8n et accédez à “Credentials”</p></li>
+<li><p>Créez un nouvel identifiant “MCP Client (STDIO) API”</p></li>
+<li><p>Configurez-le comme suit :</p>
+<ul class="simple">
+<li><p><strong>Credential Name</strong>: MCP Gateway</p></li>
+<li><p><strong>Command</strong>: D:\DO\WEB\N8N tests\scripts json ? tester\EMAIL SENDER 1\gateway.exe.cmd</p></li>
+<li><p><strong>Arguments</strong>: start –config “D:\DO\WEB\N8N tests\scripts json ? tester\EMAIL SENDER 1\gateway.yaml” mcp-stdio</p></li>
+<li><p><strong>Environments</strong>: N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="important">
+<h2>Important<a class="headerlink" href="#important" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Utilisez des chemins absolus pour tous les fichiers</p></li>
+<li><p>Redémarrez n8n après avoir configuré les identifiants</p></li>
+<li><p>Vérifiez les logs de n8n pour voir les erreurs éventuelles</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

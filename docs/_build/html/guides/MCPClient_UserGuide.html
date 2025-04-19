@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation du module MCPClient &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation du module MCPClient</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/MCPClient_UserGuide.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-du-module-mcpclient">
+<h1>Guide d’utilisation du module MCPClient<a class="headerlink" href="#guide-d-utilisation-du-module-mcpclient" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">MCPClient</span></code> est un client PowerShell pour le protocole MCP (Model Context Protocol). Il permet d’interagir avec un serveur MCP pour exécuter des outils et récupérer des informations.</p>
+<p>Ce guide vous aidera à comprendre comment utiliser le module <code class="docutils literal notranslate"><span class="pre">MCPClient</span></code> pour interagir avec un serveur MCP.</p>
+</section>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>PowerShell 5.1 ou supérieur</p></li>
+<li><p>Un serveur MCP en cours d’exécution</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">MCPClient</span></code> est inclus dans le projet EMAIL_SENDER_1. Pour l’utiliser, il suffit de l’importer :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="n">-Name</span> <span class="s2">&quot;.\modules\MCPClient.psm1&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="demarrage-rapide">
+<h2>Démarrage rapide<a class="headerlink" href="#demarrage-rapide" title="Link to this heading"></a></h2>
+<p>Voici un exemple simple pour commencer à utiliser le module <code class="docutils literal notranslate"><span class="pre">MCPClient</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Name</span> <span class="s2">&quot;.\modules\MCPClient.psm1&quot;</span>
+
+<span class="c"># Initialiser la connexion</span>
+<span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+
+<span class="c"># Récupérer la liste des outils disponibles</span>
+<span class="nv">$tools</span> <span class="p">=</span> <span class="nb">Get-MCPTools</span>
+<span class="nv">$tools</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">-Property</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span>
+
+<span class="c"># Exécuter un outil</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Résultat : </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">result</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="connexion-a-un-serveur-mcp">
+<h2>Connexion à un serveur MCP<a class="headerlink" href="#connexion-a-un-serveur-mcp" title="Link to this heading"></a></h2>
+<p>La première étape pour utiliser le module <code class="docutils literal notranslate"><span class="pre">MCPClient</span></code> est de se connecter à un serveur MCP. Pour cela, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Initialize-MCPConnection</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+</pre></div>
+</div>
+<p>Vous pouvez également spécifier des options supplémentaires :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span> <span class="n">-Timeout</span> <span class="n">60</span> <span class="n">-RetryCount</span> <span class="n">5</span> <span class="n">-RetryDelay</span> <span class="n">3</span>
+</pre></div>
+</div>
+</section>
+<section id="recuperation-des-outils-disponibles">
+<h2>Récupération des outils disponibles<a class="headerlink" href="#recuperation-des-outils-disponibles" title="Link to this heading"></a></h2>
+<p>Une fois connecté, vous pouvez récupérer la liste des outils disponibles sur le serveur MCP :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$tools</span> <span class="p">=</span> <span class="nb">Get-MCPTools</span>
+<span class="nv">$tools</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">-Property</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span>
+</pre></div>
+</div>
+<p>Pour obtenir des informations détaillées sur un outil spécifique :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$tool</span> <span class="p">=</span> <span class="nv">$tools</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">name</span> <span class="o">-eq</span> <span class="s2">&quot;add&quot;</span> <span class="p">}</span>
+<span class="nv">$tool</span><span class="p">.</span><span class="n">parameters</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">-Property</span> <span class="n">name</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">description</span>
+</pre></div>
+</div>
+</section>
+<section id="execution-d-outils">
+<h2>Exécution d’outils<a class="headerlink" href="#execution-d-outils" title="Link to this heading"></a></h2>
+<p>Pour exécuter un outil, utilisez la fonction <code class="docutils literal notranslate"><span class="pre">Invoke-MCPTool</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span>
+<span class="nv">$result</span><span class="p">.</span><span class="n">result</span>
+</pre></div>
+</div>
+</section>
+<section id="execution-de-commandes-powershell">
+<h2>Exécution de commandes PowerShell<a class="headerlink" href="#execution-de-commandes-powershell" title="Link to this heading"></a></h2>
+<p>Vous pouvez exécuter des commandes PowerShell via le serveur MCP :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPPowerShell</span> <span class="n">-Command</span> <span class="s2">&quot;Get-Process | Select-Object -First 5&quot;</span>
+<span class="nv">$result</span><span class="p">.</span><span class="n">output</span>
+</pre></div>
+</div>
+</section>
+<section id="execution-de-scripts-python">
+<h2>Exécution de scripts Python<a class="headerlink" href="#execution-de-scripts-python" title="Link to this heading"></a></h2>
+<p>Vous pouvez exécuter des scripts Python via le serveur MCP :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$script</span> <span class="p">=</span> <span class="sh">@&quot;</span>
+<span class="sh">import sys</span>
+<span class="sh">import os</span>
+<span class="sh">import platform</span>
+
+<span class="sh">print(f&quot;Python version: {platform.python_version()}&quot;)</span>
+<span class="sh">print(f&quot;Platform: {platform.platform()}&quot;)</span>
+<span class="sh">print(f&quot;Arguments: {sys.argv[1:]}&quot;)</span>
+<span class="sh">&quot;@</span>
+
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPPython</span> <span class="n">-Script</span> <span class="nv">$script</span> <span class="n">-Arguments</span> <span class="p">@(</span><span class="s2">&quot;arg1&quot;</span><span class="p">,</span> <span class="s2">&quot;arg2&quot;</span><span class="p">)</span>
+<span class="nv">$result</span><span class="p">.</span><span class="n">output</span>
+</pre></div>
+</div>
+</section>
+<section id="recuperation-d-informations-systeme">
+<h2>Récupération d’informations système<a class="headerlink" href="#recuperation-d-informations-systeme" title="Link to this heading"></a></h2>
+<p>Vous pouvez récupérer des informations sur le système via le serveur MCP :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$systemInfo</span> <span class="p">=</span> <span class="nb">Get-MCPSystemInfo</span>
+<span class="nv">$systemInfo</span><span class="p">.</span><span class="n">os</span>
+<span class="nv">$systemInfo</span><span class="p">.</span><span class="n">version</span>
+<span class="nv">$systemInfo</span><span class="p">.</span><span class="n">hostname</span>
+</pre></div>
+</div>
+</section>
+<section id="detection-des-serveurs-mcp">
+<h2>Détection des serveurs MCP<a class="headerlink" href="#detection-des-serveurs-mcp" title="Link to this heading"></a></h2>
+<p>Vous pouvez détecter les serveurs MCP disponibles sur le réseau :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$servers</span> <span class="p">=</span> <span class="nb">Find-MCPServers</span>
+<span class="nv">$servers</span><span class="p">.</span><span class="n">servers</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">-Property</span> <span class="n">url</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">status</span>
+</pre></div>
+</div>
+<p>Pour effectuer un scan complet du réseau :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$servers</span> <span class="p">=</span> <span class="nb">Find-MCPServers</span> <span class="n">-Scan</span>
+<span class="nv">$servers</span><span class="p">.</span><span class="n">servers</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">-Property</span> <span class="n">url</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">status</span>
+</pre></div>
+</div>
+</section>
+<section id="execution-de-requetes-http">
+<h2>Exécution de requêtes HTTP<a class="headerlink" href="#execution-de-requetes-http" title="Link to this heading"></a></h2>
+<p>Vous pouvez exécuter des requêtes HTTP via le serveur MCP :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Requête GET</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPHttpRequest</span> <span class="n">-Url</span> <span class="s2">&quot;https://api.example.com/data&quot;</span>
+<span class="nv">$result</span><span class="p">.</span><span class="n">body</span>
+
+<span class="c"># Requête POST avec un corps JSON</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPHttpRequest</span> <span class="n">-Url</span> <span class="s2">&quot;https://api.example.com/data&quot;</span> <span class="n">-Method</span> <span class="s2">&quot;POST&quot;</span> <span class="n">-Body</span> <span class="p">@{</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">&quot;John&quot;</span> <span class="p">}</span>
+<span class="nv">$result</span><span class="p">.</span><span class="n">status_code</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-du-module">
+<h2>Configuration du module<a class="headerlink" href="#configuration-du-module" title="Link to this heading"></a></h2>
+<p>Vous pouvez configurer le module <code class="docutils literal notranslate"><span class="pre">MCPClient</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-MCPClientConfiguration</span> <span class="n">-Timeout</span> <span class="n">60</span> <span class="n">-RetryCount</span> <span class="n">5</span> <span class="n">-LogLevel</span> <span class="s2">&quot;DEBUG&quot;</span>
+</pre></div>
+</div>
+<p>Pour récupérer la configuration actuelle :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$config</span> <span class="p">=</span> <span class="nb">Get-MCPClientConfiguration</span>
+<span class="nv">$config</span><span class="p">.</span><span class="n">Timeout</span>
+<span class="nv">$config</span><span class="p">.</span><span class="n">RetryCount</span>
+<span class="nv">$config</span><span class="p">.</span><span class="n">LogLevel</span>
+</pre></div>
+</div>
+</section>
+<section id="exemples-avances">
+<h2>Exemples avancés<a class="headerlink" href="#exemples-avances" title="Link to this heading"></a></h2>
+<section id="exemple-1-traitement-des-donnees-avec-python">
+<h3>Exemple 1 : Traitement des données avec Python<a class="headerlink" href="#exemple-1-traitement-des-donnees-avec-python" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Name</span> <span class="s2">&quot;.\modules\MCPClient.psm1&quot;</span>
+
+<span class="c"># Initialiser la connexion</span>
+<span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+
+<span class="c"># Données à traiter</span>
+<span class="nv">$data</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">values</span> <span class="p">=</span> <span class="p">@(</span><span class="n">1</span><span class="p">,</span> <span class="n">2</span><span class="p">,</span> <span class="n">3</span><span class="p">,</span> <span class="n">4</span><span class="p">,</span> <span class="n">5</span><span class="p">)</span>
+    <span class="n">operation</span> <span class="p">=</span> <span class="s2">&quot;sum&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Script Python pour traiter les données</span>
+<span class="nv">$script</span> <span class="p">=</span> <span class="sh">@&quot;</span>
+<span class="sh">import sys</span>
+<span class="sh">import json</span>
+
+<span class="sh"># Lire les données d&#39;entrée</span>
+<span class="sh">data = json.loads(sys.argv[1])</span>
+<span class="sh">values = data[&#39;values&#39;]</span>
+<span class="sh">operation = data[&#39;operation&#39;]</span>
+
+<span class="sh"># Effectuer l&#39;opération</span>
+<span class="sh">result = None</span>
+<span class="sh">if operation == &#39;sum&#39;:</span>
+<span class="sh">    result = sum(values)</span>
+<span class="sh">elif operation == &#39;avg&#39;:</span>
+<span class="sh">    result = sum(values) / len(values)</span>
+<span class="sh">elif operation == &#39;max&#39;:</span>
+<span class="sh">    result = max(values)</span>
+<span class="sh">elif operation == &#39;min&#39;:</span>
+<span class="sh">    result = min(values)</span>
+
+<span class="sh"># Afficher le résultat</span>
+<span class="sh">print(json.dumps({</span>
+<span class="sh">    &#39;result&#39;: result,</span>
+<span class="sh">    &#39;operation&#39;: operation,</span>
+<span class="sh">    &#39;values&#39;: values</span>
+<span class="sh">}))</span>
+<span class="sh">&quot;@</span>
+
+<span class="c"># Exécuter le script Python</span>
+<span class="nv">$dataJson</span> <span class="p">=</span> <span class="nv">$data</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Compress</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPPython</span> <span class="n">-Script</span> <span class="nv">$script</span> <span class="n">-Arguments</span> <span class="p">@(</span><span class="nv">$dataJson</span><span class="p">)</span>
+
+<span class="c"># Analyser le résultat</span>
+<span class="nv">$resultObj</span> <span class="p">=</span> <span class="nv">$result</span><span class="p">.</span><span class="n">output</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Résultat de l&#39;opération </span><span class="p">$(</span><span class="nv">$resultObj</span><span class="p">.</span><span class="n">operation</span><span class="p">)</span><span class="s2"> sur </span><span class="p">$(</span><span class="nv">$resultObj</span><span class="p">.</span><span class="n">values</span><span class="p">)</span><span class="s2"> : </span><span class="p">$(</span><span class="nv">$resultObj</span><span class="p">.</span><span class="n">result</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-automatisation-avec-powershell">
+<h3>Exemple 2 : Automatisation avec PowerShell<a class="headerlink" href="#exemple-2-automatisation-avec-powershell" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Name</span> <span class="s2">&quot;.\modules\MCPClient.psm1&quot;</span>
+
+<span class="c"># Initialiser la connexion</span>
+<span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+
+<span class="c"># Fonction pour exécuter une commande PowerShell et analyser le résultat</span>
+<span class="k">function</span> <span class="nb">Invoke-RemoteCommand</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$Command</span>
+    <span class="p">)</span>
+
+    <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPPowerShell</span> <span class="n">-Command</span> <span class="nv">$Command</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">exit_code</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Commande exécutée avec succès&quot;</span> <span class="n">-ForegroundColor</span> <span class="n">Green</span>
+        <span class="k">return</span> <span class="nv">$result</span><span class="p">.</span><span class="n">output</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de l&#39;exécution de la commande : </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">output</span><span class="p">)</span><span class="s2">&quot;</span> <span class="n">-ForegroundColor</span> <span class="n">Red</span>
+        <span class="k">return</span> <span class="nv">$null</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Récupérer la liste des processus</span>
+<span class="nv">$processes</span> <span class="p">=</span> <span class="nb">Invoke-RemoteCommand</span> <span class="n">-Command</span> <span class="s2">&quot;Get-Process | Select-Object -Property Name, Id, CPU | ConvertTo-Json&quot;</span>
+<span class="nv">$processesObj</span> <span class="p">=</span> <span class="nv">$processes</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span>
+
+<span class="c"># Afficher les processus qui utilisent le plus de CPU</span>
+<span class="nv">$topProcesses</span> <span class="p">=</span> <span class="nv">$processesObj</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="n">CPU</span> <span class="n">-Descending</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-First</span> <span class="n">5</span>
+<span class="nv">$topProcesses</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">-Property</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">CPU</span>
+
+<span class="c"># Récupérer des informations sur le système</span>
+<span class="nv">$systemInfo</span> <span class="p">=</span> <span class="nb">Invoke-RemoteCommand</span> <span class="n">-Command</span> <span class="sh">@&quot;</span>
+<span class="sh">[PSCustomObject]@{</span>
+<span class="sh">    ComputerName = $env:COMPUTERNAME</span>
+<span class="sh">    OS = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption</span>
+<span class="sh">    Memory = [math]::Round((Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)</span>
+<span class="sh">    CPU = (Get-CimInstance -ClassName Win32_Processor).Name</span>
+<span class="sh">    Uptime = (Get-CimInstance -ClassName Win32_OperatingSystem).LastBootUpTime</span>
+<span class="sh">} | ConvertTo-Json</span>
+<span class="sh">&quot;@</span>
+
+<span class="nv">$systemInfoObj</span> <span class="p">=</span> <span class="nv">$systemInfo</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Informations système :&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nom de l&#39;ordinateur : </span><span class="p">$(</span><span class="nv">$systemInfoObj</span><span class="p">.</span><span class="n">ComputerName</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Système d&#39;exploitation : </span><span class="p">$(</span><span class="nv">$systemInfoObj</span><span class="p">.</span><span class="n">OS</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Mémoire (Go) : </span><span class="p">$(</span><span class="nv">$systemInfoObj</span><span class="p">.</span><span class="n">Memory</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Processeur : </span><span class="p">$(</span><span class="nv">$systemInfoObj</span><span class="p">.</span><span class="n">CPU</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Dernier démarrage : </span><span class="p">$(</span><span class="nv">$systemInfoObj</span><span class="p">.</span><span class="n">Uptime</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-3-integration-avec-n8n">
+<h3>Exemple 3 : Intégration avec n8n<a class="headerlink" href="#exemple-3-integration-avec-n8n" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Name</span> <span class="s2">&quot;.\modules\MCPClient.psm1&quot;</span>
+
+<span class="c"># Initialiser la connexion</span>
+<span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+
+<span class="c"># Fonction pour exécuter un workflow n8n</span>
+<span class="k">function</span> <span class="nb">Invoke-N8nWorkflow</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$WorkflowId</span><span class="p">,</span>
+
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[hashtable]</span><span class="nv">$Parameters</span> <span class="p">=</span> <span class="p">@{}</span>
+    <span class="p">)</span>
+
+    <span class="c"># Convertir les paramètres en JSON</span>
+    <span class="nv">$parametersJson</span> <span class="p">=</span> <span class="nv">$Parameters</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Compress</span>
+
+    <span class="c"># Exécuter le workflow via le serveur MCP</span>
+    <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;run_n8n_workflow&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span>
+        <span class="n">workflow_id</span> <span class="p">=</span> <span class="nv">$WorkflowId</span>
+        <span class="n">parameters</span> <span class="p">=</span> <span class="nv">$parametersJson</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$result</span>
+<span class="p">}</span>
+
+<span class="c"># Exécuter un workflow n8n</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-N8nWorkflow</span> <span class="n">-WorkflowId</span> <span class="s2">&quot;email-sender&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span>
+    <span class="n">to</span> <span class="p">=</span> <span class="s2">&quot;user@example.com&quot;</span>
+    <span class="n">subject</span> <span class="p">=</span> <span class="s2">&quot;Test email&quot;</span>
+    <span class="n">body</span> <span class="p">=</span> <span class="s2">&quot;This is a test email sent from PowerShell via MCP and n8n.&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Afficher le résultat</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">success</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Workflow exécuté avec succès&quot;</span> <span class="n">-ForegroundColor</span> <span class="n">Green</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;ID de l&#39;exécution : </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">execution_id</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur lors de l&#39;exécution du workflow : </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">error</span><span class="p">)</span><span class="s2">&quot;</span> <span class="n">-ForegroundColor</span> <span class="n">Red</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<section id="gestion-des-erreurs">
+<h3>Gestion des erreurs<a class="headerlink" href="#gestion-des-erreurs" title="Link to this heading"></a></h3>
+<p>Il est important de gérer les erreurs lors de l’utilisation du module <code class="docutils literal notranslate"><span class="pre">MCPClient</span></code>. Voici un exemple de gestion des erreurs :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="p">{</span>
+    <span class="c"># Initialiser la connexion</span>
+    <span class="nv">$connected</span> <span class="p">=</span> <span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$connected</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="s2">&quot;Impossible de se connecter au serveur MCP&quot;</span>
+    <span class="p">}</span>
+
+    <span class="c"># Récupérer la liste des outils disponibles</span>
+    <span class="nv">$tools</span> <span class="p">=</span> <span class="nb">Get-MCPTools</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$tools</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="s2">&quot;Impossible de récupérer la liste des outils&quot;</span>
+    <span class="p">}</span>
+
+    <span class="c"># Exécuter un outil</span>
+    <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="s2">&quot;Erreur lors de l&#39;exécution de l&#39;outil&quot;</span>
+    <span class="p">}</span>
+
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Résultat : </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">result</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Erreur : $_&quot;</span> <span class="n">-ForegroundColor</span> <span class="n">Red</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="journalisation">
+<h3>Journalisation<a class="headerlink" href="#journalisation" title="Link to this heading"></a></h3>
+<p>Vous pouvez activer la journalisation détaillée pour faciliter le débogage :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Activer la journalisation détaillée</span>
+<span class="nb">Set-MCPClientConfiguration</span> <span class="n">-LogLevel</span> <span class="s2">&quot;DEBUG&quot;</span> <span class="n">-LogPath</span> <span class="s2">&quot;C:\Logs\MCPClient.log&quot;</span>
+
+<span class="c"># Exécuter des opérations</span>
+<span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+<span class="nb">Get-MCPTools</span>
+<span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span>
+
+<span class="c"># Désactiver la journalisation détaillée</span>
+<span class="nb">Set-MCPClientConfiguration</span> <span class="n">-LogLevel</span> <span class="s2">&quot;INFO&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h2>
+<section id="mise-en-cache">
+<h3>Mise en cache<a class="headerlink" href="#mise-en-cache" title="Link to this heading"></a></h3>
+<p>Le module MCPClient prend en charge la mise en cache des résultats pour améliorer les performances. Par défaut, le cache est activé avec une durée de vie de 5 minutes (300 secondes).</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Configurer le cache</span>
+<span class="nb">Set-MCPClientConfiguration</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span> <span class="n">-CacheTTL</span> <span class="n">600</span>  <span class="c"># 10 minutes</span>
+
+<span class="c"># Exécuter un outil (le résultat sera mis en cache)</span>
+<span class="nv">$result1</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span>
+
+<span class="c"># Exécuter le même outil (le résultat sera récupéré du cache)</span>
+<span class="nv">$result2</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span>
+
+<span class="c"># Désactiver le cache pour un appel spécifique</span>
+<span class="nv">$result3</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span> <span class="n">-NoCache</span>
+
+<span class="c"># Forcer le rafraîchissement du cache</span>
+<span class="nv">$result4</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">2</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span> <span class="n">-ForceRefresh</span>
+
+<span class="c"># Nettoyer le cache</span>
+<span class="nb">Clear-MCPCache</span>
+
+<span class="c"># Vider complètement le cache</span>
+<span class="nb">Clear-MCPCache</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+</section>
+<section id="compression-des-donnees">
+<h3>Compression des données<a class="headerlink" href="#compression-des-donnees" title="Link to this heading"></a></h3>
+<p>Le module MCPClient prend en charge la compression des données pour réduire la taille des requêtes HTTP. Par défaut, la compression est activée pour les corps de requête de plus de 1 Ko.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Activer la compression des données</span>
+<span class="nb">Set-MCPClientConfiguration</span> <span class="n">-CompressionEnabled</span> <span class="nv">$true</span>
+
+<span class="c"># Exécuter un outil avec un grand volume de données (sera compressé automatiquement)</span>
+<span class="nv">$largeData</span> <span class="p">=</span> <span class="p">@{</span> <span class="n">data</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">1000</span> <span class="p">}</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;process_data&quot;</span> <span class="n">-Parameters</span> <span class="nv">$largeData</span>
+</pre></div>
+</div>
+</section>
+<section id="execution-parallele">
+<h3>Exécution parallèle<a class="headerlink" href="#execution-parallele" title="Link to this heading"></a></h3>
+<p>Le module MCPClient prend en charge l’exécution parallèle des outils MCP pour améliorer les performances lors du traitement de plusieurs requêtes.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Exécuter plusieurs outils en parallèle</span>
+<span class="nv">$toolNames</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;subtract&quot;</span><span class="p">,</span> <span class="s2">&quot;multiply&quot;</span><span class="p">,</span> <span class="s2">&quot;divide&quot;</span><span class="p">)</span>
+<span class="nv">$parametersList</span> <span class="p">=</span> <span class="p">@(</span>
+    <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">10</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">5</span> <span class="p">},</span>
+    <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">10</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">5</span> <span class="p">},</span>
+    <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">10</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">5</span> <span class="p">},</span>
+    <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="n">10</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="n">5</span> <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nv">$results</span> <span class="p">=</span> <span class="nb">Invoke-MCPToolParallel</span> <span class="n">-ToolNames</span> <span class="nv">$toolNames</span> <span class="n">-ParametersList</span> <span class="nv">$parametersList</span> <span class="n">-ThrottleLimit</span> <span class="n">4</span>
+
+<span class="c"># Exécuter plusieurs commandes PowerShell en parallèle</span>
+<span class="nv">$commands</span> <span class="p">=</span> <span class="p">@(</span>
+    <span class="s2">&quot;Get-Process | Select-Object -First 5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Get-Service | Select-Object -First 5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Get-ChildItem -Path C:\ | Select-Object -First 5&quot;</span>
+<span class="p">)</span>
+
+<span class="nv">$results</span> <span class="p">=</span> <span class="nb">Invoke-MCPPowerShellParallel</span> <span class="n">-Commands</span> <span class="nv">$commands</span> <span class="n">-ThrottleLimit</span> <span class="n">3</span>
+</pre></div>
+</div>
+</section>
+<section id="traitement-par-lots">
+<h3>Traitement par lots<a class="headerlink" href="#traitement-par-lots" title="Link to this heading"></a></h3>
+<p>Le module MCPClient prend en charge le traitement par lots pour améliorer les performances lors du traitement d’un grand nombre d’objets.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un grand nombre d&#39;objets à traiter</span>
+<span class="nv">$inputObjects</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">100</span> <span class="p">|</span> <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span>
+    <span class="no">[PSCustomObject]</span><span class="p">@{</span> <span class="n">Value</span> <span class="p">=</span> <span class="nv">$_</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Définir le script block pour traiter chaque lot</span>
+<span class="nv">$scriptBlock</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$batch</span><span class="p">)</span>
+
+    <span class="nv">$results</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$item</span> <span class="k">in</span> <span class="nv">$batch</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c"># Traiter chaque élément du lot</span>
+        <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;square&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">value</span> <span class="p">=</span> <span class="nv">$item</span><span class="p">.</span><span class="n">Value</span> <span class="p">}</span>
+        <span class="nv">$results</span> <span class="p">+=</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">Input</span> <span class="p">=</span> <span class="nv">$item</span><span class="p">.</span><span class="n">Value</span>
+            <span class="n">Output</span> <span class="p">=</span> <span class="nv">$result</span><span class="p">.</span><span class="n">result</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$results</span>
+<span class="p">}</span>
+
+<span class="c"># Traiter les objets par lots</span>
+<span class="nv">$results</span> <span class="p">=</span> <span class="nb">Invoke-MCPBatch</span> <span class="n">-ScriptBlock</span> <span class="nv">$scriptBlock</span> <span class="n">-InputObjects</span> <span class="nv">$inputObjects</span> <span class="n">-BatchSize</span> <span class="n">10</span>
+</pre></div>
+</div>
+</section>
+<section id="autres-optimisations">
+<h3>Autres optimisations<a class="headerlink" href="#autres-optimisations" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Réutiliser la connexion au serveur MCP :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser la connexion une seule fois</span>
+<span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+
+<span class="c"># Exécuter plusieurs opérations</span>
+<span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="n">10</span><span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span>
+    <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;add&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">a</span> <span class="p">=</span> <span class="nv">$i</span><span class="p">;</span> <span class="n">b</span> <span class="p">=</span> <span class="nv">$i</span> <span class="p">+</span> <span class="n">1</span> <span class="p">}</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Résultat $i : </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">result</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Augmenter le délai d’attente pour les opérations longues :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Augmenter le délai d&#39;attente pour les opérations longues</span>
+<span class="nb">Set-MCPClientConfiguration</span> <span class="n">-Timeout</span> <span class="n">120</span>
+
+<span class="c"># Exécuter une opération longue</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-MCPTool</span> <span class="n">-ToolName</span> <span class="s2">&quot;long_running_operation&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="problemes-de-connexion">
+<h3>Problèmes de connexion<a class="headerlink" href="#problemes-de-connexion" title="Link to this heading"></a></h3>
+<p>Si vous rencontrez des problèmes de connexion au serveur MCP, vérifiez les points suivants :</p>
+<ol class="simple">
+<li><p>Assurez-vous que le serveur MCP est en cours d’exécution.</p></li>
+<li><p>Vérifiez que l’URL du serveur est correcte.</p></li>
+<li><p>Vérifiez que le port est accessible (pas bloqué par un pare-feu).</p></li>
+<li><p>Augmentez le délai d’attente et le nombre de tentatives :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-MCPConnection</span> <span class="n">-ServerUrl</span> <span class="s2">&quot;http://localhost:8000&quot;</span> <span class="n">-Timeout</span> <span class="n">60</span> <span class="n">-RetryCount</span> <span class="n">5</span>
+</pre></div>
+</div>
+</section>
+<section id="problemes-d-execution-d-outils">
+<h3>Problèmes d’exécution d’outils<a class="headerlink" href="#problemes-d-execution-d-outils" title="Link to this heading"></a></h3>
+<p>Si vous rencontrez des problèmes lors de l’exécution d’outils, vérifiez les points suivants :</p>
+<ol class="simple">
+<li><p>Assurez-vous que l’outil existe sur le serveur MCP :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$tools</span> <span class="p">=</span> <span class="nb">Get-MCPTools</span>
+<span class="nv">$tools</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">name</span> <span class="o">-eq</span> <span class="s2">&quot;nom_de_l_outil&quot;</span> <span class="p">}</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Vérifiez que les paramètres sont corrects :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$tool</span> <span class="p">=</span> <span class="nv">$tools</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">name</span> <span class="o">-eq</span> <span class="s2">&quot;nom_de_l_outil&quot;</span> <span class="p">}</span>
+<span class="nv">$tool</span><span class="p">.</span><span class="n">parameters</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Activez la journalisation détaillée :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-MCPClientConfiguration</span> <span class="n">-LogLevel</span> <span class="s2">&quot;DEBUG&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">MCPClient</span></code> offre une interface simple et puissante pour interagir avec un serveur MCP. Il permet d’exécuter des outils, des commandes PowerShell, des scripts Python et des requêtes HTTP via le serveur MCP.</p>
+<p>Pour plus d’informations, consultez la <a class="reference internal" href="../technical/MCPClientAPI.html"><span class="doc">documentation technique du module MCPClient</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

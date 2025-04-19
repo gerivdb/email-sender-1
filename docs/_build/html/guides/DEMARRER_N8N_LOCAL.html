@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide pour démarrer n8n en local &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide pour démarrer n8n en local</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/DEMARRER_N8N_LOCAL.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-pour-demarrer-n8n-en-local">
+<h1>Guide pour démarrer n8n en local<a class="headerlink" href="#guide-pour-demarrer-n8n-en-local" title="Link to this heading"></a></h1>
+<p>Ce guide vous explique comment démarrer n8n en local et accéder à l’interface web pour configurer les MCP.</p>
+<section id="methode-1-demarrer-n8n-avec-npx">
+<h2>Méthode 1 : Démarrer n8n avec npx<a class="headerlink" href="#methode-1-demarrer-n8n-avec-npx" title="Link to this heading"></a></h2>
+<ol>
+<li><p>Ouvrez une invite de commande ou PowerShell</p></li>
+<li><p>Naviguez vers votre répertoire de projet</p></li>
+<li><p>Exécutez la commande suivante :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npx</span> <span class="n">n8n</span> <span class="n">start</span>
+</pre></div>
+</div>
+</li>
+<li><p>Attendez que n8n démarre (cela peut prendre quelques instants)</p></li>
+<li><p>Une fois démarré, vous verrez un message indiquant l’URL à laquelle vous pouvez accéder à l’interface web</p></li>
+<li><p>Par défaut, l’URL est : http://localhost:5678</p></li>
+<li><p>Ouvrez cette URL dans votre navigateur web</p></li>
+</ol>
+</section>
+<section id="methode-2-utiliser-n8n-desktop">
+<h2>Méthode 2 : Utiliser n8n Desktop<a class="headerlink" href="#methode-2-utiliser-n8n-desktop" title="Link to this heading"></a></h2>
+<p>Si vous avez installé n8n Desktop, vous pouvez simplement :</p>
+<ol class="simple">
+<li><p>Recherchez “n8n Desktop” dans le menu Démarrer de Windows</p></li>
+<li><p>Cliquez sur l’application pour la lancer</p></li>
+<li><p>n8n Desktop ouvrira automatiquement l’interface web dans votre navigateur par défaut</p></li>
+</ol>
+</section>
+<section id="methode-3-utiliser-un-script-de-demarrage">
+<h2>Méthode 3 : Utiliser un script de démarrage<a class="headerlink" href="#methode-3-utiliser-un-script-de-demarrage" title="Link to this heading"></a></h2>
+<p>Vous pouvez créer un script batch pour démarrer n8n facilement :</p>
+<ol>
+<li><p>Créez un fichier <code class="docutils literal notranslate"><span class="pre">start-n8n.cmd</span></code> avec le contenu suivant :</p>
+<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">echo</span> off
+<span class="k">echo</span> Démarrage de n8n...
+npx n8n start
+</pre></div>
+</div>
+</li>
+<li><p>Double-cliquez sur ce fichier pour démarrer n8n</p></li>
+</ol>
+</section>
+<section id="verifier-que-n8n-est-en-cours-d-execution">
+<h2>Vérifier que n8n est en cours d’exécution<a class="headerlink" href="#verifier-que-n8n-est-en-cours-d-execution" title="Link to this heading"></a></h2>
+<p>Pour vérifier que n8n est en cours d’exécution :</p>
+<ol class="simple">
+<li><p>Ouvrez votre navigateur web</p></li>
+<li><p>Accédez à http://localhost:5678</p></li>
+<li><p>Vous devriez voir l’interface web de n8n</p></li>
+</ol>
+</section>
+<section id="configurer-les-identifiants-mcp-dans-n8n">
+<h2>Configurer les identifiants MCP dans n8n<a class="headerlink" href="#configurer-les-identifiants-mcp-dans-n8n" title="Link to this heading"></a></h2>
+<p>Une fois n8n démarré et l’interface web ouverte :</p>
+<ol class="simple">
+<li><p>Cliquez sur l’icône d’engrenage (⚙️) dans le coin supérieur droit</p></li>
+<li><p>Sélectionnez “Credentials” dans le menu déroulant</p></li>
+<li><p>Cliquez sur “Create New” pour créer un nouvel identifiant</p></li>
+<li><p>Recherchez “MCP Client (STDIO) API” et sélectionnez-le</p></li>
+<li><p>Configurez l’identifiant selon les instructions du guide CONFIGURATION_MCP_MISE_A_JOUR.md</p></li>
+</ol>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez des problèmes pour démarrer n8n :</p>
+<ol>
+<li><p>Vérifiez que Node.js est correctement installé :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">node</span> <span class="o">--</span><span class="n">version</span>
+</pre></div>
+</div>
+</li>
+<li><p>Vérifiez que n8n est accessible via npx :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npx</span> <span class="n">n8n</span> <span class="o">--</span><span class="n">version</span>
+</pre></div>
+</div>
+</li>
+<li><p>Si vous avez des erreurs de port, essayez de spécifier un port différent :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npx</span> <span class="n">n8n</span> <span class="n">start</span> <span class="o">--</span><span class="n">port</span> <span class="mi">5679</span>
+</pre></div>
+</div>
+</li>
+<li><p>Vérifiez si un autre processus n8n est déjà en cours d’exécution :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tasklist</span> <span class="o">|</span> <span class="n">findstr</span> <span class="n">node</span>
+</pre></div>
+</div>
+</li>
+<li><p>Si nécessaire, terminez les processus n8n existants :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">taskkill</span> <span class="o">/</span><span class="n">F</span> <span class="o">/</span><span class="n">IM</span> <span class="n">node</span><span class="o">.</span><span class="n">exe</span>
+</pre></div>
+</div>
+<p>(Attention : cela terminera tous les processus Node.js en cours d’exécution)</p>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

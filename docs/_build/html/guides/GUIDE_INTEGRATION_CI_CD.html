@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’intégration CI/CD &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’intégration CI/CD</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_INTEGRATION_CI_CD.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-integration-ci-cd">
+<h1>Guide d’intégration CI/CD<a class="headerlink" href="#guide-d-integration-ci-cd" title="Link to this heading"></a></h1>
+<p>Ce guide explique comment utiliser et personnaliser l’intégration CI/CD mise en place dans le projet n8n. L’intégration CI/CD permet d’automatiser les vérifications de qualité du code, les tests et le déploiement.</p>
+<section id="table-des-matieres">
+<h2>Table des matières<a class="headerlink" href="#table-des-matieres" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><a class="reference external" href="#introduction-%C3%A0-lint%C3%A9gration-cicd">Introduction à l’intégration CI/CD</a></p></li>
+<li><p><a class="reference external" href="#configuration-github-actions">Configuration GitHub Actions</a></p></li>
+<li><p><a class="reference external" href="#ex%C3%A9cution-locale-des-v%C3%A9rifications-cicd">Exécution locale des vérifications CI/CD</a></p></li>
+<li><p><a class="reference external" href="#personnalisation-des-v%C3%A9rifications">Personnalisation des vérifications</a></p></li>
+<li><p><a class="reference external" href="#d%C3%A9ploiement-automatis%C3%A9">Déploiement automatisé</a></p></li>
+<li><p><a class="reference external" href="#tests-unitaires">Tests unitaires</a></p></li>
+<li><p><a class="reference external" href="#int%C3%A9gration-avec-les-hooks-git">Intégration avec les hooks Git</a></p></li>
+<li><p><a class="reference external" href="#bonnes-pratiques">Bonnes pratiques</a></p></li>
+</ol>
+</section>
+<section id="introduction-a-l-integration-ci-cd">
+<h2>Introduction à l’intégration CI/CD<a class="headerlink" href="#introduction-a-l-integration-ci-cd" title="Link to this heading"></a></h2>
+<p>L’intégration CI/CD (Continuous Integration/Continuous Deployment) permet d’automatiser les processus de vérification, de test et de déploiement du code. Dans ce projet, nous utilisons GitHub Actions pour mettre en œuvre ces processus.</p>
+<p>Les principaux avantages de l’intégration CI/CD sont :</p>
+<ul class="simple">
+<li><p><strong>Détection précoce des problèmes</strong> : Les erreurs sont détectées dès qu’elles sont introduites dans le code</p></li>
+<li><p><strong>Cohérence des vérifications</strong> : Les mêmes vérifications sont effectuées pour chaque modification</p></li>
+<li><p><strong>Automatisation du déploiement</strong> : Le déploiement est automatisé et standardisé</p></li>
+<li><p><strong>Traçabilité</strong> : Chaque modification est tracée et vérifiée</p></li>
+</ul>
+</section>
+<section id="configuration-github-actions">
+<h2>Configuration GitHub Actions<a class="headerlink" href="#configuration-github-actions" title="Link to this heading"></a></h2>
+<p>Le projet utilise GitHub Actions pour l’intégration CI/CD. La configuration se trouve dans le fichier <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yml</span></code>.</p>
+<section id="structure-du-pipeline-ci-cd">
+<h3>Structure du pipeline CI/CD<a class="headerlink" href="#structure-du-pipeline-ci-cd" title="Link to this heading"></a></h3>
+<p>Le pipeline CI/CD est composé de plusieurs jobs :</p>
+<ol class="simple">
+<li><p><strong>Lint</strong> : Vérification du style de code</p>
+<ul class="simple">
+<li><p>Analyse des fichiers PowerShell avec PSScriptAnalyzer</p></li>
+<li><p>Analyse des fichiers Python avec flake8</p></li>
+</ul>
+</li>
+<li><p><strong>Test</strong> : Exécution des tests unitaires</p>
+<ul class="simple">
+<li><p>Exécution des tests PowerShell avec Pester</p></li>
+<li><p>Exécution des tests Python avec pytest</p></li>
+</ul>
+</li>
+<li><p><strong>Security</strong> : Vérification de sécurité</p>
+<ul class="simple">
+<li><p>Détection des informations sensibles dans le code</p></li>
+</ul>
+</li>
+<li><p><strong>Build</strong> : Construction et déploiement</p>
+<ul class="simple">
+<li><p>Construction du projet</p></li>
+<li><p>Déploiement vers l’environnement approprié (développement ou production)</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="declenchement-du-pipeline">
+<h3>Déclenchement du pipeline<a class="headerlink" href="#declenchement-du-pipeline" title="Link to this heading"></a></h3>
+<p>Le pipeline CI/CD est déclenché dans les cas suivants :</p>
+<ul class="simple">
+<li><p><strong>Push</strong> sur les branches <code class="docutils literal notranslate"><span class="pre">main</span></code> ou <code class="docutils literal notranslate"><span class="pre">develop</span></code></p></li>
+<li><p><strong>Pull Request</strong> vers les branches <code class="docutils literal notranslate"><span class="pre">main</span></code> ou <code class="docutils literal notranslate"><span class="pre">develop</span></code></p></li>
+</ul>
+<p>Le job de déploiement n’est exécuté que lors d’un push sur les branches <code class="docutils literal notranslate"><span class="pre">main</span></code> ou <code class="docutils literal notranslate"><span class="pre">develop</span></code>.</p>
+</section>
+</section>
+<section id="execution-locale-des-verifications-ci-cd">
+<h2>Exécution locale des vérifications CI/CD<a class="headerlink" href="#execution-locale-des-verifications-ci-cd" title="Link to this heading"></a></h2>
+<p>Vous pouvez exécuter les mêmes vérifications que le pipeline CI/CD localement, avant de pousser vos modifications. Pour cela, utilisez le script <code class="docutils literal notranslate"><span class="pre">scripts/ci/run-ci-checks.ps1</span></code>.</p>
+<section id="exemples-d-utilisation">
+<h3>Exemples d’utilisation<a class="headerlink" href="#exemples-d-utilisation" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Exécuter toutes les vérifications</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">run-ci-checks</span><span class="p">.</span><span class="n">ps1</span>
+
+<span class="c"># Exécuter uniquement les vérifications de style de code</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">run-ci-checks</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-SkipTests</span> <span class="n">-SkipSecurity</span>
+
+<span class="c"># Exécuter uniquement les tests unitaires</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">run-ci-checks</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-SkipLint</span> <span class="n">-SkipSecurity</span>
+
+<span class="c"># Exécuter uniquement les vérifications de sécurité</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">run-ci-checks</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-SkipLint</span> <span class="n">-SkipTests</span>
+
+<span class="c"># Afficher des informations détaillées</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">run-ci-checks</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Verbose</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="personnalisation-des-verifications">
+<h2>Personnalisation des vérifications<a class="headerlink" href="#personnalisation-des-verifications" title="Link to this heading"></a></h2>
+<p>Vous pouvez personnaliser les vérifications effectuées par le pipeline CI/CD en modifiant les fichiers suivants :</p>
+<section id="verifications-de-style-de-code">
+<h3>Vérifications de style de code<a class="headerlink" href="#verifications-de-style-de-code" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>PowerShell</strong> : Modifiez les règles PSScriptAnalyzer dans le script <code class="docutils literal notranslate"><span class="pre">scripts/ci/run-ci-checks.ps1</span></code></p></li>
+<li><p><strong>Python</strong> : Créez un fichier <code class="docutils literal notranslate"><span class="pre">.flake8</span></code> à la racine du projet pour personnaliser les règles flake8</p></li>
+</ul>
+</section>
+<section id="tests-unitaires">
+<h3>Tests unitaires<a class="headerlink" href="#tests-unitaires" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>PowerShell</strong> : Créez des fichiers de test avec le suffixe <code class="docutils literal notranslate"><span class="pre">Test</span></code> (par exemple, <code class="docutils literal notranslate"><span class="pre">MyFunctionTest.ps1</span></code>)</p></li>
+<li><p><strong>Python</strong> : Créez des fichiers de test avec le préfixe <code class="docutils literal notranslate"><span class="pre">test_</span></code> (par exemple, <code class="docutils literal notranslate"><span class="pre">test_my_function.py</span></code>)</p></li>
+</ul>
+</section>
+<section id="verifications-de-securite">
+<h3>Vérifications de sécurité<a class="headerlink" href="#verifications-de-securite" title="Link to this heading"></a></h3>
+<p>Modifiez les patterns de détection des informations sensibles dans le script <code class="docutils literal notranslate"><span class="pre">scripts/ci/run-ci-checks.ps1</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$sensitivePatterns</span> <span class="p">=</span> <span class="p">@(</span>
+    <span class="s2">&quot;password\s*=\s*[&#39;\&quot;</span><span class="p">][^</span><span class="s1">&#39;\&quot;]+[&#39;</span><span class="p">\</span><span class="s2">&quot;]&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;apikey\s*=\s*[&#39;\&quot;</span><span class="p">][^</span><span class="s1">&#39;\&quot;]+[&#39;</span><span class="p">\</span><span class="s2">&quot;]&quot;</span><span class="p">,</span>
+    <span class="c"># Ajoutez vos patterns personnalisés ici</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="deploiement-automatise">
+<h2>Déploiement automatisé<a class="headerlink" href="#deploiement-automatise" title="Link to this heading"></a></h2>
+<p>Le projet inclut un script de déploiement automatisé qui permet de déployer le code vers différents environnements.</p>
+<section id="environnements-disponibles">
+<h3>Environnements disponibles<a class="headerlink" href="#environnements-disponibles" title="Link to this heading"></a></h3>
+<p>Le script de déploiement prend en charge les environnements suivants :</p>
+<ul class="simple">
+<li><p><strong>Development</strong> : Environnement de développement</p></li>
+<li><p><strong>Staging</strong> : Environnement de pré-production</p></li>
+<li><p><strong>Production</strong> : Environnement de production</p></li>
+</ul>
+</section>
+<section id="utilisation-des-scripts-de-deploiement">
+<h3>Utilisation des scripts de déploiement<a class="headerlink" href="#utilisation-des-scripts-de-deploiement" title="Link to this heading"></a></h3>
+<p>Le projet propose deux scripts de déploiement :</p>
+<ol class="simple">
+<li><p><strong>deploy.ps1</strong> : Script de déploiement de base (simulation)</p></li>
+<li><p><strong>deploy-real.ps1</strong> : Script de déploiement réel avec SSH et notifications</p></li>
+</ol>
+<section id="script-de-deploiement-de-base">
+<h4>Script de déploiement de base<a class="headerlink" href="#script-de-deploiement-de-base" title="Link to this heading"></a></h4>
+<p>Pour déployer le projet vers un environnement spécifique, utilisez le script <code class="docutils literal notranslate"><span class="pre">scripts/ci/deploy.ps1</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Déployer vers l&#39;environnement de développement</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Development</span>
+
+<span class="c"># Déployer vers l&#39;environnement de production</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Production</span>
+
+<span class="c"># Déployer sans exécuter les tests</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Staging</span> <span class="n">-SkipTests</span>
+
+<span class="c"># Afficher des informations détaillées pendant le déploiement</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Development</span> <span class="n">-Verbose</span>
+</pre></div>
+</div>
+</section>
+<section id="script-de-deploiement-reel">
+<h4>Script de déploiement réel<a class="headerlink" href="#script-de-deploiement-reel" title="Link to this heading"></a></h4>
+<p>Pour un déploiement réel vers un serveur distant, utilisez le script <code class="docutils literal notranslate"><span class="pre">scripts/ci/deploy-real.ps1</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Déployer vers l&#39;environnement de développement</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy-real</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Development</span>
+
+<span class="c"># Déployer vers l&#39;environnement de production avec notifications</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy-real</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Production</span> <span class="n">-SendNotification</span>
+
+<span class="c"># Déployer sans exécuter les tests</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy-real</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Staging</span> <span class="n">-SkipTests</span>
+
+<span class="c"># Spécifier une adresse email pour les notifications</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy-real</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Production</span> <span class="n">-SendNotification</span> <span class="n">-NotificationEmail</span> <span class="s2">&quot;admin@example.com&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="etapes-du-deploiement">
+<h3>Étapes du déploiement<a class="headerlink" href="#etapes-du-deploiement" title="Link to this heading"></a></h3>
+<p>Le script de déploiement effectue les étapes suivantes :</p>
+<ol class="simple">
+<li><p><strong>Exécution des tests</strong> : Exécute les tests unitaires pour vérifier que le code fonctionne correctement</p></li>
+<li><p><strong>Création du package</strong> : Crée une archive contenant les fichiers nécessaires au déploiement</p></li>
+<li><p><strong>Déploiement</strong> : Copie les fichiers vers le serveur cible</p></li>
+<li><p><strong>Vérification</strong> : Vérifie que le déploiement a réussi</p></li>
+</ol>
+</section>
+<section id="personnalisation-du-deploiement">
+<h3>Personnalisation du déploiement<a class="headerlink" href="#personnalisation-du-deploiement" title="Link to this heading"></a></h3>
+<p>Vous pouvez personnaliser le déploiement en modifiant le script <code class="docutils literal notranslate"><span class="pre">scripts/ci/deploy.ps1</span></code>. Par exemple, vous pouvez :</p>
+<ul class="simple">
+<li><p>Ajouter de nouveaux environnements</p></li>
+<li><p>Modifier les serveurs cibles</p></li>
+<li><p>Ajouter des étapes de déploiement spécifiques</p></li>
+<li><p>Configurer des notifications après le déploiement</p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h2>Tests unitaires<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Le projet inclut des tests unitaires pour vérifier le bon fonctionnement du code. Les tests sont écrits en PowerShell (Pester) et Python (unittest).</p>
+<section id="tests-powershell">
+<h3>Tests PowerShell<a class="headerlink" href="#tests-powershell" title="Link to this heading"></a></h3>
+<p>Les tests PowerShell se trouvent dans le dossier <code class="docutils literal notranslate"><span class="pre">tests/powershell</span></code>. Pour exécuter ces tests, utilisez Pester :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Installer Pester si nécessaire</span>
+<span class="nb">Install-Module</span> <span class="n">-Name</span> <span class="n">Pester</span> <span class="n">-Force</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+
+<span class="c"># Exécuter tous les tests PowerShell</span>
+<span class="nb">Invoke-Pester</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">tests</span><span class="p">\</span><span class="n">powershell</span>
+
+<span class="c"># Exécuter un test spécifique</span>
+<span class="nb">Invoke-Pester</span> <span class="n">-Path</span> <span class="p">.\</span><span class="n">tests</span><span class="p">\</span><span class="n">powershell</span><span class="p">\</span><span class="n">GitHooksTest</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+<section id="tests-python">
+<h3>Tests Python<a class="headerlink" href="#tests-python" title="Link to this heading"></a></h3>
+<p>Les tests Python se trouvent dans le dossier <code class="docutils literal notranslate"><span class="pre">tests/python</span></code>. Pour exécuter ces tests, utilisez unittest ou pytest :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Exécuter tous les tests Python avec unittest</span>
+python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>tests/python
+
+<span class="c1"># Exécuter tous les tests Python avec pytest</span>
+pytest<span class="w"> </span>tests/python
+
+<span class="c1"># Exécuter un test spécifique</span>
+python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>tests.python.test_ci_integration
+</pre></div>
+</div>
+</section>
+<section id="integration-des-tests-dans-le-pipeline-ci-cd">
+<h3>Intégration des tests dans le pipeline CI/CD<a class="headerlink" href="#integration-des-tests-dans-le-pipeline-ci-cd" title="Link to this heading"></a></h3>
+<p>Les tests sont automatiquement exécutés dans le pipeline CI/CD. Si les tests échouent, le pipeline s’arrête et le déploiement n’est pas effectué.</p>
+</section>
+</section>
+<section id="integration-avec-les-hooks-git">
+<h2>Intégration avec les hooks Git<a class="headerlink" href="#integration-avec-les-hooks-git" title="Link to this heading"></a></h2>
+<p>Les vérifications CI/CD sont également intégrées aux hooks Git locaux, ce qui permet de détecter les problèmes avant même de commiter ou de pousser les modifications.</p>
+<section id="hook-pre-commit">
+<h3>Hook pre-commit<a class="headerlink" href="#hook-pre-commit" title="Link to this heading"></a></h3>
+<p>Le hook pre-commit exécute les vérifications suivantes :</p>
+<ul class="simple">
+<li><p>Organisation des fichiers</p></li>
+<li><p>Vérification du style de code</p></li>
+<li><p>Détection des informations sensibles</p></li>
+</ul>
+</section>
+<section id="hook-pre-push">
+<h3>Hook pre-push<a class="headerlink" href="#hook-pre-push" title="Link to this heading"></a></h3>
+<p>Le hook pre-push exécute les vérifications suivantes :</p>
+<ul class="simple">
+<li><p>Détection des conflits non résolus</p></li>
+<li><p>Vérification des fichiers volumineux</p></li>
+<li><p>Exécution des tests unitaires</p></li>
+<li><p>Détection des informations sensibles</p></li>
+</ul>
+</section>
+<section id="installation-des-hooks">
+<h3>Installation des hooks<a class="headerlink" href="#installation-des-hooks" title="Link to this heading"></a></h3>
+<p>Pour installer les hooks Git, utilisez le script <code class="docutils literal notranslate"><span class="pre">scripts/setup/install-git-hooks.ps1</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Installer tous les hooks</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="nb">install-git</span><span class="n">-hooks</span><span class="p">.</span><span class="n">ps1</span>
+
+<span class="c"># Installer avec des liens symboliques (recommandé)</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="nb">install-git</span><span class="n">-hooks</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-UseSymlinks</span>
+
+<span class="c"># Installer uniquement le hook pre-commit</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="nb">install-git</span><span class="n">-hooks</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-SkipPrePush</span>
+
+<span class="c"># Installer uniquement le hook pre-push</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="nb">install-git</span><span class="n">-hooks</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-SkipPreCommit</span>
+</pre></div>
+</div>
+</section>
+<section id="resolution-des-problemes-avec-les-hooks">
+<h3>Résolution des problèmes avec les hooks<a class="headerlink" href="#resolution-des-problemes-avec-les-hooks" title="Link to this heading"></a></h3>
+<p>Si vous rencontrez des problèmes avec les hooks Git, essayez les solutions suivantes :</p>
+<ol>
+<li><p><strong>Utiliser des liens symboliques</strong> : L’option <code class="docutils literal notranslate"><span class="pre">-UseSymlinks</span></code> permet d’utiliser des liens symboliques au lieu de copies directes, ce qui peut résoudre certains problèmes de chemins.</p></li>
+<li><p><strong>Éviter les espaces dans les chemins</strong> : Les espaces dans les chemins peuvent causer des problèmes avec les hooks Git. Essayez de déplacer le projet dans un répertoire sans espaces.</p></li>
+<li><p><strong>Utiliser l’option <code class="docutils literal notranslate"><span class="pre">--no-verify</span></code></strong> : Si les hooks bloquent un commit ou un push urgent, vous pouvez utiliser l’option <code class="docutils literal notranslate"><span class="pre">--no-verify</span></code> pour ignorer les hooks :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>--no-verify<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Commit urgent&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>--no-verify
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="notifications">
+<h2>Notifications<a class="headerlink" href="#notifications" title="Link to this heading"></a></h2>
+<p>Le projet inclut un système de notifications par email pour informer l’équipe des résultats des vérifications CI/CD et des déploiements.</p>
+<section id="notifications-dans-github-actions">
+<h3>Notifications dans GitHub Actions<a class="headerlink" href="#notifications-dans-github-actions" title="Link to this heading"></a></h3>
+<p>Le workflow GitHub Actions envoie des notifications par email dans les cas suivants :</p>
+<ol class="simple">
+<li><p><strong>Échec du pipeline CI/CD</strong> : Un email est envoyé lorsque le pipeline échoue, avec des détails sur la branche, le commit et un lien vers les logs.</p></li>
+<li><p><strong>Succès du pipeline CI/CD</strong> : Un email est envoyé lorsque le pipeline réussit pour les branches <code class="docutils literal notranslate"><span class="pre">main</span></code> et <code class="docutils literal notranslate"><span class="pre">develop</span></code>, avec des détails sur l’environnement de déploiement.</p></li>
+</ol>
+</section>
+<section id="notifications-dans-le-script-de-deploiement-reel">
+<h3>Notifications dans le script de déploiement réel<a class="headerlink" href="#notifications-dans-le-script-de-deploiement-reel" title="Link to this heading"></a></h3>
+<p>Le script <code class="docutils literal notranslate"><span class="pre">deploy-real.ps1</span></code> peut envoyer des notifications par email dans les cas suivants :</p>
+<ol class="simple">
+<li><p><strong>Échec des tests</strong> : Un email est envoyé lorsque les tests échouent avant le déploiement.</p></li>
+<li><p><strong>Échec du déploiement</strong> : Un email est envoyé lorsque le déploiement échoue, avec des détails sur l’erreur.</p></li>
+<li><p><strong>Succès du déploiement</strong> : Un email est envoyé lorsque le déploiement réussit, avec des détails sur la version déployée.</p></li>
+</ol>
+</section>
+<section id="configuration-des-notifications">
+<h3>Configuration des notifications<a class="headerlink" href="#configuration-des-notifications" title="Link to this heading"></a></h3>
+<p>Pour configurer les notifications par email dans GitHub Actions, vous devez ajouter les secrets suivants dans les paramètres du dépôt :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EMAIL_USERNAME</span></code> : Nom d’utilisateur pour le serveur SMTP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EMAIL_PASSWORD</span></code> : Mot de passe pour le serveur SMTP</p></li>
+</ul>
+<p>Pour configurer les notifications par email dans le script de déploiement réel, utilisez les paramètres suivants :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Activer les notifications</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy-real</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Production</span> <span class="n">-SendNotification</span>
+
+<span class="c"># Spécifier une adresse email pour les notifications</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">ci</span><span class="p">\</span><span class="n">deploy-real</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Environment</span> <span class="n">Production</span> <span class="n">-SendNotification</span> <span class="n">-NotificationEmail</span> <span class="s2">&quot;admin@example.com&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="test-des-hooks-git-dans-un-environnement-propre">
+<h2>Test des hooks Git dans un environnement propre<a class="headerlink" href="#test-des-hooks-git-dans-un-environnement-propre" title="Link to this heading"></a></h2>
+<p>Le projet inclut un script pour tester les hooks Git dans un environnement sans espaces dans les chemins. Ce script clone le dépôt dans un répertoire temporaire sans espaces et teste les hooks Git.</p>
+<section id="utilisation-du-script-de-test">
+<h3>Utilisation du script de test<a class="headerlink" href="#utilisation-du-script-de-test" title="Link to this heading"></a></h3>
+<p>Pour tester les hooks Git dans un environnement propre, utilisez le script <code class="docutils literal notranslate"><span class="pre">scripts/setup/test-hooks-clean-env.ps1</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Tester les hooks Git dans un environnement propre</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="nb">test-hooks</span><span class="n">-clean-env</span><span class="p">.</span><span class="n">ps1</span>
+
+<span class="c"># Nettoyer le répertoire temporaire après les tests</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="nb">test-hooks</span><span class="n">-clean-env</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-CleanupAfter</span>
+
+<span class="c"># Spécifier un répertoire temporaire personnalisé</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="nb">test-hooks</span><span class="n">-clean-env</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-TempDir</span> <span class="s2">&quot;D:\Temp\n8n_test&quot;</span>
+
+<span class="c"># Afficher des informations détaillées pendant les tests</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="nb">test-hooks</span><span class="n">-clean-env</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Verbose</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Exécutez les vérifications localement avant de pousser</strong> : Utilisez le script <code class="docutils literal notranslate"><span class="pre">scripts/ci/run-ci-checks.ps1</span></code> pour exécuter les mêmes vérifications que le pipeline CI/CD avant de pousser vos modifications.</p></li>
+<li><p><strong>Créez des tests unitaires</strong> : Créez des tests unitaires pour chaque nouvelle fonctionnalité ou correction de bug. Les tests unitaires permettent de détecter les régressions et de documenter le comportement attendu du code.</p></li>
+<li><p><strong>Testez les hooks Git dans un environnement propre</strong> : Utilisez le script <code class="docutils literal notranslate"><span class="pre">scripts/setup/test-hooks-clean-env.ps1</span></code> pour tester les hooks Git dans un environnement sans espaces dans les chemins.</p></li>
+<li><p><strong>Utilisez le déploiement réel pour les environnements de production</strong> : Utilisez le script <code class="docutils literal notranslate"><span class="pre">scripts/ci/deploy-real.ps1</span></code> pour déployer vers les environnements de production, car il inclut des vérifications et des notifications plus avancées.</p></li>
+<li><p><strong>Configurez les notifications par email</strong> : Configurez les notifications par email pour être informé des résultats des vérifications CI/CD et des déploiements.</p></li>
+<li><p><strong>Respectez les conventions de style</strong> : Suivez les conventions de style de code pour PowerShell et Python. Cela rend le code plus lisible et facilite la collaboration.</p></li>
+<li><p><strong>Ne commettez pas d’informations sensibles</strong> : N’incluez jamais de mots de passe, de clés API ou d’autres informations sensibles dans le code. Utilisez des variables d’environnement ou des fichiers de configuration externes.</p></li>
+<li><p><strong>Utilisez des branches de fonctionnalité</strong> : Créez une branche pour chaque nouvelle fonctionnalité ou correction de bug. Cela permet de travailler sur plusieurs fonctionnalités en parallèle sans interférence.</p></li>
+<li><p><strong>Créez des pull requests</strong> : Utilisez des pull requests pour faire réviser votre code avant de le fusionner dans les branches principales. Cela permet de détecter les problèmes avant qu’ils n’affectent les autres développeurs.</p></li>
+<li><p><strong>Documentez les changements</strong> : Documentez les changements importants dans le journal de bord et les fichiers README appropriés. Cela aide les autres développeurs à comprendre les modifications et leur impact.</p></li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>L’intégration CI/CD est un outil puissant pour maintenir la qualité du code et automatiser les processus de déploiement. En suivant les bonnes pratiques et en utilisant les outils fournis, vous pouvez contribuer à maintenir un code de haute qualité et à faciliter la collaboration au sein de l’équipe.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

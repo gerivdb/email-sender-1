@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Système RAG - Documentation Technique &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Système RAG - Documentation Technique</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/documentation/technique/rag.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="systeme-rag-documentation-technique">
+<h1>Système RAG - Documentation Technique<a class="headerlink" href="#systeme-rag-documentation-technique" title="Link to this heading"></a></h1>
+<section id="vue-d-ensemble">
+<h2>Vue d’ensemble<a class="headerlink" href="#vue-d-ensemble" title="Link to this heading"></a></h2>
+<p>Le système RAG (Retrieval-Augmented Generation) permet d’interroger le journal de bord en langage naturel. Il combine la recherche d’informations pertinentes (retrieval) avec la génération de réponses contextuelles (generation).</p>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>Le système RAG est composé de trois composants principaux:</p>
+<ol class="simple">
+<li><p><strong>Indexation</strong>: Création d’un index des entrées du journal</p></li>
+<li><p><strong>Recherche</strong>: Identification des entrées pertinentes pour une requête</p></li>
+<li><p><strong>Génération</strong>: Création d’une réponse basée sur les entrées pertinentes</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│  Indexation │ ──&gt; │  Recherche  │ ──&gt; │ Génération  │
+└─────────────┘     └─────────────┘     └─────────────┘
+       │                   │                   │
+       ▼                   ▼                   ▼
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│    Index    │     │   Entrées   │     │  Réponse    │
+│             │     │ pertinentes │     │ contextuelle│
+└─────────────┘     └─────────────┘     └─────────────┘
+</pre></div>
+</div>
+</section>
+<section id="implementation">
+<h2>Implémentation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<section id="script-principal-journal-rag-simple-py">
+<h3>Script principal: journal_rag_simple.py<a class="headerlink" href="#script-principal-journal-rag-simple-py" title="Link to this heading"></a></h3>
+<p>Ce script implémente une version simplifiée du système RAG:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Interroger le système RAG</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">python</span><span class="o">/</span><span class="n">journal</span><span class="o">/</span><span class="n">journal_rag_simple</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">query</span> <span class="s2">&quot;Quelles sont les optimisations identifiées pour le système?&quot;</span>
+
+<span class="c1"># Reconstruire l&#39;index</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">python</span><span class="o">/</span><span class="n">journal</span><span class="o">/</span><span class="n">journal_rag_simple</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">rebuild</span>
+
+<span class="c1"># Exporter l&#39;index pour Augment Memories</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">python</span><span class="o">/</span><span class="n">journal</span><span class="o">/</span><span class="n">journal_rag_simple</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">export</span>
+</pre></div>
+</div>
+</section>
+<section id="classe-simplejournalrag">
+<h3>Classe SimpleJournalRAG<a class="headerlink" href="#classe-simplejournalrag" title="Link to this heading"></a></h3>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">SimpleJournalRAG</span></code> implémente le système RAG:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SimpleJournalRAG</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;docs/journal_de_bord/rag&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_dir</span> <span class="o">/</span> <span class="s2">&quot;index.json&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entries_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;docs/journal_de_bord/entries&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_index</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Charge l&#39;index ou le crée s&#39;il n&#39;existe pas</span>
+        <span class="o">...</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Construit l&#39;index à partir des entrées du journal</span>
+        <span class="o">...</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="c1"># Recherche les entrées pertinentes et génère une réponse</span>
+        <span class="o">...</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_for_augment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Exporte l&#39;index pour Augment Memories</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="indexation">
+<h2>Indexation<a class="headerlink" href="#indexation" title="Link to this heading"></a></h2>
+<p>L’indexation consiste à:</p>
+<ol class="simple">
+<li><p>Parcourir toutes les entrées du journal</p></li>
+<li><p>Extraire le contenu et les métadonnées de chaque entrée</p></li>
+<li><p>Diviser le contenu en sections (chunks)</p></li>
+<li><p>Créer un index qui associe chaque chunk à son entrée d’origine</p></li>
+</ol>
+<p>L’index est stocké au format JSON dans <code class="docutils literal notranslate"><span class="pre">docs/journal_de_bord/rag/index.json</span></code>.</p>
+<section id="structure-de-l-index">
+<h3>Structure de l’index<a class="headerlink" href="#structure-de-l-index" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-04-05-14-30-implementation-du-systeme-rag.md&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Implémentation du système RAG&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-04-05&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;14-30&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;rag&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Contenu de la section...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;section&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Actions réalisées&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="err">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="recherche">
+<h2>Recherche<a class="headerlink" href="#recherche" title="Link to this heading"></a></h2>
+<p>La recherche utilise une approche simplifiée basée sur la correspondance de mots-clés:</p>
+<ol class="simple">
+<li><p>Tokenisation de la requête en mots-clés</p></li>
+<li><p>Calcul d’un score de pertinence pour chaque chunk de l’index</p></li>
+<li><p>Sélection des chunks les plus pertinents</p></li>
+</ol>
+<section id="algorithme-de-scoring">
+<h3>Algorithme de scoring<a class="headerlink" href="#algorithme-de-scoring" title="Link to this heading"></a></h3>
+<p>Le score de pertinence est calculé en fonction de:</p>
+<ul class="simple">
+<li><p>La fréquence des mots-clés dans le chunk</p></li>
+<li><p>La présence de mots-clés dans le titre ou les tags</p></li>
+<li><p>La récence de l’entrée</p></li>
+</ul>
+</section>
+</section>
+<section id="generation">
+<h2>Génération<a class="headerlink" href="#generation" title="Link to this heading"></a></h2>
+<p>La génération de réponse est basée sur un template simple:</p>
+<ol class="simple">
+<li><p>Les chunks pertinents sont assemblés</p></li>
+<li><p>Un template de réponse est rempli avec ces informations</p></li>
+<li><p>La réponse est formatée pour être lisible</p></li>
+</ol>
+<section id="template-de-reponse">
+<h3>Template de réponse<a class="headerlink" href="#template-de-reponse" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Voici</span> <span class="n">ce</span> <span class="n">que</span> <span class="n">j</span><span class="s1">&#39;ai trouvé dans le journal de bord concernant votre question:</span>
+
+<span class="p">[</span><span class="n">Résumé</span> <span class="n">des</span> <span class="n">informations</span> <span class="n">trouvées</span><span class="p">]</span>
+
+<span class="n">Sources</span><span class="p">:</span>
+<span class="mf">1.</span> <span class="p">[</span><span class="n">Titre</span> <span class="n">de</span> <span class="n">l</span><span class="s1">&#39;entrée 1] (Date: [Date]) - Section: [Section]</span>
+   <span class="p">[</span><span class="n">Extrait</span> <span class="n">pertinent</span><span class="p">]</span>
+
+<span class="mf">2.</span> <span class="p">[</span><span class="n">Titre</span> <span class="n">de</span> <span class="n">l</span><span class="s1">&#39;entrée 2] (Date: [Date]) - Section: [Section]</span>
+   <span class="p">[</span><span class="n">Extrait</span> <span class="n">pertinent</span><span class="p">]</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-avec-augment-memories">
+<h2>Intégration avec Augment Memories<a class="headerlink" href="#integration-avec-augment-memories" title="Link to this heading"></a></h2>
+<p>Le système RAG peut exporter son index pour Augment Memories:</p>
+<ol class="simple">
+<li><p>L’index est converti au format attendu par Augment</p></li>
+<li><p>Les données sont exportées dans <code class="docutils literal notranslate"><span class="pre">.augment/memories/journal_memories.json</span></code></p></li>
+<li><p>Augment peut alors utiliser ces données comme contexte</p></li>
+</ol>
+<section id="format-d-export-pour-augment">
+<h3>Format d’export pour Augment<a class="headerlink" href="#format-d-export-pour-augment" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[JOURNAL DE BORD] Titre: Contenu...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/fichier.md&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tag1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tag2&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-04-05T14:30:00&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="err">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-avec-mcp">
+<h2>Intégration avec MCP<a class="headerlink" href="#integration-avec-mcp" title="Link to this heading"></a></h2>
+<p>Le système RAG est exposé via MCP (Model Context Protocol) pour permettre aux modèles d’IA d’y accéder directement:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Configuration MCP</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;context_providers&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;journal_de_bord&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;command&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;python scripts/python/journal/journal_rag_simple.py --query \&quot;${query}\&quot;&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;working_directory&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;${workspace_root}&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="limitations-actuelles">
+<h2>Limitations actuelles<a class="headerlink" href="#limitations-actuelles" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Recherche simplifiée</strong>: Utilise une correspondance de mots-clés plutôt que des embeddings vectoriels</p></li>
+<li><p><strong>Pas de génération avancée</strong>: Utilise un template plutôt qu’un LLM pour la génération</p></li>
+<li><p><strong>Pas de contexte conversationnel</strong>: Chaque requête est traitée indépendamment</p></li>
+</ol>
+</section>
+<section id="ameliorations-futures">
+<h2>Améliorations futures<a class="headerlink" href="#ameliorations-futures" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Embeddings vectoriels</strong>: Utiliser des embeddings pour une recherche sémantique plus précise</p></li>
+<li><p><strong>Intégration LLM</strong>: Utiliser un LLM pour la génération de réponses plus naturelles</p></li>
+<li><p><strong>Contexte conversationnel</strong>: Maintenir un historique de conversation</p></li>
+<li><p><strong>Filtrage avancé</strong>: Permettre de filtrer par date, tag, ou section</p></li>
+<li><p><strong>Requêtes structurées</strong>: Supporter des requêtes plus complexes (SQL-like)</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,510 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation : Cache prédictif &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation : Cache prédictif</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user-guides/PredictiveCache.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-cache-predictif">
+<h1>Guide d’utilisation : Cache prédictif<a class="headerlink" href="#guide-d-utilisation-cache-predictif" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Ce guide explique comment utiliser le cache prédictif pour optimiser les performances de vos workflows n8n et autres scripts en mettant en cache les données fréquemment utilisées et en prédisant les prochains accès.</p>
+</section>
+<section id="pourquoi-utiliser-le-cache-predictif">
+<h2>Pourquoi utiliser le cache prédictif ?<a class="headerlink" href="#pourquoi-utiliser-le-cache-predictif" title="Link to this heading"></a></h2>
+<p>Le cache prédictif offre plusieurs avantages :</p>
+<ul class="simple">
+<li><p><strong>Performances améliorées</strong> : Accès rapide aux données fréquemment utilisées.</p></li>
+<li><p><strong>Réduction de la charge</strong> : Moins de requêtes aux sources de données externes.</p></li>
+<li><p><strong>Préchargement intelligent</strong> : Anticipe les besoins en données pour réduire les temps d’attente.</p></li>
+<li><p><strong>Optimisation contextuelle</strong> : Adapte le cache en fonction du contexte d’exécution.</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Aucune installation spéciale n’est requise. Les scripts de cache prédictif sont inclus dans le projet.</p>
+</section>
+<section id="configuration-pour-n8n">
+<h2>Configuration pour n8n<a class="headerlink" href="#configuration-pour-n8n" title="Link to this heading"></a></h2>
+<p>Pour configurer le cache prédictif pour n8n :</p>
+<ol class="simple">
+<li><p>Ouvrez PowerShell.</p></li>
+<li><p>Exécutez le script d’initialisation :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">n8n</span><span class="p">\</span><span class="n">cache</span><span class="p">\</span><span class="nb">Initialize-N8nPredictiveCache</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-N8nApiUrl</span> <span class="s2">&quot;http://localhost:5678/api/v1&quot;</span> <span class="n">-ApiKey</span> <span class="s2">&quot;your_api_key&quot;</span> <span class="n">-MaxCacheSizeMB</span> <span class="n">200</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Cette commande initialisera le cache prédictif avec une taille maximale de 200 MB et enregistrera les hooks nécessaires pour l’intégration avec n8n.</p></li>
+</ol>
+</section>
+<section id="utilisation-de-base">
+<h2>Utilisation de base<a class="headerlink" href="#utilisation-de-base" title="Link to this heading"></a></h2>
+<section id="mettre-en-cache-une-valeur">
+<h3>Mettre en cache une valeur<a class="headerlink" href="#mettre-en-cache-une-valeur" title="Link to this heading"></a></h3>
+<p>Pour mettre une valeur en cache :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">PredictiveCache</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Initialize-PredictiveCache</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CachePath</span> <span class="s2">&quot;.\cache&quot;</span> <span class="n">-ModelPath</span> <span class="s2">&quot;.\models&quot;</span> <span class="n">-MaxCacheSize</span> <span class="n">100MB</span> <span class="n">-DefaultTTL</span> <span class="n">3600</span>
+
+<span class="nv">$value</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">name</span> <span class="p">=</span> <span class="s2">&quot;Test Object&quot;</span>
+    <span class="n">properties</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">prop1</span> <span class="p">=</span> <span class="s2">&quot;Value 1&quot;</span>
+        <span class="n">prop2</span> <span class="p">=</span> <span class="n">123</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nb">Set-PredictiveCache</span> <span class="n">-Key</span> <span class="s2">&quot;test-key&quot;</span> <span class="n">-Value</span> <span class="nv">$value</span> <span class="n">-TTL</span> <span class="n">1800</span>
+</pre></div>
+</div>
+</section>
+<section id="recuperer-une-valeur-du-cache">
+<h3>Récupérer une valeur du cache<a class="headerlink" href="#recuperer-une-valeur-du-cache" title="Link to this heading"></a></h3>
+<p>Pour récupérer une valeur du cache :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$value</span> <span class="p">=</span> <span class="nb">Get-PredictiveCache</span> <span class="n">-Key</span> <span class="s2">&quot;test-key&quot;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">-ne</span> <span class="nv">$null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Valeur trouvée dans le cache: </span><span class="p">$(</span><span class="nv">$value</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Compress</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Valeur non trouvée dans le cache.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="supprimer-une-valeur-du-cache">
+<h3>Supprimer une valeur du cache<a class="headerlink" href="#supprimer-une-valeur-du-cache" title="Link to this heading"></a></h3>
+<p>Pour supprimer une valeur du cache :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$removed</span> <span class="p">=</span> <span class="nb">Remove-PredictiveCache</span> <span class="n">-Key</span> <span class="s2">&quot;test-key&quot;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$removed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Valeur supprimée du cache.&quot;</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Valeur non trouvée dans le cache.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="enregistrer-un-acces-au-cache">
+<h3>Enregistrer un accès au cache<a class="headerlink" href="#enregistrer-un-acces-au-cache" title="Link to this heading"></a></h3>
+<p>Pour enregistrer un accès au cache (pour l’apprentissage des modèles de prédiction) :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Register-CacheAccess</span> <span class="n">-Key</span> <span class="s2">&quot;test-key&quot;</span> <span class="n">-WorkflowId</span> <span class="s2">&quot;workflow1&quot;</span> <span class="n">-NodeId</span> <span class="s2">&quot;node1&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="obtenir-des-predictions">
+<h3>Obtenir des prédictions<a class="headerlink" href="#obtenir-des-predictions" title="Link to this heading"></a></h3>
+<p>Pour obtenir des prédictions sur les prochains accès au cache :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$predictions</span> <span class="p">=</span> <span class="nb">Get-PredictedCacheKeys</span> <span class="n">-Key</span> <span class="s2">&quot;test-key&quot;</span> <span class="n">-WorkflowId</span> <span class="s2">&quot;workflow1&quot;</span> <span class="n">-NodeId</span> <span class="s2">&quot;node1&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$prediction</span> <span class="k">in</span> <span class="nv">$predictions</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Clé prédite: </span><span class="p">$(</span><span class="nv">$prediction</span><span class="p">.</span><span class="n">Key</span><span class="p">)</span><span class="s2"> (probabilité: </span><span class="p">$(</span><span class="nv">$prediction</span><span class="p">.</span><span class="n">Probability</span><span class="p">)</span><span class="s2">)&quot;</span>
+    
+    <span class="c"># Précharger la valeur prédite</span>
+    <span class="nv">$predictedValue</span> <span class="p">=</span> <span class="nb">Get-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$prediction</span><span class="p">.</span><span class="n">Key</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utilisation-avec-n8n">
+<h2>Utilisation avec n8n<a class="headerlink" href="#utilisation-avec-n8n" title="Link to this heading"></a></h2>
+<section id="dans-les-workflows-n8n">
+<h3>Dans les workflows n8n<a class="headerlink" href="#dans-les-workflows-n8n" title="Link to this heading"></a></h3>
+<p>Une fois le cache prédictif configuré pour n8n, vous pouvez l’utiliser dans vos workflows via l’objet global <code class="docutils literal notranslate"><span class="pre">$predictiveCache</span></code> :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Dans un nœud Function de n8n</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;example-key&#39;</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;example-value&#39;</span><span class="w"> </span><span class="p">};</span>
+
+<span class="c1">// Mettre en cache la valeur</span>
+<span class="nx">$predictiveCache</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">);</span>
+
+<span class="c1">// Récupérer la valeur du cache</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">cachedValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$predictiveCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+
+<span class="c1">// Obtenir des prédictions</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">predictions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$predictiveCache</span><span class="p">.</span><span class="nx">predict</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+
+<span class="c1">// Afficher les résultats</span>
+<span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">key</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">value</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">cachedValue</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">predictions</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-de-workflow-n8n">
+<h3>Exemple de workflow n8n<a class="headerlink" href="#exemple-de-workflow-n8n" title="Link to this heading"></a></h3>
+<p>Un workflow d’exemple est créé automatiquement lors de l’initialisation du cache prédictif. Vous pouvez l’utiliser comme référence pour intégrer le cache prédictif dans vos propres workflows.</p>
+</section>
+</section>
+<section id="options-avancees">
+<h2>Options avancées<a class="headerlink" href="#options-avancees" title="Link to this heading"></a></h2>
+<section id="specifier-une-duree-de-vie-ttl">
+<h3>Spécifier une durée de vie (TTL)<a class="headerlink" href="#specifier-une-duree-de-vie-ttl" title="Link to this heading"></a></h3>
+<p>Pour spécifier une durée de vie personnalisée pour une entrée de cache :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-PredictiveCache</span> <span class="n">-Key</span> <span class="s2">&quot;test-key&quot;</span> <span class="n">-Value</span> <span class="nv">$value</span> <span class="n">-TTL</span> <span class="n">3600</span>  <span class="c"># 1 heure</span>
+</pre></div>
+</div>
+</section>
+<section id="invalider-les-entrees-liees">
+<h3>Invalider les entrées liées<a class="headerlink" href="#invalider-les-entrees-liees" title="Link to this heading"></a></h3>
+<p>Pour supprimer une entrée du cache et toutes les entrées liées :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Remove-PredictiveCache</span> <span class="n">-Key</span> <span class="s2">&quot;test-key&quot;</span> <span class="n">-InvalidateRelated</span>
+</pre></div>
+</div>
+</section>
+<section id="optimiser-la-taille-du-cache">
+<h3>Optimiser la taille du cache<a class="headerlink" href="#optimiser-la-taille-du-cache" title="Link to this heading"></a></h3>
+<p>Pour optimiser manuellement la taille du cache :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Optimize-CacheSize</span>
+</pre></div>
+</div>
+<p>Cette fonction est également appelée automatiquement lorsque la taille du cache dépasse la taille maximale configurée.</p>
+</section>
+</section>
+<section id="exemples-pratiques">
+<h2>Exemples pratiques<a class="headerlink" href="#exemples-pratiques" title="Link to this heading"></a></h2>
+<section id="exemple-1-mise-en-cache-des-resultats-d-api">
+<h3>Exemple 1 : Mise en cache des résultats d’API<a class="headerlink" href="#exemple-1-mise-en-cache-des-resultats-d-api" title="Link to this heading"></a></h3>
+<p>Supposons que vous avez une fonction qui récupère des données d’une API externe :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Get-ApiData</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="no">[string]</span><span class="nv">$Endpoint</span><span class="p">,</span>
+        <span class="no">[hashtable]</span><span class="nv">$Parameters</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Créer une clé de cache basée sur l&#39;endpoint et les paramètres</span>
+    <span class="nv">$paramString</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$Parameters</span><span class="p">.</span><span class="n">GetEnumerator</span><span class="p">()</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">Name</span> <span class="p">|</span> <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span> <span class="s2">&quot;</span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span><span class="s2">=</span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Value</span><span class="p">)</span><span class="s2">&quot;</span> <span class="p">})</span> <span class="n">-join</span> <span class="s2">&quot;&amp;&quot;</span>
+    <span class="nv">$cacheKey</span> <span class="p">=</span> <span class="s2">&quot;api:$Endpoint:$paramString&quot;</span>
+    
+    <span class="c"># Essayer de récupérer du cache</span>
+    <span class="nv">$cachedData</span> <span class="p">=</span> <span class="nb">Get-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$cachedData</span> <span class="o">-ne</span> <span class="nv">$null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Données récupérées du cache.&quot;</span>
+        <span class="k">return</span> <span class="nv">$cachedData</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Récupérer les données de l&#39;API</span>
+    <span class="nv">$uri</span> <span class="p">=</span> <span class="s2">&quot;https://api.example.com/$Endpoint&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$Parameters</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$uri</span> <span class="p">+=</span> <span class="s2">&quot;?&quot;</span> <span class="p">+</span> <span class="nv">$paramString</span>
+    <span class="p">}</span>
+    
+    <span class="nv">$response</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="nv">$uri</span> <span class="n">-Method</span> <span class="n">Get</span>
+    
+    <span class="c"># Mettre en cache les données (TTL de 30 minutes)</span>
+    <span class="nb">Set-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span> <span class="n">-Value</span> <span class="nv">$response</span> <span class="n">-TTL</span> <span class="n">1800</span>
+    
+    <span class="c"># Enregistrer l&#39;accès au cache</span>
+    <span class="nb">Register-CacheAccess</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span> <span class="n">-WorkflowId</span> <span class="s2">&quot;api-workflow&quot;</span> <span class="n">-NodeId</span> <span class="s2">&quot;get-data&quot;</span>
+    
+    <span class="k">return</span> <span class="nv">$response</span>
+<span class="p">}</span>
+
+<span class="c"># Utilisation</span>
+<span class="nv">$data</span> <span class="p">=</span> <span class="nb">Get-ApiData</span> <span class="n">-Endpoint</span> <span class="s2">&quot;users&quot;</span> <span class="n">-Parameters</span> <span class="p">@{</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">10</span><span class="p">;</span> <span class="n">offset</span> <span class="p">=</span> <span class="n">0</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-prechargement-intelligent">
+<h3>Exemple 2 : Préchargement intelligent<a class="headerlink" href="#exemple-2-prechargement-intelligent" title="Link to this heading"></a></h3>
+<p>Pour précharger intelligemment les données susceptibles d’être demandées prochainement :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Get-UserData</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="no">[int]</span><span class="nv">$UserId</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$cacheKey</span> <span class="p">=</span> <span class="s2">&quot;user:$UserId&quot;</span>
+    
+    <span class="c"># Essayer de récupérer du cache</span>
+    <span class="nv">$userData</span> <span class="p">=</span> <span class="nb">Get-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$userData</span> <span class="o">-ne</span> <span class="nv">$null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Données utilisateur récupérées du cache.&quot;</span>
+        
+        <span class="c"># Enregistrer l&#39;accès au cache</span>
+        <span class="nb">Register-CacheAccess</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span> <span class="n">-WorkflowId</span> <span class="s2">&quot;user-workflow&quot;</span> <span class="n">-NodeId</span> <span class="s2">&quot;get-user&quot;</span>
+        
+        <span class="c"># Obtenir des prédictions et précharger</span>
+        <span class="nv">$predictions</span> <span class="p">=</span> <span class="nb">Get-PredictedCacheKeys</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span> <span class="n">-WorkflowId</span> <span class="s2">&quot;user-workflow&quot;</span> <span class="n">-NodeId</span> <span class="s2">&quot;get-user&quot;</span>
+        
+        <span class="c"># Précharger en arrière-plan</span>
+        <span class="nb">Start-Job</span> <span class="n">-ScriptBlock</span> <span class="p">{</span>
+            <span class="k">param</span><span class="p">(</span><span class="nv">$predictions</span><span class="p">,</span> <span class="nv">$modulePath</span><span class="p">)</span>
+            
+            <span class="nb">Import-Module</span> <span class="nv">$modulePath</span> <span class="n">-Force</span>
+            
+            <span class="k">foreach</span> <span class="p">(</span><span class="nv">$prediction</span> <span class="k">in</span> <span class="nv">$predictions</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$predictedKey</span> <span class="p">=</span> <span class="nv">$prediction</span><span class="p">.</span><span class="n">Key</span>
+                <span class="nv">$predictedUserId</span> <span class="p">=</span> <span class="nv">$predictedKey</span> <span class="o">-replace</span> <span class="s2">&quot;user:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+                
+                <span class="c"># Vérifier si déjà en cache</span>
+                <span class="nv">$predictedData</span> <span class="p">=</span> <span class="nb">Get-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$predictedKey</span>
+                
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$predictedData</span> <span class="o">-eq</span> <span class="nv">$null</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c"># Récupérer les données</span>
+                    <span class="nv">$uri</span> <span class="p">=</span> <span class="s2">&quot;https://api.example.com/users/$predictedUserId&quot;</span>
+                    <span class="nv">$response</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="nv">$uri</span> <span class="n">-Method</span> <span class="n">Get</span>
+                    
+                    <span class="c"># Mettre en cache</span>
+                    <span class="nb">Set-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$predictedKey</span> <span class="n">-Value</span> <span class="nv">$response</span> <span class="n">-TTL</span> <span class="n">1800</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="n">-ArgumentList</span> <span class="nv">$predictions</span><span class="p">,</span> <span class="p">(</span><span class="nb">Join-Path</span> <span class="n">-Path</span> <span class="nv">$PSScriptRoot</span> <span class="n">-ChildPath</span> <span class="s2">&quot;modules\PredictiveCache.psm1&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="nv">$userData</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Récupérer les données de l&#39;API</span>
+    <span class="nv">$uri</span> <span class="p">=</span> <span class="s2">&quot;https://api.example.com/users/$UserId&quot;</span>
+    <span class="nv">$response</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="nv">$uri</span> <span class="n">-Method</span> <span class="n">Get</span>
+    
+    <span class="c"># Mettre en cache les données</span>
+    <span class="nb">Set-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span> <span class="n">-Value</span> <span class="nv">$response</span> <span class="n">-TTL</span> <span class="n">1800</span>
+    
+    <span class="c"># Enregistrer l&#39;accès au cache</span>
+    <span class="nb">Register-CacheAccess</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span> <span class="n">-WorkflowId</span> <span class="s2">&quot;user-workflow&quot;</span> <span class="n">-NodeId</span> <span class="s2">&quot;get-user&quot;</span>
+    
+    <span class="k">return</span> <span class="nv">$response</span>
+<span class="p">}</span>
+
+<span class="c"># Utilisation</span>
+<span class="nv">$user</span> <span class="p">=</span> <span class="nb">Get-UserData</span> <span class="n">-UserId</span> <span class="n">123</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-3-utilisation-dans-un-workflow-n8n">
+<h3>Exemple 3 : Utilisation dans un workflow n8n<a class="headerlink" href="#exemple-3-utilisation-dans-un-workflow-n8n" title="Link to this heading"></a></h3>
+<p>Voici un exemple de code JavaScript à utiliser dans un nœud Function de n8n :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Récupérer des données utilisateur avec mise en cache</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">items</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">json</span><span class="p">.</span><span class="nx">userId</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">cacheKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`user:</span><span class="si">${</span><span class="nx">userId</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+
+<span class="c1">// Essayer de récupérer du cache</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">userData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$predictiveCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">cacheKey</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">userData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Données trouvées dans le cache</span>
+<span class="w">  </span><span class="nx">items</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">json</span><span class="p">.</span><span class="nx">userDataSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;cache&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">items</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">json</span><span class="p">.</span><span class="nx">userData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">userData</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Obtenir des prédictions</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">predictions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$predictiveCache</span><span class="p">.</span><span class="nx">predict</span><span class="p">(</span><span class="nx">cacheKey</span><span class="p">);</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Précharger les prédictions</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">prediction</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">predictions</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">predictedKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">prediction</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">$predictiveCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">predictedKey</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// La valeur n&#39;est pas en cache, la précharger en arrière-plan</span>
+<span class="w">      </span><span class="c1">// (Dans un cas réel, vous utiliseriez un nœud HTTP Request séparé)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Données non trouvées dans le cache, les récupérer</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">apiUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`https://api.example.com/users/</span><span class="si">${</span><span class="nx">userId</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Dans un cas réel, vous utiliseriez un nœud HTTP Request</span>
+<span class="w">  </span><span class="c1">// Simulons une réponse pour cet exemple</span>
+<span class="w">  </span><span class="nx">userData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="nx">userId</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="sb">`User </span><span class="si">${</span><span class="nx">userId</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="sb">`user</span><span class="si">${</span><span class="nx">userId</span><span class="si">}</span><span class="sb">@example.com`</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Mettre en cache les données (TTL de 30 minutes)</span>
+<span class="w">  </span><span class="nx">$predictiveCache</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">cacheKey</span><span class="p">,</span><span class="w"> </span><span class="nx">userData</span><span class="p">,</span><span class="w"> </span><span class="mf">1800</span><span class="p">);</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="nx">items</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">json</span><span class="p">.</span><span class="nx">userDataSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;api&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">items</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">json</span><span class="p">.</span><span class="nx">userData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">userData</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">return</span><span class="w"> </span><span class="nx">items</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<section id="pour-une-utilisation-efficace-du-cache">
+<h3>Pour une utilisation efficace du cache<a class="headerlink" href="#pour-une-utilisation-efficace-du-cache" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Utilisez des clés descriptives</strong> : Les clés de cache doivent être uniques et descriptives.</p></li>
+<li><p><strong>Définissez des TTL appropriés</strong> : Adaptez la durée de vie en fonction de la fraîcheur requise des données.</p></li>
+<li><p><strong>Enregistrez les accès au cache</strong> : Utilisez <code class="docutils literal notranslate"><span class="pre">Register-CacheAccess</span></code> pour améliorer les prédictions.</p></li>
+<li><p><strong>Préchargez en arrière-plan</strong> : Utilisez des jobs ou des threads séparés pour le préchargement.</p></li>
+<li><p><strong>Surveillez la taille du cache</strong> : Évitez de mettre en cache des objets trop volumineux.</p></li>
+</ol>
+</section>
+<section id="pour-l-integration-avec-n8n">
+<h3>Pour l’intégration avec n8n<a class="headerlink" href="#pour-l-integration-avec-n8n" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Utilisez l’objet global</strong> : Accédez au cache via l’objet <code class="docutils literal notranslate"><span class="pre">$predictiveCache</span></code>.</p></li>
+<li><p><strong>Structurez vos workflows</strong> : Organisez vos workflows pour maximiser les avantages du cache.</p></li>
+<li><p><strong>Combinez avec d’autres fonctionnalités</strong> : Utilisez le cache avec d’autres optimisations comme le traitement parallèle.</p></li>
+</ol>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="probleme-valeurs-non-trouvees-dans-le-cache">
+<h3>Problème : Valeurs non trouvées dans le cache<a class="headerlink" href="#probleme-valeurs-non-trouvees-dans-le-cache" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Vérifiez que la clé est correcte et que la valeur n’a pas expiré (TTL).</p>
+</section>
+<section id="probleme-predictions-incorrectes">
+<h3>Problème : Prédictions incorrectes<a class="headerlink" href="#probleme-predictions-incorrectes" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Assurez-vous d’enregistrer correctement les accès au cache avec <code class="docutils literal notranslate"><span class="pre">Register-CacheAccess</span></code>.</p>
+</section>
+<section id="probleme-performances-lentes">
+<h3>Problème : Performances lentes<a class="headerlink" href="#probleme-performances-lentes" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Réduisez la taille des objets mis en cache ou augmentez la taille maximale du cache.</p>
+</section>
+</section>
+<section id="integration-avec-d-autres-outils">
+<h2>Intégration avec d’autres outils<a class="headerlink" href="#integration-avec-d-autres-outils" title="Link to this heading"></a></h2>
+<section id="integration-avec-le-monitoring">
+<h3>Intégration avec le monitoring<a class="headerlink" href="#integration-avec-le-monitoring" title="Link to this heading"></a></h3>
+<p>Vous pouvez surveiller les performances du cache prédictif :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Get-CachePerformanceMetrics</span> <span class="p">{</span>
+    <span class="nv">$cacheStats</span> <span class="p">=</span> <span class="nb">Get-PredictiveCacheStats</span>
+    
+    <span class="nv">$hitRate</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$cacheStats</span><span class="p">.</span><span class="n">TotalRequests</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">CacheHits</span> <span class="p">/</span> <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">TotalRequests</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">0</span>
+    <span class="p">}</span>
+    
+    <span class="nv">$metrics</span> <span class="p">=</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+        <span class="n">Timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span>
+        <span class="n">CacheSize</span> <span class="p">=</span> <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">CacheSize</span>
+        <span class="n">MaxCacheSize</span> <span class="p">=</span> <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">MaxCacheSize</span>
+        <span class="n">CacheUtilization</span> <span class="p">=</span> <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">CacheSize</span> <span class="p">/</span> <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">MaxCacheSize</span>
+        <span class="n">TotalRequests</span> <span class="p">=</span> <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">TotalRequests</span>
+        <span class="n">CacheHits</span> <span class="p">=</span> <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">CacheHits</span>
+        <span class="n">CacheMisses</span> <span class="p">=</span> <span class="nv">$cacheStats</span><span class="p">.</span><span class="n">CacheMisses</span>
+        <span class="n">HitRate</span> <span class="p">=</span> <span class="nv">$hitRate</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$metrics</span>
+<span class="p">}</span>
+
+<span class="c"># Enregistrer les métriques</span>
+<span class="nv">$metrics</span> <span class="p">=</span> <span class="nb">Get-CachePerformanceMetrics</span>
+<span class="nv">$metrics</span> <span class="p">|</span> <span class="nb">Export-Csv</span> <span class="n">-Path</span> <span class="s2">&quot;.\logs\cache_metrics_</span><span class="p">$(</span><span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="s1">&#39;yyyyMMdd&#39;</span><span class="p">)</span><span class="s2">.csv&quot;</span> <span class="n">-Append</span> <span class="n">-NoTypeInformation</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-avec-le-systeme-de-feedback">
+<h3>Intégration avec le système de feedback<a class="headerlink" href="#integration-avec-le-systeme-de-feedback" title="Link to this heading"></a></h3>
+<p>Si vous trouvez des problèmes avec le cache prédictif, vous pouvez soumettre un feedback :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">FeedbackCollection</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Submit-Feedback</span> <span class="n">-Component</span> <span class="s2">&quot;PredictiveCache&quot;</span> <span class="n">-FeedbackType</span> <span class="s2">&quot;Performance Issue&quot;</span> <span class="n">-Description</span> <span class="s2">&quot;Description du problème&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Le cache prédictif est un outil puissant pour optimiser les performances de vos workflows et scripts. En mettant en cache les données fréquemment utilisées et en prédisant les prochains accès, vous pouvez réduire considérablement les temps de réponse et la charge sur les systèmes externes.</p>
+<p>Pour plus d’informations techniques, consultez la <a class="reference internal" href="../technical/PredictiveCache.html"><span class="doc">documentation technique du module PredictiveCache</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

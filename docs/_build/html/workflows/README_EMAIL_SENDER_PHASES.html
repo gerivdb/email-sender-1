@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Sender - Structure Modulaire &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Email Sender - Structure Modulaire</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/workflows/README_EMAIL_SENDER_PHASES.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="email-sender-structure-modulaire">
+<h1>Email Sender - Structure Modulaire<a class="headerlink" href="#email-sender-structure-modulaire" title="Link to this heading"></a></h1>
+<p>Ce projet est structuré en 6 phases distinctes, chacune implémentée dans un fichier JSON séparé. Cette approche modulaire facilite la maintenance, le débogage et l’évolution du système.</p>
+<section id="vue-d-ensemble-des-phases">
+<h2>Vue d’ensemble des phases<a class="headerlink" href="#vue-d-ensemble-des-phases" title="Link to this heading"></a></h2>
+<section id="phase-1-gestion-des-disponibilites">
+<h3>Phase 1: Gestion des Disponibilités<a class="headerlink" href="#phase-1-gestion-des-disponibilites" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">EMAIL_SENDER_PHASE1.json</span></code></p></li>
+<li><p><strong>Déclencheur</strong>: Cron hebdomadaire</p></li>
+<li><p><strong>Objectif</strong>: Consolider les indisponibilités Notion &amp; Google Calendar</p></li>
+<li><p><strong>Sortie</strong>: Liste des créneaux disponibles pour les concerts</p></li>
+</ul>
+</section>
+<section id="phase-2-generation-envoi-des-emails">
+<h3>Phase 2: Génération &amp; Envoi des Emails<a class="headerlink" href="#phase-2-generation-envoi-des-emails" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">EMAIL_SENDER_PHASE2.json</span></code></p></li>
+<li><p><strong>Déclencheur</strong>: Exécution de la Phase 1</p></li>
+<li><p><strong>Objectif</strong>: Générer des emails personnalisés avec l’IA et les envoyer</p></li>
+<li><p><strong>Sortie</strong>: Emails envoyés et statuts mis à jour dans Notion</p></li>
+</ul>
+</section>
+<section id="phase-3-traitement-des-reponses">
+<h3>Phase 3: Traitement des Réponses<a class="headerlink" href="#phase-3-traitement-des-reponses" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">EMAIL_SENDER_PHASE3.json</span></code></p></li>
+<li><p><strong>Déclencheur</strong>: Réception d’emails de réponse</p></li>
+<li><p><strong>Objectif</strong>: Analyser les réponses et mettre à jour Notion</p></li>
+<li><p><strong>Sortie</strong>: Statuts des contacts mis à jour dans Notion</p></li>
+</ul>
+</section>
+<section id="phase-4-gestion-des-concerts-confirmes">
+<h3>Phase 4: Gestion des Concerts Confirmés<a class="headerlink" href="#phase-4-gestion-des-concerts-confirmes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">EMAIL_SENDER_PHASE4.json</span></code></p></li>
+<li><p><strong>Déclencheur</strong>: Cron toutes les 30 minutes (vérifie les confirmations)</p></li>
+<li><p><strong>Objectif</strong>: Créer des événements dans Google Calendar</p></li>
+<li><p><strong>Sortie</strong>: Événements créés et statuts mis à jour dans Notion</p></li>
+</ul>
+</section>
+<section id="phase-5-suivi-post-concert">
+<h3>Phase 5: Suivi Post-Concert<a class="headerlink" href="#phase-5-suivi-post-concert" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">EMAIL_SENDER_PHASE5.json</span></code></p></li>
+<li><p><strong>Déclencheur</strong>: Cron quotidien (vérifie les concerts passés)</p></li>
+<li><p><strong>Objectif</strong>: Envoyer des emails de remerciement</p></li>
+<li><p><strong>Sortie</strong>: Emails envoyés et statuts mis à jour dans Notion</p></li>
+</ul>
+</section>
+<section id="phase-6-evaluation-et-planification-future">
+<h3>Phase 6: Évaluation et Planification Future<a class="headerlink" href="#phase-6-evaluation-et-planification-future" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Fichier</strong>: <code class="docutils literal notranslate"><span class="pre">EMAIL_SENDER_PHASE6.json</span></code></p></li>
+<li><p><strong>Déclencheur</strong>: Cron hebdomadaire</p></li>
+<li><p><strong>Objectif</strong>: Analyser les données et générer des rapports</p></li>
+<li><p><strong>Sortie</strong>: Rapports envoyés par email</p></li>
+</ul>
+</section>
+</section>
+<section id="communication-entre-les-phases">
+<h2>Communication entre les phases<a class="headerlink" href="#communication-entre-les-phases" title="Link to this heading"></a></h2>
+<p>Les phases communiquent entre elles de deux manières principales:</p>
+<ol class="simple">
+<li><p><strong>Via la base de données Notion</strong>:</p>
+<ul class="simple">
+<li><p>Chaque phase met à jour les statuts dans Notion</p></li>
+<li><p>Les phases suivantes lisent ces statuts pour déterminer les actions à prendre</p></li>
+<li><p>Notion sert de “source de vérité” centrale</p></li>
+</ul>
+</li>
+<li><p><strong>Via des déclencheurs directs</strong>:</p>
+<ul class="simple">
+<li><p>La Phase 2 est déclenchée directement par la Phase 1</p></li>
+<li><p>Les autres phases utilisent des déclencheurs temporels (Cron) ou événementiels (réception d’emails)</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="flux-de-donnees">
+<h2>Flux de données<a class="headerlink" href="#flux-de-donnees" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Phase 1 (Disponibilités) → Phase 2 (Emails) → Phase 3 (Réponses) → Phase 4 (Confirmations) → Phase 5 (Post-Concert) → Phase 6 (Évaluation)
+</pre></div>
+</div>
+</section>
+<section id="installation-et-configuration">
+<h2>Installation et configuration<a class="headerlink" href="#installation-et-configuration" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Importez chaque fichier JSON dans n8n</p></li>
+<li><p>Configurez les credentials pour:</p>
+<ul class="simple">
+<li><p>Notion</p></li>
+<li><p>Gmail</p></li>
+<li><p>Google Calendar</p></li>
+<li><p>OpenRouter (pour l’IA)</p></li>
+</ul>
+</li>
+<li><p>Activez les workflows dans l’ordre des phases</p></li>
+</ol>
+</section>
+<section id="maintenance">
+<h2>Maintenance<a class="headerlink" href="#maintenance" title="Link to this heading"></a></h2>
+<p>Pour modifier une phase spécifique:</p>
+<ol class="simple">
+<li><p>Ouvrez le fichier JSON correspondant</p></li>
+<li><p>Effectuez vos modifications</p></li>
+<li><p>Testez la phase individuellement</p></li>
+<li><p>Vérifiez l’intégration avec les phases adjacentes</p></li>
+</ol>
+</section>
+<section id="avantages-de-cette-structure-modulaire">
+<h2>Avantages de cette structure modulaire<a class="headerlink" href="#avantages-de-cette-structure-modulaire" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Isolation</strong>: Les problèmes dans une phase n’affectent pas les autres</p></li>
+<li><p><strong>Testabilité</strong>: Chaque phase peut être testée indépendamment</p></li>
+<li><p><strong>Évolutivité</strong>: Nouvelles fonctionnalités peuvent être ajoutées à des phases spécifiques</p></li>
+<li><p><strong>Clarté</strong>: Chaque phase a un objectif clair et bien défini</p></li>
+<li><p><strong>Performance</strong>: Les workflows plus petits sont plus efficaces</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

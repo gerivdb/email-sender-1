@@ -1,0 +1,202 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide sur le dossier .n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide sur le dossier .n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_DOSSIER_N8N.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-sur-le-dossier-n8n">
+<h1>Guide sur le dossier .n8n<a class="headerlink" href="#guide-sur-le-dossier-n8n" title="Link to this heading"></a></h1>
+<section id="qu-est-ce-que-le-dossier-n8n">
+<h2>Qu’est-ce que le dossier .n8n ?<a class="headerlink" href="#qu-est-ce-que-le-dossier-n8n" title="Link to this heading"></a></h2>
+<p>Le dossier <code class="docutils literal notranslate"><span class="pre">.n8n</span></code> est un dossier spécial utilisé par n8n pour stocker sa configuration locale et ses données. Il s’agit d’un élément essentiel de l’infrastructure n8n qui contient toutes les informations nécessaires au fonctionnement de l’application.</p>
+</section>
+<section id="fonctions-principales-du-dossier-n8n">
+<h2>Fonctions principales du dossier .n8n<a class="headerlink" href="#fonctions-principales-du-dossier-n8n" title="Link to this heading"></a></h2>
+<section id="configuration-locale">
+<h3>1. Configuration locale<a class="headerlink" href="#configuration-locale" title="Link to this heading"></a></h3>
+<p>Le dossier <code class="docutils literal notranslate"><span class="pre">.n8n</span></code> contient les fichiers de configuration spécifiques à votre installation n8n, notamment :</p>
+<ul class="simple">
+<li><p>Les paramètres de connexion à la base de données</p></li>
+<li><p>Les ports utilisés par l’application</p></li>
+<li><p>Les options de configuration personnalisées</p></li>
+<li><p>Les paramètres d’environnement</p></li>
+</ul>
+</section>
+<section id="base-de-donnees">
+<h3>2. Base de données<a class="headerlink" href="#base-de-donnees" title="Link to this heading"></a></h3>
+<p>Par défaut, n8n utilise une base de données SQLite stockée dans ce dossier (généralement un fichier <code class="docutils literal notranslate"><span class="pre">database.sqlite</span></code>) qui contient :</p>
+<ul class="simple">
+<li><p>Tous vos workflows</p></li>
+<li><p>Les informations d’exécution des workflows</p></li>
+<li><p>Les variables d’environnement</p></li>
+<li><p>Les configurations des nœuds</p></li>
+</ul>
+</section>
+<section id="credentials-chiffrees">
+<h3>3. Credentials chiffrées<a class="headerlink" href="#credentials-chiffrees" title="Link to this heading"></a></h3>
+<p>Les informations d’identification sensibles sont stockées de manière chiffrée dans ce dossier :</p>
+<ul class="simple">
+<li><p>API keys</p></li>
+<li><p>Mots de passe</p></li>
+<li><p>Tokens d’authentification</p></li>
+<li><p>Autres informations sensibles</p></li>
+</ul>
+</section>
+<section id="cache-et-donnees-temporaires">
+<h3>4. Cache et données temporaires<a class="headerlink" href="#cache-et-donnees-temporaires" title="Link to this heading"></a></h3>
+<p>n8n stocke également des données de cache et des fichiers temporaires dans ce dossier pour améliorer les performances :</p>
+<ul class="simple">
+<li><p>Cache des exécutions</p></li>
+<li><p>Données temporaires des workflows</p></li>
+<li><p>Fichiers intermédiaires</p></li>
+</ul>
+</section>
+<section id="logs">
+<h3>5. Logs<a class="headerlink" href="#logs" title="Link to this heading"></a></h3>
+<p>Selon votre configuration, certains fichiers de logs peuvent être stockés dans ce dossier :</p>
+<ul class="simple">
+<li><p>Logs d’erreurs</p></li>
+<li><p>Logs d’exécution</p></li>
+<li><p>Logs de débogage</p></li>
+</ul>
+</section>
+</section>
+<section id="emplacement-du-dossier-n8n">
+<h2>Emplacement du dossier .n8n<a class="headerlink" href="#emplacement-du-dossier-n8n" title="Link to this heading"></a></h2>
+<p>L’emplacement par défaut du dossier <code class="docutils literal notranslate"><span class="pre">.n8n</span></code> dépend de votre système d’exploitation :</p>
+<ul class="simple">
+<li><p><strong>Linux/Mac</strong> : <code class="docutils literal notranslate"><span class="pre">~/.n8n</span></code></p></li>
+<li><p><strong>Windows</strong> : <code class="docutils literal notranslate"><span class="pre">%USERPROFILE%\.n8n</span></code></p></li>
+</ul>
+<p>Dans votre projet, le dossier <code class="docutils literal notranslate"><span class="pre">.n8n</span></code> semble être présent directement dans le répertoire du projet, ce qui permet de maintenir une configuration spécifique au projet.</p>
+</section>
+<section id="importance-pour-la-sauvegarde">
+<h2>Importance pour la sauvegarde<a class="headerlink" href="#importance-pour-la-sauvegarde" title="Link to this heading"></a></h2>
+<p>Lors de la sauvegarde de votre projet n8n, il est crucial d’inclure le dossier <code class="docutils literal notranslate"><span class="pre">.n8n</span></code> car il contient :</p>
+<ul class="simple">
+<li><p>Tous vos workflows</p></li>
+<li><p>Toutes vos credentials (chiffrées)</p></li>
+<li><p>Toute la configuration de votre instance n8n</p></li>
+</ul>
+<p>Sans ce dossier, vous perdriez l’ensemble de votre travail et de votre configuration.</p>
+</section>
+<section id="precautions-importantes">
+<h2>Précautions importantes<a class="headerlink" href="#precautions-importantes" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Ne pas modifier manuellement</strong> : Ne modifiez jamais manuellement les fichiers dans ce dossier, car cela pourrait corrompre votre installation n8n.</p></li>
+<li><p><strong>Ne pas partager les credentials</strong> : Bien que les credentials soient chiffrées, évitez de partager directement le dossier <code class="docutils literal notranslate"><span class="pre">.n8n</span></code> avec d’autres personnes. Utilisez plutôt les fonctionnalités d’export/import de n8n.</p></li>
+<li><p><strong>Sauvegarde régulière</strong> : Effectuez des sauvegardes régulières de ce dossier pour éviter la perte de données.</p></li>
+<li><p><strong>Gestion des versions</strong> : Si vous utilisez Git, vous pouvez inclure ce dossier dans votre <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> et gérer les sauvegardes séparément pour éviter de stocker des informations sensibles dans votre dépôt.</p></li>
+</ol>
+</section>
+<section id="utilisation-avec-les-mcp">
+<h2>Utilisation avec les MCP<a class="headerlink" href="#utilisation-avec-les-mcp" title="Link to this heading"></a></h2>
+<p>Lorsque vous utilisez des Model Context Protocols (MCP) avec n8n, le dossier <code class="docutils literal notranslate"><span class="pre">.n8n</span></code> stocke également :</p>
+<ul class="simple">
+<li><p>Les configurations des MCP</p></li>
+<li><p>Les données d’état des MCP</p></li>
+<li><p>Les logs d’exécution des MCP</p></li>
+</ul>
+<p>C’est pourquoi il est particulièrement important de préserver ce dossier dans votre projet Email Sender qui utilise intensivement les MCP.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Le dossier <code class="docutils literal notranslate"><span class="pre">.n8n</span></code> est le cœur de votre installation n8n, contenant toutes les données et configurations nécessaires au fonctionnement de l’application. Il doit être traité avec soin et inclus dans vos stratégies de sauvegarde pour assurer la pérennité de votre projet.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemples d’utilisation de l’intégration ERPNext &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Exemples d’utilisation de l’intégration ERPNext</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/integrations/erpnext/examples.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="exemples-d-utilisation-de-l-integration-erpnext">
+<h1>Exemples d’utilisation de l’intégration ERPNext<a class="headerlink" href="#exemples-d-utilisation-de-l-integration-erpnext" title="Link to this heading"></a></h1>
+<p>Cette page présente des exemples concrets d’utilisation de l’intégration ERPNext avec le journal de bord.</p>
+<section id="exemple-1-entree-de-journal-creee-a-partir-d-une-tache-erpnext">
+<h2>Exemple 1: Entrée de journal créée à partir d’une tâche ERPNext<a class="headerlink" href="#exemple-1-entree-de-journal-creee-a-partir-d-une-tache-erpnext" title="Link to this heading"></a></h2>
+<p>Voici un exemple d’entrée de journal créée automatiquement à partir d’une tâche ERPNext:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>---
+title: Tâche ERPNext: Implémenter l&#39;authentification
+date: 2023-04-05
+<span class="gu">tags: [erpnext, task, project:Journal RAG, status:Open, priority:High]</span>
+<span class="gu">---</span>
+
+<span class="gh"># Tâche ERPNext: Implémenter l&#39;authentification</span>
+
+<span class="gu">## Détails de la tâche</span>
+<span class="k">-</span><span class="w"> </span><span class="gs">**ID**</span>: TASK-001
+<span class="k">-</span><span class="w"> </span><span class="gs">**Sujet**</span>: Implémenter l&#39;authentification
+<span class="k">-</span><span class="w"> </span><span class="gs">**Projet**</span>: Journal RAG
+<span class="k">-</span><span class="w"> </span><span class="gs">**Statut**</span>: Open
+<span class="k">-</span><span class="w"> </span><span class="gs">**Priorité**</span>: High
+<span class="k">-</span><span class="w"> </span><span class="gs">**Date de début**</span>: 2023-04-05
+<span class="k">-</span><span class="w"> </span><span class="gs">**Date de fin**</span>: 2023-04-12
+
+<span class="gu">## Description</span>
+Implémenter un système d&#39;authentification pour l&#39;application Journal RAG. Utiliser JWT pour l&#39;authentification API et sessions pour l&#39;interface web.
+
+<span class="gu">## Actions réalisées</span>
+<span class="k">-</span><span class="w"> </span>Synchronisation depuis ERPNext le 2023-04-05 15:30
+
+<span class="gu">## Notes</span>
+<span class="k">-</span><span class="w"> </span>Cette entrée a été générée automatiquement à partir d&#39;une tâche ERPNext.
+<span class="k">-</span><span class="w"> </span>Pour mettre à jour la tâche dans ERPNext, modifiez cette entrée et exécutez la synchronisation vers ERPNext.
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-mise-a-jour-d-une-tache-erpnext-a-partir-d-une-entree-de-journal">
+<h2>Exemple 2: Mise à jour d’une tâche ERPNext à partir d’une entrée de journal<a class="headerlink" href="#exemple-2-mise-a-jour-d-une-tache-erpnext-a-partir-d-une-entree-de-journal" title="Link to this heading"></a></h2>
+<p>Voici un exemple d’entrée de journal modifiée pour mettre à jour une tâche ERPNext:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>---
+title: Tâche ERPNext: Implémenter l&#39;authentification
+date: 2023-04-05
+<span class="gu">tags: [erpnext, task, project:Journal RAG, status:In Progress, priority:High]</span>
+<span class="gu">---</span>
+
+<span class="gh"># Tâche ERPNext: Implémenter l&#39;authentification</span>
+
+<span class="gu">## Détails de la tâche</span>
+<span class="k">-</span><span class="w"> </span><span class="gs">**ID**</span>: TASK-001
+<span class="k">-</span><span class="w"> </span><span class="gs">**Sujet**</span>: Implémenter l&#39;authentification
+<span class="k">-</span><span class="w"> </span><span class="gs">**Projet**</span>: Journal RAG
+<span class="k">-</span><span class="w"> </span><span class="gs">**Statut**</span>: In Progress
+<span class="k">-</span><span class="w"> </span><span class="gs">**Priorité**</span>: High
+<span class="k">-</span><span class="w"> </span><span class="gs">**Date de début**</span>: 2023-04-05
+<span class="k">-</span><span class="w"> </span><span class="gs">**Date de fin**</span>: 2023-04-12
+
+<span class="gu">## Description</span>
+Implémenter un système d&#39;authentification pour l&#39;application Journal RAG. Utiliser JWT pour l&#39;authentification API et sessions pour l&#39;interface web.
+
+<span class="gu">## Actions réalisées</span>
+<span class="k">-</span><span class="w"> </span>Synchronisation depuis ERPNext le 2023-04-05 15:30
+<span class="k">-</span><span class="w"> </span>Implémentation de l&#39;authentification JWT pour l&#39;API
+<span class="k">-</span><span class="w"> </span>Configuration des routes protégées
+
+<span class="gu">## Notes</span>
+<span class="k">-</span><span class="w"> </span>Cette entrée a été générée automatiquement à partir d&#39;une tâche ERPNext.
+<span class="k">-</span><span class="w"> </span>Pour mettre à jour la tâche dans ERPNext, modifiez cette entrée et exécutez la synchronisation vers ERPNext.
+</pre></div>
+</div>
+<p>Après avoir modifié cette entrée et exécuté la synchronisation vers ERPNext, la tâche TASK-001 sera mise à jour avec:</p>
+<ul class="simple">
+<li><p>Statut: “In Progress”</p></li>
+<li><p>Description: Mise à jour pour inclure les actions réalisées</p></li>
+</ul>
+</section>
+<section id="exemple-3-creation-d-une-note-erpnext-a-partir-d-une-entree-de-journal">
+<h2>Exemple 3: Création d’une note ERPNext à partir d’une entrée de journal<a class="headerlink" href="#exemple-3-creation-d-une-note-erpnext-a-partir-d-une-entree-de-journal" title="Link to this heading"></a></h2>
+<p>Voici un exemple d’entrée de journal qui sera convertie en note ERPNext:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>---
+title: Réflexions sur l&#39;architecture du système
+date: 2023-04-10
+<span class="gu">tags: [erpnext, architecture, design]</span>
+<span class="gu">---</span>
+
+<span class="gh"># Réflexions sur l&#39;architecture du système</span>
+
+Après avoir travaillé sur le système d&#39;authentification, j&#39;ai quelques réflexions sur l&#39;architecture globale du système:
+
+<span class="k">1.</span> Nous devrions séparer l&#39;API en microservices
+<span class="k">2.</span> L&#39;authentification devrait être gérée par un service dédié
+<span class="k">3.</span> Nous devrions utiliser un système de messagerie pour la communication entre les services
+
+Ces changements permettraient d&#39;améliorer la scalabilité et la maintenabilité du système.
+</pre></div>
+</div>
+<p>Cette entrée sera convertie en note ERPNext avec:</p>
+<ul class="simple">
+<li><p>Titre: “Réflexions sur l’architecture du système”</p></li>
+<li><p>Contenu: Le contenu complet de l’entrée</p></li>
+</ul>
+</section>
+<section id="exemple-4-utilisation-du-script-python-pour-la-synchronisation">
+<h2>Exemple 4: Utilisation du script Python pour la synchronisation<a class="headerlink" href="#exemple-4-utilisation-du-script-python-pour-la-synchronisation" title="Link to this heading"></a></h2>
+<p>Voici un exemple d’utilisation du script Python pour synchroniser les tâches ERPNext vers le journal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configurer l&#39;intégration</span>
+python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--url<span class="w"> </span><span class="s2">&quot;https://erpnext.example.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--key<span class="w"> </span><span class="s2">&quot;votre-cle-api&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--secret<span class="w"> </span><span class="s2">&quot;votre-secret-api&quot;</span>
+
+<span class="c1"># Tester la connexion</span>
+python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span>--test
+
+<span class="c1"># Synchroniser les tâches ERPNext vers le journal</span>
+python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span>--sync-to-journal
+
+<span class="c1"># Synchroniser le journal vers ERPNext</span>
+python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span>--sync-from-journal
+
+<span class="c1"># Récupérer les projets</span>
+python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span>--projects
+
+<span class="c1"># Récupérer les tâches d&#39;un projet</span>
+python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span>--tasks<span class="w"> </span>--project<span class="w"> </span><span class="s2">&quot;Journal RAG&quot;</span>
+
+<span class="c1"># Créer une tâche</span>
+python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--create-task<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--subject<span class="w"> </span><span class="s2">&quot;Nouvelle tâche&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--description<span class="w"> </span><span class="s2">&quot;Description de la nouvelle tâche&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--project<span class="w"> </span><span class="s2">&quot;Journal RAG&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-5-utilisation-de-l-api-pour-la-synchronisation">
+<h2>Exemple 5: Utilisation de l’API pour la synchronisation<a class="headerlink" href="#exemple-5-utilisation-de-l-api-pour-la-synchronisation" title="Link to this heading"></a></h2>
+<p>Voici un exemple d’utilisation de l’API pour synchroniser les tâches ERPNext vers le journal:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Configurer l&#39;intégration</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">configureIntegration</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/api/integrations/erpnext/config&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;application/json&#39;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">enabled</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">api_url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;https://erpnext.example.com&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">api_key</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;votre-cle-api&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">api_secret</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;votre-secret-api&#39;</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// Tester la connexion</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">testConnection</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/api/integrations/erpnext/test-connection&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// Synchroniser les tâches ERPNext vers le journal</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">syncToJournal</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/api/integrations/erpnext/sync-to-journal&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// Synchroniser le journal vers ERPNext</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">syncFromJournal</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/api/integrations/erpnext/sync-from-journal&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-6-workflow-complet-d-utilisation">
+<h2>Exemple 6: Workflow complet d’utilisation<a class="headerlink" href="#exemple-6-workflow-complet-d-utilisation" title="Link to this heading"></a></h2>
+<p>Voici un exemple de workflow complet d’utilisation de l’intégration ERPNext:</p>
+<ol class="simple">
+<li><p><strong>Configuration initiale</strong>:</p>
+<ul class="simple">
+<li><p>Configurer l’intégration ERPNext avec l’URL, la clé API et le secret API</p></li>
+<li><p>Tester la connexion pour s’assurer que tout fonctionne</p></li>
+</ul>
+</li>
+<li><p><strong>Synchronisation initiale</strong>:</p>
+<ul class="simple">
+<li><p>Synchroniser les tâches ERPNext vers le journal pour créer des entrées pour toutes les tâches existantes</p></li>
+<li><p>Vérifier que les entrées ont été créées correctement</p></li>
+</ul>
+</li>
+<li><p><strong>Travail quotidien</strong>:</p>
+<ul class="simple">
+<li><p>Consulter les entrées de journal créées à partir des tâches ERPNext</p></li>
+<li><p>Mettre à jour les entrées avec les progrès réalisés</p></li>
+<li><p>Synchroniser le journal vers ERPNext pour mettre à jour les tâches</p></li>
+</ul>
+</li>
+<li><p><strong>Création de nouvelles tâches</strong>:</p>
+<ul class="simple">
+<li><p>Créer de nouvelles tâches dans ERPNext</p></li>
+<li><p>Synchroniser ERPNext vers le journal pour créer des entrées pour les nouvelles tâches</p></li>
+<li><p>Ou créer des entrées de journal avec le tag “erpnext” et “task” et synchroniser vers ERPNext</p></li>
+</ul>
+</li>
+<li><p><strong>Documentation</strong>:</p>
+<ul class="simple">
+<li><p>Créer des entrées de journal avec le tag “erpnext” pour documenter des aspects du projet</p></li>
+<li><p>Synchroniser le journal vers ERPNext pour créer des notes ERPNext</p></li>
+</ul>
+</li>
+<li><p><strong>Automatisation</strong>:</p>
+<ul class="simple">
+<li><p>Configurer des tâches planifiées pour synchroniser automatiquement ERPNext et le journal</p></li>
+<li><p>Configurer des webhooks pour déclencher la synchronisation lors de la création ou de la mise à jour de tâches</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

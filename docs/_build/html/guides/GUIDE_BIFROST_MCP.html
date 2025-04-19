@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation de BifrostMCP &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation de BifrostMCP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_BIFROST_MCP.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-de-bifrostmcp">
+<h1>Guide d’utilisation de BifrostMCP<a class="headerlink" href="#guide-d-utilisation-de-bifrostmcp" title="Link to this heading"></a></h1>
+<p>Ce guide explique comment utiliser BifrostMCP, une extension VSCode qui expose les fonctionnalités de développement de VSCode aux assistants IA via le protocole MCP (Model Context Protocol).</p>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>VSCode version 1.93.0 ou supérieure (vous utilisez la version 1.98.2, qui est compatible)</p></li>
+<li><p>Extension BifrostMCP installée dans VSCode</p></li>
+<li><p>Configuration n8n pour BifrostMCP (déjà effectuée)</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Installation de l’extension VSCode</strong></p>
+<ul class="simple">
+<li><p>Ouvrez VSCode</p></li>
+<li><p>Appuyez sur <code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+X</span></code> pour ouvrir le panneau des extensions</p></li>
+<li><p>Recherchez “Bifrost MCP”</p></li>
+<li><p>Installez l’extension “Bifrost - VSCode Dev Tools MCP Server” par Connor Hallman</p></li>
+</ul>
+</li>
+<li><p><strong>Configuration de BifrostMCP</strong></p>
+<ul class="simple">
+<li><p>Le fichier <code class="docutils literal notranslate"><span class="pre">bifrost.config.json</span></code> à la racine du projet configure BifrostMCP pour votre projet</p></li>
+<li><p>Le port 8009 est utilisé pour éviter les conflits avec d’autres services</p></li>
+<li><p>Le chemin <code class="docutils literal notranslate"><span class="pre">/email-sender-1</span></code> est utilisé pour identifier votre projet</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="demarrage-du-serveur-bifrostmcp">
+<h2>Démarrage du serveur BifrostMCP<a class="headerlink" href="#demarrage-du-serveur-bifrostmcp" title="Link to this heading"></a></h2>
+<section id="methode-1-via-vscode">
+<h3>Méthode 1 : Via VSCode<a class="headerlink" href="#methode-1-via-vscode" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Ouvrez VSCode avec votre projet</p></li>
+<li><p>Appuyez sur <code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span></code> pour ouvrir la palette de commandes</p></li>
+<li><p>Tapez “Bifrost MCP: Start Server” et sélectionnez cette commande</p></li>
+<li><p>Le serveur BifrostMCP démarrera sur le port 8009</p></li>
+</ol>
+</section>
+<section id="methode-2-via-le-script-powershell">
+<h3>Méthode 2 : Via le script PowerShell<a class="headerlink" href="#methode-2-via-le-script-powershell" title="Link to this heading"></a></h3>
+<p>Vous pouvez également démarrer BifrostMCP en utilisant le script PowerShell :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">src</span><span class="p">\</span><span class="n">mcp</span><span class="p">\</span><span class="nb">use-mcp</span><span class="p">.</span><span class="n">ps1</span> <span class="n">bifrost</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utilisation-dans-n8n">
+<h2>Utilisation dans n8n<a class="headerlink" href="#utilisation-dans-n8n" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ouvrez n8n (http://localhost:5678)</p></li>
+<li><p>Créez un nouveau workflow ou ouvrez un workflow existant</p></li>
+<li><p>Ajoutez un nœud MCP Client</p></li>
+<li><p>Dans les paramètres du nœud, sélectionnez l’identifiant “MCP Bifrost”</p></li>
+<li><p>Configurez les requêtes MCP selon vos besoins</p></li>
+</ol>
+</section>
+<section id="fonctionnalites-disponibles">
+<h2>Fonctionnalités disponibles<a class="headerlink" href="#fonctionnalites-disponibles" title="Link to this heading"></a></h2>
+<p>BifrostMCP expose de nombreuses fonctionnalités de développement de VSCode, notamment :</p>
+<ul class="simple">
+<li><p><strong>find_usages</strong> : Trouver toutes les références à un symbole</p></li>
+<li><p><strong>go_to_definition</strong> : Aller à la définition d’un symbole</p></li>
+<li><p><strong>find_implementations</strong> : Trouver les implémentations d’une interface ou d’une méthode abstraite</p></li>
+<li><p><strong>get_hover_info</strong> : Obtenir des informations sur un symbole au survol</p></li>
+<li><p><strong>get_document_symbols</strong> : Obtenir tous les symboles d’un document</p></li>
+<li><p><strong>get_completions</strong> : Obtenir des suggestions de complétion de code</p></li>
+<li><p><strong>get_signature_help</strong> : Obtenir de l’aide sur les signatures de fonctions</p></li>
+<li><p><strong>get_rename_locations</strong> : Trouver les emplacements à renommer</p></li>
+<li><p><strong>get_code_actions</strong> : Obtenir des actions de code (corrections rapides, refactorisations)</p></li>
+<li><p><strong>get_semantic_tokens</strong> : Obtenir des informations de coloration syntaxique</p></li>
+<li><p><strong>get_call_hierarchy</strong> : Visualiser la hiérarchie des appels</p></li>
+<li><p><strong>get_type_hierarchy</strong> : Visualiser la hiérarchie des types</p></li>
+<li><p><strong>get_code_lens</strong> : Obtenir des informations contextuelles sur le code</p></li>
+<li><p><strong>get_selection_range</strong> : Obtenir des plages de sélection intelligentes</p></li>
+<li><p><strong>get_type_definition</strong> : Aller à la définition d’un type</p></li>
+<li><p><strong>get_declaration</strong> : Aller à la déclaration d’un symbole</p></li>
+<li><p><strong>get_document_highlights</strong> : Mettre en évidence toutes les occurrences d’un symbole</p></li>
+<li><p><strong>get_workspace_symbols</strong> : Rechercher des symboles dans l’espace de travail</p></li>
+</ul>
+</section>
+<section id="exemples-d-utilisation">
+<h2>Exemples d’utilisation<a class="headerlink" href="#exemples-d-utilisation" title="Link to this heading"></a></h2>
+<section id="exemple-1-trouver-toutes-les-references-a-un-symbole">
+<h3>Exemple 1 : Trouver toutes les références à un symbole<a class="headerlink" href="#exemple-1-trouver-toutes-les-references-a-un-symbole" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;find_usages&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;textDocument&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file:///chemin/vers/votre/fichier&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;line&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;character&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;context&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;includeDeclaration&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-rechercher-des-symboles-dans-l-espace-de-travail">
+<h3>Exemple 2 : Rechercher des symboles dans l’espace de travail<a class="headerlink" href="#exemple-2-rechercher-des-symboles-dans-l-espace-de-travail" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;get_workspace_symbols&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MaClasse&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez des problèmes :</p>
+<ol class="simple">
+<li><p>Vérifiez que VSCode est ouvert avec le bon projet</p></li>
+<li><p>Vérifiez que le serveur BifrostMCP est en cours d’exécution</p></li>
+<li><p>Vérifiez que le port 8009 est disponible</p></li>
+<li><p>Consultez le panneau de sortie de VSCode pour les messages d’erreur</p></li>
+</ol>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/biegehydra/BifrostMCP">Documentation officielle de BifrostMCP</a></p></li>
+<li><p><a class="reference external" href="https://modelcontextprotocol.io/docs/">Documentation du protocole MCP</a></p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/references/vscode-api">Documentation de l’API VSCode</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

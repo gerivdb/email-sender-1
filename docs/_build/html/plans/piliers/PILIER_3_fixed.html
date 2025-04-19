@@ -1,0 +1,552 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/plans/piliers/PILIER_3_fixed.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>Okay, voici le développement détaillé et technique du <strong>PILIER 3 : L’Intelligence Augmentée</strong>, destiné aux ingénieurs et développeurs, en assurant la cohérence avec les autres piliers du Plan Magistral V5.</p>
+<hr class="docutils" />
+<p><strong>PILIER 3 : L’Intelligence Augmentée - Équipes IA, Optimisation, Analytics et Éthique</strong></p>
+<p>Ce pilier exploite la puissance des modèles de langage (LLMs) via OpenRouter pour augmenter les capacités de l’agence. Il repose sur une architecture technique solide pour la gestion des appels IA, l’intégration de contexte (RAG), le caching, l’analyse de données et la prise en compte des aspects éthiques.</p>
+<p><strong>5. Équipes d’Agents IA Spécialisées (8 Équipes x 3 Modèles OpenRouter - Missions Affinées) :</strong></p>
+<ul class="simple">
+<li><p><strong>5.1. Architecture Technique Commune :</strong></p>
+<ul>
+<li><p><strong>Objectif :</strong> Standardiser et sécuriser l’interaction entre les workflows N8N et les modèles IA via OpenRouter.</p></li>
+<li><p><strong>Composants Clés :</strong></p>
+<ul>
+<li><p>WF-AI-Team-Executor (Sous-Workflow N8N) : Point d’entrée unique pour tout appel IA. Orchestre la sélection de clé, l’appel HTTP, le parsing basique de la réponse et la gestion d’erreur initiale.</p></li>
+<li><p>WF-API-Key-Selector (Sous-Workflow N8N) : Sélectionne dynamiquement la clé API (credential N8N) et le modèle à utiliser pour une équipe donnée, en gérant la priorité et les échecs temporaires (rate limits).</p></li>
+<li><p>WF-Mark-Key-Failed (Sous-Workflow N8N) : Marque une clé API comme temporairement inutilisable dans StaticData.</p></li>
+<li><p>N8N Static Data : Utilisé par WF-API-Key-Selector et WF-Mark-Key-Failed pour stocker l’état des clés API (disponibilité, modèle associé, priorité, timestamp du dernier échec). La structure aiApiKeys_[TeamName] (détaillée section 6) est cruciale.</p></li>
+<li><p>OpenRouter Credentials : Chaque clé API OpenRouter est stockée comme un credential N8N distinct (type: Header Auth ou Generic Credential Type avec Authorization: Bearer {{ $credential.apiKey }}). Le nom du credential (ex: OpenRouter_Team1_Key1_GPT4o) est référencé dans StaticData.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<p><strong>Flux d’Appel IA Standard (Diagramme ASCII) :</strong><br />graph LR<br />A[Workflow Métier (e.g., WF-Booking-Prospection)] -- Input: {aiTeamName, prompt, contextData…} --&gt; B(WF-AI-Team-Executor);<br />B -- Input: {aiTeamName} --&gt; C(WF-API-Key-Selector);<br />C -- Read/Write --&gt; D[/N8N Static Data (aiApiKeys_…)/];<br />C -- Output: {apiKeyName, modelUsed} ou {error} --&gt; B;<br />B -- Si Clé OK --&gt; E{HTTP Request Node};<br />E -- Use Credential --&gt; F[/N8N Credentials (apiKeyName)/];<br />E -- POST api/v1/chat/completions --&gt; G[(OpenRouter API)];<br />G -- Réponse JSON (ou Erreur 429/5xx) --&gt; E;<br />E -- Si Erreur 429/5xx --&gt; H(WF-Mark-Key-Failed);<br />H -- Input: {aiTeamName, apiKeyName, errorCode} --&gt; I(WF-API-Key-Selector); %% Potentiellement pour màj failedKeys via StaticData<br />I -- Read/Write --&gt; D;<br />E -- Si Réponse OK --&gt; J{Parse Réponse};<br />J -- Output: {aiResponse: …, error: false} --&gt; B;<br />E -- Si Erreur non gérable --&gt; K{Log Erreur};<br />K -- Output: {error: true, message: …} --&gt; B;<br />B -- Output Final --&gt; A;</p>
+<ul class="simple">
+<li><ul>
+<li><p><strong>Configuration Modèles Multiples par Équipe :</strong> La structure StaticData (section 6) permet d’associer un model spécifique à chaque name (credential). WF-API-Key-Selector retourne le modelUsed avec le apiKeyName, permettant à WF-AI-Team-Executor de l’inclure dans le payload de l’appel OpenRouter.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>5.2. Définition Technique des 8 Équipes IA :</strong></p>
+<ul>
+<li><p>Chaque équipe est une abstraction logique. Techniquement, c’est l’association d’un aiTeamName (utilisé pour sélectionner les clés via WF-API-Key-Selector), d’un ensemble de prompts spécifiques à ses tâches, et potentiellement d’une configuration RAG/Cache dédiée.</p></li>
+<li><p><strong>Équipe 1 : Booking Intelligence &amp; Qualification</strong></p>
+<ul>
+<li><p><em>Rôle Technique :</em> Génération de texte initial, classification de texte (sentiment/intention), extraction d’entités nommées (NER), suggestion d’action basée sur règles/contexte.</p></li>
+<li><p><em>Inputs Techniques (via WF-AI-Team-Executor) :</em></p>
+<ul>
+<li><p>prompt: Instructions spécifiques (ex: “Analyse cet email et réponds en JSON avec les clés: sentiment, intention, datesProposees, questionsCles. Sentiment doit être un parmi: Enthousiaste, Intéressé, Neutre, Poli Refus, Sec Refus.”).</p></li>
+<li><p>contextData: { artistStyle: “…”, availableDates: […], venueHistory: “…”, emailBody: “…” }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Outputs Attendus (de WF-AI-Team-Executor) :</em></p>
+<ul>
+<li><p>Pour analyse: { aiResponse: { sentiment: “Intéressé”, intention: “Demande infos”, datesProposees: [], questionsCles: [”Quel est votre tarif ?”] }, error: false }.</p></li>
+<li><p>Pour génération: { aiResponse: { draftEmail: “Bonjour…” }, error: false }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>RAG/Cache Technique :</em></p>
+<ul>
+<li><p>RAG : Appel WF-RAG-Retriever avec { contextType: “Lieu”, contextId: “notion_page_id_lieu” } avant l’appel IA pour injecter l’historique dans contextData.</p></li>
+<li><p>Cache : Clé cache:llm:Team1:analyze:[hash(emailBody)], TTL 1h. Clé cache:llm:Team1:generate:[hash(artistStyle+availableDates)], TTL 6h.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Équipe 2 : Communication &amp; Rédaction Créative</strong></p>
+<ul>
+<li><p><em>Rôle Technique :</em> Génération de texte créatif dans différents formats (email, post social, bio), adaptation de ton.</p></li>
+<li><p><em>Inputs Techniques :</em></p>
+<ul>
+<li><p>prompt: Ex: “Personnalise cet email de prospection pour [Prénom] de [Structure] en adoptant un ton enthousiaste et en mentionnant leur programmation récente de [Artiste Similaire]. Email base: [baseMsg]”.</p></li>
+<li><p>contextData: { baseMsg: “…”, contactName: “…”, venueName: “…”, venueInfo: “…”, artistBio: “…”, eventDetails: {…} }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Outputs Attendus :</em></p>
+<ul>
+<li><p>{ aiResponse: { finalHtml: “&lt;p&gt;Bonjour…&lt;/p&gt;” }, error: false }.</p></li>
+<li><p>{ aiResponse: { socialPost: { platform: “instagram”, text: “…”, hashtags: […], imagePrompt: “Photo de Gribitch sur scène” } }, error: false }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>RAG/Cache Technique :</em></p>
+<ul>
+<li><p>RAG : Appel WF-RAG-Retriever avec { contextType: “Artiste”, contextId: “notion_page_id_artiste” } pour bio/discographie.</p></li>
+<li><p>Cache : Clé cache:llm:Team2:personalize:[hash(baseMsg+contactName+venueName)], TTL 1h. Clé cache:llm:Team2:bio:[hash(artistId+format)], TTL 24h.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Équipe 3 : Analyse &amp; Reporting Opérationnel</strong></p>
+<ul>
+<li><p><em>Rôle Technique :</em> Analyse de données structurées, identification de tendances/anomalies, génération de résumés textuels à partir de KPIs.</p></li>
+<li><p><em>Inputs Techniques :</em></p>
+<ul>
+<li><p>prompt: Ex: “Analyse ces KPIs de booking pour la semaine dernière. Identifie les points clés et les anomalies. KPIs: [JSON des KPIs calculés par N8N]”.</p></li>
+<li><p>contextData: { kpiData: { dealRate: 0.1, responseTimeAvg: 48, … }, rawDataSample: […] }. <em>N8N doit pré-agréger les données.</em></p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Outputs Attendus :</em></p>
+<ul>
+<li><p>{ aiResponse: { analysisSummary: “Le taux de deal a augmenté…”, detectedAnomalies: [”Chute du taux de réponse pour la région X”], recommendations: [”Investiguer région X”] }, error: false }. Format JSON structuré est clé.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>RAG/Cache Technique :</em></p>
+<ul>
+<li><p>RAG : Appel WF-RAG-Retriever avec { contextType: “AgenceGoals” } pour contexte stratégique.</p></li>
+<li><p>Cache : Clé cache:llm:Team3:report:weekly:[hash(artistId+weekNumber)], TTL 6h.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Équipe 4 : Logistique &amp; Planification de Tournée</strong></p>
+<ul>
+<li><p><em>Rôle Technique :</em> Optimisation de route (potentiellement via appel API externe type OpenRouteService orchestré par N8N, l’IA suggère des contraintes), génération de checklists structurées, extraction d’informations de documents (potentiellement via OCR + IA).</p></li>
+<li><p><em>Inputs Techniques :</em></p>
+<ul>
+<li><p>prompt: Ex: “Génère une checklist logistique détaillée pour un concert de [Artiste] au [Lieu] le [Date], basée sur ce rider et cette fiche technique. Output en Markdown.”.</p></li>
+<li><p>contextData: { tourDates: […], locations: […], artistRiderText: “…”, venueTechSpecText: “…”, memberConstraints: […] }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Outputs Attendus :</em></p>
+<ul>
+<li><p>{ aiResponse: { checklistMarkdown: “# Transport\n- …”, draftEmailCoord: “Bonjour…” }, error: false }.</p></li>
+<li><p>Pour extraction PDF (avancé): { aiResponse: { extractedData: { sound: { console: “Midas M32”, … }, lights: {…} } }, error: false }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>RAG/Cache Technique :</em></p>
+<ul>
+<li><p>RAG : Appel WF-RAG-Retriever avec { contextType: “Lieu”, contextId: “…” } pour conditions d’accueil / historique.</p></li>
+<li><p>Cache : Clé cache:llm:Team4:checklist:[hash(artistId+venueId)], TTL 24h.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Note Technique :</em> L’extraction PDF nécessite un workflow dédié WF-PDF-Extractor utilisant un service OCR (ex: Google Vision AI, Tesseract via Execute Command) puis un appel à Team 4/6 pour structurer l’output texte.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Équipe 5 : Production Musicale Assistée (Organisation)</strong></p>
+<ul>
+<li><p><em>Rôle Technique :</em> Décomposition de projet, suggestion de planning, génération de documentation standard.</p></li>
+<li><p><em>Inputs Techniques :</em></p>
+<ul>
+<li><p>prompt: Ex: “Découpe ce projet d’album (sortie le [Date]) en phases et tâches standards. Suggère un rétroplanning. Output en JSON { phases: […] }”.</p></li>
+<li><p>contextData: { projectBrief: “…”, targetReleaseDate: “…”, artistInfo: “…” }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Outputs Attendus :</em></p>
+<ul>
+<li><p>{ aiResponse: { projectPlanJson: { phases: [{ name: “Pré-production”, tasks: […], startDate: “…”, endDate: “…” }, …] } }, error: false }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>RAG/Cache Technique :</em></p>
+<ul>
+<li><p>RAG : Appel WF-RAG-Retriever avec { contextType: “ProductionTemplates” }.</p></li>
+<li><p>Cache : Clé cache:llm:Team5:plan:[hash(projectBrief)], TTL 12h.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Équipe 6 : Support Administratif &amp; Conformité</strong></p>
+<ul>
+<li><p><em>Rôle Technique :</em> Extraction d’informations structurées de documents non structurés (texte, potentiellement sortie OCR), classification, résumé, vérification de cohérence simple, rédaction administrative standard.</p></li>
+<li><p><em>Inputs Techniques :</em></p>
+<ul>
+<li><p>prompt: Ex: “Extrait les parties, la date d’effet, la durée et les clauses de paiement de ce contrat. Output JSON { parties: [], dateEffet: …, duree: …, clausesPaiement: […] }”. Ou “Tag ce document GDrive [nom fichier] avec des catégories pertinentes (Contrat, Facture, Promo…)”.</p></li>
+<li><p>contextData: { documentText: “…”, fileName: “…”, meetingTranscript: “…”, notionDataToCheck: {…} }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Outputs Attendus :</em></p>
+<ul>
+<li><p>{ aiResponse: { extractedJson: {…} }, error: false }.</p></li>
+<li><p>{ aiResponse: { suggestedTags: [”contrat”, “booking”, “artisteX”] }, error: false }.</p></li>
+<li><p>{ aiResponse: { summary: “…”, draftLetter: “…” }, error: false }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>RAG/Cache Technique :</em></p>
+<ul>
+<li><p>RAG : Appel WF-RAG-Retriever avec { contextType: “AdminTemplates” } ou { contextType: “LegalGuidelines” }.</p></li>
+<li><p>Cache : Clé cache:llm:Team6:extract:[hash(documentText)], TTL 24h.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Équipe 7 : Stratégie &amp; Intelligence Marché</strong></p>
+<ul>
+<li><p><em>Rôle Technique :</em> Analyse de tendances à partir de sources externes (via RAG), benchmarking, génération de recommandations stratégiques.</p></li>
+<li><p><em>Inputs Techniques :</em></p>
+<ul>
+<li><p>prompt: Ex: “Analyse ces articles sur les tendances streaming en Europe. Quelles sont les implications pour un artiste [Genre] comme [Artiste]? Suggère 3 axes stratégiques.”.</p></li>
+<li><p>contextData: { artistProfile: {…}, performanceData: {…}, externalArticlesText: [”…”, “…”] }. <em>N8N récupère et prépare les textes externes via RAG.</em></p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Outputs Attendus :</em></p>
+<ul>
+<li><p>{ aiResponse: { marketAnalysis: “…”, strategicRecommendations: [{ axis: “…”, rationale: “…”, actions: […] }, …] }, error: false }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>RAG/Cache Technique :</em></p>
+<ul>
+<li><p>RAG : WF-RAG-Retriever avec { contextType: “MarketReports”, query: “tendances streaming Europe” }. Nécessite une base Notion/GDrive de veille sectorielle indexée (potentiellement par Vector Store).</p></li>
+<li><p>Cache : Clé cache:llm:Team7:trends:[hash(query+date)], TTL 7 jours.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Équipe 8 : Monitoring Système &amp; Performance IA</strong></p>
+<ul>
+<li><p><em>Rôle Technique :</em> Analyse de logs structurés, détection d’anomalies statistiques, évaluation de texte basée sur heuristiques, suggestion d’optimisation technique.</p></li>
+<li><p><em>Inputs Techniques :</em></p>
+<ul>
+<li><p>prompt: Ex: “Analyse ces logs N8N pour la dernière heure. Y a-t-il des erreurs fréquentes ou des workflows anormalement lents ? Suggère des pistes d’optimisation.”. Ou “Évalue la qualité de cette réponse IA [réponse] au prompt [prompt]. Est-elle pertinente, complète, bien structurée ? Score /10.”.</p></li>
+<li><p>contextData: { n8nLogsJson: […], apiKeyUsageStats: {…}, aiPrompt: “…”, aiResponse: “…” }. <em>N8N agrège les logs/stats.</em></p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Outputs Attendus :</em></p>
+<ul>
+<li><p>{ aiResponse: { logAnalysis: { frequentErrors: […], slowWorkflows: […] }, optimizationSuggestions: [”…”] }, error: false }.</p></li>
+<li><p>{ aiResponse: { qualityScore: 8, justification: “…”, improvementPoints: [”…”] }, error: false }.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>RAG/Cache Technique :</em></p>
+<ul>
+<li><p>RAG : WF-RAG-Retriever avec { contextType: “N8NDocs” } ou { contextType: “AIBestPractices” }.</p></li>
+<li><p>Cache : Clé cache:llm:Team8:logAnalysis:[hash(logWindow)], TTL 1h.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+</ul>
+<p><strong>6. Gestion Optimisée des API Keys (Rotation Détaillée &amp; Sécurisée) :</strong></p>
+<ul class="simple">
+<li><p><strong>StaticData Structure (aiApiKeys_[TeamName]) :</strong></p>
+<ol class="simple">
+<li><p>La structure JSON proposée est valide et fonctionnelle.</p></li>
+<li><p>name: Doit correspondre <strong>exactement</strong> au nom du Credential N8N (type Header Auth ou autre).</p></li>
+<li><p>model: Nom du modèle OpenRouter (ex: openai/gpt-4o, anthropic/claude-3-haiku).</p></li>
+<li><p>priority: Entier, 1 étant la plus haute priorité.</p></li>
+<li><p>failedKeys: Map où la clé est le name du credential et la valeur est { timestamp: number (Date.now()), errorCode: number (429, 500, 503…) }.</p></li>
+<li><p>config.failureTTL_seconds: Durée en secondes pendant laquelle une clé échouée ne sera pas retentée.</p></li>
+</ol>
+</li>
+<li></li>
+<li><p><strong>Logique WF-API-Key-Selector (Implémentation Technique dans N8N) :</strong></p>
+<ol class="simple">
+<li><p><strong>Trigger:</strong> Execute Workflow. Input: { aiTeamName: string }.</p></li>
+<li><p><strong>Set Node:</strong> staticDataKey = “aiApiKeys_” + $json.aiTeamName.</p></li>
+<li><p><strong>Workflow Static Data Node (Get):</strong> Key: {{ $node[”Set Node”].json.staticDataKey }}. Output: staticDataString. Option “Error If Not Found”: false.</p></li>
+<li><p><strong>IF Node:</strong> $node[”Workflow Static Data”].json.value existe ?</p>
+<ul>
+<li><p><strong>False Branch:</strong> -&gt; WF-Monitoring (Critical, “StaticData non trouvé pour “ + $json.aiTeamName) -&gt; Stop and Error.</p></li>
+<li><p><strong>True Branch:</strong> -&gt; <strong>Code Node (Select Key)</strong></p>
+<ul>
+<li><p>Inputs: staticDataString (depuis Workflow Static Data), config (potentiellement un objet global ou passé en input).</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p>Code JS:<br />const staticDataString = $input.all()[0].json.value;<br />let staticData;<br />try {<br />staticData = JSON.parse(staticDataString);<br />} catch (e) {<br />// Log error via httpRequest to WF-Monitoring webhook? Or return error object.<br />return [{ json: { error: true, message: “Failed to parse StaticData JSON” } }];<br />}</p>
+<p>const keys = staticData.keys || [];<br />const failedKeys = staticData.failedKeys || {};<br />const config = staticData.config || { failureTTL_seconds: 3600 };<br />const now = Date.now();</p>
+<p>// Sort keys by priority<br />keys.sort((a, b) =&gt; (a.priority || 99) - (b.priority || 99));</p>
+<p>let selectedKey = null;<br />const updatedFailedKeys = { …failedKeys }; // Clone pour modifications</p>
+<p>for (const keyInfo of keys) {<br />const keyName = keyInfo.name;<br />if (!keyName) continue; // Skip invalid entries</p>
+<p>const failureInfo = updatedFailedKeys[keyName];<br />let isOkToTry = true;</p>
+<p>if (failureInfo) {<br />const timeSinceFailure = now - (failureInfo.timestamp || 0);<br />if (timeSinceFailure &lt; config.failureTTL_seconds * 1000) {<br />isOkToTry = false; // Still within TTL<br />} else {<br />// TTL expired, remove from failedKeys for this run<br />delete updatedFailedKeys[keyName];<br />}<br />}</p>
+<p>if (isOkToTry) {<br />selectedKey = keyInfo;<br />break; // Found a key to try<br />}<br />}</p>
+<p>if (selectedKey) {<br />// Important: Return the potentially cleaned failedKeys object<br />// to be saved back to StaticData by the calling workflow if needed,<br />// or save it here if the node has write access.<br />// For simplicity here, we assume the caller handles the update if needed.<br />// We removed the expired key from updatedFailedKeys if we are trying it.<br />return [{ json: {<br />apiKeyName: selectedKey.name,<br />modelUsed: selectedKey.model,<br />error: false,<br />// Pass back the state of failedKeys if needed for update<br />// currentFailedKeysState: updatedFailedKeys<br />}<br />}];<br />} else {<br />return [{ json: { error: true, message: “All keys for team “ + $vars.aiTeamName + “ are temporarily unavailable” } }];<br />}</p>
+<ul>
+<li><p>IGNORE_WHEN_COPYING_START<br />content_copy download<br />Use code <a class="reference external" href="https://support.google.com/legal/answer/13505487">with caution</a>.JavaScript<br />IGNORE_WHEN_COPYING_END</p>
+<ul class="simple">
+<li><p>Output: { apiKeyName: …, modelUsed: …, error: false } ou { error: true, message: … }.<br />*</p></li>
+</ul>
+<ol class="simple">
+<li></li>
+<li><p><strong>(Dans WF-AI-Team-Executor après l’appel à WF-API-Key-Selector)</strong></p>
+<ul class="simple">
+<li><p><strong>IF Node:</strong> Vérifier si output.error de WF-API-Key-Selector est false.</p></li>
+<li><p>Si true, propager l’erreur.</p></li>
+<li><p>Si false, continuer vers le nœud HTTP Request en utilisant output.apiKeyName pour le credential et output.modelUsed dans le payload.</p></li>
+<li><p><strong>Important:</strong> Si une clé qui avait expiré son TTL est sélectionnée et réussit, WF-AI-Team-Executor <em>doit</em> s’assurer que l’état failedKeys dans StaticData est mis à jour (en supprimant l’entrée de la clé). Cela peut se faire via un autre appel au node “Workflow Static Data (Update)” en utilisant l’état currentFailedKeysState retourné (optionnellement) par le Code Node (Select Key).</p></li>
+</ul>
+</li>
+<li></li>
+</ol>
+</li>
+<li></li>
+<li><p><strong>Workflow WF-Mark-Key-Failed (Implémentation Technique) :</strong></p>
+<ol class="simple">
+<li><p><strong>Trigger:</strong> Execute Workflow. Input: { aiTeamName: string, apiKeyName: string, errorCode: number }.</p></li>
+<li><p><strong>Set Node:</strong> staticDataKey = “aiApiKeys_” + $json.aiTeamName.</p></li>
+<li><p><strong>Workflow Static Data Node (Get):</strong> Key: {{ $node[”Set Node”].json.staticDataKey }}. Option “Error If Not Found”: false.</p></li>
+<li><p><strong>Code Node (Update Failed Keys):</strong></p>
+<ul class="simple">
+<li><p>Inputs: staticDataString (depuis Get), inputData (depuis Trigger).</p></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p>Code JS:<br />const staticDataString = $input.all(’main’)[0].json.value; // Assuming Get node is main input<br />const inputData = $input.all(’main’)[1].json; // Assuming Trigger data is second input<br />let staticData;<br />try {<br />staticData = staticDataString ? JSON.parse(staticDataString) : { keys: [], failedKeys: {}, config: {} };<br />} catch (e) {<br />staticData = { keys: [], failedKeys: {}, config: {} }; // Start fresh if parse fails<br />}<br />staticData.failedKeys = staticData.failedKeys || {};<br />staticData.failedKeys[inputData.apiKeyName] = {<br />timestamp: Date.now(),<br />errorCode: inputData.errorCode<br />};<br />return [{ json: { updatedStaticData: JSON.stringify(staticData) } }];</p>
+<ul>
+<li><p>IGNORE_WHEN_COPYING_START<br />content_copy download<br />Use code <a class="reference external" href="https://support.google.com/legal/answer/13505487">with caution</a>.JavaScript<br />IGNORE_WHEN_COPYING_END</p>
+<ul class="simple">
+<li><p>Output: { updatedStaticData: “…” }.</p></li>
+</ul>
+<ol class="simple">
+<li></li>
+<li><p><strong>Workflow Static Data Node (Update):</strong> Key: {{ $node[”Set Node”].json.staticDataKey }}, Value: {{ $node[”Code Node (Update Failed Keys)”].json.updatedStaticData }}.</p></li>
+<li><p><strong>Output:</strong> { success: true }.</p></li>
+</ol>
+</li>
+<li></li>
+</ul>
+<p><strong>7. Intégration RAG et Caching (Stratégies Précises) :</strong></p>
+<ul class="simple">
+<li><p><strong>RAG Workflow (WF-RAG-Retriever) :</strong></p>
+<ul>
+<li><p><em>Implémentation Technique :</em></p>
+<ol class="simple">
+<li><p>Trigger: Execute Workflow. Input: { query: string, contextType: string, contextId: string, topK?: number (default: 3) }.</p></li>
+<li><p>Switch Node (on contextType):</p>
+<ul>
+<li><p>Case “Lieu”: -&gt; WF-Notion-Helper (Get Page Agence_Lieux_Structures, contextId). -&gt; Code Node (Extract relevant text fields).</p></li>
+<li><p>Case “Artiste”: -&gt; WF-Notion-Helper (Get Page Agence_Artistes, contextId). -&gt; WF-Notion-Helper (Find Pages [Artiste]_Projets liées). -&gt; Code Node (Combine relevant text).</p></li>
+<li><p>Case “Contrat” (Vector): -&gt; WF-Notion-Helper (Get Page [Artiste]_Contrats, contextId, get file URL). -&gt; WF-PDF-Extractor (Input: file URL). -&gt; Vector DB Node (Query, Input: query, extractedText, filter by contextId, topK). -&gt; Code Node (Format chunks).</p></li>
+<li><p>Case “MarketReports” (Vector): -&gt; Vector DB Node (Query, Input: query, filter by tag market_report, topK). -&gt; Code Node (Format chunks).</p></li>
+</ul>
+</li>
+<li></li>
+<li><p>Merge Node (si plusieurs branches possibles).</p></li>
+<li><p>Code Node (Format Output): Concaténer les textes récupérés en contextString. Limiter la taille totale si nécessaire.</p></li>
+<li><p>Output: { contextString: “…” }.</p></li>
+</ol>
+</li>
+<li></li>
+<li><p><em>Vector Store Setup :</em> Nécessite un workflow WF-Vector-Indexer (déclenché par création/update Notion/GDrive) qui extrait le texte, le découpe en chunks, génère les embeddings (via OpenAI Embeddings Node ou autre), et les upsert dans Pinecone/Supabase Vector avec des métadonnées (Notion Page ID, type, etc.).</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Caching Stratégies (Redis via Code Node + httpRequest) :</strong></p>
+<ul>
+<li><p><em>Prérequis :</em> Credential N8N pour l’API Redis (ex: Upstash REST API token). Stocker l’URL de base Redis dans les variables d’environnement N8N ou StaticData.</p></li>
+</ul>
+</li>
+</ul>
+<p><em>Diagramme ASCII Flux avec Cache :</em><br />graph TD<br />Start --&gt; CheckCache[Code: Check Cache (GET Redis)];<br />CheckCache --&gt; IfCache{IF: Cache Hit?};<br />IfCache -- Yes --&gt; UseCache[Code: Use Cached Data];<br />UseCache --&gt; End;<br />IfCache -- No --&gt; ExecuteOp(Execute Expensive Operation - e.g., WF-AI-Team-Executor);<br />ExecuteOp --&gt; SetCache[Code: Set Cache (PUT/SET Redis)];<br />SetCache --&gt; UseOpResult[Code: Use Operation Result];<br />UseOpResult --&gt; End;<br />CheckCache -- Error --&gt; ExecuteOp; %% Fallback si cache indispo<br />SetCache -- Error --&gt; UseOpResult; %% Non bloquant si écriture cache échoue</p>
+<ul class="simple">
+<li><p>IGNORE_WHEN_COPYING_START<br />content_copy download<br />Use code <a class="reference external" href="https://support.google.com/legal/answer/13505487">with caution</a>.Mermaid<br />IGNORE_WHEN_COPYING_END</p></li>
+</ul>
+<p><em>Implémentation Code Node (Check Cache) :</em><br />// Input: cacheKey (e.g., “cache:llm:Team1:analyze:…”)<br />const cacheKey = $input.first().json.cacheKey;<br />const redisUrl = process.env.REDIS_URL; // Ou $env.REDIS_URL<br />const redisToken = $env.REDIS_TOKEN; // Depuis credential ou env</p>
+<p>try {<br />const response = await this.httpRequest({<br />url: `${redisUrl}/get/${cacheKey}`,<br />method: ‘GET’,<br />headers: { ‘Authorization’: `Bearer ${redisToken}` },<br />json: true,<br />timeout: 2000 // Timeout court<br />});<br />if (response.result) {<br />return [{ json: { cacheHit: true, cachedData: JSON.parse(response.result) } }]; // Assumer que la donnée est stockée en JSON stringifié<br />} else {<br />return [{ json: { cacheHit: false } }];<br />}<br />} catch (error) {<br />console.error(”Redis GET error:”, error);<br />return [{ json: { cacheHit: false, cacheError: true } }]; // Cache miss en cas d’erreur<br />}</p>
+<ul class="simple">
+<li><p>IGNORE_WHEN_COPYING_START<br />content_copy download<br />Use code <a class="reference external" href="https://support.google.com/legal/answer/13505487">with caution</a>.JavaScript<br />IGNORE_WHEN_COPYING_END</p></li>
+</ul>
+<p><em>Implémentation Code Node (Set Cache) :</em><br />// Input: cacheKey, dataToCache, ttlSeconds<br />const cacheKey = $input.first().json.cacheKey;<br />const dataToCache = $input.first().json.dataToCache;<br />const ttlSeconds = $input.first().json.ttlSeconds || 3600; // Default 1h<br />const redisUrl = process.env.REDIS_URL;<br />const redisToken = $env.REDIS_TOKEN;</p>
+<p>try {<br />await this.httpRequest({<br />url: `${redisUrl}/set/${cacheKey}?EX=${ttlSeconds}`, // Utiliser SET avec EX pour TTL<br />method: ‘POST’, // Ou PUT selon l’API Redis<br />headers: { ‘Authorization’: `Bearer ${redisToken}` },<br />body: JSON.stringify(dataToCache), // Stocker comme string JSON<br />timeout: 2000<br />});<br />return [{ json: { cacheSet: true } }];<br />} catch (error) {<br />console.error(”Redis SET error:”, error);<br />return [{ json: { cacheSet: false, cacheError: true } }]; // Non bloquant<br />}</p>
+<ul class="simple">
+<li><p>IGNORE_WHEN_COPYING_START<br />content_copy download<br />Use code <a class="reference external" href="https://support.google.com/legal/answer/13505487">with caution</a>.JavaScript<br />IGNORE_WHEN_COPYING_END</p>
+<ul>
+<li><p><em>Invalidation :</em> Laisser le TTL gérer l’expiration est le plus simple. L’invalidation active nécessite que le workflow qui modifie la donnée (ex: WF-Notion-Helper update) connaisse la clé de cache correspondante et envoie une requête DEL à Redis.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+<p><strong>8. Analytics &amp; Reporting Avancés (Pilotage Agence) :</strong></p>
+<ul class="simple">
+<li><p><strong>WF-Reporting-Generator (Implémentation Technique) :</strong></p>
+<ul>
+<li><p>Trigger: Cron.</p></li>
+<li><p>Set Node: Calculer startDate, endDate pour la période.</p></li>
+<li><p>Plusieurs WF-Notion-Helper (Find Pages) avec filtres de date complexes sur Agence_LOTs, Agence_Finance, [Artiste]_Agenda_Booking. Gérer la pagination.</p></li>
+</ul>
+</li>
+</ul>
+<p>Code Node (Calculate KPIs): Agréger les résultats. Ex:<br />const deals = items.filter(item =&gt; item.json.properties.Statut?.select?.name === ‘DEAL’);<br />const prospects = items.filter(item =&gt; item.json.properties.Statut?.select?.name.startsWith(’PROSPECT’));<br />const dealRate = prospects.length &gt; 0 ? deals.length / prospects.length : 0;<br />// … autres KPIs<br />return [{ json: { kpiData: { dealRate: dealRate, /* … */ } } }];</p>
+<ul class="simple">
+<li><p>IGNORE_WHEN_COPYING_START<br />content_copy download<br />Use code <a class="reference external" href="https://support.google.com/legal/answer/13505487">with caution</a>.JavaScript<br />IGNORE_WHEN_COPYING_END</p>
+<ul>
+<li><p>Code Node (Prepare AI Input): Sélectionner des exemples de données brutes si nécessaire pour le contexte.</p></li>
+<li><p>WF-AI-Team-Executor (Team 3).</p></li>
+<li><p>Code Node (Format Report): Créer Markdown ou JSON structuré.</p></li>
+<li><p>WF-Notion-Helper (Create Page) dans Agence_Rapports.</p></li>
+<li><p>WF-Notification-Dispatcher.</p></li>
+<li><p>WF-Monitoring (Log Info).</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><strong>Intégration CMS :</strong></p>
+<ul>
+<li><p>Option 1 (CMS lit Notion) : Le backend CMS appelle l’API Notion pour lire les pages de la base Agence_Rapports. Simple mais potentiellement lent.</p></li>
+<li><p>Option 2 (N8N pousse vers CMS) : WF-Reporting-Generator ajoute une étape finale : HTTP Request Node (POST vers endpoint API CMS /api/reports) avec le JSON structuré du rapport. Le backend CMS stocke/cache ce rapport dans DB_CMS pour affichage rapide. Nécessite une API CMS sécurisée.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+<p><strong>9. Considérations Éthiques IA :</strong></p>
+<ul class="simple">
+<li><p><strong>Implémentation Technique :</strong></p>
+<ul>
+<li><p><em>Transparence :</em> Ajouter une propriété ai_generated: true ou source: “TeamX” aux objets Notion/CMS créés/modifiés par l’IA. Afficher cette info dans l’UI CMS.</p></li>
+<li><p><em>Biais :</em></p>
+<ul>
+<li><p>Prompts : Inclure des instructions type “Éviter les stéréotypes”, “Baser l’analyse uniquement sur les faits fournis”.</p></li>
+<li><p>Audit : WF-Monitoring doit logguer les prompts et les réponses complètes (potentiellement dans un stockage séparé type S3 si trop volumineux pour Notion). Mettre en place un workflow WF-AI-Audit (manuel ou assisté par Team 8) pour échantillonner et évaluer les logs.</p></li>
+</ul>
+</li>
+<li></li>
+<li><p><em>Confidentialité :</em></p>
+<ul>
+<li><p>Sanitization (Code Node avant WF-AI-Team-Executor) : Utiliser des regex ou des logiques pour remplacer noms, emails, téléphones, IBANs par des placeholders ([CONTACT_NAME], [EMAIL]) dans les prompts envoyés à OpenRouter, sauf si l’IA a explicitement besoin de cette info (ex: personnalisation email).</p></li>
+<li><p>Politiques : Vérifier les politiques de data usage d’OpenRouter et des modèles sous-jacents sélectionnés. Privilégier les modèles avec des garanties de non-rétention/non-entraînement sur les données si possible/nécessaire.</p></li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+<li></li>
+</ul>
+<p><strong>Matrices ACRI (Exemples pour Pilier 3) :</strong></p>
+<ul class="simple">
+<li><p><strong>Processus : Définition &amp; Raffinement Prompt IA</strong><br />| Rôle | Définition Initiale Tâche IA | Rédaction Prompt V1 | Test &amp; Validation Output | Raffinement Prompt V2+ | Documentation Prompt (Agence_Documentation) |<br />| :————— | :————————–: | :—————–: | :———————-: | :——————–: | :——————————————-: |<br />| Ingénieur N8N/Dev| C | R | R | R | R |<br />| Expert Métier | A | C | A | C | I |<br />| Équipe IA (LLM) | - | A (Interprète) | A (Génère) | A (Interprète) | - |<br />| Équipe 8 (Monitor)| I | I | C | C | I |</p></li>
+<li><p><strong>Processus : Gestion &amp; Rotation Clés API OpenRouter</strong><br />| Rôle | Obtention Clé OpenRouter | Création Credential N8N | Configuration StaticData | Surveillance Usage/Coût | Gestion Échecs (WF-Mark-Key-Failed) | Rotation/Révocation Clés |<br />| :————— | :———————-: | :———————: | :————————: | :———————: | :———————————–: | :———————-: |<br />| Admin N8N/Infra | A | A | A | R | I | A |<br />| Ingénieur N8N/Dev| I | C | R (Implémente logique) | C | R (Implémente WF) | C |<br />| Équipe 8 (Monitor)| I | I | I | A (Analyse/Alerte) | C | I |<br />| Finance/Manager | C (Budget) | I | I | C (Approbation coût) | I | I |</p></li>
+<li><p><strong>Processus : Monitoring Qualité Output IA</strong><br />| Rôle | Définition Critères Qualité | Implémentation Heuristiques (Team 8) | Collecte Feedback Utilisateur (CMS/Notion) | Analyse Périodique (Team 8 / Manuel) | Action Corrective (Prompt/WF) |<br />| :————— | :————————-: | :———————————-: | :—————————————-: | :———————————-: | :—————————: |<br />| Expert Métier | A | C | R (Fournit feedback) | A (Valide analyse) | C |<br />| Ingénieur N8N/Dev| C | R | R (Implémente collecte) | C | R |<br />| Équipe 8 (Monitor)| C | A | I | R (Effectue analyse) | C |<br />| Utilisateur Final| I | I | A (Donne feedback) | I | I |</p></li>
+</ul>
+<hr class="docutils" />
+<p>Ce développement technique du Pilier 3 vise à fournir une base solide pour l’implémentation de l’intelligence artificielle au sein de l’écosystème N8N/CMS, en mettant l’accent sur la modularité, la robustesse, la gestion optimisée des ressources et les considérations éthiques.</p>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

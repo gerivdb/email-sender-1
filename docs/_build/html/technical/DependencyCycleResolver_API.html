@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DependencyCycleResolver - Documentation API &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">DependencyCycleResolver - Documentation API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/technical/DependencyCycleResolver_API.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dependencycycleresolver-documentation-api">
+<h1>DependencyCycleResolver - Documentation API<a class="headerlink" href="#dependencycycleresolver-documentation-api" title="Link to this heading"></a></h1>
+<section id="vue-d-ensemble">
+<h2>Vue d’ensemble<a class="headerlink" href="#vue-d-ensemble" title="Link to this heading"></a></h2>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">DependencyCycleResolver</span></code> est conçu pour détecter et résoudre automatiquement les cycles de dépendances dans les scripts PowerShell et les workflows n8n. Il s’intègre avec le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> pour identifier les cycles et propose plusieurs stratégies pour les résoudre.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;chemin/vers/DependencyCycleResolver.psm1&quot;</span>
+
+<span class="c"># Initialiser le module</span>
+<span class="nb">Initialize-DependencyCycleResolver</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxIterations</span> <span class="n">10</span> <span class="n">-Strategy</span> <span class="s2">&quot;MinimumImpact&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="fonctions-principales">
+<h2>Fonctions principales<a class="headerlink" href="#fonctions-principales" title="Link to this heading"></a></h2>
+<section id="initialize-dependencycycleresolver">
+<h3>Initialize-DependencyCycleResolver<a class="headerlink" href="#initialize-dependencycycleresolver" title="Link to this heading"></a></h3>
+<p>Initialise le module de résolution des cycles de dépendances avec les paramètres spécifiés.</p>
+<section id="syntaxe">
+<h4>Syntaxe<a class="headerlink" href="#syntaxe" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-DependencyCycleResolver</span> <span class="p">[[</span><span class="n">-Enabled</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">Boolean</span><span class="p">&gt;]</span> <span class="p">[[</span><span class="n">-MaxIterations</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[[</span><span class="n">-Strategy</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+</section>
+<section id="parametres">
+<h4>Paramètres<a class="headerlink" href="#parametres" title="Link to this heading"></a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enabled</td>
+<td>Boolean</td>
+<td>Non</td>
+<td>Indique si le résolveur est activé. La valeur par défaut est $true.</td>
+</tr>
+<tr>
+<td>MaxIterations</td>
+<td>Int32</td>
+<td>Non</td>
+<td>Nombre maximum d'itérations pour résoudre les cycles. La valeur par défaut est 10.</td>
+</tr>
+<tr>
+<td>Strategy</td>
+<td>String</td>
+<td>Non</td>
+<td>Stratégie de résolution des cycles. Les valeurs possibles sont "MinimumImpact", "WeightBased" et "Random". La valeur par défaut est "MinimumImpact".</td>
+</tr>
+</tbody>
+</table></section>
+<section id="valeur-de-retour">
+<h4>Valeur de retour<a class="headerlink" href="#valeur-de-retour" title="Link to this heading"></a></h4>
+<p>Boolean. Retourne $true si l’initialisation a réussi, $false sinon.</p>
+</section>
+<section id="exemple">
+<h4>Exemple<a class="headerlink" href="#exemple" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser le résolveur avec les paramètres par défaut</span>
+<span class="nb">Initialize-DependencyCycleResolver</span>
+
+<span class="c"># Initialiser le résolveur avec des paramètres personnalisés</span>
+<span class="nb">Initialize-DependencyCycleResolver</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxIterations</span> <span class="n">5</span> <span class="n">-Strategy</span> <span class="s2">&quot;Random&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="resolve-dependencycycle">
+<h3>Resolve-DependencyCycle<a class="headerlink" href="#resolve-dependencycycle" title="Link to this heading"></a></h3>
+<p>Résout un cycle de dépendances dans un graphe.</p>
+<section id="id1">
+<h4>Syntaxe<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Resolve-DependencyCycle</span> <span class="p">[</span><span class="n">-CycleResult</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">PSObject</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h4>Paramètres<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CycleResult</td>
+<td>PSObject</td>
+<td>Oui</td>
+<td>Résultat de la détection de cycle, tel que retourné par la fonction Find-Cycle du module CycleDetector. Doit contenir les propriétés HasCycle, CyclePath et Graph.</td>
+</tr>
+</tbody>
+</table></section>
+<section id="id3">
+<h4>Valeur de retour<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<p>PSObject ou Boolean. Si un cycle est détecté et résolu, retourne un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p>Success : Boolean. Indique si la résolution a réussi.</p></li>
+<li><p>RemovedEdges : Array. Liste des arêtes supprimées pour résoudre le cycle.</p></li>
+<li><p>Graph : Hashtable. Graphe modifié sans cycle.</p></li>
+</ul>
+<p>Si aucun cycle n’est détecté ou si le résolveur est désactivé, retourne $false.</p>
+</section>
+<section id="id4">
+<h4>Exemple<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un graphe avec un cycle</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c"># Détecter le cycle</span>
+<span class="nv">$cycleResult</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>
+
+<span class="c"># Résoudre le cycle</span>
+<span class="nv">$resolveResult</span> <span class="p">=</span> <span class="nb">Resolve-DependencyCycle</span> <span class="n">-CycleResult</span> <span class="nv">$cycleResult</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">Success</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle résolu avec succès&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Arête supprimée: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">RemovedEdges</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">Source</span><span class="p">)</span><span class="s2"> -&gt; </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">RemovedEdges</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">Target</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Échec de la résolution du cycle&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="resolve-scriptdependencycycle">
+<h3>Resolve-ScriptDependencyCycle<a class="headerlink" href="#resolve-scriptdependencycycle" title="Link to this heading"></a></h3>
+<p>Détecte et résout les cycles de dépendances dans les scripts PowerShell.</p>
+<section id="id5">
+<h4>Syntaxe<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Resolve-ScriptDependencyCycle</span> <span class="p">[</span><span class="n">-Path</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h4>Paramètres<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path</td>
+<td>String</td>
+<td>Oui</td>
+<td>Chemin du dossier contenant les scripts PowerShell à analyser.</td>
+</tr>
+</tbody>
+</table></section>
+<section id="id7">
+<h4>Valeur de retour<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<p>PSObject. Retourne un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p>Success : Boolean. Indique si la résolution a réussi.</p></li>
+<li><p>CyclesDetected : Int32. Nombre de cycles détectés.</p></li>
+<li><p>CyclesResolved : Int32. Nombre de cycles résolus.</p></li>
+<li><p>RemovedEdges : Array. Liste des arêtes supprimées pour résoudre les cycles.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h4>Exemple<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Résoudre les cycles dans les scripts PowerShell</span>
+<span class="nv">$resolveResult</span> <span class="p">=</span> <span class="nb">Resolve-ScriptDependencyCycle</span> <span class="n">-Path</span> <span class="s2">&quot;C:\Scripts&quot;</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Cycles détectés: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">CyclesDetected</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Cycles résolus: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">CyclesResolved</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="resolve-workflowcycle">
+<h3>Resolve-WorkflowCycle<a class="headerlink" href="#resolve-workflowcycle" title="Link to this heading"></a></h3>
+<p>Détecte et résout les cycles de dépendances dans les workflows n8n.</p>
+<section id="id9">
+<h4>Syntaxe<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Resolve-WorkflowCycle</span> <span class="p">[</span><span class="n">-WorkflowPath</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h4>Paramètres<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WorkflowPath</td>
+<td>String</td>
+<td>Oui</td>
+<td>Chemin du fichier JSON du workflow n8n à analyser.</td>
+</tr>
+</tbody>
+</table></section>
+<section id="id11">
+<h4>Valeur de retour<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<p>PSObject. Retourne un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p>Success : Boolean. Indique si la résolution a réussi.</p></li>
+<li><p>CyclesDetected : Int32. Nombre de cycles détectés.</p></li>
+<li><p>CyclesResolved : Int32. Nombre de cycles résolus.</p></li>
+<li><p>RemovedEdges : Array. Liste des arêtes supprimées pour résoudre les cycles.</p></li>
+</ul>
+</section>
+<section id="id12">
+<h4>Exemple<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Résoudre les cycles dans un workflow n8n</span>
+<span class="nv">$resolveResult</span> <span class="p">=</span> <span class="nb">Resolve-WorkflowCycle</span> <span class="n">-WorkflowPath</span> <span class="s2">&quot;C:\Workflows\workflow.json&quot;</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Cycles détectés: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">CyclesDetected</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Cycles résolus: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">CyclesResolved</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="get-cycleresolverstatistics">
+<h3>Get-CycleResolverStatistics<a class="headerlink" href="#get-cycleresolverstatistics" title="Link to this heading"></a></h3>
+<p>Récupère les statistiques du résolveur de cycles.</p>
+<section id="id13">
+<h4>Syntaxe<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-CycleResolverStatistics</span>
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h4>Paramètres<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<p>Aucun.</p>
+</section>
+<section id="id15">
+<h4>Valeur de retour<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<p>PSObject. Retourne un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p>Enabled : Boolean. Indique si le résolveur est activé.</p></li>
+<li><p>MaxIterations : Int32. Nombre maximum d’itérations pour résoudre les cycles.</p></li>
+<li><p>Strategy : String. Stratégie de résolution des cycles.</p></li>
+<li><p>TotalResolutions : Int32. Nombre total de résolutions tentées.</p></li>
+<li><p>SuccessfulResolutions : Int32. Nombre de résolutions réussies.</p></li>
+<li><p>FailedResolutions : Int32. Nombre de résolutions échouées.</p></li>
+<li><p>SuccessRate : Double. Taux de réussite des résolutions (en pourcentage).</p></li>
+</ul>
+</section>
+<section id="id16">
+<h4>Exemple<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Obtenir les statistiques du résolveur</span>
+<span class="nv">$stats</span> <span class="p">=</span> <span class="nb">Get-CycleResolverStatistics</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total de résolutions: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">TotalResolutions</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Résolutions réussies: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">SuccessfulResolutions</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Taux de réussite: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">SuccessRate</span><span class="p">)</span><span class="s2">%&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="strategies-de-resolution">
+<h2>Stratégies de résolution<a class="headerlink" href="#strategies-de-resolution" title="Link to this heading"></a></h2>
+<p>Le module propose plusieurs stratégies pour résoudre les cycles de dépendances :</p>
+<section id="minimumimpact">
+<h3>MinimumImpact<a class="headerlink" href="#minimumimpact" title="Link to this heading"></a></h3>
+<p>Cette stratégie vise à minimiser l’impact de la résolution en supprimant les arêtes les moins utilisées ou les moins importantes. C’est la stratégie par défaut.</p>
+</section>
+<section id="weightbased">
+<h3>WeightBased<a class="headerlink" href="#weightbased" title="Link to this heading"></a></h3>
+<p>Cette stratégie supprime les arêtes en fonction de leur poids. Les arêtes avec le poids le plus faible sont supprimées en premier.</p>
+</section>
+<section id="random">
+<h3>Random<a class="headerlink" href="#random" title="Link to this heading"></a></h3>
+<p>Cette stratégie supprime une arête aléatoire du cycle. Elle peut être utile lorsque toutes les arêtes ont la même importance.</p>
+</section>
+</section>
+<section id="integration-avec-cycledetector">
+<h2>Intégration avec CycleDetector<a class="headerlink" href="#integration-avec-cycledetector" title="Link to this heading"></a></h2>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">DependencyCycleResolver</span></code> s’intègre avec le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> pour détecter les cycles de dépendances. Pour utiliser les deux modules ensemble, vous devez d’abord importer et initialiser les deux modules :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;chemin/vers/CycleDetector.psm1&quot;</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;chemin/vers/DependencyCycleResolver.psm1&quot;</span>
+
+<span class="c"># Initialiser les modules</span>
+<span class="nb">Initialize-CycleDetector</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span>
+<span class="nb">Initialize-DependencyCycleResolver</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxIterations</span> <span class="n">10</span> <span class="n">-Strategy</span> <span class="s2">&quot;MinimumImpact&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exemples-d-utilisation">
+<h2>Exemples d’utilisation<a class="headerlink" href="#exemples-d-utilisation" title="Link to this heading"></a></h2>
+<section id="resolution-d-un-cycle-simple">
+<h3>Résolution d’un cycle simple<a class="headerlink" href="#resolution-d-un-cycle-simple" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un graphe avec un cycle</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c"># Détecter le cycle</span>
+<span class="nv">$cycleResult</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>
+
+<span class="c"># Vérifier que le cycle est détecté</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$cycleResult</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté: </span><span class="p">$(</span><span class="nv">$cycleResult</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    
+    <span class="c"># Résoudre le cycle</span>
+    <span class="nv">$resolveResult</span> <span class="p">=</span> <span class="nb">Resolve-DependencyCycle</span> <span class="n">-CycleResult</span> <span class="nv">$cycleResult</span>
+    
+    <span class="c"># Vérifier que le cycle est résolu</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">Success</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle résolu avec succès&quot;</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Arête supprimée: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">RemovedEdges</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">Source</span><span class="p">)</span><span class="s2"> -&gt; </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">RemovedEdges</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">Target</span><span class="p">)</span><span class="s2">&quot;</span>
+        
+        <span class="c"># Vérifier que le graphe modifié n&#39;a plus de cycle</span>
+        <span class="nv">$newCycleCheck</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$resolveResult</span><span class="p">.</span><span class="n">Graph</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$newCycleCheck</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Le graphe modifié ne contient plus de cycle&quot;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;Le graphe modifié contient encore un cycle&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Échec de la résolution du cycle&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Aucun cycle détecté&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="resolution-des-cycles-dans-les-scripts-powershell">
+<h3>Résolution des cycles dans les scripts PowerShell<a class="headerlink" href="#resolution-des-cycles-dans-les-scripts-powershell" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Résoudre les cycles dans les scripts PowerShell</span>
+<span class="nv">$resolveResult</span> <span class="p">=</span> <span class="nb">Resolve-ScriptDependencyCycle</span> <span class="n">-Path</span> <span class="s2">&quot;C:\Scripts&quot;</span>
+
+<span class="c"># Afficher les résultats</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Cycles détectés: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">CyclesDetected</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Cycles résolus: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">CyclesResolved</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">Success</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Résolution réussie&quot;</span>
+    
+    <span class="c"># Afficher les arêtes supprimées</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">RemovedEdges</span><span class="p">.</span><span class="n">Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Arêtes supprimées:&quot;</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$edge</span> <span class="k">in</span> <span class="nv">$resolveResult</span><span class="p">.</span><span class="n">RemovedEdges</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;  </span><span class="p">$(</span><span class="nv">$edge</span><span class="p">.</span><span class="n">Source</span><span class="p">)</span><span class="s2"> -&gt; </span><span class="p">$(</span><span class="nv">$edge</span><span class="p">.</span><span class="n">Target</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Aucune arête supprimée&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Échec de la résolution&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="resolution-des-cycles-dans-les-workflows-n8n">
+<h3>Résolution des cycles dans les workflows n8n<a class="headerlink" href="#resolution-des-cycles-dans-les-workflows-n8n" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Résoudre les cycles dans un workflow n8n</span>
+<span class="nv">$resolveResult</span> <span class="p">=</span> <span class="nb">Resolve-WorkflowCycle</span> <span class="n">-WorkflowPath</span> <span class="s2">&quot;C:\Workflows\workflow.json&quot;</span>
+
+<span class="c"># Afficher les résultats</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Cycles détectés: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">CyclesDetected</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Cycles résolus: </span><span class="p">$(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">CyclesResolved</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">Success</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Résolution réussie&quot;</span>
+    
+    <span class="c"># Afficher les arêtes supprimées</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$resolveResult</span><span class="p">.</span><span class="n">RemovedEdges</span><span class="p">.</span><span class="n">Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Arêtes supprimées:&quot;</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$edge</span> <span class="k">in</span> <span class="nv">$resolveResult</span><span class="p">.</span><span class="n">RemovedEdges</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="s2">&quot;  </span><span class="p">$(</span><span class="nv">$edge</span><span class="p">.</span><span class="n">Source</span><span class="p">)</span><span class="s2"> -&gt; </span><span class="p">$(</span><span class="nv">$edge</span><span class="p">.</span><span class="n">Target</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Aucune arête supprimée&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Échec de la résolution&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Initialiser les modules</strong> : Toujours initialiser les modules <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> et <code class="docutils literal notranslate"><span class="pre">DependencyCycleResolver</span></code> avant de les utiliser.</p></li>
+<li><p><strong>Choisir la bonne stratégie</strong> : Sélectionner la stratégie de résolution en fonction de vos besoins spécifiques. La stratégie “MinimumImpact” est généralement un bon choix par défaut.</p></li>
+<li><p><strong>Vérifier les résultats</strong> : Toujours vérifier que les cycles ont été correctement résolus après l’exécution des fonctions de résolution.</p></li>
+<li><p><strong>Surveiller les statistiques</strong> : Utiliser la fonction <code class="docutils literal notranslate"><span class="pre">Get-CycleResolverStatistics</span></code> pour surveiller les performances du résolveur et identifier les problèmes potentiels.</p></li>
+<li><p><strong>Gérer les erreurs</strong> : Implémenter une gestion des erreurs robuste pour traiter les cas où la résolution échoue.</p></li>
+</ol>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="probleme-le-module-ne-detecte-pas-les-cycles">
+<h3>Problème : Le module ne détecte pas les cycles<a class="headerlink" href="#probleme-le-module-ne-detecte-pas-les-cycles" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Vérifier que le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> est correctement importé et initialisé. Vérifier également que le graphe contient bien des cycles.</p>
+</section>
+<section id="probleme-le-module-ne-resout-pas-les-cycles">
+<h3>Problème : Le module ne résout pas les cycles<a class="headerlink" href="#probleme-le-module-ne-resout-pas-les-cycles" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Vérifier que le module <code class="docutils literal notranslate"><span class="pre">DependencyCycleResolver</span></code> est activé (paramètre <code class="docutils literal notranslate"><span class="pre">Enabled</span></code> à <code class="docutils literal notranslate"><span class="pre">$true</span></code>). Vérifier également que le nombre maximum d’itérations (<code class="docutils literal notranslate"><span class="pre">MaxIterations</span></code>) est suffisant pour résoudre les cycles complexes.</p>
+</section>
+<section id="probleme-erreur-le-terme-find-cycle-n-est-pas-reconnu">
+<h3>Problème : Erreur “Le terme ‘Find-Cycle’ n’est pas reconnu”<a class="headerlink" href="#probleme-erreur-le-terme-find-cycle-n-est-pas-reconnu" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Ce problème peut survenir lorsque le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> n’est pas correctement importé. Utiliser la fonction wrapper <code class="docutils literal notranslate"><span class="pre">Find-CycleWrapper</span></code> fournie dans les exemples de test, ou réimporter le module avec l’option <code class="docutils literal notranslate"><span class="pre">-Force</span></code>.</p>
+</section>
+<section id="probleme-depassement-de-la-profondeur-des-appels-stack-overflow">
+<h3>Problème : Dépassement de la profondeur des appels (stack overflow)<a class="headerlink" href="#probleme-depassement-de-la-profondeur-des-appels-stack-overflow" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Ce problème peut survenir lors de l’exécution des tests avec Pester. Utiliser les scripts de test simplifiés qui n’utilisent pas Pester, ou augmenter la limite de profondeur de la pile dans PowerShell.</p>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">DependencyCycleResolver</span></code> offre une solution robuste pour détecter et résoudre automatiquement les cycles de dépendances dans les scripts PowerShell et les workflows n8n. En l’intégrant avec le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code>, vous pouvez facilement identifier et résoudre les problèmes de dépendances circulaires dans vos projets.</p>
+<hr class="docutils" />
+<p><em>Documentation générée le 20/04/2025</em></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

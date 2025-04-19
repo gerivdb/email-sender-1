@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimisation du traitement parallèle &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Optimisation du traitement parallèle</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/technical/ParallelProcessing.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="optimisation-du-traitement-parallele">
+<h1>Optimisation du traitement parallèle<a class="headerlink" href="#optimisation-du-traitement-parallele" title="Link to this heading"></a></h1>
+<section id="vue-d-ensemble">
+<h2>Vue d’ensemble<a class="headerlink" href="#vue-d-ensemble" title="Link to this heading"></a></h2>
+<p>Le module d’optimisation du traitement parallèle fournit des fonctionnalités pour exécuter des tâches en parallèle, améliorant ainsi les performances des scripts PowerShell. Ce module propose plusieurs méthodes de parallélisation et peut déterminer automatiquement la méthode la plus efficace pour un cas d’utilisation spécifique.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Le script est disponible dans le dossier <code class="docutils literal notranslate"><span class="pre">scripts/performance</span></code> du projet. Pour l’importer :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$scriptPath</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="n">-Path</span> <span class="nv">$PSScriptRoot</span> <span class="n">-ChildPath</span> <span class="s2">&quot;scripts\performance\Optimize-ParallelExecution.ps1&quot;</span>
+<span class="p">.</span> <span class="nv">$scriptPath</span>
+</pre></div>
+</div>
+</section>
+<section id="fonctions-principales">
+<h2>Fonctions principales<a class="headerlink" href="#fonctions-principales" title="Link to this heading"></a></h2>
+<section id="invoke-sequentialprocessing">
+<h3>Invoke-SequentialProcessing<a class="headerlink" href="#invoke-sequentialprocessing" title="Link to this heading"></a></h3>
+<p>Exécute un traitement séquentiel sur un ensemble de données.</p>
+<section id="syntaxe">
+<h4>Syntaxe<a class="headerlink" href="#syntaxe" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-SequentialProcessing</span> <span class="n">-Data</span> <span class="p">&lt;</span><span class="n">Array</span><span class="p">&gt;</span> <span class="n">-ScriptBlock</span> <span class="p">&lt;</span><span class="n">ScriptBlock</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="parametres">
+<h4>Paramètres<a class="headerlink" href="#parametres" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Data</strong> : Tableau des éléments à traiter.</p></li>
+<li><p><strong>ScriptBlock</strong> : Script à exécuter pour chaque élément.</p></li>
+</ul>
+</section>
+<section id="valeur-de-retour">
+<h4>Valeur de retour<a class="headerlink" href="#valeur-de-retour" title="Link to this heading"></a></h4>
+<p>Un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p><strong>Results</strong> : Résultats du traitement.</p></li>
+<li><p><strong>ExecutionTime</strong> : Temps d’exécution total.</p></li>
+<li><p><strong>ItemsProcessed</strong> : Nombre d’éléments traités.</p></li>
+</ul>
+</section>
+<section id="exemple">
+<h4>Exemple<a class="headerlink" href="#exemple" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$data</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">10</span>
+<span class="nv">$scriptBlock</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nv">$item</span> <span class="p">*</span> <span class="n">2</span>
+<span class="p">}</span>
+
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-SequentialProcessing</span> <span class="n">-Data</span> <span class="nv">$data</span> <span class="n">-ScriptBlock</span> <span class="nv">$scriptBlock</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Temps d&#39;exécution: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">ExecutionTime</span><span class="p">.</span><span class="n">TotalMilliseconds</span><span class="p">)</span><span class="s2"> ms&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="invoke-runspacepoolprocessing">
+<h3>Invoke-RunspacePoolProcessing<a class="headerlink" href="#invoke-runspacepoolprocessing" title="Link to this heading"></a></h3>
+<p>Exécute un traitement parallèle en utilisant un pool de runspaces.</p>
+<section id="id1">
+<h4>Syntaxe<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-RunspacePoolProcessing</span> <span class="n">-Data</span> <span class="p">&lt;</span><span class="n">Array</span><span class="p">&gt;</span> <span class="n">-ScriptBlock</span> <span class="p">&lt;</span><span class="n">ScriptBlock</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-MaxThreads</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h4>Paramètres<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Data</strong> : Tableau des éléments à traiter.</p></li>
+<li><p><strong>ScriptBlock</strong> : Script à exécuter pour chaque élément.</p></li>
+<li><p><strong>MaxThreads</strong> : Nombre maximum de threads à utiliser (par défaut : nombre de processeurs).</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4>Valeur de retour<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<p>Un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p><strong>Results</strong> : Résultats du traitement.</p></li>
+<li><p><strong>ExecutionTime</strong> : Temps d’exécution total.</p></li>
+<li><p><strong>ItemsProcessed</strong> : Nombre d’éléments traités.</p></li>
+<li><p><strong>MaxThreads</strong> : Nombre maximum de threads utilisés.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h4>Exemple<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$data</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">10</span>
+<span class="nv">$scriptBlock</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$item</span><span class="p">)</span>
+    <span class="nb">Start-Sleep</span> <span class="n">-Milliseconds</span> <span class="n">100</span>  <span class="c"># Simuler une tâche longue</span>
+    <span class="k">return</span> <span class="nv">$item</span> <span class="p">*</span> <span class="n">2</span>
+<span class="p">}</span>
+
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-RunspacePoolProcessing</span> <span class="n">-Data</span> <span class="nv">$data</span> <span class="n">-ScriptBlock</span> <span class="nv">$scriptBlock</span> <span class="n">-MaxThreads</span> <span class="n">4</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Temps d&#39;exécution: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">ExecutionTime</span><span class="p">.</span><span class="n">TotalMilliseconds</span><span class="p">)</span><span class="s2"> ms&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="invoke-batchparallelprocessing">
+<h3>Invoke-BatchParallelProcessing<a class="headerlink" href="#invoke-batchparallelprocessing" title="Link to this heading"></a></h3>
+<p>Exécute un traitement parallèle par lots.</p>
+<section id="id5">
+<h4>Syntaxe<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-BatchParallelProcessing</span> <span class="n">-Data</span> <span class="p">&lt;</span><span class="n">Array</span><span class="p">&gt;</span> <span class="n">-ScriptBlock</span> <span class="p">&lt;</span><span class="n">ScriptBlock</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-MaxThreads</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-ChunkSize</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h4>Paramètres<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Data</strong> : Tableau des éléments à traiter.</p></li>
+<li><p><strong>ScriptBlock</strong> : Script à exécuter pour chaque élément.</p></li>
+<li><p><strong>MaxThreads</strong> : Nombre maximum de threads à utiliser (par défaut : nombre de processeurs).</p></li>
+<li><p><strong>ChunkSize</strong> : Nombre d’éléments par lot (par défaut : calculé automatiquement).</p></li>
+</ul>
+</section>
+<section id="id7">
+<h4>Valeur de retour<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<p>Un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p><strong>Results</strong> : Résultats du traitement.</p></li>
+<li><p><strong>ExecutionTime</strong> : Temps d’exécution total.</p></li>
+<li><p><strong>ItemsProcessed</strong> : Nombre d’éléments traités.</p></li>
+<li><p><strong>MaxThreads</strong> : Nombre maximum de threads utilisés.</p></li>
+<li><p><strong>ChunkSize</strong> : Taille des lots utilisée.</p></li>
+<li><p><strong>BatchCount</strong> : Nombre de lots traités.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h4>Exemple<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$data</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">100</span>
+<span class="nv">$scriptBlock</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$item</span><span class="p">)</span>
+    <span class="nb">Start-Sleep</span> <span class="n">-Milliseconds</span> <span class="n">10</span>  <span class="c"># Simuler une tâche avec surcharge de démarrage</span>
+    <span class="k">return</span> <span class="nv">$item</span> <span class="p">*</span> <span class="n">2</span>
+<span class="p">}</span>
+
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-BatchParallelProcessing</span> <span class="n">-Data</span> <span class="nv">$data</span> <span class="n">-ScriptBlock</span> <span class="nv">$scriptBlock</span> <span class="n">-MaxThreads</span> <span class="n">4</span> <span class="n">-ChunkSize</span> <span class="n">10</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Temps d&#39;exécution: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">ExecutionTime</span><span class="p">.</span><span class="n">TotalMilliseconds</span><span class="p">)</span><span class="s2"> ms&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="invoke-foreachparallelprocessing">
+<h3>Invoke-ForEachParallelProcessing<a class="headerlink" href="#invoke-foreachparallelprocessing" title="Link to this heading"></a></h3>
+<p>Exécute un traitement parallèle en utilisant ForEach-Object -Parallel (PowerShell 7+ uniquement).</p>
+<section id="id9">
+<h4>Syntaxe<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-ForEachParallelProcessing</span> <span class="n">-Data</span> <span class="p">&lt;</span><span class="n">Array</span><span class="p">&gt;</span> <span class="n">-ScriptBlock</span> <span class="p">&lt;</span><span class="n">ScriptBlock</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-MaxThreads</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h4>Paramètres<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Data</strong> : Tableau des éléments à traiter.</p></li>
+<li><p><strong>ScriptBlock</strong> : Script à exécuter pour chaque élément.</p></li>
+<li><p><strong>MaxThreads</strong> : Nombre maximum de threads à utiliser (par défaut : nombre de processeurs).</p></li>
+</ul>
+</section>
+<section id="id11">
+<h4>Valeur de retour<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<p>Un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p><strong>Results</strong> : Résultats du traitement.</p></li>
+<li><p><strong>ExecutionTime</strong> : Temps d’exécution total.</p></li>
+<li><p><strong>ItemsProcessed</strong> : Nombre d’éléments traités.</p></li>
+<li><p><strong>MaxThreads</strong> : Nombre maximum de threads utilisés.</p></li>
+</ul>
+</section>
+<section id="id12">
+<h4>Exemple<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Nécessite PowerShell 7+</span>
+<span class="nv">$data</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">10</span>
+<span class="nv">$scriptBlock</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$item</span><span class="p">)</span>
+    <span class="nb">Start-Sleep</span> <span class="n">-Milliseconds</span> <span class="n">100</span>  <span class="c"># Simuler une tâche longue</span>
+    <span class="k">return</span> <span class="nv">$item</span> <span class="p">*</span> <span class="n">2</span>
+<span class="p">}</span>
+
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-ForEachParallelProcessing</span> <span class="n">-Data</span> <span class="nv">$data</span> <span class="n">-ScriptBlock</span> <span class="nv">$scriptBlock</span> <span class="n">-MaxThreads</span> <span class="n">4</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Temps d&#39;exécution: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">ExecutionTime</span><span class="p">.</span><span class="n">TotalMilliseconds</span><span class="p">)</span><span class="s2"> ms&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="optimize-parallelexecution">
+<h3>Optimize-ParallelExecution<a class="headerlink" href="#optimize-parallelexecution" title="Link to this heading"></a></h3>
+<p>Détermine et utilise automatiquement la méthode de parallélisation la plus efficace.</p>
+<section id="id13">
+<h4>Syntaxe<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Optimize-ParallelExecution</span> <span class="n">-Data</span> <span class="p">&lt;</span><span class="n">Array</span><span class="p">&gt;</span> <span class="n">-ScriptBlock</span> <span class="p">&lt;</span><span class="n">ScriptBlock</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-MaxThreads</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-ChunkSize</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-Measure</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h4>Paramètres<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Data</strong> : Tableau des éléments à traiter.</p></li>
+<li><p><strong>ScriptBlock</strong> : Script à exécuter pour chaque élément.</p></li>
+<li><p><strong>MaxThreads</strong> : Nombre maximum de threads à utiliser (par défaut : nombre de processeurs).</p></li>
+<li><p><strong>ChunkSize</strong> : Taille des lots pour le traitement par lots (par défaut : calculé automatiquement).</p></li>
+<li><p><strong>Measure</strong> : Compare les différentes méthodes et retourne les résultats de mesure.</p></li>
+</ul>
+</section>
+<section id="id15">
+<h4>Valeur de retour<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<p>Si <strong>Measure</strong> est spécifié, un objet avec les propriétés suivantes :</p>
+<ul class="simple">
+<li><p><strong>Sequential</strong> : Résultats du traitement séquentiel.</p></li>
+<li><p><strong>RunspacePool</strong> : Résultats du traitement avec Runspace Pool.</p></li>
+<li><p><strong>BatchParallel</strong> : Résultats du traitement par lots.</p></li>
+<li><p><strong>ForEachParallel</strong> : Résultats du traitement avec ForEach-Object -Parallel (PowerShell 7+ uniquement).</p></li>
+<li><p><strong>FastestMethod</strong> : Nom de la méthode la plus rapide.</p></li>
+<li><p><strong>FastestTime</strong> : Temps d’exécution de la méthode la plus rapide.</p></li>
+<li><p><strong>Recommendations</strong> : Recommandations pour l’optimisation.</p></li>
+</ul>
+<p>Sinon, les résultats du traitement avec la méthode optimale.</p>
+</section>
+<section id="id16">
+<h4>Exemple<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$data</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">100</span>
+<span class="nv">$scriptBlock</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$item</span><span class="p">)</span>
+    <span class="nb">Start-Sleep</span> <span class="n">-Milliseconds</span> <span class="n">10</span>
+    <span class="k">return</span> <span class="nv">$item</span> <span class="p">*</span> <span class="n">2</span>
+<span class="p">}</span>
+
+<span class="c"># Mesurer les performances des différentes méthodes</span>
+<span class="nv">$measurements</span> <span class="p">=</span> <span class="nb">Optimize-ParallelExecution</span> <span class="n">-Data</span> <span class="nv">$data</span> <span class="n">-ScriptBlock</span> <span class="nv">$scriptBlock</span> <span class="n">-MaxThreads</span> <span class="n">4</span> <span class="n">-ChunkSize</span> <span class="n">10</span> <span class="n">-Measure</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Méthode la plus rapide: </span><span class="p">$(</span><span class="nv">$measurements</span><span class="p">.</span><span class="n">FastestMethod</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Temps d&#39;exécution: </span><span class="p">$(</span><span class="nv">$measurements</span><span class="p">.</span><span class="n">FastestTime</span><span class="p">)</span><span class="s2"> ms&quot;</span>
+
+<span class="c"># Exécuter avec la méthode optimale</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Optimize-ParallelExecution</span> <span class="n">-Data</span> <span class="nv">$data</span> <span class="n">-ScriptBlock</span> <span class="nv">$scriptBlock</span> <span class="n">-MaxThreads</span> <span class="n">4</span> <span class="n">-ChunkSize</span> <span class="n">10</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="choix-de-la-methode-de-parallelisation">
+<h2>Choix de la méthode de parallélisation<a class="headerlink" href="#choix-de-la-methode-de-parallelisation" title="Link to this heading"></a></h2>
+<p>Le choix de la méthode de parallélisation dépend de plusieurs facteurs :</p>
+<ol class="simple">
+<li><p><strong>Taille des données</strong> : Pour les petits ensembles de données, le traitement séquentiel peut être plus rapide en raison de la surcharge de création des threads.</p></li>
+<li><p><strong>Durée des tâches</strong> :</p>
+<ul class="simple">
+<li><p><strong>Tâches courtes</strong> (&lt; 10 ms) : Le traitement par lots est généralement plus efficace.</p></li>
+<li><p><strong>Tâches moyennes</strong> (10-100 ms) : Runspace Pool ou ForEach-Object -Parallel.</p></li>
+<li><p><strong>Tâches longues</strong> (&gt; 100 ms) : Toutes les méthodes parallèles sont efficaces.</p></li>
+</ul>
+</li>
+<li><p><strong>Surcharge de démarrage</strong> : Si chaque tâche a une surcharge de démarrage importante, le traitement par lots est recommandé.</p></li>
+<li><p><strong>Version de PowerShell</strong> :</p>
+<ul class="simple">
+<li><p><strong>PowerShell 5.1</strong> : Utiliser Runspace Pool ou traitement par lots.</p></li>
+<li><p><strong>PowerShell 7+</strong> : ForEach-Object -Parallel est également disponible.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h2>
+<p>Les performances dépendent de la nature des tâches et de l’environnement d’exécution :</p>
+<ul class="simple">
+<li><p><strong>Traitement séquentiel</strong> : Baseline pour la comparaison.</p></li>
+<li><p><strong>Runspace Pool</strong> : 2-8x plus rapide pour les tâches longues.</p></li>
+<li><p><strong>Traitement par lots</strong> : 1.5-5x plus rapide pour les tâches avec surcharge de démarrage.</p></li>
+<li><p><strong>ForEach-Object -Parallel</strong> : 2-6x plus rapide pour les tâches moyennes à longues (PowerShell 7+ uniquement).</p></li>
+</ul>
+</section>
+<section id="compatibilite">
+<h2>Compatibilité<a class="headerlink" href="#compatibilite" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Invoke-SequentialProcessing</strong>, <strong>Invoke-RunspacePoolProcessing</strong>, <strong>Invoke-BatchParallelProcessing</strong> : PowerShell 5.1 et versions ultérieures.</p></li>
+<li><p><strong>Invoke-ForEachParallelProcessing</strong> : PowerShell 7 et versions ultérieures uniquement.</p></li>
+<li><p><strong>Optimize-ParallelExecution</strong> : Compatible avec toutes les versions, mais n’utilisera ForEach-Object -Parallel que sur PowerShell 7+.</p></li>
+</ul>
+</section>
+<section id="limitations-connues">
+<h2>Limitations connues<a class="headerlink" href="#limitations-connues" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Les tâches qui modifient l’état global peuvent causer des problèmes de concurrence.</p></li>
+<li><p>Les objets partagés entre les threads doivent être thread-safe.</p></li>
+<li><p>La communication entre les threads est limitée.</p></li>
+</ul>
+</section>
+<section id="exemples-avances">
+<h2>Exemples avancés<a class="headerlink" href="#exemples-avances" title="Link to this heading"></a></h2>
+<section id="traitement-parallele-avec-etat-partage">
+<h3>Traitement parallèle avec état partagé<a class="headerlink" href="#traitement-parallele-avec-etat-partage" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un objet thread-safe pour partager l&#39;état</span>
+<span class="nv">$syncHash</span> <span class="p">=</span> <span class="no">[hashtable]</span><span class="p">::</span><span class="n">Synchronized</span><span class="p">(@{</span>
+    <span class="n">TotalProcessed</span> <span class="p">=</span> <span class="n">0</span>
+    <span class="n">Errors</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">})</span>
+
+<span class="nv">$data</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">100</span>
+<span class="nv">$scriptBlock</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$item</span><span class="p">,</span> <span class="nv">$syncHash</span><span class="p">)</span>
+    
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="c"># Simuler une tâche</span>
+        <span class="nb">Start-Sleep</span> <span class="n">-Milliseconds</span> <span class="n">10</span>
+        <span class="nv">$result</span> <span class="p">=</span> <span class="nv">$item</span> <span class="p">*</span> <span class="n">2</span>
+        
+        <span class="c"># Mettre à jour l&#39;état partagé</span>
+        <span class="nv">$syncHash</span><span class="p">.</span><span class="n">TotalProcessed</span><span class="p">++</span>
+        
+        <span class="k">return</span> <span class="nv">$result</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">{</span>
+        <span class="c"># Enregistrer l&#39;erreur</span>
+        <span class="nv">$syncHash</span><span class="p">.</span><span class="n">Errors</span> <span class="p">+=</span> <span class="s2">&quot;Erreur sur l&#39;élément $item : $_&quot;</span>
+        <span class="k">return</span> <span class="nv">$null</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Créer un runspace pool</span>
+<span class="nv">$sessionState</span> <span class="p">=</span> <span class="no">[System.Management.Automation.Runspaces.InitialSessionState]</span><span class="p">::</span><span class="n">CreateDefault</span><span class="p">()</span>
+<span class="nv">$runspacePool</span> <span class="p">=</span> <span class="no">[runspacefactory]</span><span class="p">::</span><span class="n">CreateRunspacePool</span><span class="p">(</span><span class="n">1</span><span class="p">,</span> <span class="n">4</span><span class="p">,</span> <span class="nv">$sessionState</span><span class="p">,</span> <span class="nv">$Host</span><span class="p">)</span>
+<span class="nv">$runspacePool</span><span class="p">.</span><span class="n">Open</span><span class="p">()</span>
+
+<span class="c"># Créer les runspaces</span>
+<span class="nv">$runspaces</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$item</span> <span class="k">in</span> <span class="nv">$data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$powershell</span> <span class="p">=</span> <span class="no">[powershell]</span><span class="p">::</span><span class="n">Create</span><span class="p">().</span><span class="n">AddScript</span><span class="p">(</span><span class="nv">$scriptBlock</span><span class="p">).</span><span class="n">AddArgument</span><span class="p">(</span><span class="nv">$item</span><span class="p">).</span><span class="n">AddArgument</span><span class="p">(</span><span class="nv">$syncHash</span><span class="p">)</span>
+    <span class="nv">$powershell</span><span class="p">.</span><span class="n">RunspacePool</span> <span class="p">=</span> <span class="nv">$runspacePool</span>
+    
+    <span class="nv">$runspaces</span> <span class="p">+=</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+        <span class="n">PowerShell</span> <span class="p">=</span> <span class="nv">$powershell</span>
+        <span class="n">Handle</span> <span class="p">=</span> <span class="nv">$powershell</span><span class="p">.</span><span class="n">BeginInvoke</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Récupérer les résultats</span>
+<span class="nv">$results</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$runspace</span> <span class="k">in</span> <span class="nv">$runspaces</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$results</span> <span class="p">+=</span> <span class="nv">$runspace</span><span class="p">.</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">EndInvoke</span><span class="p">(</span><span class="nv">$runspace</span><span class="p">.</span><span class="n">Handle</span><span class="p">)</span>
+    <span class="nv">$runspace</span><span class="p">.</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">Dispose</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="c"># Fermer le runspace pool</span>
+<span class="nv">$runspacePool</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+<span class="nv">$runspacePool</span><span class="p">.</span><span class="n">Dispose</span><span class="p">()</span>
+
+<span class="c"># Afficher les résultats</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Éléments traités: </span><span class="p">$(</span><span class="nv">$syncHash</span><span class="p">.</span><span class="n">TotalProcessed</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Erreurs: </span><span class="p">$(</span><span class="nv">$syncHash</span><span class="p">.</span><span class="n">Errors</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="traitement-parallele-avec-limitation-de-debit">
+<h3>Traitement parallèle avec limitation de débit<a class="headerlink" href="#traitement-parallele-avec-limitation-de-debit" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Invoke-ThrottledParallelProcessing</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[array]</span><span class="nv">$Data</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[scriptblock]</span><span class="nv">$ScriptBlock</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[int]</span><span class="nv">$MaxThreads</span> <span class="p">=</span> <span class="no">[Environment]</span><span class="p">::</span><span class="n">ProcessorCount</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[int]</span><span class="nv">$MaxItemsPerSecond</span> <span class="p">=</span> <span class="n">0</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$results</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="nv">$stopwatch</span> <span class="p">=</span> <span class="no">[System.Diagnostics.Stopwatch]</span><span class="p">::</span><span class="n">StartNew</span><span class="p">()</span>
+    <span class="nv">$itemsProcessed</span> <span class="p">=</span> <span class="n">0</span>
+    
+    <span class="c"># Créer un runspace pool</span>
+    <span class="nv">$sessionState</span> <span class="p">=</span> <span class="no">[System.Management.Automation.Runspaces.InitialSessionState]</span><span class="p">::</span><span class="n">CreateDefault</span><span class="p">()</span>
+    <span class="nv">$runspacePool</span> <span class="p">=</span> <span class="no">[runspacefactory]</span><span class="p">::</span><span class="n">CreateRunspacePool</span><span class="p">(</span><span class="n">1</span><span class="p">,</span> <span class="nv">$MaxThreads</span><span class="p">,</span> <span class="nv">$sessionState</span><span class="p">,</span> <span class="nv">$Host</span><span class="p">)</span>
+    <span class="nv">$runspacePool</span><span class="p">.</span><span class="n">Open</span><span class="p">()</span>
+    
+    <span class="c"># Créer les runspaces</span>
+    <span class="nv">$runspaces</span> <span class="p">=</span> <span class="p">@()</span>
+    
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$item</span> <span class="k">in</span> <span class="nv">$Data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c"># Limiter le débit si nécessaire</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$MaxItemsPerSecond</span> <span class="o">-gt</span> <span class="n">0</span> <span class="o">-and</span> <span class="nv">$itemsProcessed</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$expectedTime</span> <span class="p">=</span> <span class="nv">$itemsProcessed</span> <span class="p">/</span> <span class="nv">$MaxItemsPerSecond</span>
+            <span class="nv">$actualTime</span> <span class="p">=</span> <span class="nv">$stopwatch</span><span class="p">.</span><span class="n">Elapsed</span><span class="p">.</span><span class="n">TotalSeconds</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$actualTime</span> <span class="o">-lt</span> <span class="nv">$expectedTime</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$sleepTime</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$expectedTime</span> <span class="p">-</span> <span class="nv">$actualTime</span><span class="p">)</span> <span class="p">*</span> <span class="n">1000</span>
+                <span class="nb">Start-Sleep</span> <span class="n">-Milliseconds</span> <span class="nv">$sleepTime</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="nv">$powershell</span> <span class="p">=</span> <span class="no">[powershell]</span><span class="p">::</span><span class="n">Create</span><span class="p">().</span><span class="n">AddScript</span><span class="p">(</span><span class="nv">$ScriptBlock</span><span class="p">).</span><span class="n">AddArgument</span><span class="p">(</span><span class="nv">$item</span><span class="p">)</span>
+        <span class="nv">$powershell</span><span class="p">.</span><span class="n">RunspacePool</span> <span class="p">=</span> <span class="nv">$runspacePool</span>
+        
+        <span class="nv">$runspaces</span> <span class="p">+=</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">PowerShell</span> <span class="p">=</span> <span class="nv">$powershell</span>
+            <span class="n">Handle</span> <span class="p">=</span> <span class="nv">$powershell</span><span class="p">.</span><span class="n">BeginInvoke</span><span class="p">()</span>
+            <span class="n">Item</span> <span class="p">=</span> <span class="nv">$item</span>
+            <span class="n">StartTime</span> <span class="p">=</span> <span class="nb">Get-Date</span>
+        <span class="p">}</span>
+        
+        <span class="nv">$itemsProcessed</span><span class="p">++</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Récupérer les résultats</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$runspace</span> <span class="k">in</span> <span class="nv">$runspaces</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$results</span> <span class="p">+=</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">Item</span> <span class="p">=</span> <span class="nv">$runspace</span><span class="p">.</span><span class="n">Item</span>
+            <span class="n">Result</span> <span class="p">=</span> <span class="nv">$runspace</span><span class="p">.</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">EndInvoke</span><span class="p">(</span><span class="nv">$runspace</span><span class="p">.</span><span class="n">Handle</span><span class="p">)</span>
+            <span class="n">ExecutionTime</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-Date</span><span class="p">)</span> <span class="p">-</span> <span class="nv">$runspace</span><span class="p">.</span><span class="n">StartTime</span>
+        <span class="p">}</span>
+        
+        <span class="nv">$runspace</span><span class="p">.</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">Dispose</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Fermer le runspace pool</span>
+    <span class="nv">$runspacePool</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+    <span class="nv">$runspacePool</span><span class="p">.</span><span class="n">Dispose</span><span class="p">()</span>
+    
+    <span class="nv">$stopwatch</span><span class="p">.</span><span class="n">Stop</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+        <span class="n">Results</span> <span class="p">=</span> <span class="nv">$results</span>
+        <span class="n">ExecutionTime</span> <span class="p">=</span> <span class="nv">$stopwatch</span><span class="p">.</span><span class="n">Elapsed</span>
+        <span class="n">ItemsProcessed</span> <span class="p">=</span> <span class="nv">$itemsProcessed</span>
+        <span class="n">ItemsPerSecond</span> <span class="p">=</span> <span class="nv">$itemsProcessed</span> <span class="p">/</span> <span class="nv">$stopwatch</span><span class="p">.</span><span class="n">Elapsed</span><span class="p">.</span><span class="n">TotalSeconds</span>
+        <span class="n">MaxThreads</span> <span class="p">=</span> <span class="nv">$MaxThreads</span>
+        <span class="n">MaxItemsPerSecond</span> <span class="p">=</span> <span class="nv">$MaxItemsPerSecond</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Exemple d&#39;utilisation</span>
+<span class="nv">$data</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">100</span>
+<span class="nv">$scriptBlock</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$item</span><span class="p">)</span>
+    <span class="c"># Simuler une API avec limite de débit</span>
+    <span class="nb">Start-Sleep</span> <span class="n">-Milliseconds</span> <span class="n">50</span>
+    <span class="k">return</span> <span class="nv">$item</span> <span class="p">*</span> <span class="n">2</span>
+<span class="p">}</span>
+
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-ThrottledParallelProcessing</span> <span class="n">-Data</span> <span class="nv">$data</span> <span class="n">-ScriptBlock</span> <span class="nv">$scriptBlock</span> <span class="n">-MaxThreads</span> <span class="n">4</span> <span class="n">-MaxItemsPerSecond</span> <span class="n">20</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Temps d&#39;exécution: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">ExecutionTime</span><span class="p">.</span><span class="n">TotalSeconds</span><span class="p">)</span><span class="s2"> secondes&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Éléments par seconde: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">ItemsPerSecond</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

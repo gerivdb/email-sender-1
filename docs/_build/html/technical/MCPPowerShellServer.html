@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serveur MCP PowerShell &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Serveur MCP PowerShell</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/technical/MCPPowerShellServer.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="serveur-mcp-powershell">
+<h1>Serveur MCP PowerShell<a class="headerlink" href="#serveur-mcp-powershell" title="Link to this heading"></a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p>Le serveur MCP PowerShell est une implémentation du Model Context Protocol (MCP) qui permet d’exécuter des commandes PowerShell via un serveur MCP. Il utilise le SDK MCP officiel d’Anthropic et permet aux modèles d’IA comme Claude d’interagir avec PowerShell.</p>
+</section>
+<section id="fonctionnalites">
+<h2>Fonctionnalités<a class="headerlink" href="#fonctionnalites" title="Link to this heading"></a></h2>
+<p>Le serveur MCP PowerShell offre les fonctionnalités suivantes :</p>
+<ul class="simple">
+<li><p>Exécution de commandes PowerShell</p></li>
+<li><p>Récupération des informations système</p></li>
+<li><p>Détection des serveurs MCP</p></li>
+<li><p>Démarrage du gestionnaire de serveurs MCP</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<section id="prerequis">
+<h3>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Python 3.10 ou supérieur</p></li>
+<li><p>PowerShell 5.1 ou PowerShell 7</p></li>
+<li><p>SDK MCP (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mcp[cli]</span></code>)</p></li>
+<li><p>Module PowerShell MCPManager</p></li>
+</ul>
+</section>
+<section id="id1">
+<h3>Installation<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ol>
+<li><p>Assurez-vous que Python est installé et accessible dans le PATH.</p></li>
+<li><p>Installez le SDK MCP avec la commande suivante :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">mcp</span><span class="p">[</span><span class="n">cli</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Installez les dépendances supplémentaires :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">langchain</span><span class="o">-</span><span class="n">openai</span> <span class="n">python</span><span class="o">-</span><span class="n">dotenv</span>
+</pre></div>
+</div>
+</li>
+<li><p>Assurez-vous que le module PowerShell MCPManager est installé dans le dossier <code class="docutils literal notranslate"><span class="pre">modules</span></code> du projet.</p></li>
+</ol>
+</section>
+</section>
+<section id="utilisation">
+<h2>Utilisation<a class="headerlink" href="#utilisation" title="Link to this heading"></a></h2>
+<section id="demarrage-du-serveur">
+<h3>Démarrage du serveur<a class="headerlink" href="#demarrage-du-serveur" title="Link to this heading"></a></h3>
+<p>Pour démarrer le serveur MCP PowerShell, exécutez le script <code class="docutils literal notranslate"><span class="pre">Start-MCPPowerShellServer.ps1</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="nb">Start-MCPPowerShellServer</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p>Par défaut, le serveur écoute sur <code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code>. Vous pouvez spécifier un port différent avec le paramètre <code class="docutils literal notranslate"><span class="pre">-Port</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="nb">Start-MCPPowerShellServer</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Port</span> <span class="n">9000</span>
+</pre></div>
+</div>
+</section>
+<section id="utilisation-avec-claude-desktop">
+<h3>Utilisation avec Claude Desktop<a class="headerlink" href="#utilisation-avec-claude-desktop" title="Link to this heading"></a></h3>
+<p>Pour utiliser le serveur MCP PowerShell avec Claude Desktop, vous devez ajouter la configuration suivante dans le fichier de configuration de Claude Desktop :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;powershell_server&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;chemin/vers/mcp_powershell_server.py&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Remplacez <code class="docutils literal notranslate"><span class="pre">chemin/vers/mcp_powershell_server.py</span></code> par le chemin absolu vers le script <code class="docutils literal notranslate"><span class="pre">mcp_powershell_server.py</span></code>.</p>
+</section>
+<section id="exemple-d-utilisation-avec-python">
+<h3>Exemple d’utilisation avec Python<a class="headerlink" href="#exemple-d-utilisation-avec-python" title="Link to this heading"></a></h3>
+<p>Vous pouvez utiliser le client MCP Python pour interagir avec le serveur MCP PowerShell. Voici un exemple :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mcp.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c1"># Créer un client MCP qui se connecte au serveur local</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">)</span>
+
+<span class="c1"># Exécuter une commande PowerShell</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_powershell_command</span><span class="p">(</span><span class="s2">&quot;Get-Date&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Résultat: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Récupérer les informations système</span>
+<span class="n">system_info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_system_info</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OS: </span><span class="si">{</span><span class="n">system_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OsName&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Un exemple complet est disponible dans le fichier <code class="docutils literal notranslate"><span class="pre">scripts/python/mcp_client_example.py</span></code>.</p>
+</section>
+</section>
+<section id="outils-disponibles">
+<h2>Outils disponibles<a class="headerlink" href="#outils-disponibles" title="Link to this heading"></a></h2>
+<p>Le serveur MCP PowerShell expose les outils suivants :</p>
+<section id="run-powershell-command">
+<h3>run_powershell_command<a class="headerlink" href="#run-powershell-command" title="Link to this heading"></a></h3>
+<p>Exécute une commande PowerShell et retourne le résultat.</p>
+<section id="parametres">
+<h4>Paramètres<a class="headerlink" href="#parametres" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code> (string) : La commande PowerShell à exécuter.</p></li>
+</ul>
+</section>
+<section id="exemple">
+<h4>Exemple<a class="headerlink" href="#exemple" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_powershell_command</span><span class="p">(</span><span class="s2">&quot;Get-Process | Select-Object -First 5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="get-system-info">
+<h3>get_system_info<a class="headerlink" href="#get-system-info" title="Link to this heading"></a></h3>
+<p>Récupère les informations système via PowerShell.</p>
+<section id="id2">
+<h4>Exemple<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">system_info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_system_info</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="find-mcp-servers">
+<h3>find_mcp_servers<a class="headerlink" href="#find-mcp-servers" title="Link to this heading"></a></h3>
+<p>Détecte les serveurs MCP disponibles en utilisant le module MCPManager.</p>
+<section id="id3">
+<h4>Exemple<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">servers</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">find_mcp_servers</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="start-mcp-manager">
+<h3>start_mcp_manager<a class="headerlink" href="#start-mcp-manager" title="Link to this heading"></a></h3>
+<p>Démarre le gestionnaire de serveurs MCP ou un agent MCP.</p>
+<section id="id4">
+<h4>Paramètres<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">agent</span></code> (boolean, optionnel) : Si True, démarre un agent MCP au lieu du gestionnaire de serveurs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">query</span></code> (string, optionnel) : La requête à exécuter par l’agent MCP (uniquement si agent=True).</p></li>
+</ul>
+</section>
+<section id="id5">
+<h4>Exemple<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">start_mcp_manager</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">&quot;Trouve les meilleurs restaurants à Paris&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="securite">
+<h2>Sécurité<a class="headerlink" href="#securite" title="Link to this heading"></a></h2>
+<p>Le serveur MCP PowerShell exécute des commandes PowerShell, ce qui peut présenter des risques de sécurité. Assurez-vous de n’utiliser ce serveur que dans un environnement sécurisé et de limiter les commandes qui peuvent être exécutées.</p>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="le-serveur-ne-demarre-pas">
+<h3>Le serveur ne démarre pas<a class="headerlink" href="#le-serveur-ne-demarre-pas" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Vérifiez que Python est installé et accessible dans le PATH.</p></li>
+<li><p>Vérifiez que le SDK MCP est installé (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mcp[cli]</span></code>).</p></li>
+<li><p>Vérifiez que le module PowerShell MCPManager est installé dans le dossier <code class="docutils literal notranslate"><span class="pre">modules</span></code> du projet.</p></li>
+</ul>
+</section>
+<section id="erreurs-lors-de-l-execution-des-commandes-powershell">
+<h3>Erreurs lors de l’exécution des commandes PowerShell<a class="headerlink" href="#erreurs-lors-de-l-execution-des-commandes-powershell" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Vérifiez que PowerShell est installé et accessible dans le PATH.</p></li>
+<li><p>Vérifiez que les commandes PowerShell sont valides.</p></li>
+<li><p>Vérifiez les permissions d’exécution de PowerShell (<code class="docutils literal notranslate"><span class="pre">Get-ExecutionPolicy</span></code>).</p></li>
+</ul>
+</section>
+</section>
+<section id="auteur">
+<h2>Auteur<a class="headerlink" href="#auteur" title="Link to this heading"></a></h2>
+<p>EMAIL_SENDER_1 Team</p>
+</section>
+<section id="version">
+<h2>Version<a class="headerlink" href="#version" title="Link to this heading"></a></h2>
+<p>1.0.0</p>
+</section>
+<section id="date-de-creation">
+<h2>Date de création<a class="headerlink" href="#date-de-creation" title="Link to this heading"></a></h2>
+<p>2025-04-20</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

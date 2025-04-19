@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation des hooks Git &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation des hooks Git</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_HOOKS_GIT.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-des-hooks-git">
+<h1>Guide d’utilisation des hooks Git<a class="headerlink" href="#guide-d-utilisation-des-hooks-git" title="Link to this heading"></a></h1>
+<p>Ce guide explique comment utiliser et personnaliser les hooks Git mis en place dans le projet n8n. Les hooks Git sont des scripts qui s’exécutent automatiquement à certaines étapes du workflow Git, comme avant un commit ou un push.</p>
+<section id="table-des-matieres">
+<h2>Table des matières<a class="headerlink" href="#table-des-matieres" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><a class="reference external" href="#introduction-aux-hooks-git">Introduction aux hooks Git</a></p></li>
+<li><p><a class="reference external" href="#hooks-disponibles-dans-le-projet">Hooks disponibles dans le projet</a></p></li>
+<li><p><a class="reference external" href="#configuration-et-personnalisation">Configuration et personnalisation</a></p></li>
+<li><p><a class="reference external" href="#r%C3%A9solution-des-probl%C3%A8mes-courants">Résolution des problèmes courants</a></p></li>
+<li><p><a class="reference external" href="#bonnes-pratiques">Bonnes pratiques</a></p></li>
+</ol>
+</section>
+<section id="introduction-aux-hooks-git">
+<h2>Introduction aux hooks Git<a class="headerlink" href="#introduction-aux-hooks-git" title="Link to this heading"></a></h2>
+<p>Les hooks Git sont des scripts qui s’exécutent automatiquement lorsque certaines actions Git sont effectuées. Ils permettent d’automatiser des tâches, de valider des changements et d’assurer la qualité du code.</p>
+<p>Dans ce projet, nous utilisons principalement deux types de hooks :</p>
+<ul class="simple">
+<li><p><strong>pre-commit</strong> : S’exécute avant qu’un commit ne soit créé</p></li>
+<li><p><strong>pre-push</strong> : S’exécute avant qu’un push ne soit effectué vers le dépôt distant</p></li>
+</ul>
+</section>
+<section id="hooks-disponibles-dans-le-projet">
+<h2>Hooks disponibles dans le projet<a class="headerlink" href="#hooks-disponibles-dans-le-projet" title="Link to this heading"></a></h2>
+<section id="hook-pre-commit">
+<h3>Hook pre-commit<a class="headerlink" href="#hook-pre-commit" title="Link to this heading"></a></h3>
+<p>Le hook pre-commit est configuré pour organiser automatiquement les fichiers du projet avant chaque commit. Il exécute le script <code class="docutils literal notranslate"><span class="pre">auto-organize-silent-improved.ps1</span></code> qui :</p>
+<ol class="simple">
+<li><p>Déplace les fichiers dans les dossiers appropriés selon leur type</p></li>
+<li><p>Crée les dossiers nécessaires s’ils n’existent pas</p></li>
+<li><p>Gère les conflits de fichiers (fichiers déjà existants, etc.)</p></li>
+</ol>
+<p>Ce hook permet de maintenir une structure de projet cohérente sans avoir à y penser manuellement.</p>
+</section>
+<section id="hook-pre-push">
+<h3>Hook pre-push<a class="headerlink" href="#hook-pre-push" title="Link to this heading"></a></h3>
+<p>Le hook pre-push est configuré pour vérifier les changements avant de les pousser vers le dépôt distant. Il exécute le script <code class="docutils literal notranslate"><span class="pre">git-pre-push-check.ps1</span></code> qui :</p>
+<ol class="simple">
+<li><p>Vérifie la présence de conflits non résolus</p></li>
+<li><p>Détecte les fichiers volumineux qui pourraient ralentir le dépôt</p></li>
+<li><p>Vérifie les problèmes de fins de ligne (LF vs CRLF)</p></li>
+<li><p>Détecte les informations sensibles qui pourraient être exposées</p></li>
+</ol>
+<p>Ce hook permet d’éviter de pousser des changements problématiques vers le dépôt distant.</p>
+</section>
+</section>
+<section id="configuration-et-personnalisation">
+<h2>Configuration et personnalisation<a class="headerlink" href="#configuration-et-personnalisation" title="Link to this heading"></a></h2>
+<section id="installation-des-hooks">
+<h3>Installation des hooks<a class="headerlink" href="#installation-des-hooks" title="Link to this heading"></a></h3>
+<p>Les hooks sont installés automatiquement lorsque vous exécutez le script <code class="docutils literal notranslate"><span class="pre">auto-organize-silent-improved.ps1</span></code>. Vous pouvez également les installer manuellement en exécutant :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">\</span><span class="n">setup-git-hooks</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+<section id="personnalisation-des-hooks">
+<h3>Personnalisation des hooks<a class="headerlink" href="#personnalisation-des-hooks" title="Link to this heading"></a></h3>
+<p>Vous pouvez personnaliser les hooks en modifiant les fichiers suivants :</p>
+<ul class="simple">
+<li><p><strong>Hook pre-commit</strong> : <code class="docutils literal notranslate"><span class="pre">.git/hooks/pre-commit</span></code></p></li>
+<li><p><strong>Hook pre-push</strong> : <code class="docutils literal notranslate"><span class="pre">.git/hooks/pre-push</span></code></p></li>
+<li><p><strong>Script d’organisation</strong> : <code class="docutils literal notranslate"><span class="pre">scripts/maintenance/auto-organize-silent-improved.ps1</span></code></p></li>
+<li><p><strong>Script de vérification</strong> : <code class="docutils literal notranslate"><span class="pre">scripts/utils/git/git-pre-push-check.ps1</span></code></p></li>
+</ul>
+<section id="exemples-de-personnalisation">
+<h4>Exemples de personnalisation<a class="headerlink" href="#exemples-de-personnalisation" title="Link to this heading"></a></h4>
+<p>Pour ajouter une nouvelle règle d’organisation dans le hook pre-commit, modifiez le tableau <code class="docutils literal notranslate"><span class="pre">$autoOrganizeRules</span></code> dans le script <code class="docutils literal notranslate"><span class="pre">auto-organize-silent-improved.ps1</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$autoOrganizeRules</span> <span class="p">=</span> <span class="p">@(</span>
+    <span class="c"># Format: [pattern, destination, description]</span>
+    <span class="p">@(</span><span class="s2">&quot;*.json&quot;</span><span class="p">,</span> <span class="s2">&quot;all-workflows/original&quot;</span><span class="p">,</span> <span class="s2">&quot;Workflows n8n&quot;</span><span class="p">),</span>
+    <span class="c"># Ajoutez votre nouvelle règle ici</span>
+    <span class="p">@(</span><span class="s2">&quot;*.vue&quot;</span><span class="p">,</span> <span class="s2">&quot;src/components&quot;</span><span class="p">,</span> <span class="s2">&quot;Composants Vue.js&quot;</span><span class="p">),</span>
+    <span class="c"># ...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Pour ajouter une nouvelle vérification dans le hook pre-push, modifiez le script <code class="docutils literal notranslate"><span class="pre">git-pre-push-check.ps1</span></code> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Ajouter une nouvelle vérification</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Vérification des tests unitaires...&quot;</span> <span class="n">-ForegroundColor</span> <span class="s2">&quot;Cyan&quot;</span>
+<span class="nv">$testResults</span> <span class="p">=</span> <span class="nb">Invoke-Pester</span> <span class="n">-PassThru</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$testResults</span><span class="p">.</span><span class="n">FailedCount</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Des tests unitaires ont échoué. Corrigez-les avant de procéder au push.&quot;</span> <span class="n">-ForegroundColor</span> <span class="s2">&quot;Red&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$Force</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">exit</span> <span class="n">1</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="desactivation-temporaire-des-hooks">
+<h3>Désactivation temporaire des hooks<a class="headerlink" href="#desactivation-temporaire-des-hooks" title="Link to this heading"></a></h3>
+<p>Si vous avez besoin de désactiver temporairement les hooks (par exemple, pour un commit urgent), vous pouvez utiliser l’option <code class="docutils literal notranslate"><span class="pre">--no-verify</span></code> :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>--no-verify<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Commit urgent sans vérification&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>--no-verify
+</pre></div>
+</div>
+</section>
+</section>
+<section id="resolution-des-problemes-courants">
+<h2>Résolution des problèmes courants<a class="headerlink" href="#resolution-des-problemes-courants" title="Link to this heading"></a></h2>
+<section id="le-hook-pre-commit-ne-trouve-pas-le-script-d-organisation">
+<h3>Le hook pre-commit ne trouve pas le script d’organisation<a class="headerlink" href="#le-hook-pre-commit-ne-trouve-pas-le-script-d-organisation" title="Link to this heading"></a></h3>
+<p>Si vous voyez ce message :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Avertissement</span><span class="p">:</span> <span class="n">Script</span> <span class="n">d</span><span class="s1">&#39;organisation non trouvé à [chemin]</span>
+<span class="n">Le</span> <span class="n">commit</span> <span class="n">continuera</span> <span class="n">sans</span> <span class="n">organisation</span> <span class="n">automatique</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Vérifiez que :</p>
+<ol class="simple">
+<li><p>Le script <code class="docutils literal notranslate"><span class="pre">auto-organize-silent-improved.ps1</span></code> existe dans le dossier <code class="docutils literal notranslate"><span class="pre">scripts/maintenance/</span></code></p></li>
+<li><p>Le chemin du projet ne contient pas de caractères spéciaux ou d’espaces</p></li>
+<li><p>Les chemins dans le hook pre-commit sont corrects</p></li>
+</ol>
+</section>
+<section id="le-hook-pre-push-bloque-le-push">
+<h3>Le hook pre-push bloque le push<a class="headerlink" href="#le-hook-pre-push-bloque-le-push" title="Link to this heading"></a></h3>
+<p>Si le hook pre-push bloque votre push avec un message d’erreur, c’est probablement parce qu’il a détecté un problème dans vos changements. Lisez attentivement le message d’erreur pour comprendre le problème.</p>
+<p>Si vous êtes sûr que vous voulez quand même pousser les changements, vous pouvez :</p>
+<ol class="simple">
+<li><p>Corriger le problème détecté</p></li>
+<li><p>Utiliser l’option <code class="docutils literal notranslate"><span class="pre">-Force</span></code> dans le script de vérification</p></li>
+<li><p>Utiliser <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">--no-verify</span></code> pour ignorer complètement le hook</p></li>
+</ol>
+</section>
+<section id="erreur-d-acces-aux-fichiers">
+<h3>Erreur d’accès aux fichiers<a class="headerlink" href="#erreur-d-acces-aux-fichiers" title="Link to this heading"></a></h3>
+<p>Si vous voyez une erreur comme :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Le</span> <span class="n">fichier</span> <span class="n">pre</span><span class="o">-</span><span class="n">commit</span> <span class="n">hook</span> <span class="n">est</span> <span class="n">actuellement</span> <span class="n">verrouillé</span> <span class="n">ou</span> <span class="n">utilisé</span> <span class="n">par</span> <span class="n">un</span> <span class="n">autre</span> <span class="n">processus</span>
+</pre></div>
+</div>
+<p>C’est probablement parce que Git utilise déjà le fichier. Dans ce cas :</p>
+<ol class="simple">
+<li><p>Attendez que l’opération Git en cours se termine</p></li>
+<li><p>Exécutez à nouveau le script d’installation des hooks</p></li>
+<li><p>Si le problème persiste, redémarrez votre terminal ou votre IDE</p></li>
+</ol>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Exécutez régulièrement le script d’organisation</strong> : Même si le hook pre-commit organise automatiquement les fichiers, il est bon de l’exécuter manuellement de temps en temps pour s’assurer que tout est bien organisé.</p></li>
+<li><p><strong>Personnalisez les hooks selon vos besoins</strong> : Les hooks sont là pour vous aider, pas pour vous gêner. N’hésitez pas à les personnaliser selon vos besoins spécifiques.</p></li>
+<li><p><strong>Utilisez l’option <code class="docutils literal notranslate"><span class="pre">--no-verify</span></code> avec parcimonie</strong> : Cette option est utile pour les cas d’urgence, mais elle contourne toutes les vérifications mises en place pour assurer la qualité du code.</p></li>
+<li><p><strong>Mettez à jour les hooks régulièrement</strong> : Lorsque vous ajoutez de nouveaux types de fichiers ou de nouvelles règles de qualité, pensez à mettre à jour les hooks correspondants.</p></li>
+<li><p><strong>Documentez vos personnalisations</strong> : Si vous modifiez les hooks, documentez vos changements pour que les autres membres de l’équipe puissent comprendre vos intentions.</p></li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Les hooks Git sont des outils puissants pour automatiser des tâches et assurer la qualité du code. En les utilisant correctement, vous pouvez gagner du temps et éviter des erreurs courantes.</p>
+<p>Si vous avez des questions ou des suggestions d’amélioration pour les hooks Git, n’hésitez pas à les partager avec l’équipe.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

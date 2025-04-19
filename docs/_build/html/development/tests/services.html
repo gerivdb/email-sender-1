@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tests des Services &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tests des Services</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/development/tests/services.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests-des-services">
+<h1>Tests des Services<a class="headerlink" href="#tests-des-services" title="Link to this heading"></a></h1>
+<p>Cette page décrit les tests unitaires pour les services du système de journal de bord RAG.</p>
+<section id="erpnextservice">
+<h2>ERPNextService<a class="headerlink" href="#erpnextservice" title="Link to this heading"></a></h2>
+<p>Le fichier <code class="docutils literal notranslate"><span class="pre">tests/unit/services/ERPNextService.spec.js</span></code> contient les tests pour le service ERPNextService.</p>
+<section id="methodes-testees">
+<h3>Méthodes testées<a class="headerlink" href="#methodes-testees" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">getConfig</span></code>: Récupère la configuration ERPNext</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">updateConfig</span></code>: Met à jour la configuration ERPNext</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getProjects</span></code>: Récupère la liste des projets ERPNext</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getTasks</span></code>: Récupère la liste des tâches ERPNext</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">syncToJournal</span></code>: Synchronise les tâches ERPNext vers le journal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">syncFromJournal</span></code>: Synchronise les entrées de journal vers ERPNext</p></li>
+</ul>
+</section>
+<section id="exemple-de-test">
+<h3>Exemple de test<a class="headerlink" href="#exemple-de-test" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;getConfig&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should fetch ERPNext configuration&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Mock data</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">mockConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">enabled</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">api_url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;https://erpnext.example.com&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">api_key</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test-key&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">api_secret</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test-secret&#39;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Mock axios response</span>
+<span class="w">    </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">.</span><span class="nx">mockResolvedValue</span><span class="p">({</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="nx">mockConfig</span><span class="w"> </span><span class="p">})</span>
+
+<span class="w">    </span><span class="c1">// Call the service method</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">ERPNextService</span><span class="p">.</span><span class="nx">getConfig</span><span class="p">()</span>
+
+<span class="w">    </span><span class="c1">// Assertions</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">).</span><span class="nx">toHaveBeenCalledWith</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/api/integrations/erpnext/config&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="nx">mockConfig</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should handle errors when fetching configuration&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Mock axios error</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">&#39;Network error&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">.</span><span class="nx">mockRejectedValue</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1">// Call the service method and expect it to throw</span>
+<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">expect</span><span class="p">(</span><span class="nx">ERPNextService</span><span class="p">.</span><span class="nx">getConfig</span><span class="p">()).</span><span class="nx">rejects</span><span class="p">.</span><span class="nx">toThrow</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1">// Assertions</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">).</span><span class="nx">toHaveBeenCalledWith</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/api/integrations/erpnext/config&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="analysisservice">
+<h2>AnalysisService<a class="headerlink" href="#analysisservice" title="Link to this heading"></a></h2>
+<p>Le fichier <code class="docutils literal notranslate"><span class="pre">tests/unit/services/AnalysisService.spec.js</span></code> contient les tests pour le service AnalysisService.</p>
+<section id="id1">
+<h3>Méthodes testées<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">getTopicTrends</span></code>: Récupère les tendances des sujets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getSentimentEvolution</span></code>: Récupère l’évolution du sentiment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getSentimentBySections</span></code>: Récupère le sentiment par section</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getWordCloud</span></code>: Récupère les données du nuage de mots</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">runAnalysis</span></code>: Exécute une analyse spécifique</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">runAllAnalyses</span></code>: Exécute toutes les analyses</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getSimilarEntries</span></code>: Récupère les entrées similaires</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">queryRag</span></code>: Interroge le système RAG</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Exemple de test<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;getWordCloud&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should fetch word cloud with default parameters&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Mock data</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">mockWordCloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;word1&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">frequency</span><span class="o">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="nx">evolution</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;word2&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="o">:</span><span class="w"> </span><span class="mf">8</span><span class="p">,</span><span class="w"> </span><span class="nx">frequency</span><span class="o">:</span><span class="w"> </span><span class="mf">0.04</span><span class="p">,</span><span class="w"> </span><span class="nx">evolution</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">5</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+
+<span class="w">    </span><span class="c1">// Mock axios response</span>
+<span class="w">    </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">.</span><span class="nx">mockResolvedValue</span><span class="p">({</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="nx">mockWordCloud</span><span class="w"> </span><span class="p">})</span>
+
+<span class="w">    </span><span class="c1">// Call the service method</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">AnalysisService</span><span class="p">.</span><span class="nx">getWordCloud</span><span class="p">()</span>
+
+<span class="w">    </span><span class="c1">// Assertions</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">).</span><span class="nx">toHaveBeenCalledWith</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/api/analysis/word-cloud&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">params</span><span class="o">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="nx">mockWordCloud</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should fetch word cloud with specified parameters&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Mock data</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">mockWordCloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;word1&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">frequency</span><span class="o">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="nx">evolution</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;word2&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="o">:</span><span class="w"> </span><span class="mf">8</span><span class="p">,</span><span class="w"> </span><span class="nx">frequency</span><span class="o">:</span><span class="w"> </span><span class="mf">0.04</span><span class="p">,</span><span class="w"> </span><span class="nx">evolution</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">5</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;month&#39;</span>
+
+<span class="w">    </span><span class="c1">// Mock axios response</span>
+<span class="w">    </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">.</span><span class="nx">mockResolvedValue</span><span class="p">({</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="nx">mockWordCloud</span><span class="w"> </span><span class="p">})</span>
+
+<span class="w">    </span><span class="c1">// Call the service method</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">AnalysisService</span><span class="p">.</span><span class="nx">getWordCloud</span><span class="p">(</span><span class="nx">period</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1">// Assertions</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">).</span><span class="nx">toHaveBeenCalledWith</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/api/analysis/word-cloud&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">params</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">period</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="nx">mockWordCloud</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="mocking-des-dependances">
+<h2>Mocking des dépendances<a class="headerlink" href="#mocking-des-dependances" title="Link to this heading"></a></h2>
+<p>Les tests utilisent Jest pour mocker les dépendances externes:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Mock axios</span>
+<span class="nx">jest</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="s1">&#39;axios&#39;</span><span class="p">)</span>
+
+<span class="c1">// Before each test</span>
+<span class="nx">beforeEach</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">jest</span><span class="p">.</span><span class="nx">clearAllMocks</span><span class="p">()</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="gestion-des-erreurs">
+<h2>Gestion des erreurs<a class="headerlink" href="#gestion-des-erreurs" title="Link to this heading"></a></h2>
+<p>Les tests vérifient également la gestion des erreurs:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should handle errors when fetching word cloud&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Mock axios error</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">&#39;Network error&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">.</span><span class="nx">mockRejectedValue</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+
+<span class="w">  </span><span class="c1">// Call the service method and expect it to throw</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">expect</span><span class="p">(</span><span class="nx">AnalysisService</span><span class="p">.</span><span class="nx">getWordCloud</span><span class="p">()).</span><span class="nx">rejects</span><span class="p">.</span><span class="nx">toThrow</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+
+<span class="w">  </span><span class="c1">// Assertions</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">).</span><span class="nx">toHaveBeenCalledWith</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/api/analysis/word-cloud&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">params</span><span class="o">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Mocker toutes les dépendances externes</p></li>
+<li><p>Tester les cas normaux et les cas d’erreur</p></li>
+<li><p>Vérifier que les méthodes appellent les bons endpoints avec les bons paramètres</p></li>
+<li><p>Vérifier que les méthodes retournent les bonnes données</p></li>
+<li><p>Vérifier que les erreurs sont correctement propagées</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

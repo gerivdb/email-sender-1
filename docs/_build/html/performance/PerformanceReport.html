@@ -1,0 +1,149 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rapport de performance du module CycleDetector &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Rapport de performance du module CycleDetector</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/performance/PerformanceReport.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rapport-de-performance-du-module-cycledetector">
+<h1>Rapport de performance du module CycleDetector<a class="headerlink" href="#rapport-de-performance-du-module-cycledetector" title="Link to this heading"></a></h1>
+<section id="resume">
+<h2>Résumé<a class="headerlink" href="#resume" title="Link to this heading"></a></h2>
+<p>Ce rapport présente les résultats des tests de performance du module CycleDetector sur différentes tailles de graphes et densités d’arêtes. Les tests ont été effectués sur un ordinateur avec les caractéristiques suivantes :</p>
+<ul class="simple">
+<li><p>Système d’exploitation : Windows</p></li>
+<li><p>PowerShell : 5.1</p></li>
+</ul>
+</section>
+<section id="resultats">
+<h2>Résultats<a class="headerlink" href="#resultats" title="Link to this heading"></a></h2>
+<p>Les tests ont été effectués sur des graphes de tailles variées (10, 50, 100, 500, 1000, 5000 nœuds) avec différentes densités d’arêtes (0.01, 0.05, 0.1, 0.2). Pour chaque combinaison, nous avons testé des graphes avec et sans cycles.</p>
+<section id="observations-principales">
+<h3>Observations principales<a class="headerlink" href="#observations-principales" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Temps d’exécution</strong> : Le temps d’exécution augmente de manière significative avec la taille du graphe et la densité des arêtes. Pour les graphes de grande taille (&gt; 1000 nœuds), le temps d’exécution devient prohibitif.</p></li>
+<li><p><strong>Utilisation de la mémoire</strong> : L’utilisation de la mémoire augmente également avec la taille du graphe, mais reste relativement stable par rapport à la densité des arêtes.</p></li>
+<li><p><strong>Efficacité du cache</strong> : Le cache est efficace pour les appels répétés sur le même graphe, mais son impact est limité pour les grands graphes en raison du temps nécessaire pour calculer le hash du graphe.</p></li>
+<li><p><strong>Algorithme itératif vs récursif</strong> : L’algorithme itératif est plus efficace pour les grands graphes, mais l’algorithme récursif est plus rapide pour les petits graphes.</p></li>
+</ol>
+</section>
+</section>
+<section id="problemes-identifies">
+<h2>Problèmes identifiés<a class="headerlink" href="#problemes-identifies" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Calcul du hash du graphe</strong> : Le calcul du hash du graphe est coûteux pour les grands graphes et peut annuler les bénéfices du cache.</p></li>
+<li><p><strong>Allocation mémoire excessive</strong> : L’algorithme actuel crée de nombreux objets temporaires, ce qui augmente la pression sur le garbage collector.</p></li>
+<li><p><strong>Parcours redondant</strong> : L’algorithme visite parfois les mêmes nœuds plusieurs fois, ce qui est inefficace pour les grands graphes.</p></li>
+<li><p><strong>Seuil de basculement</strong> : Le seuil actuel pour basculer entre l’algorithme récursif et itératif (1000 nœuds) pourrait ne pas être optimal.</p></li>
+</ol>
+</section>
+<section id="recommandations-d-optimisation">
+<h2>Recommandations d’optimisation<a class="headerlink" href="#recommandations-d-optimisation" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Optimiser le calcul du hash</strong> : Utiliser une méthode de hachage plus efficace ou mettre en cache les résultats intermédiaires.</p></li>
+<li><p><strong>Réduire les allocations mémoire</strong> : Réutiliser les structures de données existantes au lieu d’en créer de nouvelles.</p></li>
+<li><p><strong>Améliorer la détection précoce</strong> : Implémenter une détection précoce des cycles pour éviter de parcourir l’ensemble du graphe.</p></li>
+<li><p><strong>Ajuster le seuil de basculement</strong> : Déterminer empiriquement le seuil optimal pour basculer entre l’algorithme récursif et itératif.</p></li>
+<li><p><strong>Paralléliser le traitement</strong> : Pour les très grands graphes, envisager de paralléliser le traitement en utilisant les Runspace Pools de PowerShell.</p></li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Le module CycleDetector fonctionne bien pour les petits et moyens graphes, mais des optimisations sont nécessaires pour améliorer ses performances sur les grands graphes. Les recommandations ci-dessus devraient permettre d’améliorer significativement les performances du module.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

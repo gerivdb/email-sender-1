@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module CycleDetector &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module DependencyManager" href="DependencyManager.html" />
+    <link rel="prev" title="Documentation des API" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation des API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Module CycleDetector</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fonctions-principales">Fonctions principales</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialize-cycledetector">Initialize-CycleDetector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#find-cycle">Find-Cycle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#find-scriptdependencycycles">Find-ScriptDependencyCycles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-workflowcycles">Test-WorkflowCycles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remove-cycle">Remove-Cycle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-cycledetectionstatistics">Get-CycleDetectionStatistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clear-cycledetectioncache">Clear-CycleDetectionCache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#export-cyclevisualization">Export-CycleVisualization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-scriptdependencyreport">Get-ScriptDependencyReport</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="DependencyManager.html">Module DependencyManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MCPManager.html">Module MCPManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="InputSegmenter.html">Module InputSegmenter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/CycleDetector_Examples.html">Exemples d’utilisation du module CycleDetector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/DependencyManager_Examples.html">Exemples d’utilisation du module DependencyManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/MCPManager_Examples.html">Exemples d’utilisation du module MCPManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/InputSegmenter_Examples.html">Exemples d’utilisation du module InputSegmenter</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Documentation des API</a></li>
+      <li class="breadcrumb-item active">Module CycleDetector</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/CycleDetector.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-cycledetector">
+<h1>Module CycleDetector<a class="headerlink" href="#module-cycledetector" title="Link to this heading"></a></h1>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">CycleDetector</span></code> fournit des fonctionnalités pour détecter et corriger les cycles dans différents types de graphes, notamment les dépendances de scripts et les workflows n8n.</p>
+<section id="fonctions-principales">
+<h2>Fonctions principales<a class="headerlink" href="#fonctions-principales" title="Link to this heading"></a></h2>
+<section id="initialize-cycledetector">
+<h3>Initialize-CycleDetector<a class="headerlink" href="#initialize-cycledetector" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-CycleDetector</span> <span class="p">[</span><span class="n">-Enabled</span> <span class="p">&lt;</span><span class="n">Boolean</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-MaxDepth</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-CacheEnabled</span> <span class="p">&lt;</span><span class="n">Boolean</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Initialise le détecteur de cycles avec les paramètres spécifiés.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Enabled</strong> (<em>Boolean</em>) - Active ou désactive le détecteur de cycles. Valeur par défaut : $true</p></li>
+<li><p><strong>MaxDepth</strong> (<em>Int32</em>) - Profondeur maximale de recherche pour la détection de cycles. Valeur par défaut : 100</p></li>
+<li><p><strong>CacheEnabled</strong> (<em>Boolean</em>) - Active ou désactive la mise en cache des résultats. Valeur par défaut : $true</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Booléen indiquant si l’initialisation a réussi.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser le détecteur de cycles avec une profondeur maximale de 50</span>
+<span class="nb">Initialize-CycleDetector</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">50</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span>
+</pre></div>
+</div>
+</section>
+<section id="find-cycle">
+<h3>Find-Cycle<a class="headerlink" href="#find-cycle" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="p">&lt;</span><span class="n">Hashtable</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-MaxDepth</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-SkipCache</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Détecte les cycles dans un graphe générique.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Graph</strong> (<em>Hashtable</em>) - Le graphe à analyser, représenté sous forme de table de hachage où les clés sont les nœuds et les valeurs sont des tableaux de nœuds adjacents.</p></li>
+<li><p><strong>MaxDepth</strong> (<em>Int32</em>) - Profondeur maximale de recherche pour la détection de cycles. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>SkipCache</strong> (<em>Switch</em>) - Ignore la mise en cache des résultats.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un objet avec les propriétés suivantes:</p>
+<ul class="simple">
+<li><p><strong>HasCycle</strong> (<em>Boolean</em>) - Indique si un cycle a été détecté.</p></li>
+<li><p><strong>CyclePath</strong> (<em>Array</em>) - Le chemin du cycle détecté, ou un tableau vide si aucun cycle n’a été détecté.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un graphe avec un cycle</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c"># Détecter les cycles</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="find-scriptdependencycycles">
+<h3>Find-ScriptDependencyCycles<a class="headerlink" href="#find-scriptdependencycycles" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Find-ScriptDependencyCycles</span> <span class="n">-Path</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Recursive</span><span class="p">]</span> <span class="p">[</span><span class="n">-GenerateGraph</span><span class="p">]</span> <span class="p">[</span><span class="n">-GraphOutputPath</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-SkipCache</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Analyse les dépendances entre les scripts PowerShell pour détecter les cycles.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Path</strong> (<em>String</em>) - Chemin du dossier ou fichier à analyser.</p></li>
+<li><p><strong>Recursive</strong> (<em>Switch</em>) - Analyse récursivement les sous-dossiers.</p></li>
+<li><p><strong>GenerateGraph</strong> (<em>Switch</em>) - Génère une visualisation du graphe de dépendances.</p></li>
+<li><p><strong>GraphOutputPath</strong> (<em>String</em>) - Chemin de sortie pour la visualisation du graphe.</p></li>
+<li><p><strong>SkipCache</strong> (<em>Switch</em>) - Ignore la mise en cache des résultats.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un objet avec les propriétés suivantes:</p>
+<ul class="simple">
+<li><p><strong>HasCycles</strong> (<em>Boolean</em>) - Indique si des cycles ont été détectés.</p></li>
+<li><p><strong>Cycles</strong> (<em>Array</em>) - Tableau des cycles détectés.</p></li>
+<li><p><strong>NonCyclicScripts</strong> (<em>Array</em>) - Scripts sans dépendances cycliques.</p></li>
+<li><p><strong>DependencyGraph</strong> (<em>Hashtable</em>) - Graphe de dépendances complet.</p></li>
+<li><p><strong>ScriptFiles</strong> (<em>Array</em>) - Liste des fichiers de scripts analysés.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Analyser les dépendances dans un dossier de scripts</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Find-ScriptDependencyCycles</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-GenerateGraph</span> <span class="n">-GraphOutputPath</span> <span class="s2">&quot;.\dependency_graph.html&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycles</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycles détectés dans les scripts suivants:&quot;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$cycle</span> <span class="k">in</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Cycles</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$cycle</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="test-workflowcycles">
+<h3>Test-WorkflowCycles<a class="headerlink" href="#test-workflowcycles" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Test-WorkflowCycles</span> <span class="n">-WorkflowPath</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-SkipCache</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Teste les workflows n8n pour détecter les cycles.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>WorkflowPath</strong> (<em>String</em>) - Chemin du fichier de workflow n8n à analyser.</p></li>
+<li><p><strong>SkipCache</strong> (<em>Switch</em>) - Ignore la mise en cache des résultats.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un objet avec les propriétés suivantes:</p>
+<ul class="simple">
+<li><p><strong>HasCycle</strong> (<em>Boolean</em>) - Indique si un cycle a été détecté.</p></li>
+<li><p><strong>WorkflowPath</strong> (<em>String</em>) - Chemin du fichier de workflow analysé.</p></li>
+<li><p><strong>CyclePath</strong> (<em>Array</em>) - Le chemin du cycle détecté, ou un tableau vide si aucun cycle n’a été détecté.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Tester un workflow n8n pour détecter les cycles</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Test-WorkflowCycles</span> <span class="n">-WorkflowPath</span> <span class="s2">&quot;.\workflows\my_workflow.json&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté dans le workflow: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="remove-cycle">
+<h3>Remove-Cycle<a class="headerlink" href="#remove-cycle" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Remove-Cycle</span> <span class="n">-CycleResult</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Force</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Supprime un cycle détecté en supprimant une connexion.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>CycleResult</strong> (<em>Object</em>) - Le résultat de la détection de cycle (objet retourné par Find-Cycle, Find-ScriptDependencyCycles ou Test-WorkflowCycles).</p></li>
+<li><p><strong>Force</strong> (<em>Switch</em>) - Force la suppression du cycle sans confirmation.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Booléen indiquant si le cycle a été supprimé avec succès.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Détecter les cycles dans un graphe</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nv">$cycleResult</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$graph</span>
+
+<span class="c"># Supprimer le cycle</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$cycleResult</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$removed</span> <span class="p">=</span> <span class="nb">Remove-Cycle</span> <span class="n">-CycleResult</span> <span class="nv">$cycleResult</span> <span class="n">-Force</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$removed</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle supprimé avec succès&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="get-cycledetectionstatistics">
+<h3>Get-CycleDetectionStatistics<a class="headerlink" href="#get-cycledetectionstatistics" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-CycleDetectionStatistics</span>
+</pre></div>
+</div>
+<p>Récupère les statistiques de détection de cycles.</p>
+<dl class="simple">
+<dt>Valeur de retour:</dt><dd><p>Un objet avec les propriétés suivantes:</p>
+<ul class="simple">
+<li><p><strong>TotalCalls</strong> (<em>Int32</em>) - Nombre total d’appels à Find-Cycle.</p></li>
+<li><p><strong>TotalCycles</strong> (<em>Int32</em>) - Nombre total de cycles détectés.</p></li>
+<li><p><strong>CacheHits</strong> (<em>Int32</em>) - Nombre de fois où un résultat a été récupéré du cache.</p></li>
+<li><p><strong>CacheMisses</strong> (<em>Int32</em>) - Nombre de fois où un résultat n’a pas été trouvé dans le cache.</p></li>
+<li><p><strong>AverageExecutionTime</strong> (<em>Double</em>) - Temps d’exécution moyen en millisecondes.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Récupérer les statistiques de détection de cycles</span>
+<span class="nv">$stats</span> <span class="p">=</span> <span class="nb">Get-CycleDetectionStatistics</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total d&#39;appels: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">TotalCalls</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total de cycles détectés: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">TotalCycles</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Taux de succès du cache: </span><span class="p">$((</span><span class="nv">$stats</span><span class="p">.</span><span class="n">CacheHits</span> <span class="p">/</span> <span class="p">(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">CacheHits</span> <span class="p">+</span> <span class="nv">$stats</span><span class="p">.</span><span class="n">CacheMisses</span><span class="p">))</span> <span class="p">*</span> <span class="n">100</span><span class="p">)</span><span class="s2">%&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="clear-cycledetectioncache">
+<h3>Clear-CycleDetectionCache<a class="headerlink" href="#clear-cycledetectioncache" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Clear-CycleDetectionCache</span>
+</pre></div>
+</div>
+<p>Vide le cache de détection de cycles.</p>
+<dl class="simple">
+<dt>Valeur de retour:</dt><dd><p>Booléen indiquant si le cache a été vidé avec succès.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Vider le cache de détection de cycles</span>
+<span class="nb">Clear-CycleDetectionCache</span>
+</pre></div>
+</div>
+</section>
+<section id="export-cyclevisualization">
+<h3>Export-CycleVisualization<a class="headerlink" href="#export-cyclevisualization" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Export-CycleVisualization</span> <span class="n">-Graph</span> <span class="p">&lt;</span><span class="n">Hashtable</span><span class="p">&gt;</span> <span class="n">-OutputPath</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Format</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Exporte une visualisation du graphe de dépendances.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Graph</strong> (<em>Hashtable</em>) - Le graphe à visualiser.</p></li>
+<li><p><strong>OutputPath</strong> (<em>String</em>) - Chemin de sortie pour la visualisation.</p></li>
+<li><p><strong>Format</strong> (<em>String</em>) - Format de sortie (HTML, DOT, PNG). Par défaut : HTML.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Booléen indiquant si la visualisation a été exportée avec succès.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un graphe</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;D&quot;</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">}</span>
+
+<span class="c"># Exporter la visualisation</span>
+<span class="nb">Export-CycleVisualization</span> <span class="n">-Graph</span> <span class="nv">$graph</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\graph.html&quot;</span> <span class="n">-Format</span> <span class="s2">&quot;HTML&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="get-scriptdependencyreport">
+<h3>Get-ScriptDependencyReport<a class="headerlink" href="#get-scriptdependencyreport" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-ScriptDependencyReport</span> <span class="n">-Path</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Recursive</span><span class="p">]</span> <span class="p">[</span><span class="n">-GenerateGraph</span><span class="p">]</span> <span class="p">[</span><span class="n">-GraphOutputPath</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-SkipCache</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Génère un rapport détaillé sur les dépendances entre les scripts.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Path</strong> (<em>String</em>) - Chemin du dossier ou fichier à analyser.</p></li>
+<li><p><strong>Recursive</strong> (<em>Switch</em>) - Analyse récursivement les sous-dossiers.</p></li>
+<li><p><strong>GenerateGraph</strong> (<em>Switch</em>) - Génère une visualisation du graphe de dépendances.</p></li>
+<li><p><strong>GraphOutputPath</strong> (<em>String</em>) - Chemin de sortie pour la visualisation du graphe.</p></li>
+<li><p><strong>SkipCache</strong> (<em>Switch</em>) - Ignore la mise en cache des résultats.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un objet avec les propriétés suivantes:</p>
+<ul class="simple">
+<li><p><strong>Result</strong> (<em>Object</em>) - Résultat de l’analyse des dépendances (même format que Find-ScriptDependencyCycles).</p></li>
+<li><p><strong>Statistics</strong> (<em>Object</em>) - Statistiques sur les dépendances (nombre de dépendances par script, script avec le plus de dépendances, etc.).</p></li>
+</ul>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Générer un rapport de dépendances</span>
+<span class="nv">$report</span> <span class="p">=</span> <span class="nb">Get-ScriptDependencyReport</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-GenerateGraph</span> <span class="n">-GraphOutputPath</span> <span class="s2">&quot;.\dependency_graph.html&quot;</span>
+
+<span class="c"># Afficher les statistiques</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total de scripts: </span><span class="p">$(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Result</span><span class="p">.</span><span class="n">ScriptFiles</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de scripts avec des cycles: </span><span class="p">$(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Result</span><span class="p">.</span><span class="n">Cycles</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Script avec le plus de dépendances: </span><span class="p">$(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Statistics</span><span class="p">.</span><span class="n">MostDependencies</span><span class="p">.</span><span class="n">Script</span><span class="p">)</span><span class="s2"> (</span><span class="p">$(</span><span class="nv">$report</span><span class="p">.</span><span class="n">Statistics</span><span class="p">.</span><span class="n">MostDependencies</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> dépendances)&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Documentation des API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="DependencyManager.html" class="btn btn-neutral float-right" title="Module DependencyManager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

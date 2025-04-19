@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide des nouvelles fonctionnalités et de l’organisation du dépôt &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide des nouvelles fonctionnalités et de l’organisation du dépôt</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_NOUVELLES_FONCTIONNALITES.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-des-nouvelles-fonctionnalites-et-de-l-organisation-du-depot">
+<h1>Guide des nouvelles fonctionnalités et de l’organisation du dépôt<a class="headerlink" href="#guide-des-nouvelles-fonctionnalites-et-de-l-organisation-du-depot" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Ce guide présente les nouvelles fonctionnalités et l’organisation du dépôt qui ont été mises en place pour améliorer l’efficacité et la maintenabilité du projet Email Sender 1.</p>
+</section>
+<section id="nouvelles-fonctionnalites">
+<h2>Nouvelles fonctionnalités<a class="headerlink" href="#nouvelles-fonctionnalites" title="Link to this heading"></a></h2>
+<section id="mcp-git-ingest-ameliore">
+<h3>1. MCP Git Ingest amélioré<a class="headerlink" href="#mcp-git-ingest-ameliore" title="Link to this heading"></a></h3>
+<p>Le MCP Git Ingest a été amélioré pour utiliser Python directement au lieu de npm, ce qui résout les problèmes de dépendances et améliore la stabilité.</p>
+<section id="utilisation">
+<h4>Utilisation<a class="headerlink" href="#utilisation" title="Link to this heading"></a></h4>
+<p>Pour utiliser le MCP Git Ingest dans Augment :</p>
+<ol>
+<li><p>Assurez-vous que la configuration est présente dans les paramètres VS Code</p></li>
+<li><p>Utilisez des prompts comme :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Utilise</span> <span class="n">le</span> <span class="n">MCP</span> <span class="n">Git</span> <span class="n">Ingest</span> <span class="n">pour</span> <span class="n">explorer</span> <span class="n">la</span> <span class="n">structure</span> <span class="n">du</span> <span class="n">dépôt</span> <span class="n">GitHub</span> <span class="s2">&quot;adhikasp/mcp-git-ingest&quot;</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Pour tester le serveur HTTP :</p>
+<ol class="simple">
+<li><p>Exécutez <code class="docutils literal notranslate"><span class="pre">.\scripts\cmd\start-mcp-git-ingest-server.cmd</span></code></p></li>
+<li><p>Accédez à <code class="docutils literal notranslate"><span class="pre">http://localhost:8001/health</span></code> pour vérifier que le serveur fonctionne</p></li>
+</ol>
+</section>
+</section>
+<section id="mcp-gdrive">
+<h3>2. MCP GDrive<a class="headerlink" href="#mcp-gdrive" title="Link to this heading"></a></h3>
+<p>Un nouveau MCP pour interagir avec Google Drive a été ajouté.</p>
+<section id="id1">
+<h4>Utilisation<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Pour utiliser le MCP GDrive :</p>
+<ol class="simple">
+<li><p>Configurez les identifiants OAuth2 pour Google Drive</p></li>
+<li><p>Utilisez le MCP dans n8n ou Augment pour interagir avec vos fichiers Google Drive</p></li>
+</ol>
+</section>
+</section>
+<section id="organisation-automatique-du-depot">
+<h3>3. Organisation automatique du dépôt<a class="headerlink" href="#organisation-automatique-du-depot" title="Link to this heading"></a></h3>
+<p>Des scripts d’automatisation ont été ajoutés pour organiser automatiquement le dépôt selon une structure cohérente.</p>
+<section id="id2">
+<h4>Utilisation<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>Pour configurer l’organisation automatique :</p>
+<ol class="simple">
+<li><p>Exécutez <code class="docutils literal notranslate"><span class="pre">.\scripts\setup\setup-auto-organization.ps1</span></code></p></li>
+<li><p>Les fichiers seront automatiquement organisés selon leur type et leur usage</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="nouvelle-organisation-du-depot">
+<h2>Nouvelle organisation du dépôt<a class="headerlink" href="#nouvelle-organisation-du-depot" title="Link to this heading"></a></h2>
+<p>Le dépôt a été réorganisé selon la structure suivante :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>email-sender-1/
+├── .github/                  # Configuration GitHub
+│   └── hooks/                # Hooks Git pour l&#39;automatisation
+├── .n8n/                     # Configuration n8n
+├── docs/                     # Documentation
+│   └── guides/               # Guides d&#39;utilisation
+├── mcp/                      # Serveurs MCP
+│   ├── batch/                # Scripts batch pour les MCP
+│   └── gdrive/               # MCP Google Drive
+├── scripts/                  # Scripts utilitaires
+│   ├── cmd/                  # Scripts CMD
+│   │   ├── augment/          # Scripts pour Augment
+│   │   └── batch/            # Scripts batch généraux
+│   ├── maintenance/          # Scripts de maintenance
+│   │   └── repo/             # Scripts d&#39;organisation du dépôt
+│   ├── python/               # Scripts Python
+│   ├── setup/                # Scripts d&#39;installation et de configuration
+│   └── utils/                # Utilitaires divers
+│       └── automation/       # Scripts d&#39;automatisation
+└── src/                      # Code source principal
+    └── mcp/                  # Implémentation des MCP
+        └── batch/            # Scripts batch pour les MCP
+</pre></div>
+</div>
+</section>
+<section id="configuration-vs-code">
+<h2>Configuration VS Code<a class="headerlink" href="#configuration-vs-code" title="Link to this heading"></a></h2>
+<p>La configuration VS Code a été mise à jour pour inclure le MCP Git Ingest. Pour mettre à jour votre configuration :</p>
+<ol class="simple">
+<li><p>Exécutez <code class="docutils literal notranslate"><span class="pre">.\scripts\setup\update-vscode-settings.ps1</span></code></p></li>
+<li><p>Redémarrez VS Code</p></li>
+</ol>
+</section>
+<section id="prochaines-etapes">
+<h2>Prochaines étapes<a class="headerlink" href="#prochaines-etapes" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Tester les nouvelles fonctionnalités dans vos workflows</p></li>
+<li><p>Contribuer à l’amélioration des MCP</p></li>
+<li><p>Suggérer des améliorations pour l’organisation du dépôt</p></li>
+</ol>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="GUIDE_MCP_GIT_INGEST.html"><span class="doc">Guide MCP Git Ingest</span></a></p></li>
+<li><p><a class="reference internal" href="GUIDE_ORGANISATION_AUTOMATIQUE.html"><span class="doc">Guide d’organisation automatique</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide pour tester les MCP dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide pour tester les MCP dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/mcp/TESTER_MCP_WORKFLOW.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-pour-tester-les-mcp-dans-n8n">
+<h1>Guide pour tester les MCP dans n8n<a class="headerlink" href="#guide-pour-tester-les-mcp-dans-n8n" title="Link to this heading"></a></h1>
+<p>Ce guide vous explique comment importer et tester le workflow de test pour vérifier que les MCP fonctionnent correctement.</p>
+<section id="etape-1-importer-le-workflow-de-test">
+<h2>Étape 1 : Importer le workflow de test<a class="headerlink" href="#etape-1-importer-le-workflow-de-test" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ouvrez l’interface web de n8n (http://localhost:5678)</p></li>
+<li><p>Cliquez sur “Workflows” dans le menu de gauche</p></li>
+<li><p>Cliquez sur le bouton “Import from File” (icône d’importation)</p></li>
+<li><p>Sélectionnez le fichier <code class="docutils literal notranslate"><span class="pre">test-mcp-workflow-updated.json</span></code></p></li>
+<li><p>Cliquez sur “Import”</p></li>
+</ol>
+</section>
+<section id="etape-2-configurer-les-identifiants-mcp">
+<h2>Étape 2 : Configurer les identifiants MCP<a class="headerlink" href="#etape-2-configurer-les-identifiants-mcp" title="Link to this heading"></a></h2>
+<p>Le workflow de test utilise trois identifiants MCP :</p>
+<ul class="simple">
+<li><p>MCP Standard</p></li>
+<li><p>MCP Notion</p></li>
+<li><p>MCP Gateway</p></li>
+</ul>
+<p>Si ces identifiants n’existent pas encore ou ont des noms différents, vous devrez mettre à jour le workflow :</p>
+<ol class="simple">
+<li><p>Cliquez sur chaque nœud MCP Client</p></li>
+<li><p>Dans la section “Credentials”, sélectionnez l’identifiant MCP correspondant</p></li>
+<li><p>Cliquez sur “Save” pour enregistrer les modifications</p></li>
+</ol>
+</section>
+<section id="etape-3-executer-le-workflow">
+<h2>Étape 3 : Exécuter le workflow<a class="headerlink" href="#etape-3-executer-le-workflow" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Cliquez sur le bouton “Execute Workflow” (icône de lecture)</p></li>
+<li><p>Observez les résultats de l’exécution</p></li>
+</ol>
+<p>Si les MCP fonctionnent correctement, vous devriez voir les résultats suivants :</p>
+<ul class="simple">
+<li><p>Le nœud MCP Client (Standard) devrait afficher la liste des outils disponibles dans le MCP standard</p></li>
+<li><p>Le nœud MCP Client (Notion) devrait afficher la liste des outils disponibles dans le MCP Notion Server</p></li>
+<li><p>Le nœud MCP Client (Gateway) devrait afficher la liste des outils disponibles dans le MCP Gateway</p></li>
+</ul>
+</section>
+<section id="etape-4-verifier-les-toasts-d-erreur">
+<h2>Étape 4 : Vérifier les toasts d’erreur<a class="headerlink" href="#etape-4-verifier-les-toasts-d-erreur" title="Link to this heading"></a></h2>
+<p>Si vous ne voyez plus de toasts d’erreur indiquant que les MCP n’ont pas démarré, cela signifie que le problème est résolu.</p>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez toujours des problèmes :</p>
+<ol class="simple">
+<li><p>Vérifiez les logs de n8n pour voir les erreurs éventuelles</p></li>
+<li><p>Assurez-vous que les chemins dans la configuration des identifiants MCP sont corrects et utilisent des chemins absolus</p></li>
+<li><p>Vérifiez que les fichiers batch sont exécutables et accessibles</p></li>
+<li><p>Assurez-vous que n8n a les permissions nécessaires pour exécuter les scripts et accéder aux fichiers</p></li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Si le workflow de test s’exécute correctement et que vous ne voyez plus de toasts d’erreur, cela signifie que les MCP sont correctement configurés et fonctionnent dans n8n.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

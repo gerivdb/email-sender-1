@@ -1,0 +1,489 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module InputSegmenter &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Exemples d’utilisation du module CycleDetector" href="examples/CycleDetector_Examples.html" />
+    <link rel="prev" title="Module MCPManager" href="MCPManager.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation des API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="CycleDetector.html">Module CycleDetector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DependencyManager.html">Module DependencyManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MCPManager.html">Module MCPManager</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Module InputSegmenter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fonctions-principales">Fonctions principales</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialize-inputsegmentation">Initialize-InputSegmentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#measure-inputsize">Measure-InputSize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-textinput">Split-TextInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-jsoninput">Split-JsonInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-fileinput">Split-FileInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-input">Split-Input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#save-segmentationstate">Save-SegmentationState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-segmentationstate">Get-SegmentationState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#invoke-withsegmentation">Invoke-WithSegmentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/CycleDetector_Examples.html">Exemples d’utilisation du module CycleDetector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/DependencyManager_Examples.html">Exemples d’utilisation du module DependencyManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/MCPManager_Examples.html">Exemples d’utilisation du module MCPManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/InputSegmenter_Examples.html">Exemples d’utilisation du module InputSegmenter</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Documentation des API</a></li>
+      <li class="breadcrumb-item active">Module InputSegmenter</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/InputSegmenter.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-inputsegmenter">
+<h1>Module InputSegmenter<a class="headerlink" href="#module-inputsegmenter" title="Link to this heading"></a></h1>
+<p>Le module <code class="docutils literal notranslate"><span class="pre">InputSegmenter</span></code> fournit des fonctionnalités pour segmenter automatiquement les entrées volumineuses en morceaux plus petits et gérables. Il est particulièrement utile pour traiter des données qui dépassent les limites de taille imposées par certains outils ou API.</p>
+<section id="fonctions-principales">
+<h2>Fonctions principales<a class="headerlink" href="#fonctions-principales" title="Link to this heading"></a></h2>
+<section id="initialize-inputsegmentation">
+<h3>Initialize-InputSegmentation<a class="headerlink" href="#initialize-inputsegmentation" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Initialize-InputSegmentation</span> <span class="p">[</span><span class="n">-Enabled</span> <span class="p">&lt;</span><span class="n">Boolean</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-MaxInputSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-SegmentSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-OverlapSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-StateStoragePath</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Initialise le module de segmentation des entrées avec les paramètres spécifiés.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Enabled</strong> (<em>Boolean</em>) - Active ou désactive la segmentation des entrées. Valeur par défaut : $true</p></li>
+<li><p><strong>MaxInputSizeKB</strong> (<em>Int32</em>) - Taille maximale d’entrée en kilo-octets avant segmentation. Valeur par défaut : 100</p></li>
+<li><p><strong>SegmentSizeKB</strong> (<em>Int32</em>) - Taille de chaque segment en kilo-octets. Valeur par défaut : 50</p></li>
+<li><p><strong>OverlapSizeKB</strong> (<em>Int32</em>) - Taille de chevauchement entre segments en kilo-octets. Valeur par défaut : 5</p></li>
+<li><p><strong>StateStoragePath</strong> (<em>String</em>) - Chemin du dossier de stockage de l’état de segmentation. Valeur par défaut : “.tempsegmentation”</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Booléen indiquant si l’initialisation a réussi.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser le module de segmentation avec des paramètres personnalisés</span>
+<span class="nb">Initialize-InputSegmentation</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxInputSizeKB</span> <span class="n">200</span> <span class="n">-SegmentSizeKB</span> <span class="n">100</span> <span class="n">-OverlapSizeKB</span> <span class="n">10</span> <span class="n">-StateStoragePath</span> <span class="s2">&quot;.\data\segmentation&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="measure-inputsize">
+<h3>Measure-InputSize<a class="headerlink" href="#measure-inputsize" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Measure-InputSize</span> <span class="n">-Input</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-InputType</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Mesure la taille d’une entrée en kilo-octets.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Input</strong> (<em>Object</em>) - L’entrée à mesurer (chaîne de caractères, objet JSON, fichier, etc.).</p></li>
+<li><p><strong>InputType</strong> (<em>String</em>) - Type d’entrée (Text, JSON, File, Object). Si non spécifié, le type est détecté automatiquement.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un objet avec les propriétés suivantes:</p>
+<ul class="simple">
+<li><p><strong>SizeKB</strong> (<em>Double</em>) - Taille de l’entrée en kilo-octets.</p></li>
+<li><p><strong>SizeBytes</strong> (<em>Int64</em>) - Taille de l’entrée en octets.</p></li>
+<li><p><strong>InputType</strong> (<em>String</em>) - Type d’entrée détecté.</p></li>
+<li><p><strong>NeedsSegmentation</strong> (<em>Boolean</em>) - Indique si l’entrée doit être segmentée (taille &gt; MaxInputSizeKB).</p></li>
+</ul>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Mesurer la taille d&#39;une chaîne de caractères</span>
+<span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &quot;</span> <span class="p">*</span> <span class="n">1000</span>
+<span class="nv">$textSize</span> <span class="p">=</span> <span class="nb">Measure-InputSize</span> <span class="n">-Input</span> <span class="nv">$text</span> <span class="n">-InputType</span> <span class="s2">&quot;Text&quot;</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Taille du texte: </span><span class="p">$(</span><span class="nv">$textSize</span><span class="p">.</span><span class="n">SizeKB</span><span class="p">)</span><span class="s2"> KB&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Segmentation nécessaire: </span><span class="p">$(</span><span class="nv">$textSize</span><span class="p">.</span><span class="n">NeedsSegmentation</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="c"># Mesurer la taille d&#39;un fichier</span>
+<span class="nv">$fileSize</span> <span class="p">=</span> <span class="nb">Measure-InputSize</span> <span class="n">-Input</span> <span class="s2">&quot;.\data\large_file.json&quot;</span> <span class="n">-InputType</span> <span class="s2">&quot;File&quot;</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Taille du fichier: </span><span class="p">$(</span><span class="nv">$fileSize</span><span class="p">.</span><span class="n">SizeKB</span><span class="p">)</span><span class="s2"> KB&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Segmentation nécessaire: </span><span class="p">$(</span><span class="nv">$fileSize</span><span class="p">.</span><span class="n">NeedsSegmentation</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="split-textinput">
+<h3>Split-TextInput<a class="headerlink" href="#split-textinput" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Split-TextInput</span> <span class="n">-Text</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-SegmentSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-OverlapSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-PreserveParagraphs</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Segmente une chaîne de caractères en morceaux plus petits.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Text</strong> (<em>String</em>) - Le texte à segmenter.</p></li>
+<li><p><strong>SegmentSizeKB</strong> (<em>Int32</em>) - Taille de chaque segment en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>OverlapSizeKB</strong> (<em>Int32</em>) - Taille de chevauchement entre segments en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>PreserveParagraphs</strong> (<em>Switch</em>) - Préserve les paragraphes lors de la segmentation.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un tableau de segments de texte.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Segmenter un texte</span>
+<span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &quot;</span> <span class="p">*</span> <span class="n">1000</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-TextInput</span> <span class="n">-Text</span> <span class="nv">$text</span> <span class="n">-SegmentSizeKB</span> <span class="n">10</span> <span class="n">-OverlapSizeKB</span> <span class="n">1</span> <span class="n">-PreserveParagraphs</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="c"># Afficher les premiers caractères de chaque segment</span>
+<span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span>
+    <span class="nv">$preview</span> <span class="p">=</span> <span class="nv">$segments</span><span class="p">[</span><span class="nv">$i</span><span class="p">].</span><span class="n">Substring</span><span class="p">(</span><span class="n">0</span><span class="p">,</span> <span class="no">[Math]</span><span class="p">::</span><span class="n">Min</span><span class="p">(</span><span class="n">50</span><span class="p">,</span> <span class="nv">$segments</span><span class="p">[</span><span class="nv">$i</span><span class="p">].</span><span class="n">Length</span><span class="p">))</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Segment </span><span class="p">$(</span><span class="nv">$i</span><span class="p">+</span><span class="n">1</span><span class="p">)</span><span class="s2">: $preview...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="split-jsoninput">
+<h3>Split-JsonInput<a class="headerlink" href="#split-jsoninput" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Split-JsonInput</span> <span class="n">-Json</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-SegmentSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-PreserveStructure</span><span class="p">]</span> <span class="p">[</span><span class="n">-SplitArrays</span><span class="p">]</span> <span class="p">[</span><span class="n">-SplitObjects</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Segmente un objet JSON en morceaux plus petits.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Json</strong> (<em>Object</em>) - L’objet JSON à segmenter (chaîne de caractères ou objet déjà désérialisé).</p></li>
+<li><p><strong>SegmentSizeKB</strong> (<em>Int32</em>) - Taille de chaque segment en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>PreserveStructure</strong> (<em>Switch</em>) - Préserve la structure JSON lors de la segmentation.</p></li>
+<li><p><strong>SplitArrays</strong> (<em>Switch</em>) - Segmente les tableaux JSON.</p></li>
+<li><p><strong>SplitObjects</strong> (<em>Switch</em>) - Segmente les objets JSON.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un tableau de segments JSON.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer un objet JSON avec un grand tableau</span>
+<span class="nv">$largeArray</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="n">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span>
+    <span class="nv">$largeArray</span> <span class="p">+=</span> <span class="p">@{</span>
+        <span class="n">id</span> <span class="p">=</span> <span class="nv">$i</span>
+        <span class="n">name</span> <span class="p">=</span> <span class="s2">&quot;Item $i&quot;</span>
+        <span class="n">description</span> <span class="p">=</span> <span class="s2">&quot;Description of item $i&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nv">$jsonObject</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">items</span> <span class="p">=</span> <span class="nv">$largeArray</span>
+    <span class="n">metadata</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">count</span> <span class="p">=</span> <span class="nv">$largeArray</span><span class="p">.</span><span class="n">Count</span>
+        <span class="nb">type </span><span class="p">=</span> <span class="s2">&quot;test&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Segmenter l&#39;objet JSON</span>
+<span class="nv">$jsonSegments</span> <span class="p">=</span> <span class="nb">Split-JsonInput</span> <span class="n">-Json</span> <span class="nv">$jsonObject</span> <span class="n">-SegmentSizeKB</span> <span class="n">10</span> <span class="n">-PreserveStructure</span> <span class="n">-SplitArrays</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments JSON: </span><span class="p">$(</span><span class="nv">$jsonSegments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="c"># Afficher la structure de chaque segment</span>
+<span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$jsonSegments</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span>
+    <span class="nv">$segment</span> <span class="p">=</span> <span class="nv">$jsonSegments</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span>
+    <span class="nv">$itemCount</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$segment</span><span class="p">.</span><span class="n">items</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$segment</span><span class="p">.</span><span class="n">items</span><span class="p">.</span><span class="n">Count</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="n">0</span> <span class="p">}</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Segment </span><span class="p">$(</span><span class="nv">$i</span><span class="p">+</span><span class="n">1</span><span class="p">)</span><span class="s2">: $itemCount items&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="split-fileinput">
+<h3>Split-FileInput<a class="headerlink" href="#split-fileinput" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Split-FileInput</span> <span class="n">-FilePath</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-OutputDirectory</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-SegmentSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-OverlapSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-DetectFormat</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Segmente un fichier en morceaux plus petits.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>FilePath</strong> (<em>String</em>) - Chemin du fichier à segmenter.</p></li>
+<li><p><strong>OutputDirectory</strong> (<em>String</em>) - Dossier de sortie pour les segments. Par défaut : dossier du fichier d’entrée.</p></li>
+<li><p><strong>SegmentSizeKB</strong> (<em>Int32</em>) - Taille de chaque segment en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>OverlapSizeKB</strong> (<em>Int32</em>) - Taille de chevauchement entre segments en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>DetectFormat</strong> (<em>Switch</em>) - Détecte automatiquement le format du fichier et utilise la méthode de segmentation appropriée.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un tableau de chemins vers les fichiers de segments créés.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Segmenter un fichier texte</span>
+<span class="nv">$segmentFiles</span> <span class="p">=</span> <span class="nb">Split-FileInput</span> <span class="n">-FilePath</span> <span class="s2">&quot;.\data\large_file.txt&quot;</span> <span class="n">-OutputDirectory</span> <span class="s2">&quot;.\data\segments&quot;</span> <span class="n">-SegmentSizeKB</span> <span class="n">50</span> <span class="n">-DetectFormat</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de fichiers de segments créés: </span><span class="p">$(</span><span class="nv">$segmentFiles</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="c"># Afficher les chemins des fichiers de segments</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$segmentFile</span> <span class="k">in</span> <span class="nv">$segmentFiles</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Fichier de segment: $segmentFile&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="split-input">
+<h3>Split-Input<a class="headerlink" href="#split-input" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Split-Input</span> <span class="n">-Input</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-InputType</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-SegmentSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-OverlapSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-OutputDirectory</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-PreserveStructure</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Segmente une entrée en fonction de son type.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Input</strong> (<em>Object</em>) - L’entrée à segmenter (chaîne de caractères, objet JSON, fichier, etc.).</p></li>
+<li><p><strong>InputType</strong> (<em>String</em>) - Type d’entrée (Text, JSON, File, Object). Si non spécifié, le type est détecté automatiquement.</p></li>
+<li><p><strong>SegmentSizeKB</strong> (<em>Int32</em>) - Taille de chaque segment en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>OverlapSizeKB</strong> (<em>Int32</em>) - Taille de chevauchement entre segments en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>OutputDirectory</strong> (<em>String</em>) - Dossier de sortie pour les segments de fichiers. Par défaut : dossier du fichier d’entrée.</p></li>
+<li><p><strong>PreserveStructure</strong> (<em>Switch</em>) - Préserve la structure lors de la segmentation.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un tableau de segments ou de chemins vers les fichiers de segments créés.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Segmenter une entrée (type détecté automatiquement)</span>
+<span class="nv">$input</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s2">&quot;.\data\large_file.json&quot;</span> <span class="n">-Raw</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-Input</span> <span class="n">-Input</span> <span class="nv">$input</span> <span class="n">-SegmentSizeKB</span> <span class="n">50</span> <span class="n">-PreserveStructure</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="c"># Segmenter un fichier</span>
+<span class="nv">$fileSegments</span> <span class="p">=</span> <span class="nb">Split-Input</span> <span class="n">-Input</span> <span class="s2">&quot;.\data\large_file.csv&quot;</span> <span class="n">-InputType</span> <span class="s2">&quot;File&quot;</span> <span class="n">-OutputDirectory</span> <span class="s2">&quot;.\data\segments&quot;</span> <span class="n">-SegmentSizeKB</span> <span class="n">100</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de fichiers de segments créés: </span><span class="p">$(</span><span class="nv">$fileSegments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="save-segmentationstate">
+<h3>Save-SegmentationState<a class="headerlink" href="#save-segmentationstate" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Save-SegmentationState</span> <span class="n">-State</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-StateId</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-StoragePath</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Sauvegarde l’état de segmentation pour une utilisation ultérieure.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>State</strong> (<em>Object</em>) - L’état de segmentation à sauvegarder.</p></li>
+<li><p><strong>StateId</strong> (<em>String</em>) - Identifiant unique de l’état. Par défaut : GUID généré automatiquement.</p></li>
+<li><p><strong>StoragePath</strong> (<em>String</em>) - Chemin du dossier de stockage. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>L’identifiant de l’état sauvegardé.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Segmenter un texte</span>
+<span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &quot;</span> <span class="p">*</span> <span class="n">1000</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-TextInput</span> <span class="n">-Text</span> <span class="nv">$text</span> <span class="n">-SegmentSizeKB</span> <span class="n">10</span>
+
+<span class="c"># Créer un état de segmentation</span>
+<span class="nv">$state</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">OriginalInput</span> <span class="p">=</span> <span class="nv">$text</span>
+    <span class="n">Segments</span> <span class="p">=</span> <span class="nv">$segments</span>
+    <span class="n">CurrentSegmentIndex</span> <span class="p">=</span> <span class="n">0</span>
+    <span class="n">TotalSegments</span> <span class="p">=</span> <span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span>
+    <span class="n">Timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span>
+<span class="p">}</span>
+
+<span class="c"># Sauvegarder l&#39;état</span>
+<span class="nv">$stateId</span> <span class="p">=</span> <span class="nb">Save-SegmentationState</span> <span class="n">-State</span> <span class="nv">$state</span> <span class="n">-StoragePath</span> <span class="s2">&quot;.\data\segmentation_states&quot;</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;État de segmentation sauvegardé avec l&#39;ID: $stateId&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="get-segmentationstate">
+<h3>Get-SegmentationState<a class="headerlink" href="#get-segmentationstate" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-SegmentationState</span> <span class="n">-StateId</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-StoragePath</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Récupère un état de segmentation sauvegardé.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>StateId</strong> (<em>String</em>) - Identifiant de l’état à récupérer.</p></li>
+<li><p><strong>StoragePath</strong> (<em>String</em>) - Chemin du dossier de stockage. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>L’état de segmentation récupéré.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Récupérer un état de segmentation</span>
+<span class="nv">$state</span> <span class="p">=</span> <span class="nb">Get-SegmentationState</span> <span class="n">-StateId</span> <span class="s2">&quot;12345678-1234-1234-1234-123456789012&quot;</span> <span class="n">-StoragePath</span> <span class="s2">&quot;.\data\segmentation_states&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$state</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;État de segmentation récupéré&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total de segments: </span><span class="p">$(</span><span class="nv">$state</span><span class="p">.</span><span class="n">TotalSegments</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Segment actuel: </span><span class="p">$(</span><span class="nv">$state</span><span class="p">.</span><span class="n">CurrentSegmentIndex</span> <span class="p">+</span> <span class="n">1</span><span class="p">)</span><span class="s2">&quot;</span>
+
+    <span class="c"># Utiliser le segment actuel</span>
+    <span class="nv">$currentSegment</span> <span class="p">=</span> <span class="nv">$state</span><span class="p">.</span><span class="n">Segments</span><span class="p">[</span><span class="nv">$state</span><span class="p">.</span><span class="n">CurrentSegmentIndex</span><span class="p">]</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Taille du segment actuel: </span><span class="p">$(</span><span class="no">[Math]</span><span class="p">::</span><span class="n">Round</span><span class="p">(((</span><span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$currentSegment</span><span class="p">)).</span><span class="n">Length</span> <span class="p">/</span> <span class="n">1024</span><span class="p">),</span> <span class="n">2</span><span class="p">))</span><span class="s2"> KB&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;État de segmentation non trouvé&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="invoke-withsegmentation">
+<h3>Invoke-WithSegmentation<a class="headerlink" href="#invoke-withsegmentation" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-WithSegmentation</span> <span class="n">-Input</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">&gt;</span> <span class="n">-ScriptBlock</span> <span class="p">&lt;</span><span class="n">ScriptBlock</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-InputType</span> <span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-SegmentSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-OverlapSizeKB</span> <span class="p">&lt;</span><span class="n">Int32</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-PreserveStructure</span><span class="p">]</span> <span class="p">[</span><span class="n">-CombineResults</span><span class="p">]</span> <span class="p">[</span><span class="n">-ContinueOnError</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Exécute un bloc de script sur chaque segment d’une entrée.</p>
+<dl class="simple">
+<dt>Paramètres:</dt><dd><ul class="simple">
+<li><p><strong>Input</strong> (<em>Object</em>) - L’entrée à segmenter et à traiter.</p></li>
+<li><p><strong>ScriptBlock</strong> (<em>ScriptBlock</em>) - Le bloc de script à exécuter sur chaque segment. Le segment est passé comme premier argument.</p></li>
+<li><p><strong>InputType</strong> (<em>String</em>) - Type d’entrée (Text, JSON, File, Object). Si non spécifié, le type est détecté automatiquement.</p></li>
+<li><p><strong>SegmentSizeKB</strong> (<em>Int32</em>) - Taille de chaque segment en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>OverlapSizeKB</strong> (<em>Int32</em>) - Taille de chevauchement entre segments en kilo-octets. Si non spécifié, utilise la valeur définie lors de l’initialisation.</p></li>
+<li><p><strong>PreserveStructure</strong> (<em>Switch</em>) - Préserve la structure lors de la segmentation.</p></li>
+<li><p><strong>CombineResults</strong> (<em>Switch</em>) - Combine les résultats de chaque segment en un seul résultat.</p></li>
+<li><p><strong>ContinueOnError</strong> (<em>Switch</em>) - Continue l’exécution même si une erreur se produit lors du traitement d’un segment.</p></li>
+</ul>
+</dd>
+<dt>Valeur de retour:</dt><dd><p>Un tableau des résultats de l’exécution du bloc de script sur chaque segment, ou un résultat combiné si CombineResults est spécifié.</p>
+</dd>
+</dl>
+<p>Exemple:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Fonction de traitement qui compte les mots dans un texte</span>
+<span class="k">function</span> <span class="n">Count-Words</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="no">[string]</span><span class="nv">$Text</span>
+    <span class="p">)</span>
+
+    <span class="nv">$words</span> <span class="p">=</span> <span class="nv">$Text</span> <span class="n">-split</span> <span class="s1">&#39;\W+&#39;</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span> <span class="o">-ne</span> <span class="s1">&#39;&#39;</span> <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$words</span><span class="p">.</span><span class="n">Count</span>
+<span class="p">}</span>
+
+<span class="c"># Texte volumineux</span>
+<span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &quot;</span> <span class="p">*</span> <span class="n">1000</span>
+
+<span class="c"># Compter les mots avec segmentation</span>
+<span class="nv">$wordCounts</span> <span class="p">=</span> <span class="nb">Invoke-WithSegmentation</span> <span class="n">-Input</span> <span class="nv">$text</span> <span class="n">-ScriptBlock</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$segment</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Count-Words</span> <span class="n">-Text</span> <span class="nv">$segment</span>
+<span class="p">}</span> <span class="n">-InputType</span> <span class="s2">&quot;Text&quot;</span> <span class="n">-SegmentSizeKB</span> <span class="n">10</span> <span class="n">-CombineResults</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total de mots: $wordCounts&quot;</span>
+
+<span class="c"># Traitement plus complexe avec JSON</span>
+<span class="nv">$largeJson</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">items</span> <span class="p">=</span> <span class="n">1</span><span class="p">..</span><span class="n">1000</span> <span class="p">|</span> <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span>
+        <span class="p">@{</span>
+            <span class="n">id</span> <span class="p">=</span> <span class="nv">$_</span>
+            <span class="n">name</span> <span class="p">=</span> <span class="s2">&quot;Item $_&quot;</span>
+            <span class="n">value</span> <span class="p">=</span> <span class="nv">$_</span> <span class="p">*</span> <span class="n">10</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Calculer la somme des valeurs</span>
+<span class="nv">$results</span> <span class="p">=</span> <span class="nb">Invoke-WithSegmentation</span> <span class="n">-Input</span> <span class="nv">$largeJson</span> <span class="n">-ScriptBlock</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$segment</span><span class="p">)</span>
+
+    <span class="nv">$sum</span> <span class="p">=</span> <span class="n">0</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$segment</span><span class="p">.</span><span class="n">items</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$item</span> <span class="k">in</span> <span class="nv">$segment</span><span class="p">.</span><span class="n">items</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$sum</span> <span class="p">+=</span> <span class="nv">$item</span><span class="p">.</span><span class="n">value</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$sum</span>
+<span class="p">}</span> <span class="n">-InputType</span> <span class="s2">&quot;JSON&quot;</span> <span class="n">-SegmentSizeKB</span> <span class="n">10</span> <span class="n">-PreserveStructure</span>
+
+<span class="nv">$totalSum</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$results</span> <span class="p">|</span> <span class="nb">Measure-Object</span> <span class="n">-Sum</span><span class="p">).</span><span class="n">Sum</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Somme totale des valeurs: $totalSum&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="MCPManager.html" class="btn btn-neutral float-left" title="Module MCPManager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples/CycleDetector_Examples.html" class="btn btn-neutral float-right" title="Exemples d’utilisation du module CycleDetector" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

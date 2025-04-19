@@ -1,0 +1,612 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module d’utilitaires de chiffrement (EncryptionUtils) &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module d’utilitaires de chiffrement (EncryptionUtils)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/EncryptionUtils.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-d-utilitaires-de-chiffrement-encryptionutils">
+<h1>Module d’utilitaires de chiffrement (EncryptionUtils)<a class="headerlink" href="#module-d-utilitaires-de-chiffrement-encryptionutils" title="Link to this heading"></a></h1>
+<p>Ce document décrit le module d’utilitaires de chiffrement (<code class="docutils literal notranslate"><span class="pre">EncryptionUtils.ps1</span></code>) qui permet de sécuriser les données sensibles en utilisant des algorithmes de chiffrement robustes.</p>
+<section id="table-des-matieres">
+<h2>Table des matières<a class="headerlink" href="#table-des-matieres" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><a class="reference external" href="#introduction">Introduction</a></p></li>
+<li><p><a class="reference external" href="#fonctions-disponibles">Fonctions disponibles</a></p></li>
+<li><p><a class="reference external" href="#algorithmes-de-chiffrement">Algorithmes de chiffrement</a></p></li>
+<li><p><a class="reference external" href="#exemples-dutilisation">Exemples d’utilisation</a></p></li>
+<li><p><a class="reference external" href="#bonnes-pratiques-de-s%C3%A9curit%C3%A9">Bonnes pratiques de sécurité</a></p></li>
+<li><p><a class="reference external" href="#int%C3%A9gration-avec-dautres-modules">Intégration avec d’autres modules</a></p></li>
+<li><p><a class="reference external" href="#consid%C3%A9rations-de-performance">Considérations de performance</a></p></li>
+</ol>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Le module d’utilitaires de chiffrement fournit des fonctions pour chiffrer et déchiffrer des données, ainsi que pour sécuriser les fichiers contenant des informations sensibles. Il utilise des algorithmes de chiffrement robustes comme AES-256 et des techniques de dérivation de clé sécurisées comme PBKDF2.</p>
+<p>Le module offre plusieurs fonctionnalités :</p>
+<ul class="simple">
+<li><p>Génération de clés de chiffrement à partir de mots de passe</p></li>
+<li><p>Chiffrement et déchiffrement de chaînes de caractères</p></li>
+<li><p>Chiffrement et déchiffrement de fichiers</p></li>
+<li><p>Calcul de hachages de fichiers</p></li>
+<li><p>Signature et vérification de fichiers</p></li>
+</ul>
+</section>
+<section id="fonctions-disponibles">
+<h2>Fonctions disponibles<a class="headerlink" href="#fonctions-disponibles" title="Link to this heading"></a></h2>
+<section id="new-encryptionkey">
+<h3>New-EncryptionKey<a class="headerlink" href="#new-encryptionkey" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-EncryptionKey</span> <span class="p">[</span><span class="n">-Password</span> <span class="p">&lt;</span><span class="n">SecureString</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-Salt</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-KeySize</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-Iterations</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-HashAlgorithm</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-OutputFile</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Cette fonction génère une clé de chiffrement à partir d’un mot de passe ou de manière aléatoire.</p>
+<section id="parametres">
+<h4>Paramètres<a class="headerlink" href="#parametres" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Password</strong> : Mot de passe à utiliser pour générer la clé (SecureString).</p></li>
+<li><p><strong>Salt</strong> : Sel à utiliser pour la dérivation de la clé (par défaut : “EMAIL_SENDER_1_Salt”).</p></li>
+<li><p><strong>KeySize</strong> : Taille de la clé en bits (par défaut : 256).</p></li>
+<li><p><strong>Iterations</strong> : Nombre d’itérations pour la dérivation de la clé (par défaut : 10000).</p></li>
+<li><p><strong>HashAlgorithm</strong> : Algorithme de hachage à utiliser (par défaut : “SHA256”).</p></li>
+<li><p><strong>OutputFile</strong> : Fichier dans lequel enregistrer la clé (optionnel).</p></li>
+</ul>
+</section>
+<section id="exemple">
+<h4>Exemple<a class="headerlink" href="#exemple" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Générer une clé à partir d&#39;un mot de passe</span>
+<span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&quot;MonMotDePasse&quot;</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+<span class="nv">$key</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span> <span class="n">-Password</span> <span class="nv">$password</span>
+
+<span class="c"># Générer une clé aléatoire</span>
+<span class="nv">$randomKey</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="protect-string">
+<h3>Protect-String<a class="headerlink" href="#protect-string" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Protect-String</span> <span class="n">-InputString</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="n">-EncryptionKey</span> <span class="p">&lt;</span><span class="n">object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-BlockSize</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Cette fonction chiffre une chaîne de caractères.</p>
+<section id="id1">
+<h4>Paramètres<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>InputString</strong> : Chaîne de caractères à chiffrer.</p></li>
+<li><p><strong>EncryptionKey</strong> : Clé de chiffrement à utiliser.</p></li>
+<li><p><strong>BlockSize</strong> : Taille de bloc en bits (par défaut : 128).</p></li>
+</ul>
+</section>
+<section id="id2">
+<h4>Exemple<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Chiffrer une chaîne</span>
+<span class="nv">$encryptedString</span> <span class="p">=</span> <span class="nb">Protect-String</span> <span class="n">-InputString</span> <span class="s2">&quot;Données sensibles&quot;</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="unprotect-string">
+<h3>Unprotect-String<a class="headerlink" href="#unprotect-string" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Unprotect-String</span> <span class="n">-EncryptedString</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="n">-EncryptionKey</span> <span class="p">&lt;</span><span class="n">object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-BlockSize</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Cette fonction déchiffre une chaîne de caractères.</p>
+<section id="id3">
+<h4>Paramètres<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>EncryptedString</strong> : Chaîne de caractères chiffrée.</p></li>
+<li><p><strong>EncryptionKey</strong> : Clé de chiffrement à utiliser.</p></li>
+<li><p><strong>BlockSize</strong> : Taille de bloc en bits (par défaut : 128).</p></li>
+</ul>
+</section>
+<section id="id4">
+<h4>Exemple<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Déchiffrer une chaîne</span>
+<span class="nv">$decryptedString</span> <span class="p">=</span> <span class="nb">Unprotect-String</span> <span class="n">-EncryptedString</span> <span class="nv">$encryptedString</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="protect-file">
+<h3>Protect-File<a class="headerlink" href="#protect-file" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Protect-File</span> <span class="n">-InputFile</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="n">-OutputFile</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="n">-EncryptionKey</span> <span class="p">&lt;</span><span class="n">object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-BlockSize</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-BufferSize</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Cette fonction chiffre un fichier.</p>
+<section id="id5">
+<h4>Paramètres<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>InputFile</strong> : Chemin du fichier à chiffrer.</p></li>
+<li><p><strong>OutputFile</strong> : Chemin du fichier chiffré.</p></li>
+<li><p><strong>EncryptionKey</strong> : Clé de chiffrement à utiliser.</p></li>
+<li><p><strong>BlockSize</strong> : Taille de bloc en bits (par défaut : 128).</p></li>
+<li><p><strong>BufferSize</strong> : Taille du tampon en octets (par défaut : 4096).</p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>Exemple<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Chiffrer un fichier</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Protect-File</span> <span class="n">-InputFile</span> <span class="s2">&quot;C:\Data\secret.txt&quot;</span> <span class="n">-OutputFile</span> <span class="s2">&quot;C:\Data\secret.enc&quot;</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="unprotect-file">
+<h3>Unprotect-File<a class="headerlink" href="#unprotect-file" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Unprotect-File</span> <span class="n">-InputFile</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="n">-OutputFile</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="n">-EncryptionKey</span> <span class="p">&lt;</span><span class="n">object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-BlockSize</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-BufferSize</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Cette fonction déchiffre un fichier.</p>
+<section id="id7">
+<h4>Paramètres<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>InputFile</strong> : Chemin du fichier chiffré.</p></li>
+<li><p><strong>OutputFile</strong> : Chemin du fichier déchiffré.</p></li>
+<li><p><strong>EncryptionKey</strong> : Clé de chiffrement à utiliser.</p></li>
+<li><p><strong>BlockSize</strong> : Taille de bloc en bits (par défaut : 128).</p></li>
+<li><p><strong>BufferSize</strong> : Taille du tampon en octets (par défaut : 4096).</p></li>
+</ul>
+</section>
+<section id="id8">
+<h4>Exemple<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Déchiffrer un fichier</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Unprotect-File</span> <span class="n">-InputFile</span> <span class="s2">&quot;C:\Data\secret.enc&quot;</span> <span class="n">-OutputFile</span> <span class="s2">&quot;C:\Data\secret_decrypted.txt&quot;</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="get-filehash">
+<h3>Get-FileHash<a class="headerlink" href="#get-filehash" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-FileHash</span> <span class="n">-FilePath</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Algorithm</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-BufferSize</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Cette fonction calcule le hachage d’un fichier.</p>
+<section id="id9">
+<h4>Paramètres<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>FilePath</strong> : Chemin du fichier.</p></li>
+<li><p><strong>Algorithm</strong> : Algorithme de hachage à utiliser (MD5, SHA1, SHA256, SHA384, SHA512) (par défaut : SHA256).</p></li>
+<li><p><strong>BufferSize</strong> : Taille du tampon en octets (par défaut : 4096).</p></li>
+</ul>
+</section>
+<section id="id10">
+<h4>Exemple<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Calculer le hachage d&#39;un fichier</span>
+<span class="nv">$hash</span> <span class="p">=</span> <span class="nb">Get-FileHash</span> <span class="n">-FilePath</span> <span class="s2">&quot;C:\Data\file.txt&quot;</span> <span class="n">-Algorithm</span> <span class="s2">&quot;SHA256&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="new-filesignature">
+<h3>New-FileSignature<a class="headerlink" href="#new-filesignature" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-FileSignature</span> <span class="n">-FilePath</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="n">-EncryptionKey</span> <span class="p">&lt;</span><span class="n">object</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-SignatureFile</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-Algorithm</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+<p>Cette fonction signe un fichier.</p>
+<section id="id11">
+<h4>Paramètres<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>FilePath</strong> : Chemin du fichier à signer.</p></li>
+<li><p><strong>EncryptionKey</strong> : Clé de chiffrement à utiliser.</p></li>
+<li><p><strong>SignatureFile</strong> : Chemin du fichier de signature (optionnel).</p></li>
+<li><p><strong>Algorithm</strong> : Algorithme de hachage à utiliser (par défaut : SHA256).</p></li>
+</ul>
+</section>
+<section id="id12">
+<h4>Exemple<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Signer un fichier</span>
+<span class="nv">$signature</span> <span class="p">=</span> <span class="nb">New-FileSignature</span> <span class="n">-FilePath</span> <span class="s2">&quot;C:\Data\file.txt&quot;</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span> <span class="n">-SignatureFile</span> <span class="s2">&quot;C:\Data\file.txt.sig&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="test-filesignature">
+<h3>Test-FileSignature<a class="headerlink" href="#test-filesignature" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Test-FileSignature</span> <span class="n">-FilePath</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="n">-EncryptionKey</span> <span class="p">&lt;</span><span class="n">object</span><span class="p">&gt;</span> <span class="n">-Signature</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">|</span> <span class="n">-SignatureFile</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Cette fonction vérifie la signature d’un fichier.</p>
+<section id="id13">
+<h4>Paramètres<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>FilePath</strong> : Chemin du fichier à vérifier.</p></li>
+<li><p><strong>EncryptionKey</strong> : Clé de chiffrement à utiliser.</p></li>
+<li><p><strong>Signature</strong> : Signature du fichier.</p></li>
+<li><p><strong>SignatureFile</strong> : Chemin du fichier de signature.</p></li>
+</ul>
+</section>
+<section id="id14">
+<h4>Exemple<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Vérifier la signature d&#39;un fichier</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Test-FileSignature</span> <span class="n">-FilePath</span> <span class="s2">&quot;C:\Data\file.txt&quot;</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span> <span class="n">-SignatureFile</span> <span class="s2">&quot;C:\Data\file.txt.sig&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="algorithmes-de-chiffrement">
+<h2>Algorithmes de chiffrement<a class="headerlink" href="#algorithmes-de-chiffrement" title="Link to this heading"></a></h2>
+<p>Le module utilise les algorithmes de chiffrement suivants :</p>
+<section id="aes-advanced-encryption-standard">
+<h3>AES (Advanced Encryption Standard)<a class="headerlink" href="#aes-advanced-encryption-standard" title="Link to this heading"></a></h3>
+<p>AES est un algorithme de chiffrement symétrique largement utilisé et considéré comme sûr. Le module utilise AES-256 (256 bits) par défaut, qui offre un niveau de sécurité très élevé.</p>
+</section>
+<section id="pbkdf2-password-based-key-derivation-function-2">
+<h3>PBKDF2 (Password-Based Key Derivation Function 2)<a class="headerlink" href="#pbkdf2-password-based-key-derivation-function-2" title="Link to this heading"></a></h3>
+<p>PBKDF2 est une fonction de dérivation de clé qui permet de générer une clé de chiffrement à partir d’un mot de passe. Elle utilise un sel et un grand nombre d’itérations pour rendre les attaques par force brute plus difficiles.</p>
+</section>
+<section id="algorithmes-de-hachage">
+<h3>Algorithmes de hachage<a class="headerlink" href="#algorithmes-de-hachage" title="Link to this heading"></a></h3>
+<p>Le module prend en charge plusieurs algorithmes de hachage pour le calcul des hachages de fichiers et la signature :</p>
+<ul class="simple">
+<li><p>MD5 (non recommandé pour des applications de sécurité)</p></li>
+<li><p>SHA1 (non recommandé pour des applications de sécurité)</p></li>
+<li><p>SHA256 (recommandé)</p></li>
+<li><p>SHA384</p></li>
+<li><p>SHA512</p></li>
+</ul>
+</section>
+</section>
+<section id="exemples-d-utilisation">
+<h2>Exemples d’utilisation<a class="headerlink" href="#exemples-d-utilisation" title="Link to this heading"></a></h2>
+<section id="chiffrement-et-dechiffrement-de-chaines-de-caracteres">
+<h3>Chiffrement et déchiffrement de chaînes de caractères<a class="headerlink" href="#chiffrement-et-dechiffrement-de-chaines-de-caracteres" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\EncryptionUtils.ps1&quot;</span>
+
+<span class="c"># Générer une clé de chiffrement</span>
+<span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&quot;MonMotDePasse&quot;</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+<span class="nv">$key</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span> <span class="n">-Password</span> <span class="nv">$password</span>
+
+<span class="c"># Chiffrer une chaîne</span>
+<span class="nv">$sensitiveData</span> <span class="p">=</span> <span class="s2">&quot;Numéro de carte de crédit: 1234-5678-9012-3456&quot;</span>
+<span class="nv">$encryptedData</span> <span class="p">=</span> <span class="nb">Protect-String</span> <span class="n">-InputString</span> <span class="nv">$sensitiveData</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Données chiffrées: $encryptedData&quot;</span>
+
+<span class="c"># Déchiffrer la chaîne</span>
+<span class="nv">$decryptedData</span> <span class="p">=</span> <span class="nb">Unprotect-String</span> <span class="n">-EncryptedString</span> <span class="nv">$encryptedData</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Données déchiffrées: $decryptedData&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="chiffrement-et-dechiffrement-de-fichiers">
+<h3>Chiffrement et déchiffrement de fichiers<a class="headerlink" href="#chiffrement-et-dechiffrement-de-fichiers" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\EncryptionUtils.ps1&quot;</span>
+
+<span class="c"># Générer une clé de chiffrement</span>
+<span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&quot;MonMotDePasse&quot;</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+<span class="nv">$key</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span> <span class="n">-Password</span> <span class="nv">$password</span>
+
+<span class="c"># Chiffrer un fichier</span>
+<span class="nv">$inputFile</span> <span class="p">=</span> <span class="s2">&quot;C:\Data\confidential.docx&quot;</span>
+<span class="nv">$encryptedFile</span> <span class="p">=</span> <span class="s2">&quot;C:\Data\confidential.enc&quot;</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Protect-File</span> <span class="n">-InputFile</span> <span class="nv">$inputFile</span> <span class="n">-OutputFile</span> <span class="nv">$encryptedFile</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Fichier chiffré avec succès: $encryptedFile&quot;</span>
+    
+    <span class="c"># Déchiffrer le fichier</span>
+    <span class="nv">$decryptedFile</span> <span class="p">=</span> <span class="s2">&quot;C:\Data\confidential_decrypted.docx&quot;</span>
+    <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Unprotect-File</span> <span class="n">-InputFile</span> <span class="nv">$encryptedFile</span> <span class="n">-OutputFile</span> <span class="nv">$decryptedFile</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Fichier déchiffré avec succès: $decryptedFile&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="signature-et-verification-de-fichiers">
+<h3>Signature et vérification de fichiers<a class="headerlink" href="#signature-et-verification-de-fichiers" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\EncryptionUtils.ps1&quot;</span>
+
+<span class="c"># Générer une clé de chiffrement</span>
+<span class="nv">$key</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span>
+
+<span class="c"># Signer un fichier</span>
+<span class="nv">$filePath</span> <span class="p">=</span> <span class="s2">&quot;C:\Data\important.pdf&quot;</span>
+<span class="nv">$signatureFile</span> <span class="p">=</span> <span class="s2">&quot;C:\Data\important.pdf.sig&quot;</span>
+<span class="nv">$signature</span> <span class="p">=</span> <span class="nb">New-FileSignature</span> <span class="n">-FilePath</span> <span class="nv">$filePath</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span> <span class="n">-SignatureFile</span> <span class="nv">$signatureFile</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Fichier signé: $signatureFile&quot;</span>
+
+<span class="c"># Vérifier la signature</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Test-FileSignature</span> <span class="n">-FilePath</span> <span class="nv">$filePath</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span> <span class="n">-SignatureFile</span> <span class="nv">$signatureFile</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">.</span><span class="n">IsValid</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;La signature est valide.&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Horodatage de la signature: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">SignatureTimestamp</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;La signature n&#39;est pas valide!&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Hachage attendu: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">ExpectedHash</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Hachage actuel: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">CurrentHash</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="stockage-securise-de-cles">
+<h3>Stockage sécurisé de clés<a class="headerlink" href="#stockage-securise-de-cles" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\EncryptionUtils.ps1&quot;</span>
+
+<span class="c"># Générer une clé de chiffrement</span>
+<span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&quot;MotDePasseMaitre&quot;</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+<span class="nv">$key</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span> <span class="n">-Password</span> <span class="nv">$password</span> <span class="n">-OutputFile</span> <span class="s2">&quot;C:\Keys\master.key&quot;</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Clé enregistrée dans: C:\Keys\master.key&quot;</span>
+
+<span class="c"># Chiffrer une autre clé</span>
+<span class="nv">$anotherPassword</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&quot;AutreMotDePasse&quot;</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+<span class="nv">$anotherKey</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span> <span class="n">-Password</span> <span class="nv">$anotherPassword</span>
+
+<span class="c"># Convertir la clé en JSON</span>
+<span class="nv">$keyJson</span> <span class="p">=</span> <span class="nv">$anotherKey</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span>
+
+<span class="c"># Chiffrer la clé</span>
+<span class="nv">$encryptedKey</span> <span class="p">=</span> <span class="nb">Protect-String</span> <span class="n">-InputString</span> <span class="nv">$keyJson</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+
+<span class="c"># Enregistrer la clé chiffrée</span>
+<span class="nv">$encryptedKey</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">-Path</span> <span class="s2">&quot;C:\Keys\encrypted.key&quot;</span> <span class="n">-Encoding</span> <span class="n">UTF8</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Clé chiffrée enregistrée dans: C:\Keys\encrypted.key&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques-de-securite">
+<h2>Bonnes pratiques de sécurité<a class="headerlink" href="#bonnes-pratiques-de-securite" title="Link to this heading"></a></h2>
+<p>Pour utiliser le module d’utilitaires de chiffrement de manière sécurisée, suivez ces bonnes pratiques :</p>
+<ol class="simple">
+<li><p><strong>Utilisez des mots de passe forts</strong> : Les mots de passe utilisés pour générer des clés de chiffrement doivent être longs, complexes et uniques.</p></li>
+<li><p><strong>Protégez les clés de chiffrement</strong> : Les clés de chiffrement sont sensibles et doivent être protégées. Ne les stockez pas en clair dans des fichiers ou des bases de données.</p></li>
+<li><p><strong>Utilisez SecureString pour les mots de passe</strong> : Utilisez toujours SecureString pour manipuler les mots de passe afin d’éviter qu’ils ne soient exposés en mémoire.</p></li>
+<li><p><strong>Utilisez AES-256</strong> : AES-256 est considéré comme sûr et offre un bon niveau de sécurité.</p></li>
+<li><p><strong>Utilisez un grand nombre d’itérations pour PBKDF2</strong> : Un grand nombre d’itérations (au moins 10000) rend les attaques par force brute plus difficiles.</p></li>
+<li><p><strong>Utilisez SHA-256 ou supérieur pour les hachages</strong> : MD5 et SHA-1 sont considérés comme faibles et ne doivent pas être utilisés pour des applications de sécurité.</p></li>
+<li><p><strong>Vérifiez toujours les signatures</strong> : Lorsque vous utilisez des signatures, vérifiez-les toujours avant d’utiliser les fichiers correspondants.</p></li>
+<li><p><strong>Nettoyez les données sensibles de la mémoire</strong> : Après avoir utilisé des données sensibles, assurez-vous de les effacer de la mémoire.</p></li>
+<li><p><strong>Sauvegardez les clés de chiffrement</strong> : Si vous perdez une clé de chiffrement, vous ne pourrez pas déchiffrer les données. Assurez-vous de sauvegarder les clés de manière sécurisée.</p></li>
+<li><p><strong>Utilisez des vecteurs d’initialisation (IV) uniques</strong> : Le module génère automatiquement des IV uniques, mais assurez-vous de ne jamais réutiliser un IV avec la même clé.</p></li>
+</ol>
+</section>
+<section id="integration-avec-d-autres-modules">
+<h2>Intégration avec d’autres modules<a class="headerlink" href="#integration-avec-d-autres-modules" title="Link to this heading"></a></h2>
+<p>Le module d’utilitaires de chiffrement peut être intégré avec d’autres modules pour ajouter des fonctionnalités de chiffrement. Voici quelques exemples d’intégration :</p>
+<section id="integration-avec-unifiedfileprocessor">
+<h3>Intégration avec UnifiedFileProcessor<a class="headerlink" href="#integration-avec-unifiedfileprocessor" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\EncryptionUtils.ps1&quot;</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\UnifiedFileProcessor.ps1&quot;</span>
+
+<span class="c"># Initialiser le module UnifiedFileProcessor</span>
+<span class="nb">Initialize-UnifiedFileProcessor</span>
+
+<span class="c"># Générer une clé de chiffrement</span>
+<span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&quot;MonMotDePasse&quot;</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+<span class="nv">$key</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span> <span class="n">-Password</span> <span class="nv">$password</span>
+
+<span class="c"># Traiter et chiffrer un fichier</span>
+<span class="nv">$inputFile</span> <span class="p">=</span> <span class="s2">&quot;C:\Data\input.csv&quot;</span>
+<span class="nv">$processedFile</span> <span class="p">=</span> <span class="s2">&quot;C:\Data\processed.json&quot;</span>
+<span class="nv">$encryptedFile</span> <span class="p">=</span> <span class="s2">&quot;C:\Data\processed.enc&quot;</span>
+
+<span class="c"># Traiter le fichier</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Invoke-SecureFileProcessing</span> <span class="n">-InputFile</span> <span class="nv">$inputFile</span> <span class="n">-OutputFile</span> <span class="nv">$processedFile</span> <span class="n">-InputFormat</span> <span class="s2">&quot;CSV&quot;</span> <span class="n">-OutputFormat</span> <span class="s2">&quot;JSON&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c"># Chiffrer le fichier traité</span>
+    <span class="nv">$encryptResult</span> <span class="p">=</span> <span class="nb">Protect-SecureFile</span> <span class="n">-InputFile</span> <span class="nv">$processedFile</span> <span class="n">-OutputFile</span> <span class="nv">$encryptedFile</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span> <span class="n">-CreateSignature</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$encryptResult</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Fichier traité et chiffré avec succès: $encryptedFile&quot;</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Signature: </span><span class="p">$(</span><span class="nv">$encryptResult</span><span class="p">.</span><span class="n">SignatureFile</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-avec-des-fonctions-personnalisees">
+<h3>Intégration avec des fonctions personnalisées<a class="headerlink" href="#integration-avec-des-fonctions-personnalisees" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\EncryptionUtils.ps1&quot;</span>
+
+<span class="c"># Fonction pour enregistrer des données sensibles de manière sécurisée</span>
+<span class="k">function</span> <span class="nb">Save-SensitiveData</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[object]</span><span class="nv">$Data</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$OutputFile</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[System.Security.SecureString]</span><span class="nv">$Password</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Générer une clé de chiffrement</span>
+    <span class="nv">$key</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span> <span class="n">-Password</span> <span class="nv">$Password</span>
+    
+    <span class="c"># Convertir les données en JSON</span>
+    <span class="nv">$jsonData</span> <span class="p">=</span> <span class="nv">$Data</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Depth</span> <span class="n">10</span>
+    
+    <span class="c"># Chiffrer les données</span>
+    <span class="nv">$encryptedData</span> <span class="p">=</span> <span class="nb">Protect-String</span> <span class="n">-InputString</span> <span class="nv">$jsonData</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+    
+    <span class="c"># Enregistrer les données chiffrées</span>
+    <span class="nv">$encryptedData</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">-Path</span> <span class="nv">$OutputFile</span> <span class="n">-Encoding</span> <span class="n">UTF8</span>
+    
+    <span class="k">return</span> <span class="nv">$true</span>
+<span class="p">}</span>
+
+<span class="c"># Fonction pour charger des données sensibles</span>
+<span class="k">function</span> <span class="n">Load-SensitiveData</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$InputFile</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[System.Security.SecureString]</span><span class="nv">$Password</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Vérifier que le fichier existe</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="n">-Path</span> <span class="nv">$InputFile</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="s2">&quot;Le fichier n&#39;existe pas: $InputFile&quot;</span>
+        <span class="k">return</span> <span class="nv">$null</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Générer une clé de chiffrement</span>
+    <span class="nv">$key</span> <span class="p">=</span> <span class="nb">New-EncryptionKey</span> <span class="n">-Password</span> <span class="nv">$Password</span>
+    
+    <span class="c"># Lire les données chiffrées</span>
+    <span class="nv">$encryptedData</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="nv">$InputFile</span> <span class="n">-Raw</span>
+    
+    <span class="c"># Déchiffrer les données</span>
+    <span class="nv">$jsonData</span> <span class="p">=</span> <span class="nb">Unprotect-String</span> <span class="n">-EncryptedString</span> <span class="nv">$encryptedData</span> <span class="n">-EncryptionKey</span> <span class="nv">$key</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="no">[string]</span><span class="p">::</span><span class="n">IsNullOrEmpty</span><span class="p">(</span><span class="nv">$jsonData</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="s2">&quot;Impossible de déchiffrer les données. Mot de passe incorrect?&quot;</span>
+        <span class="k">return</span> <span class="nv">$null</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Convertir les données JSON en objet</span>
+    <span class="nv">$data</span> <span class="p">=</span> <span class="nv">$jsonData</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span>
+    
+    <span class="k">return</span> <span class="nv">$data</span>
+<span class="p">}</span>
+
+<span class="c"># Utilisation</span>
+<span class="nv">$sensitiveData</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">Username</span> <span class="p">=</span> <span class="s2">&quot;admin&quot;</span>
+    <span class="n">Password</span> <span class="p">=</span> <span class="s2">&quot;P@ssw0rd&quot;</span>
+    <span class="n">ApiKey</span> <span class="p">=</span> <span class="s2">&quot;1234567890abcdef&quot;</span>
+    <span class="n">ServerUrl</span> <span class="p">=</span> <span class="s2">&quot;https://api.example.com&quot;</span>
+<span class="p">}</span>
+
+<span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&quot;MotDePasseSecurise&quot;</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+
+<span class="c"># Enregistrer les données</span>
+<span class="nb">Save-SensitiveData</span> <span class="n">-Data</span> <span class="nv">$sensitiveData</span> <span class="n">-OutputFile</span> <span class="s2">&quot;C:\Data\config.enc&quot;</span> <span class="n">-Password</span> <span class="nv">$password</span>
+
+<span class="c"># Charger les données</span>
+<span class="nv">$loadedData</span> <span class="p">=</span> <span class="n">Load-SensitiveData</span> <span class="n">-InputFile</span> <span class="s2">&quot;C:\Data\config.enc&quot;</span> <span class="n">-Password</span> <span class="nv">$password</span>
+
+<span class="c"># Afficher les données</span>
+<span class="nv">$loadedData</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="considerations-de-performance">
+<h2>Considérations de performance<a class="headerlink" href="#considerations-de-performance" title="Link to this heading"></a></h2>
+<p>Le chiffrement et le déchiffrement sont des opérations coûteuses en termes de CPU. Voici quelques considérations de performance à prendre en compte lors de l’utilisation du module :</p>
+<ol class="simple">
+<li><p><strong>Taille des fichiers</strong> : Le chiffrement et le déchiffrement de fichiers volumineux peuvent prendre beaucoup de temps. Envisagez de diviser les fichiers volumineux en morceaux plus petits.</p></li>
+<li><p><strong>Nombre d’itérations PBKDF2</strong> : Un grand nombre d’itérations rend les attaques par force brute plus difficiles, mais ralentit également la génération de clés. Trouvez un équilibre entre sécurité et performance.</p></li>
+<li><p><strong>Taille du tampon</strong> : La taille du tampon utilisée pour le chiffrement et le déchiffrement de fichiers peut affecter les performances. Une taille de tampon plus grande peut améliorer les performances, mais consomme plus de mémoire.</p></li>
+<li><p><strong>Algorithme de hachage</strong> : SHA-256 offre un bon équilibre entre sécurité et performance. SHA-512 est plus sécurisé mais plus lent.</p></li>
+<li><p><strong>Mise en cache des clés</strong> : Si vous utilisez fréquemment les mêmes clés, envisagez de les mettre en cache pour éviter de les recalculer à chaque fois.</p></li>
+<li><p><strong>Parallélisation</strong> : Le module ne prend pas en charge la parallélisation, mais vous pouvez implémenter votre propre parallélisation pour traiter plusieurs fichiers simultanément.</p></li>
+<li><p><strong>Compression</strong> : Envisagez de compresser les données avant de les chiffrer pour réduire la taille des données et améliorer les performances.</p></li>
+</ol>
+<p>Pour les opérations critiques en termes de performance, envisagez d’utiliser des bibliothèques natives ou des outils spécialisés comme OpenSSL ou GPG.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module MCPManager &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module MCPManager</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/technical/MCPManager.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-mcpmanager">
+<h1>Module MCPManager<a class="headerlink" href="#module-mcpmanager" title="Link to this heading"></a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p>Le module MCPManager est un module PowerShell qui centralise toutes les fonctionnalités liées à la gestion des serveurs MCP (Model Context Protocol). Il permet de détecter, configurer et gérer les serveurs MCP pour une intégration transparente avec les outils d’IA.</p>
+</section>
+<section id="fonctionnalites">
+<h2>Fonctionnalités<a class="headerlink" href="#fonctionnalites" title="Link to this heading"></a></h2>
+<p>Le module MCPManager offre les fonctionnalités suivantes :</p>
+<ul class="simple">
+<li><p>Détection des serveurs MCP locaux et cloud</p></li>
+<li><p>Configuration des serveurs MCP</p></li>
+<li><p>Démarrage du gestionnaire de serveurs MCP</p></li>
+<li><p>Exécution de commandes MCP</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Le module MCPManager est installé dans le dossier <code class="docutils literal notranslate"><span class="pre">modules</span></code> du projet. Pour l’utiliser, il suffit de l’importer avec la commande suivante :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\MCPManager.psm1&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="fonctions-publiques">
+<h2>Fonctions publiques<a class="headerlink" href="#fonctions-publiques" title="Link to this heading"></a></h2>
+<section id="find-mcpservers">
+<h3>Find-MCPServers<a class="headerlink" href="#find-mcpservers" title="Link to this heading"></a></h3>
+<p>Détecte les serveurs MCP locaux et cloud.</p>
+<section id="syntaxe">
+<h4>Syntaxe<a class="headerlink" href="#syntaxe" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Find-MCPServers</span> <span class="p">[[</span><span class="n">-ConfigPath</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[[</span><span class="n">-OutputPath</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-Scan</span><span class="p">]</span> <span class="p">[</span><span class="n">-Force</span><span class="p">]</span> <span class="p">[&lt;</span><span class="n">CommonParameters</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+</section>
+<section id="parametres">
+<h4>Paramètres<a class="headerlink" href="#parametres" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>ConfigPath</strong> : Chemin du fichier de configuration MCP. Par défaut : <code class="docutils literal notranslate"><span class="pre">.\.augment\config.json</span></code>.</p></li>
+<li><p><strong>OutputPath</strong> : Chemin du fichier de sortie pour la configuration détectée. Par défaut : <code class="docutils literal notranslate"><span class="pre">.\mcp-servers\detected.json</span></code>.</p></li>
+<li><p><strong>Scan</strong> : Effectue un scan complet du réseau pour détecter les serveurs MCP.</p></li>
+<li><p><strong>Force</strong> : Force la détection même si une configuration existe déjà.</p></li>
+</ul>
+</section>
+<section id="exemple">
+<h4>Exemple<a class="headerlink" href="#exemple" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Find-MCPServers</span> <span class="n">-Scan</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="new-mcpconfiguration">
+<h3>New-MCPConfiguration<a class="headerlink" href="#new-mcpconfiguration" title="Link to this heading"></a></h3>
+<p>Crée une configuration MCP.</p>
+<section id="id1">
+<h4>Syntaxe<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-MCPConfiguration</span> <span class="p">[[</span><span class="n">-OutputPath</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-Force</span><span class="p">]</span> <span class="p">[&lt;</span><span class="n">CommonParameters</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h4>Paramètres<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>OutputPath</strong> : Chemin du fichier de sortie pour la configuration. Par défaut : <code class="docutils literal notranslate"><span class="pre">.\mcp-servers\mcp-config.json</span></code>.</p></li>
+<li><p><strong>Force</strong> : Force la création même si une configuration existe déjà.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4>Exemple<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-MCPConfiguration</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="start-mcpmanager">
+<h3>Start-MCPManager<a class="headerlink" href="#start-mcpmanager" title="Link to this heading"></a></h3>
+<p>Démarre le gestionnaire de serveurs MCP ou un agent MCP.</p>
+<section id="id4">
+<h4>Syntaxe<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Start-MCPManager</span> <span class="p">[</span><span class="n">-Agent</span><span class="p">]</span> <span class="p">[[</span><span class="n">-Query</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-Force</span><span class="p">]</span> <span class="p">[&lt;</span><span class="n">CommonParameters</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h4>Paramètres<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Agent</strong> : Démarre un agent MCP au lieu du gestionnaire de serveurs.</p></li>
+<li><p><strong>Query</strong> : Spécifie la requête à exécuter par l’agent MCP.</p></li>
+<li><p><strong>Force</strong> : Force la recréation de la configuration MCP même si elle existe déjà.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>Exemple<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Start-MCPManager</span> <span class="n">-Agent</span> <span class="n">-Query</span> <span class="s2">&quot;Trouve les meilleurs restaurants à Paris&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="invoke-mcpcommand">
+<h3>Invoke-MCPCommand<a class="headerlink" href="#invoke-mcpcommand" title="Link to this heading"></a></h3>
+<p>Exécute une commande MCP.</p>
+<section id="id7">
+<h4>Syntaxe<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-MCPCommand</span> <span class="p">[</span><span class="n">-MCP</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[[</span><span class="n">-Args</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[&lt;</span><span class="n">CommonParameters</span><span class="p">&gt;]</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h4>Paramètres<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>MCP</strong> : Le type de MCP à exécuter (standard, notion, gateway, git-ingest).</p></li>
+<li><p><strong>Args</strong> : Les arguments à passer à la commande MCP.</p></li>
+</ul>
+</section>
+<section id="id9">
+<h4>Exemple<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-MCPCommand</span> <span class="n">-MCP</span> <span class="s2">&quot;standard&quot;</span> <span class="n">-Args</span> <span class="s2">&quot;--help&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="integration-avec-les-scripts-python">
+<h2>Intégration avec les scripts Python<a class="headerlink" href="#integration-avec-les-scripts-python" title="Link to this heading"></a></h2>
+<p>Le module MCPManager s’intègre avec les scripts Python suivants :</p>
+<ul class="simple">
+<li><p><strong>mcp_manager.py</strong> : Gère les serveurs MCP.</p></li>
+<li><p><strong>mcp_agent.py</strong> : Permet d’interagir avec les serveurs MCP.</p></li>
+</ul>
+<p>Ces scripts sont automatiquement copiés dans le répertoire du projet lors de l’exécution de la fonction <code class="docutils literal notranslate"><span class="pre">Start-MCPManager</span></code>.</p>
+</section>
+<section id="dependances">
+<h2>Dépendances<a class="headerlink" href="#dependances" title="Link to this heading"></a></h2>
+<p>Le module MCPManager dépend des éléments suivants :</p>
+<ul class="simple">
+<li><p>PowerShell 5.1 ou supérieur</p></li>
+<li><p>Python 3.11 ou supérieur</p></li>
+<li><p>Packages Python : mcp-use, langchain-openai, python-dotenv</p></li>
+</ul>
+</section>
+<section id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Link to this heading"></a></h2>
+<p>Des tests unitaires sont disponibles dans le fichier <code class="docutils literal notranslate"><span class="pre">tests\unit\MCPManager.Tests.ps1</span></code>. Pour exécuter les tests, utilisez la commande suivante :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-Pester</span> <span class="n">-Path</span> <span class="s2">&quot;.\tests\unit\MCPManager.Tests.ps1&quot;</span> <span class="n">-Output</span> <span class="n">Detailed</span>
+</pre></div>
+</div>
+</section>
+<section id="auteur">
+<h2>Auteur<a class="headerlink" href="#auteur" title="Link to this heading"></a></h2>
+<p>EMAIL_SENDER_1 Team</p>
+</section>
+<section id="version">
+<h2>Version<a class="headerlink" href="#version" title="Link to this heading"></a></h2>
+<p>1.0.0</p>
+</section>
+<section id="date-de-creation">
+<h2>Date de création<a class="headerlink" href="#date-de-creation" title="Link to this heading"></a></h2>
+<p>2025-04-20</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

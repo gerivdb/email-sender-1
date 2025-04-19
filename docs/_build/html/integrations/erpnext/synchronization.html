@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synchronisation ERPNext &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Synchronisation ERPNext</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/integrations/erpnext/synchronization.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="synchronisation-erpnext">
+<h1>Synchronisation ERPNext<a class="headerlink" href="#synchronisation-erpnext" title="Link to this heading"></a></h1>
+<section id="types-de-synchronisation">
+<h2>Types de synchronisation<a class="headerlink" href="#types-de-synchronisation" title="Link to this heading"></a></h2>
+<p>L’intégration ERPNext propose deux types de synchronisation:</p>
+<ol class="simple">
+<li><p><strong>ERPNext → Journal</strong>: Synchronise les tâches ERPNext vers le journal de bord</p></li>
+<li><p><strong>Journal → ERPNext</strong>: Synchronise les entrées de journal vers ERPNext (notes et tâches)</p></li>
+</ol>
+</section>
+<section id="synchronisation-erpnext-journal">
+<h2>Synchronisation ERPNext → Journal<a class="headerlink" href="#synchronisation-erpnext-journal" title="Link to this heading"></a></h2>
+<section id="via-l-interface-utilisateur">
+<h3>Via l’interface utilisateur<a class="headerlink" href="#via-l-interface-utilisateur" title="Link to this heading"></a></h3>
+<p>Pour synchroniser les tâches ERPNext vers le journal:</p>
+<ol class="simple">
+<li><p>Accédez à la page d’intégration ERPNext</p></li>
+<li><p>Cliquez sur le bouton “Synchroniser ERPNext → Journal”</p></li>
+<li><p>Attendez que la synchronisation soit terminée</p></li>
+<li><p>Les tâches ERPNext seront converties en entrées de journal</p></li>
+</ol>
+</section>
+<section id="via-l-api">
+<h3>Via l’API<a class="headerlink" href="#via-l-api" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/integrations/erpnext/sync-to-journal
+</pre></div>
+</div>
+</section>
+<section id="via-le-script-python">
+<h3>Via le script Python<a class="headerlink" href="#via-le-script-python" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span>--sync-to-journal
+</pre></div>
+</div>
+</section>
+<section id="comportement">
+<h3>Comportement<a class="headerlink" href="#comportement" title="Link to this heading"></a></h3>
+<p>Lors de la synchronisation ERPNext → Journal:</p>
+<ol class="simple">
+<li><p>Toutes les tâches ERPNext sont récupérées</p></li>
+<li><p>Pour chaque tâche, une entrée de journal est créée ou mise à jour</p></li>
+<li><p>Les entrées de journal sont créées avec les tags appropriés (erpnext, task, project, status, priority)</p></li>
+<li><p>Les entrées existantes sont mises à jour si elles correspondent à une tâche ERPNext</p></li>
+</ol>
+</section>
+</section>
+<section id="synchronisation-journal-erpnext">
+<h2>Synchronisation Journal → ERPNext<a class="headerlink" href="#synchronisation-journal-erpnext" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Via l’interface utilisateur<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Pour synchroniser les entrées de journal vers ERPNext:</p>
+<ol class="simple">
+<li><p>Accédez à la page d’intégration ERPNext</p></li>
+<li><p>Cliquez sur le bouton “Synchroniser Journal → ERPNext”</p></li>
+<li><p>Attendez que la synchronisation soit terminée</p></li>
+<li><p>Les entrées de journal avec le tag “erpnext” seront converties en notes ERPNext</p></li>
+<li><p>Les entrées avec le tag “task” seront utilisées pour mettre à jour les tâches ERPNext</p></li>
+</ol>
+</section>
+<section id="id2">
+<h3>Via l’API<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/integrations/erpnext/sync-from-journal
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>Via le script Python<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span>--sync-from-journal
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Comportement<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>Lors de la synchronisation Journal → ERPNext:</p>
+<ol class="simple">
+<li><p>Toutes les entrées de journal avec le tag “erpnext” sont récupérées</p></li>
+<li><p>Pour chaque entrée, une note ERPNext est créée</p></li>
+<li><p>Si l’entrée contient également le tag “task”, la tâche ERPNext correspondante est mise à jour</p></li>
+<li><p>Les informations de la tâche sont extraites de l’entrée de journal (sujet, description, statut, priorité)</p></li>
+</ol>
+</section>
+</section>
+<section id="creation-d-une-entree-de-journal-a-partir-d-une-tache">
+<h2>Création d’une entrée de journal à partir d’une tâche<a class="headerlink" href="#creation-d-une-entree-de-journal-a-partir-d-une-tache" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>Via l’interface utilisateur<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>Pour créer une entrée de journal à partir d’une tâche ERPNext:</p>
+<ol class="simple">
+<li><p>Accédez à la page d’intégration ERPNext</p></li>
+<li><p>Cliquez sur un projet dans la liste des projets</p></li>
+<li><p>Sélectionnez une tâche dans la liste des tâches du projet</p></li>
+<li><p>Cliquez sur le bouton “Créer une entrée” à côté de la tâche</p></li>
+<li><p>Une nouvelle entrée de journal sera créée avec les informations de la tâche</p></li>
+</ol>
+</section>
+<section id="id6">
+<h3>Via l’API<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/integrations/erpnext/create-entry<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;task_id&quot;: &quot;TASK-001&quot;</span>
+<span class="s1">  }&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>Via le script Python<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/python/journal/integrations/erpnext_integration.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--create-entry<span class="w"> </span>--task-id<span class="w"> </span><span class="s2">&quot;TASK-001&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="frequence-de-synchronisation">
+<h2>Fréquence de synchronisation<a class="headerlink" href="#frequence-de-synchronisation" title="Link to this heading"></a></h2>
+<p>Par défaut, la synchronisation est manuelle. Vous pouvez automatiser la synchronisation en:</p>
+<ol class="simple">
+<li><p>Configurant une tâche planifiée pour exécuter le script de synchronisation</p></li>
+<li><p>Utilisant n8n pour créer un workflow de synchronisation</p></li>
+<li><p>Configurant un webhook ERPNext pour déclencher la synchronisation lors de la création ou de la mise à jour d’une tâche</p></li>
+</ol>
+<section id="exemple-de-tache-planifiee-windows">
+<h3>Exemple de tâche planifiée (Windows)<a class="headerlink" href="#exemple-de-tache-planifiee-windows" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer une tâche planifiée pour synchroniser ERPNext vers le journal tous les jours à 9h</span>
+<span class="n">schtasks</span> <span class="p">/</span><span class="n">create</span> <span class="p">/</span><span class="n">tn</span> <span class="s2">&quot;SyncERPNextToJournal&quot;</span> <span class="p">/</span><span class="n">tr</span> <span class="s2">&quot;python scripts/python/journal/integrations/erpnext_integration.py --sync-to-journal&quot;</span> <span class="p">/</span><span class="nb">sc </span><span class="n">daily</span> <span class="p">/</span><span class="n">st</span> <span class="n">09</span><span class="p">:</span><span class="n">00</span>
+
+<span class="c"># Créer une tâche planifiée pour synchroniser le journal vers ERPNext tous les jours à 17h</span>
+<span class="n">schtasks</span> <span class="p">/</span><span class="n">create</span> <span class="p">/</span><span class="n">tn</span> <span class="s2">&quot;SyncJournalToERPNext&quot;</span> <span class="p">/</span><span class="n">tr</span> <span class="s2">&quot;python scripts/python/journal/integrations/erpnext_integration.py --sync-from-journal&quot;</span> <span class="p">/</span><span class="nb">sc </span><span class="n">daily</span> <span class="p">/</span><span class="n">st</span> <span class="n">17</span><span class="p">:</span><span class="n">00</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

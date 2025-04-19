@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module de sécurité pour le traitement de fichiers &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module de sécurité pour le traitement de fichiers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/FileSecurityUtils.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-de-securite-pour-le-traitement-de-fichiers">
+<h1>Module de sécurité pour le traitement de fichiers<a class="headerlink" href="#module-de-securite-pour-le-traitement-de-fichiers" title="Link to this heading"></a></h1>
+<p>Ce document décrit le module de sécurité (<code class="docutils literal notranslate"><span class="pre">FileSecurityUtils.ps1</span></code>) qui permet de sécuriser le traitement des fichiers.</p>
+<section id="table-des-matieres">
+<h2>Table des matières<a class="headerlink" href="#table-des-matieres" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><a class="reference external" href="#introduction">Introduction</a></p></li>
+<li><p><a class="reference external" href="#fonctions-disponibles">Fonctions disponibles</a></p></li>
+<li><p><a class="reference external" href="#exemples-dutilisation">Exemples d’utilisation</a></p></li>
+<li><p><a class="reference external" href="#menaces-courantes">Menaces courantes</a></p></li>
+<li><p><a class="reference external" href="#bonnes-pratiques">Bonnes pratiques</a></p></li>
+<li><p><a class="reference external" href="#int%C3%A9gration-avec-dautres-modules">Intégration avec d’autres modules</a></p></li>
+</ol>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Le module de sécurité pour le traitement de fichiers fournit des fonctions pour valider les chemins de fichier, vérifier le contenu des fichiers et détecter les contenus potentiellement malveillants. Il permet de sécuriser les opérations de traitement de fichiers en vérifiant que les fichiers sont sûrs avant de les traiter.</p>
+</section>
+<section id="fonctions-disponibles">
+<h2>Fonctions disponibles<a class="headerlink" href="#fonctions-disponibles" title="Link to this heading"></a></h2>
+<section id="test-securepath">
+<h3>Test-SecurePath<a class="headerlink" href="#test-securepath" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Test-SecurePath</span> <span class="n">-Path</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-AllowRelativePaths</span><span class="p">]</span> <span class="p">[</span><span class="n">-AllowedExtensions</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">[]&gt;]</span> <span class="p">[</span><span class="n">-BlockedExtensions</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">[]&gt;]</span>
+</pre></div>
+</div>
+<p>Cette fonction valide un chemin de fichier pour s’assurer qu’il est sûr.</p>
+<section id="parametres">
+<h4>Paramètres<a class="headerlink" href="#parametres" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Path</strong> : Chemin de fichier à valider.</p></li>
+<li><p><strong>AllowRelativePaths</strong> : Autorise les chemins relatifs.</p></li>
+<li><p><strong>AllowedExtensions</strong> : Liste des extensions de fichier autorisées.</p></li>
+<li><p><strong>BlockedExtensions</strong> : Liste des extensions de fichier bloquées (par défaut : .exe, .dll, .ps1, .bat, .cmd, .vbs, .js).</p></li>
+</ul>
+</section>
+<section id="exemple">
+<h4>Exemple<a class="headerlink" href="#exemple" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$isValidPath</span> <span class="p">=</span> <span class="nb">Test-SecurePath</span> <span class="n">-Path</span> <span class="s2">&quot;C:\temp\data.json&quot;</span> <span class="n">-AllowedExtensions</span> <span class="p">@(</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="test-securecontent">
+<h3>Test-SecureContent<a class="headerlink" href="#test-securecontent" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Test-SecureContent</span> <span class="n">-FilePath</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-MaxFileSizeKB</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-CheckForExecutableContent</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Cette fonction vérifie le contenu d’un fichier pour s’assurer qu’il ne contient pas de code potentiellement malveillant.</p>
+<section id="id1">
+<h4>Paramètres<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>FilePath</strong> : Chemin du fichier à vérifier.</p></li>
+<li><p><strong>MaxFileSizeKB</strong> : Taille maximale autorisée en KB (par défaut : 10240).</p></li>
+<li><p><strong>CheckForExecutableContent</strong> : Vérifie si le fichier contient du code exécutable ou des motifs suspects.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h4>Exemple<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$isSecureContent</span> <span class="p">=</span> <span class="nb">Test-SecureContent</span> <span class="n">-FilePath</span> <span class="s2">&quot;C:\temp\data.json&quot;</span> <span class="n">-MaxFileSizeKB</span> <span class="n">1024</span> <span class="n">-CheckForExecutableContent</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="test-filesecurely">
+<h3>Test-FileSecurely<a class="headerlink" href="#test-filesecurely" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Test-FileSecurely</span> <span class="n">-FilePath</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">-Format</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-SchemaFile</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-MaxFileSizeKB</span> <span class="p">&lt;</span><span class="n">int</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-CheckForExecutableContent</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Cette fonction combine la validation du chemin, la vérification du contenu et la validation du format pour s’assurer qu’un fichier est sûr et valide.</p>
+<section id="id3">
+<h4>Paramètres<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>FilePath</strong> : Chemin du fichier à valider.</p></li>
+<li><p><strong>Format</strong> : Format du fichier (AUTO, JSON, XML, TEXT, CSV, YAML). Par défaut : AUTO.</p></li>
+<li><p><strong>SchemaFile</strong> : Fichier de schéma pour la validation (optionnel).</p></li>
+<li><p><strong>MaxFileSizeKB</strong> : Taille maximale autorisée en KB (par défaut : 10240).</p></li>
+<li><p><strong>CheckForExecutableContent</strong> : Vérifie si le fichier contient du code exécutable ou des motifs suspects.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h4>Exemple<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$isSecureFile</span> <span class="p">=</span> <span class="nb">Test-FileSecurely</span> <span class="n">-FilePath</span> <span class="s2">&quot;C:\temp\data.json&quot;</span> <span class="n">-Format</span> <span class="s2">&quot;JSON&quot;</span> <span class="n">-CheckForExecutableContent</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="exemples-d-utilisation">
+<h2>Exemples d’utilisation<a class="headerlink" href="#exemples-d-utilisation" title="Link to this heading"></a></h2>
+<section id="validation-securisee-d-un-chemin-de-fichier">
+<h3>Validation sécurisée d’un chemin de fichier<a class="headerlink" href="#validation-securisee-d-un-chemin-de-fichier" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\FileSecurityUtils.ps1&quot;</span>
+
+<span class="c"># Valider un chemin de fichier</span>
+<span class="nv">$path</span> <span class="p">=</span> <span class="s2">&quot;C:\temp\data.json&quot;</span>
+<span class="nv">$isValidPath</span> <span class="p">=</span> <span class="nb">Test-SecurePath</span> <span class="n">-Path</span> <span class="nv">$path</span> <span class="n">-AllowedExtensions</span> <span class="p">@(</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$isValidPath</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Le chemin est valide : $path&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Le chemin n&#39;est pas valide : $path&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="verification-du-contenu-d-un-fichier">
+<h3>Vérification du contenu d’un fichier<a class="headerlink" href="#verification-du-contenu-d-un-fichier" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\FileSecurityUtils.ps1&quot;</span>
+
+<span class="c"># Vérifier le contenu d&#39;un fichier</span>
+<span class="nv">$filePath</span> <span class="p">=</span> <span class="s2">&quot;C:\temp\data.json&quot;</span>
+<span class="nv">$isSecureContent</span> <span class="p">=</span> <span class="nb">Test-SecureContent</span> <span class="n">-FilePath</span> <span class="nv">$filePath</span> <span class="n">-CheckForExecutableContent</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$isSecureContent</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Le contenu du fichier est sûr : $filePath&quot;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Le contenu du fichier n&#39;est pas sûr : $filePath&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="validation-complete-d-un-fichier">
+<h3>Validation complète d’un fichier<a class="headerlink" href="#validation-complete-d-un-fichier" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\FileSecurityUtils.ps1&quot;</span>
+
+<span class="c"># Valider un fichier de manière sécurisée</span>
+<span class="nv">$filePath</span> <span class="p">=</span> <span class="s2">&quot;C:\temp\data.json&quot;</span>
+<span class="nv">$isSecureFile</span> <span class="p">=</span> <span class="nb">Test-FileSecurely</span> <span class="n">-FilePath</span> <span class="nv">$filePath</span> <span class="n">-Format</span> <span class="s2">&quot;JSON&quot;</span> <span class="n">-CheckForExecutableContent</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$isSecureFile</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Le fichier est sûr et valide : $filePath&quot;</span>
+    
+    <span class="c"># Traiter le fichier</span>
+    <span class="nv">$content</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="nv">$filePath</span> <span class="n">-Raw</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span>
+    <span class="c"># ...</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Le fichier n&#39;est pas sûr ou n&#39;est pas valide : $filePath&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-avec-le-module-unifiedsegmenter">
+<h3>Intégration avec le module UnifiedSegmenter<a class="headerlink" href="#integration-avec-le-module-unifiedsegmenter" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\FileSecurityUtils.ps1&quot;</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\UnifiedSegmenter.ps1&quot;</span>
+
+<span class="c"># Initialiser le segmenteur unifié</span>
+<span class="nb">Initialize-UnifiedSegmenter</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+
+<span class="c"># Fonction pour traiter un fichier de manière sécurisée</span>
+<span class="k">function</span> <span class="k">Process</span><span class="n">-FileSecurely</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$InputFile</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$OutputFile</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$InputFormat</span> <span class="p">=</span> <span class="s2">&quot;AUTO&quot;</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$OutputFormat</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Valider le fichier de manière sécurisée</span>
+    <span class="nv">$isSecureFile</span> <span class="p">=</span> <span class="nb">Test-FileSecurely</span> <span class="n">-FilePath</span> <span class="nv">$InputFile</span> <span class="n">-Format</span> <span class="nv">$InputFormat</span> <span class="n">-CheckForExecutableContent</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$isSecureFile</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="s2">&quot;Le fichier n&#39;est pas sûr ou n&#39;est pas valide : $InputFile&quot;</span>
+        <span class="k">return</span> <span class="nv">$false</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Convertir le fichier</span>
+    <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Convert-FileFormat</span> <span class="n">-InputFile</span> <span class="nv">$InputFile</span> <span class="n">-OutputFile</span> <span class="nv">$OutputFile</span> <span class="n">-InputFormat</span> <span class="nv">$InputFormat</span> <span class="n">-OutputFormat</span> <span class="nv">$OutputFormat</span>
+    
+    <span class="k">return</span> <span class="nv">$result</span>
+<span class="p">}</span>
+
+<span class="c"># Utiliser la fonction</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="k">Process</span><span class="n">-FileSecurely</span> <span class="n">-InputFile</span> <span class="s2">&quot;C:\temp\data.csv&quot;</span> <span class="n">-OutputFile</span> <span class="s2">&quot;C:\temp\data.json&quot;</span> <span class="n">-InputFormat</span> <span class="s2">&quot;CSV&quot;</span> <span class="n">-OutputFormat</span> <span class="s2">&quot;JSON&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="menaces-courantes">
+<h2>Menaces courantes<a class="headerlink" href="#menaces-courantes" title="Link to this heading"></a></h2>
+<p>Le module de sécurité protège contre plusieurs types de menaces courantes :</p>
+<section id="injection-de-chemin">
+<h3>1. Injection de chemin<a class="headerlink" href="#injection-de-chemin" title="Link to this heading"></a></h3>
+<p>L’injection de chemin se produit lorsqu’un attaquant manipule un chemin de fichier pour accéder à des fichiers sensibles ou exécuter du code malveillant. La fonction <code class="docutils literal notranslate"><span class="pre">Test-SecurePath</span></code> vérifie que le chemin ne contient pas de caractères invalides et respecte les restrictions d’extension.</p>
+</section>
+<section id="execution-de-code">
+<h3>2. Exécution de code<a class="headerlink" href="#execution-de-code" title="Link to this heading"></a></h3>
+<p>L’exécution de code se produit lorsqu’un fichier contient du code exécutable qui peut être exécuté lors du traitement du fichier. La fonction <code class="docutils literal notranslate"><span class="pre">Test-SecureContent</span></code> recherche des motifs suspects comme :</p>
+<ul class="simple">
+<li><p>Commandes PowerShell (Invoke-Expression, IEX, Invoke-Command)</p></li>
+<li><p>Code JavaScript (script, eval)</p></li>
+<li><p>Requêtes SQL (SELECT, INSERT, DROP)</p></li>
+<li><p>Commandes système (cmd.exe, powershell.exe)</p></li>
+</ul>
+</section>
+<section id="depassement-de-taille">
+<h3>3. Dépassement de taille<a class="headerlink" href="#depassement-de-taille" title="Link to this heading"></a></h3>
+<p>Le dépassement de taille se produit lorsqu’un fichier est trop volumineux pour être traité correctement, ce qui peut entraîner des problèmes de mémoire ou des attaques par déni de service. La fonction <code class="docutils literal notranslate"><span class="pre">Test-SecureContent</span></code> vérifie que la taille du fichier ne dépasse pas une limite spécifiée.</p>
+</section>
+<section id="fichiers-invalides">
+<h3>4. Fichiers invalides<a class="headerlink" href="#fichiers-invalides" title="Link to this heading"></a></h3>
+<p>Les fichiers invalides peuvent causer des erreurs lors du traitement ou être utilisés pour des attaques. La fonction <code class="docutils literal notranslate"><span class="pre">Test-FileSecurely</span></code> vérifie que le fichier est valide selon son format déclaré.</p>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<p>Pour sécuriser efficacement le traitement des fichiers, suivez ces bonnes pratiques :</p>
+<ol class="simple">
+<li><p><strong>Validez toujours les entrées utilisateur</strong> : Ne faites jamais confiance aux entrées utilisateur, y compris les chemins de fichier et les noms de fichier.</p></li>
+<li><p><strong>Utilisez des listes blanches plutôt que des listes noires</strong> : Spécifiez les extensions autorisées plutôt que de bloquer certaines extensions.</p></li>
+<li><p><strong>Limitez les permissions</strong> : Exécutez votre code avec les permissions minimales nécessaires.</p></li>
+<li><p><strong>Vérifiez le contenu des fichiers</strong> : Utilisez <code class="docutils literal notranslate"><span class="pre">Test-SecureContent</span></code> avec l’option <code class="docutils literal notranslate"><span class="pre">-CheckForExecutableContent</span></code> pour détecter le code potentiellement malveillant.</p></li>
+<li><p><strong>Validez le format des fichiers</strong> : Utilisez <code class="docutils literal notranslate"><span class="pre">Test-FileSecurely</span></code> pour s’assurer que les fichiers sont valides selon leur format déclaré.</p></li>
+<li><p><strong>Limitez la taille des fichiers</strong> : Utilisez le paramètre <code class="docutils literal notranslate"><span class="pre">-MaxFileSizeKB</span></code> pour éviter les problèmes de mémoire et les attaques par déni de service.</p></li>
+<li><p><strong>Journalisez les événements de sécurité</strong> : Enregistrez les tentatives d’accès à des fichiers non autorisés ou les fichiers contenant du code suspect.</p></li>
+</ol>
+</section>
+<section id="integration-avec-d-autres-modules">
+<h2>Intégration avec d’autres modules<a class="headerlink" href="#integration-avec-d-autres-modules" title="Link to this heading"></a></h2>
+<p>Le module de sécurité peut être intégré avec d’autres modules pour sécuriser le traitement des fichiers :</p>
+<section id="integration-avec-unifiedsegmenter">
+<h3>Intégration avec UnifiedSegmenter<a class="headerlink" href="#integration-avec-unifiedsegmenter" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\FileSecurityUtils.ps1&quot;</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\UnifiedSegmenter.ps1&quot;</span>
+
+<span class="c"># Initialiser le segmenteur unifié</span>
+<span class="nb">Initialize-UnifiedSegmenter</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+
+<span class="c"># Fonction pour convertir un fichier de manière sécurisée</span>
+<span class="k">function</span> <span class="nb">Convert-FileSecurely</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$InputFile</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$OutputFile</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$InputFormat</span> <span class="p">=</span> <span class="s2">&quot;AUTO&quot;</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$OutputFormat</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Valider le fichier de manière sécurisée</span>
+    <span class="nv">$isSecureFile</span> <span class="p">=</span> <span class="nb">Test-FileSecurely</span> <span class="n">-FilePath</span> <span class="nv">$InputFile</span> <span class="n">-Format</span> <span class="nv">$InputFormat</span> <span class="n">-CheckForExecutableContent</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$isSecureFile</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="s2">&quot;Le fichier n&#39;est pas sûr ou n&#39;est pas valide : $InputFile&quot;</span>
+        <span class="k">return</span> <span class="nv">$false</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Convertir le fichier</span>
+    <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Convert-FileFormat</span> <span class="n">-InputFile</span> <span class="nv">$InputFile</span> <span class="n">-OutputFile</span> <span class="nv">$OutputFile</span> <span class="n">-InputFormat</span> <span class="nv">$InputFormat</span> <span class="n">-OutputFormat</span> <span class="nv">$OutputFormat</span>
+    
+    <span class="k">return</span> <span class="nv">$result</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-avec-fileprocessingfacade">
+<h3>Intégration avec FileProcessingFacade<a class="headerlink" href="#integration-avec-fileprocessingfacade" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\FileSecurityUtils.ps1&quot;</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\FileProcessingFacade.ps1&quot;</span>
+
+<span class="c"># Initialiser la façade</span>
+<span class="nb">Initialize-FileProcessingFacade</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+
+<span class="c"># Fonction pour traiter un fichier de manière sécurisée</span>
+<span class="k">function</span> <span class="nb">Get-SecureFileInfo</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$FilePath</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[switch]</span><span class="nv">$IncludeAnalysis</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[switch]</span><span class="nv">$CheckForExecutableContent</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Valider le fichier de manière sécurisée</span>
+    <span class="nv">$isSecureFile</span> <span class="p">=</span> <span class="nb">Test-FileSecurely</span> <span class="n">-FilePath</span> <span class="nv">$FilePath</span> <span class="n">-CheckForExecutableContent</span><span class="p">:</span><span class="nv">$CheckForExecutableContent</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$isSecureFile</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="s2">&quot;Le fichier n&#39;est pas sûr ou n&#39;est pas valide : $FilePath&quot;</span>
+        <span class="k">return</span> <span class="nv">$null</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Obtenir les informations sur le fichier</span>
+    <span class="nv">$fileInfo</span> <span class="p">=</span> <span class="nb">Get-FileInfo</span> <span class="n">-FilePath</span> <span class="nv">$FilePath</span> <span class="n">-IncludeAnalysis</span><span class="p">:</span><span class="nv">$IncludeAnalysis</span>
+    
+    <span class="k">return</span> <span class="nv">$fileInfo</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-avec-parallelprocessing">
+<h3>Intégration avec ParallelProcessing<a class="headerlink" href="#integration-avec-parallelprocessing" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\FileSecurityUtils.ps1&quot;</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\ParallelProcessing.ps1&quot;</span>
+<span class="p">.</span> <span class="s2">&quot;.\modules\UnifiedSegmenter.ps1&quot;</span>
+
+<span class="c"># Initialiser le segmenteur unifié</span>
+<span class="nb">Initialize-UnifiedSegmenter</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+
+<span class="c"># Fonction pour convertir des fichiers en parallèle de manière sécurisée</span>
+<span class="k">function</span> <span class="nb">Convert-FilesSecurelyInParallel</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string[]]</span><span class="nv">$InputFiles</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$OutputDir</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$InputFormat</span> <span class="p">=</span> <span class="s2">&quot;AUTO&quot;</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$OutputFormat</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[int]</span><span class="nv">$ThrottleLimit</span> <span class="p">=</span> <span class="n">3</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[switch]</span><span class="nv">$CheckForExecutableContent</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Valider les fichiers de manière sécurisée</span>
+    <span class="nv">$secureFiles</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$file</span> <span class="k">in</span> <span class="nv">$InputFiles</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$isSecureFile</span> <span class="p">=</span> <span class="nb">Test-FileSecurely</span> <span class="n">-FilePath</span> <span class="nv">$file</span> <span class="n">-Format</span> <span class="nv">$InputFormat</span> <span class="n">-CheckForExecutableContent</span><span class="p">:</span><span class="nv">$CheckForExecutableContent</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$isSecureFile</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$secureFiles</span> <span class="p">+=</span> <span class="nv">$file</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nb">Write-Warning</span> <span class="s2">&quot;Le fichier n&#39;est pas sûr ou n&#39;est pas valide : $file&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$secureFiles</span><span class="p">.</span><span class="n">Count</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="s2">&quot;Aucun fichier sûr à traiter.&quot;</span>
+        <span class="k">return</span> <span class="nv">$null</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Convertir les fichiers en parallèle</span>
+    <span class="nv">$results</span> <span class="p">=</span> <span class="nb">Convert-FilesInParallel</span> <span class="n">-InputFiles</span> <span class="nv">$secureFiles</span> <span class="n">-OutputDir</span> <span class="nv">$OutputDir</span> <span class="n">-InputFormat</span> <span class="nv">$InputFormat</span> <span class="n">-OutputFormat</span> <span class="nv">$OutputFormat</span> <span class="n">-ThrottleLimit</span> <span class="nv">$ThrottleLimit</span>
+    
+    <span class="k">return</span> <span class="nv">$results</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Création d’entrées dans le journal de bord &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Création d’entrées dans le journal de bord</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/documentation/workflow/creating_entries.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="creation-d-entrees-dans-le-journal-de-bord">
+<h1>Création d’entrées dans le journal de bord<a class="headerlink" href="#creation-d-entrees-dans-le-journal-de-bord" title="Link to this heading"></a></h1>
+<p>Ce guide explique comment créer et gérer des entrées dans le journal de bord.</p>
+<section id="creation-manuelle-d-une-entree">
+<h2>Création manuelle d’une entrée<a class="headerlink" href="#creation-manuelle-d-une-entree" title="Link to this heading"></a></h2>
+<section id="utilisation-du-script-journal-entry-py">
+<h3>Utilisation du script journal_entry.py<a class="headerlink" href="#utilisation-du-script-journal-entry-py" title="Link to this heading"></a></h3>
+<p>Le moyen le plus simple de créer une entrée est d’utiliser le script <code class="docutils literal notranslate"><span class="pre">journal_entry.py</span></code>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">python</span><span class="p">/</span><span class="n">journal</span><span class="p">/</span><span class="n">journal_entry</span><span class="p">.</span><span class="n">py</span> <span class="s2">&quot;Titre de l&#39;entrée&quot;</span> <span class="p">-</span><span class="n">-tags</span> <span class="n">tag1</span> <span class="n">tag2</span> <span class="n">tag3</span>
+</pre></div>
+</div>
+<section id="options-disponibles">
+<h4>Options disponibles<a class="headerlink" href="#options-disponibles" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--tags</span></code>: Liste de tags séparés par des espaces</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--related</span></code>: Liste d’entrées liées (noms de fichiers sans le chemin)</p></li>
+</ul>
+<p>Exemple complet:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">python</span><span class="p">/</span><span class="n">journal</span><span class="p">/</span><span class="n">journal_entry</span><span class="p">.</span><span class="n">py</span> <span class="s2">&quot;Optimisation du système RAG&quot;</span> <span class="p">-</span><span class="n">-tags</span> <span class="n">rag</span> <span class="n">optimisation</span> <span class="n">performance</span> <span class="p">-</span><span class="n">-related</span> <span class="n">2025</span><span class="p">-</span><span class="n">04</span><span class="p">-</span><span class="n">01</span><span class="p">-</span><span class="n">14</span><span class="p">-</span><span class="n">30-implementation-du-systeme-rag</span><span class="p">.</span><span class="nb">md</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="structure-d-une-entree">
+<h3>Structure d’une entrée<a class="headerlink" href="#structure-d-une-entree" title="Link to this heading"></a></h3>
+<p>Chaque entrée créée suivra cette structure:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>---
+date: AAAA-MM-JJ
+heure: HH-MM
+title: Titre de l&#39;entrée
+tags: [tag1, tag2, tag3]
+<span class="gu">related: [fichier1.md, fichier2.md]</span>
+<span class="gu">---</span>
+
+<span class="gh"># Titre de l&#39;entrée</span>
+
+<span class="gu">## Actions réalisées</span>
+- 
+
+<span class="gu">## Résolution des erreurs, déductions tirées</span>
+- 
+
+<span class="gu">## Optimisations identifiées</span>
+<span class="k">-</span><span class="w"> </span>Pour le système: 
+<span class="k">-</span><span class="w"> </span>Pour le code: 
+<span class="k">-</span><span class="w"> </span>Pour la gestion des erreurs: 
+<span class="k">-</span><span class="w"> </span>Pour les workflows: 
+
+<span class="gu">## Enseignements techniques</span>
+- 
+
+<span class="gu">## Impact sur le projet musical</span>
+- 
+
+<span class="gu">## Code associé</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="exemple-de-code">
+<h1>Exemple de code<a class="headerlink" href="#exemple-de-code" title="Link to this heading"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="c1">## Prochaines étapes</span>
+<span class="o">-</span> 
+
+<span class="c1">## Références et ressources</span>
+<span class="o">-</span> 
+</pre></div>
+</div>
+<section id="bonnes-pratiques-pour-remplir-une-entree">
+<h2>Bonnes pratiques pour remplir une entrée<a class="headerlink" href="#bonnes-pratiques-pour-remplir-une-entree" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Actions réalisées</strong>: Décrivez précisément ce que vous avez fait, les décisions prises et les raisons.</p></li>
+<li><p><strong>Résolution des erreurs, déductions tirées</strong>: Documentez les problèmes rencontrés, comment vous les avez résolus et ce que vous en avez appris.</p></li>
+<li><p><strong>Optimisations identifiées</strong>: Pour chaque catégorie, notez les améliorations possibles:</p>
+<ul class="simple">
+<li><p><strong>Système</strong>: Performance, architecture, infrastructure</p></li>
+<li><p><strong>Code</strong>: Lisibilité, maintenabilité, patterns</p></li>
+<li><p><strong>Gestion des erreurs</strong>: Robustesse, logging, récupération</p></li>
+<li><p><strong>Workflows</strong>: Processus, automatisation, intégration</p></li>
+</ul>
+</li>
+<li><p><strong>Enseignements techniques</strong>: Notez les connaissances techniques acquises qui pourraient être utiles à l’avenir.</p></li>
+<li><p><strong>Impact sur le projet musical</strong>: Expliquez comment votre travail affecte le domaine métier (industrie musicale).</p></li>
+<li><p><strong>Code associé</strong>: Incluez des exemples de code pertinents, avec des commentaires explicatifs.</p></li>
+<li><p><strong>Prochaines étapes</strong>: Listez les actions futures à entreprendre.</p></li>
+<li><p><strong>Références et ressources</strong>: Incluez des liens vers des ressources utiles, des articles, des documentations, etc.</p></li>
+</ol>
+</section>
+<section id="creation-automatique-d-entrees">
+<h2>Création automatique d’entrées<a class="headerlink" href="#creation-automatique-d-entrees" title="Link to this heading"></a></h2>
+<section id="entrees-quotidiennes-et-hebdomadaires">
+<h3>Entrées quotidiennes et hebdomadaires<a class="headerlink" href="#entrees-quotidiennes-et-hebdomadaires" title="Link to this heading"></a></h3>
+<p>Le script <code class="docutils literal notranslate"><span class="pre">journal-daily.ps1</span></code> permet de créer automatiquement des entrées quotidiennes et hebdomadaires:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer une entrée quotidienne</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">cmd</span><span class="p">\</span><span class="n">journal-daily</span><span class="p">.</span><span class="n">ps1</span>
+
+<span class="c"># Forcer la création d&#39;une entrée hebdomadaire (normalement créée le dimanche)</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">cmd</span><span class="p">\</span><span class="n">journal-daily</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-ForceWeekly</span>
+</pre></div>
+</div>
+</section>
+<section id="creation-a-partir-d-issues-github">
+<h3>Création à partir d’issues GitHub<a class="headerlink" href="#creation-a-partir-d-issues-github" title="Link to this heading"></a></h3>
+<p>Si vous utilisez l’intégration GitHub, vous pouvez créer des entrées à partir d’issues:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">python</span><span class="p">/</span><span class="n">journal</span><span class="p">/</span><span class="n">github_integration</span><span class="p">.</span><span class="n">py</span> <span class="n">create-from-issue</span> <span class="p">-</span><span class="n">-issue</span> <span class="n">123</span>
+</pre></div>
+</div>
+<p>Cette commande créera une entrée avec les détails de l’issue #123, y compris son titre, sa description et ses labels.</p>
+</section>
+<section id="creation-a-partir-de-l-interface-web">
+<h3>Création à partir de l’interface web<a class="headerlink" href="#creation-a-partir-de-l-interface-web" title="Link to this heading"></a></h3>
+<p>Si vous utilisez l’interface web, vous pouvez créer des entrées à partir de la page GitHub en cliquant sur le bouton “Créer entrée” à côté d’une issue.</p>
+</section>
+</section>
+<section id="automatisation-de-la-creation-d-entrees">
+<h2>Automatisation de la création d’entrées<a class="headerlink" href="#automatisation-de-la-creation-d-entrees" title="Link to this heading"></a></h2>
+<section id="taches-planifiees">
+<h3>Tâches planifiées<a class="headerlink" href="#taches-planifiees" title="Link to this heading"></a></h3>
+<p>Vous pouvez configurer des tâches planifiées pour créer automatiquement des entrées:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Configurer les tâches planifiées</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">cmd</span><span class="p">\</span><span class="n">setup-journal-tasks</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p>Ce script configurera:</p>
+<ul class="simple">
+<li><p>Une tâche quotidienne pour créer une entrée chaque jour à 18h</p></li>
+<li><p>Une tâche hebdomadaire pour créer une entrée de résumé chaque dimanche à 18h</p></li>
+</ul>
+</section>
+<section id="integration-avec-n8n">
+<h3>Intégration avec n8n<a class="headerlink" href="#integration-avec-n8n" title="Link to this heading"></a></h3>
+<p>Si vous utilisez n8n, vous pouvez intégrer la création d’entrées dans vos workflows:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Configurer l&#39;intégration n8n</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">python</span><span class="p">/</span><span class="n">journal</span><span class="p">/</span><span class="n">n8n_journal_integration</span><span class="p">.</span><span class="n">py</span> <span class="n">setup</span>
+</pre></div>
+</div>
+<p>Cette commande configurera un webhook que vous pourrez utiliser dans vos workflows n8n pour créer des entrées.</p>
+</section>
+</section>
+<section id="edition-d-entrees-existantes">
+<h2>Édition d’entrées existantes<a class="headerlink" href="#edition-d-entrees-existantes" title="Link to this heading"></a></h2>
+<section id="edition-manuelle">
+<h3>Édition manuelle<a class="headerlink" href="#edition-manuelle" title="Link to this heading"></a></h3>
+<p>Vous pouvez éditer manuellement les entrées existantes avec votre éditeur de texte préféré. Les fichiers sont stockés dans <code class="docutils literal notranslate"><span class="pre">docs/journal_de_bord/entries/</span></code>.</p>
+</section>
+<section id="edition-via-vs-code">
+<h3>Édition via VS Code<a class="headerlink" href="#edition-via-vs-code" title="Link to this heading"></a></h3>
+<p>Si vous utilisez VS Code, vous pouvez utiliser les tâches définies dans <code class="docutils literal notranslate"><span class="pre">.vscode/tasks.json</span></code>:</p>
+<ol class="simple">
+<li><p>Appuyez sur <code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span></code> pour ouvrir la palette de commandes</p></li>
+<li><p>Tapez “Tasks: Run Task”</p></li>
+<li><p>Sélectionnez “Journal: Edit Recent Entries”</p></li>
+<li><p>Sélectionnez l’entrée à éditer</p></li>
+</ol>
+</section>
+</section>
+<section id="organisation-des-entrees">
+<h2>Organisation des entrées<a class="headerlink" href="#organisation-des-entrees" title="Link to this heading"></a></h2>
+<section id="nommage-des-fichiers">
+<h3>Nommage des fichiers<a class="headerlink" href="#nommage-des-fichiers" title="Link to this heading"></a></h3>
+<p>Les fichiers sont nommés selon le format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AAAA</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">JJ</span><span class="o">-</span><span class="n">HH</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">slug</span><span class="o">-</span><span class="n">de</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="n">entree</span><span class="o">.</span><span class="n">md</span>
+</pre></div>
+</div>
+<p>Ne modifiez pas manuellement les noms de fichiers, car cela pourrait casser les liens entre les entrées.</p>
+</section>
+<section id="utilisation-des-tags">
+<h3>Utilisation des tags<a class="headerlink" href="#utilisation-des-tags" title="Link to this heading"></a></h3>
+<p>Utilisez des tags cohérents pour faciliter la recherche et l’organisation:</p>
+<ul class="simple">
+<li><p><strong>Types d’activité</strong>: <code class="docutils literal notranslate"><span class="pre">implementation</span></code>, <code class="docutils literal notranslate"><span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">refactoring</span></code>, <code class="docutils literal notranslate"><span class="pre">documentation</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code></p></li>
+<li><p><strong>Composants</strong>: <code class="docutils literal notranslate"><span class="pre">rag</span></code>, <code class="docutils literal notranslate"><span class="pre">github</span></code>, <code class="docutils literal notranslate"><span class="pre">analysis</span></code>, <code class="docutils literal notranslate"><span class="pre">web</span></code></p></li>
+<li><p><strong>Domaines</strong>: <code class="docutils literal notranslate"><span class="pre">music</span></code>, <code class="docutils literal notranslate"><span class="pre">audio</span></code>, <code class="docutils literal notranslate"><span class="pre">metadata</span></code></p></li>
+<li><p><strong>Statuts</strong>: <code class="docutils literal notranslate"><span class="pre">todo</span></code>, <code class="docutils literal notranslate"><span class="pre">in-progress</span></code>, <code class="docutils literal notranslate"><span class="pre">completed</span></code>, <code class="docutils literal notranslate"><span class="pre">blocked</span></code></p></li>
+</ul>
+</section>
+<section id="entrees-liees">
+<h3>Entrées liées<a class="headerlink" href="#entrees-liees" title="Link to this heading"></a></h3>
+<p>Utilisez le champ <code class="docutils literal notranslate"><span class="pre">related</span></code> dans les métadonnées pour lier des entrées entre elles:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">related</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2025-04-01-14-30-implementation-du-systeme-rag.md</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2025-04-02-10-15-debug-du-systeme-rag.md</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="recherche-d-entrees">
+<h2>Recherche d’entrées<a class="headerlink" href="#recherche-d-entrees" title="Link to this heading"></a></h2>
+<section id="recherche-en-ligne-de-commande">
+<h3>Recherche en ligne de commande<a class="headerlink" href="#recherche-en-ligne-de-commande" title="Link to this heading"></a></h3>
+<p>Vous pouvez rechercher dans le journal avec le script <code class="docutils literal notranslate"><span class="pre">journal_search_simple.py</span></code>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Recherche par mots-clés</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">python</span><span class="p">/</span><span class="n">journal</span><span class="p">/</span><span class="n">journal_search_simple</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-query</span> <span class="s2">&quot;système rag&quot;</span>
+
+<span class="c"># Recherche par tag</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">python</span><span class="p">/</span><span class="n">journal</span><span class="p">/</span><span class="n">journal_search_simple</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-tag</span> <span class="s2">&quot;rag&quot;</span>
+
+<span class="c"># Recherche par date</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">python</span><span class="p">/</span><span class="n">journal</span><span class="p">/</span><span class="n">journal_search_simple</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-date</span> <span class="s2">&quot;2025-04-05&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="recherche-via-l-interface-web">
+<h3>Recherche via l’interface web<a class="headerlink" href="#recherche-via-l-interface-web" title="Link to this heading"></a></h3>
+<p>Si vous utilisez l’interface web, vous pouvez utiliser la barre de recherche en haut de la page Journal.</p>
+</section>
+</section>
+<section id="interrogation-du-systeme-rag">
+<h2>Interrogation du système RAG<a class="headerlink" href="#interrogation-du-systeme-rag" title="Link to this heading"></a></h2>
+<p>Vous pouvez interroger le journal en langage naturel avec le système RAG:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">python</span><span class="p">/</span><span class="n">journal</span><span class="p">/</span><span class="n">journal_rag_simple</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-query</span> <span class="s2">&quot;Quelles sont les optimisations identifiées pour le système RAG?&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="conseils-pour-un-journal-efficace">
+<h2>Conseils pour un journal efficace<a class="headerlink" href="#conseils-pour-un-journal-efficace" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Régularité</strong>: Créez des entrées régulièrement, idéalement à la fin de chaque session de travail</p></li>
+<li><p><strong>Détails</strong>: Incluez suffisamment de détails pour que l’entrée soit utile à long terme</p></li>
+<li><p><strong>Structure</strong>: Suivez la structure recommandée pour faciliter l’analyse automatique</p></li>
+<li><p><strong>Tags</strong>: Utilisez des tags cohérents pour faciliter la recherche</p></li>
+<li><p><strong>Code</strong>: Incluez des exemples de code pertinents avec des commentaires explicatifs</p></li>
+<li><p><strong>Erreurs</strong>: Documentez les erreurs rencontrées et leurs solutions</p></li>
+<li><p><strong>Optimisations</strong>: Notez systématiquement les optimisations possibles</p></li>
+<li><p><strong>Liens</strong>: Utilisez les champs <code class="docutils literal notranslate"><span class="pre">related</span></code> et <code class="docutils literal notranslate"><span class="pre">Références</span> <span class="pre">et</span> <span class="pre">ressources</span></code> pour créer des liens</p></li>
+<li><p><strong>Impact métier</strong>: Expliquez toujours l’impact sur le domaine métier (industrie musicale)</p></li>
+<li><p><strong>Enseignements</strong>: Extrayez et documentez les enseignements techniques réutilisables</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

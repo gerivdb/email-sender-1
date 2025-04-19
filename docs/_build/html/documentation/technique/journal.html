@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal de Bord - Documentation Technique &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Journal de Bord - Documentation Technique</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/documentation/technique/journal.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="journal-de-bord-documentation-technique">
+<h1>Journal de Bord - Documentation Technique<a class="headerlink" href="#journal-de-bord-documentation-technique" title="Link to this heading"></a></h1>
+<section id="vue-d-ensemble">
+<h2>Vue d’ensemble<a class="headerlink" href="#vue-d-ensemble" title="Link to this heading"></a></h2>
+<p>Le journal de bord est le composant central du système. Il permet de créer, stocker et rechercher des entrées structurées qui documentent les actions, erreurs, optimisations et enseignements liés au projet.</p>
+</section>
+<section id="structure-des-entrees">
+<h2>Structure des entrées<a class="headerlink" href="#structure-des-entrees" title="Link to this heading"></a></h2>
+<p>Chaque entrée du journal est un fichier Markdown avec des métadonnées YAML en en-tête. Le format est le suivant:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>---
+date: AAAA-MM-JJ
+heure: HH-MM
+title: Titre de l&#39;entrée
+tags: [tag1, tag2, tag3]
+<span class="gu">related: [fichier1.md, fichier2.md]</span>
+<span class="gu">---</span>
+
+<span class="gh"># Titre de l&#39;entrée</span>
+
+<span class="gu">## Actions réalisées</span>
+<span class="k">-</span><span class="w"> </span>Action 1
+<span class="k">-</span><span class="w"> </span>Action 2
+
+<span class="gu">## Résolution des erreurs, déductions tirées</span>
+<span class="k">-</span><span class="w"> </span>Erreur 1: solution 1
+<span class="k">-</span><span class="w"> </span>Déduction 1
+
+<span class="gu">## Optimisations identifiées</span>
+<span class="k">-</span><span class="w"> </span>Pour le système: optimisation 1
+<span class="k">-</span><span class="w"> </span>Pour le code: optimisation 2
+<span class="k">-</span><span class="w"> </span>Pour la gestion des erreurs: optimisation 3
+<span class="k">-</span><span class="w"> </span>Pour les workflows: optimisation 4
+
+<span class="gu">## Enseignements techniques</span>
+<span class="k">-</span><span class="w"> </span>Enseignement 1
+<span class="k">-</span><span class="w"> </span>Enseignement 2
+
+<span class="gu">## Impact sur le projet musical</span>
+<span class="k">-</span><span class="w"> </span>Impact 1
+<span class="k">-</span><span class="w"> </span>Impact 2
+
+<span class="gu">## Code associé</span>
+```python
+<span class="gh"># Exemple de code</span>
+</pre></div>
+</div>
+</section>
+<section id="prochaines-etapes">
+<h2>Prochaines étapes<a class="headerlink" href="#prochaines-etapes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Étape 1</p></li>
+<li><p>Étape 2</p></li>
+</ul>
+</section>
+<section id="references-et-ressources">
+<h2>Références et ressources<a class="headerlink" href="#references-et-ressources" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Référence 1</p></li>
+<li><p>Référence 2</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+### Métadonnées
+
+- `date`: Date de création au format AAAA-MM-JJ
+- `heure`: Heure de création au format HH-MM
+- `title`: Titre de l&#39;entrée
+- `tags`: Liste de tags pour catégoriser l&#39;entrée
+- `related`: Liste d&#39;entrées liées (par nom de fichier)
+
+### Sections
+
+- **Actions réalisées**: Description des actions effectuées
+- **Résolution des erreurs, déductions tirées**: Problèmes rencontrés et solutions trouvées
+- **Optimisations identifiées**: Améliorations possibles, organisées par catégorie
+- **Enseignements techniques**: Connaissances techniques acquises
+- **Impact sur le projet musical**: Lien avec le domaine métier (industrie musicale)
+- **Code associé**: Exemples de code pertinents
+- **Prochaines étapes**: Actions futures à entreprendre
+- **Références et ressources**: Liens et ressources utiles
+
+## Nommage des fichiers
+
+Les fichiers sont nommés selon le format:
+</pre></div>
+</div>
+<p>AAAA-MM-JJ-HH-MM-slug-de-l-entree.md</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+Où:
+- `AAAA-MM-JJ`: Date de création
+- `HH-MM`: Heure de création
+- `slug-de-l-entree`: Version simplifiée du titre (sans accents, en minuscules, avec des tirets)
+
+Exemple: `2025-04-05-14-30-implementation-du-systeme-rag.md`
+
+## Organisation des fichiers
+
+Les entrées sont stockées dans le répertoire `docs/journal_de_bord/entries/`.
+
+## Implémentation
+
+### Script principal: journal_entry.py
+
+Ce script gère la création d&#39;entrées de journal:
+
+```python
+# Créer une entrée avec titre et tags
+python scripts/python/journal/journal_entry.py &quot;Titre de l&#39;entrée&quot; --tags tag1 tag2
+</pre></div>
+</div>
+<section id="fonctions-principales">
+<h3>Fonctions principales<a class="headerlink" href="#fonctions-principales" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create_journal_entry(title,</span> <span class="pre">tags=None,</span> <span class="pre">related=None)</span></code>: Crée une nouvelle entrée</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">normalize_accents(text)</span></code>: Normalise les caractères accentués</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">slugify(text)</span></code>: Convertit un texte en slug pour le nom de fichier</p></li>
+</ul>
+</section>
+<section id="script-de-recherche-journal-search-simple-py">
+<h3>Script de recherche: journal_search_simple.py<a class="headerlink" href="#script-de-recherche-journal-search-simple-py" title="Link to this heading"></a></h3>
+<p>Ce script permet de rechercher dans le journal:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rechercher par mots-clés</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">python</span><span class="o">/</span><span class="n">journal</span><span class="o">/</span><span class="n">journal_search_simple</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">query</span> <span class="s2">&quot;terme de recherche&quot;</span>
+
+<span class="c1"># Rechercher par tag</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">python</span><span class="o">/</span><span class="n">journal</span><span class="o">/</span><span class="n">journal_search_simple</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">tag</span> <span class="s2">&quot;nom_du_tag&quot;</span>
+
+<span class="c1"># Rechercher par date</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">python</span><span class="o">/</span><span class="n">journal</span><span class="o">/</span><span class="n">journal_search_simple</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">date</span> <span class="s2">&quot;2025-04-05&quot;</span>
+</pre></div>
+</div>
+<section id="id1">
+<h4>Fonctions principales<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">search(query,</span> <span class="pre">n=5)</span></code>: Recherche par mots-clés</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">search_by_tag(tag)</span></code>: Recherche par tag</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">search_by_date(date)</span></code>: Recherche par date</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_index()</span></code>: Construit l’index de recherche</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="integration-avec-vs-code">
+<h2>Intégration avec VS Code<a class="headerlink" href="#integration-avec-vs-code" title="Link to this heading"></a></h2>
+<p>Le système s’intègre avec VS Code via:</p>
+<ul class="simple">
+<li><p>Des tâches définies dans <code class="docutils literal notranslate"><span class="pre">.vscode/tasks.json</span></code></p></li>
+<li><p>Des raccourcis clavier définis dans <code class="docutils literal notranslate"><span class="pre">.vscode/keybindings.json</span></code></p></li>
+<li><p>Une configuration d’extension dans <code class="docutils literal notranslate"><span class="pre">.vscode/journal-extension.json</span></code></p></li>
+</ul>
+</section>
+<section id="automatisation">
+<h2>Automatisation<a class="headerlink" href="#automatisation" title="Link to this heading"></a></h2>
+<p>La création d’entrées peut être automatisée via:</p>
+<ul class="simple">
+<li><p>Le script <code class="docutils literal notranslate"><span class="pre">journal-daily.ps1</span></code> pour les entrées quotidiennes et hebdomadaires</p></li>
+<li><p>Des tâches planifiées Windows configurées via <code class="docutils literal notranslate"><span class="pre">setup-journal-tasks.ps1</span></code></p></li>
+<li><p>Le script <code class="docutils literal notranslate"><span class="pre">journal_watcher.py</span></code> pour surveiller les modifications et mettre à jour les index</p></li>
+</ul>
+</section>
+<section id="considerations-techniques">
+<h2>Considérations techniques<a class="headerlink" href="#considerations-techniques" title="Link to this heading"></a></h2>
+<section id="encodage">
+<h3>Encodage<a class="headerlink" href="#encodage" title="Link to this heading"></a></h3>
+<p>Tous les fichiers sont encodés en UTF-8 pour gérer correctement les caractères accentués français.</p>
+</section>
+<section id="normalisation-des-caracteres-accentues">
+<h3>Normalisation des caractères accentués<a class="headerlink" href="#normalisation-des-caracteres-accentues" title="Link to this heading"></a></h3>
+<p>Les caractères accentués sont normalisés dans les noms de fichiers et les slugs pour éviter les problèmes de compatibilité.</p>
+</section>
+<section id="gestion-des-metadonnees">
+<h3>Gestion des métadonnées<a class="headerlink" href="#gestion-des-metadonnees" title="Link to this heading"></a></h3>
+<p>Les métadonnées YAML sont extraites et analysées à l’aide d’expressions régulières pour éviter des dépendances supplémentaires.</p>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Structuration</strong>: Suivre la structure de sections recommandée</p></li>
+<li><p><strong>Tags</strong>: Utiliser des tags cohérents pour faciliter la recherche</p></li>
+<li><p><strong>Détails</strong>: Inclure suffisamment de détails pour que l’entrée soit utile à long terme</p></li>
+<li><p><strong>Optimisations</strong>: Documenter systématiquement les optimisations par catégorie</p></li>
+<li><p><strong>Enseignements</strong>: Extraire et documenter les enseignements techniques réutilisables</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

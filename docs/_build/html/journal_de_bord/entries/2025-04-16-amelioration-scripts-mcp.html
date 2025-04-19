@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amélioration des scripts MCP et résolution des notifications d’erreur &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Amélioration des scripts MCP et résolution des notifications d’erreur</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/journal_de_bord/entries/2025-04-16-amelioration-scripts-mcp.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="amelioration-des-scripts-mcp-et-resolution-des-notifications-d-erreur">
+<h1>Amélioration des scripts MCP et résolution des notifications d’erreur<a class="headerlink" href="#amelioration-des-scripts-mcp-et-resolution-des-notifications-d-erreur" title="Link to this heading"></a></h1>
+<p><strong>Date:</strong> 2025-04-16
+<strong>Auteur:</strong> Équipe de développement
+<strong>Tags:</strong> #mcp #optimisation #notifications #tests</p>
+<section id="probleme-identifie">
+<h2>Problème identifié<a class="headerlink" href="#probleme-identifie" title="Link to this heading"></a></h2>
+<p>Les serveurs MCP (Model Context Protocol) généraient de nombreuses notifications d’erreur au démarrage de VS Code, même lorsque les serveurs fonctionnaient correctement. Ces notifications étaient persistantes et créaient une expérience utilisateur dégradée.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">MCP</span> <span class="n">server</span><span class="o">.</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;npx -y @m...</span>
+<span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">MCP</span> <span class="n">server</span><span class="o">.</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;supergatew...</span>
+<span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">MCP</span> <span class="n">server</span><span class="o">.</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;cmd /c </span><span class="se">\&quot;</span><span class="s2">ec...</span>
+<span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">MCP</span> <span class="n">server</span><span class="o">.</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;/augment-...</span>
+<span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">MCP</span> <span class="n">server</span><span class="o">.</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;/mcp-serve...</span>
+<span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">MCP</span> <span class="n">server</span><span class="o">.</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;/mcp-gdriv...</span>
+<span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">MCP</span> <span class="n">server</span><span class="o">.</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;/augment-...</span>
+<span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">MCP</span> <span class="n">server</span><span class="o">.</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;supergatew...</span>
+</pre></div>
+</div>
+<p>De plus, les scripts de démarrage des serveurs MCP ne vérifiaient pas si les serveurs étaient déjà en cours d’exécution, ce qui pouvait entraîner des démarrages multiples et une consommation inutile de ressources système.</p>
+</section>
+<section id="solutions-developpees">
+<h2>Solutions développées<a class="headerlink" href="#solutions-developpees" title="Link to this heading"></a></h2>
+<section id="nettoyage-des-notifications">
+<h3>1. Nettoyage des notifications<a class="headerlink" href="#nettoyage-des-notifications" title="Link to this heading"></a></h3>
+<p>Nous avons créé un script <code class="docutils literal notranslate"><span class="pre">clear-mcp-notifications.ps1</span></code> qui :</p>
+<ul class="simple">
+<li><p>Recherche et supprime les notifications d’erreur liées aux serveurs MCP dans les fichiers de configuration de VS Code</p></li>
+<li><p>Fonctionne à la fois pour les paramètres globaux et les paramètres d’espace de travail</p></li>
+<li><p>Est exécuté automatiquement au début du script de démarrage des serveurs MCP</p></li>
+</ul>
+</section>
+<section id="configuration-de-vs-code-pour-ignorer-les-notifications">
+<h3>2. Configuration de VS Code pour ignorer les notifications<a class="headerlink" href="#configuration-de-vs-code-pour-ignorer-les-notifications" title="Link to this heading"></a></h3>
+<p>Nous avons modifié le script <code class="docutils literal notranslate"><span class="pre">configure-vscode-mcp.ps1</span></code> pour :</p>
+<ul class="simple">
+<li><p>Ajouter des paramètres pour exclure les notifications d’erreur liées aux serveurs MCP</p></li>
+<li><p>Configurer les patterns d’exclusion pour les notifications</p></li>
+<li><p>Mettre à jour les paramètres de VS Code pour une meilleure intégration avec les serveurs MCP</p></li>
+</ul>
+</section>
+<section id="amelioration-du-script-de-demarrage-des-serveurs-mcp">
+<h3>3. Amélioration du script de démarrage des serveurs MCP<a class="headerlink" href="#amelioration-du-script-de-demarrage-des-serveurs-mcp" title="Link to this heading"></a></h3>
+<p>Nous avons amélioré le script <code class="docutils literal notranslate"><span class="pre">start-all-mcp-complete-v2.ps1</span></code> pour :</p>
+<ul class="simple">
+<li><p>Ajouter une étape de nettoyage des notifications au début du script</p></li>
+<li><p>Ajouter une vérification des serveurs déjà en cours d’exécution pour éviter les démarrages multiples</p></li>
+<li><p>Améliorer la détection des processus en cours d’exécution</p></li>
+<li><p>Fournir un résumé détaillé de l’état des serveurs MCP</p></li>
+</ul>
+</section>
+<section id="tests-unitaires-pour-les-scripts-mcp">
+<h3>4. Tests unitaires pour les scripts MCP<a class="headerlink" href="#tests-unitaires-pour-les-scripts-mcp" title="Link to this heading"></a></h3>
+<p>Nous avons créé des tests unitaires pour les scripts de vérification et de démarrage des serveurs MCP :</p>
+<ul class="simple">
+<li><p>Tests pour la fonction <code class="docutils literal notranslate"><span class="pre">Test-McpServerRunning</span></code></p></li>
+<li><p>Tests pour la fonction <code class="docutils literal notranslate"><span class="pre">Write-LogInternal</span></code></p></li>
+<li><p>Tests pour la fonction <code class="docutils literal notranslate"><span class="pre">Start-McpServer</span></code></p></li>
+<li><p>Tests pour la fonction <code class="docutils literal notranslate"><span class="pre">Start-McpServerWithScript</span></code></p></li>
+<li><p>Test d’intégration pour vérifier que les scripts s’exécutent sans erreur</p></li>
+</ul>
+</section>
+</section>
+<section id="resultats">
+<h2>Résultats<a class="headerlink" href="#resultats" title="Link to this heading"></a></h2>
+<p>Les améliorations apportées ont permis de :</p>
+<ul class="simple">
+<li><p>Éliminer les notifications d’erreur au démarrage de VS Code</p></li>
+<li><p>Prévenir les démarrages multiples des serveurs MCP</p></li>
+<li><p>Améliorer l’expérience utilisateur avec une interface plus propre et moins distrayante</p></li>
+<li><p>Optimiser l’utilisation des ressources système</p></li>
+<li><p>Faciliter le démarrage et la gestion des serveurs MCP</p></li>
+</ul>
+</section>
+<section id="fichiers-modifies">
+<h2>Fichiers modifiés<a class="headerlink" href="#fichiers-modifies" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scripts\mcp\clear-mcp-notifications.ps1</span></code> (nouveau)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scripts\mcp\configure-vscode-mcp.ps1</span></code> (modifié)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scripts\mcp\start-all-mcp-complete-v2.ps1</span></code> (modifié)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scripts\mcp\tests\CheckMcpServers.Tests.ps1</span></code> (modifié)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scripts\mcp\tests\StartAllMcpComplete.Tests.ps1</span></code> (modifié)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scripts\mcp\tests\TestOmnibus.ps1</span></code> (modifié)</p></li>
+</ul>
+</section>
+<section id="documentation-mise-a-jour">
+<h2>Documentation mise à jour<a class="headerlink" href="#documentation-mise-a-jour" title="Link to this heading"></a></h2>
+<p>La documentation suivante a été mise à jour pour refléter ces changements :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">docs\guides\RESOLUTION_PROBLEMES_MCP.md</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs\journal_de_bord\entries\2025-04-16-amelioration-scripts-mcp.md</span></code> (ce document)</p></li>
+</ul>
+</section>
+<section id="prochaines-etapes">
+<h2>Prochaines étapes<a class="headerlink" href="#prochaines-etapes" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Intégrer ces améliorations dans le script de démarrage automatique de VS Code</p></li>
+<li><p>Ajouter des options de configuration pour personnaliser le comportement des scripts MCP</p></li>
+<li><p>Améliorer la détection des serveurs MCP pour prendre en compte les serveurs exécutés sur des ports différents</p></li>
+<li><p>Créer une interface utilisateur graphique pour la gestion des serveurs MCP</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

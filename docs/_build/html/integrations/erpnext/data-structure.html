@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Structure des données ERPNext &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Structure des données ERPNext</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/integrations/erpnext/data-structure.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="structure-des-donnees-erpnext">
+<h1>Structure des données ERPNext<a class="headerlink" href="#structure-des-donnees-erpnext" title="Link to this heading"></a></h1>
+<section id="mappage-des-donnees">
+<h2>Mappage des données<a class="headerlink" href="#mappage-des-donnees" title="Link to this heading"></a></h2>
+<p>Cette page décrit comment les données sont mappées entre ERPNext et le journal de bord.</p>
+</section>
+<section id="tache-erpnext-entree-de-journal">
+<h2>Tâche ERPNext → Entrée de journal<a class="headerlink" href="#tache-erpnext-entree-de-journal" title="Link to this heading"></a></h2>
+<p>Lorsqu’une tâche ERPNext est convertie en entrée de journal, les données sont mappées comme suit:</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Champ ERPNext</th>
+<th>Champ du journal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>subject</td>
+<td>title</td>
+</tr>
+<tr>
+<td>description</td>
+<td>content</td>
+</tr>
+<tr>
+<td>status</td>
+<td>tag: status:{status}</td>
+</tr>
+<tr>
+<td>priority</td>
+<td>tag: priority:{priority}</td>
+</tr>
+<tr>
+<td>project</td>
+<td>tag: project:{project}</td>
+</tr>
+<tr>
+<td>exp_start_date</td>
+<td>Mentionné dans le contenu</td>
+</tr>
+<tr>
+<td>exp_end_date</td>
+<td>Mentionné dans le contenu</td>
+</tr>
+</tbody>
+</table><section id="structure-de-l-entree-de-journal">
+<h3>Structure de l’entrée de journal<a class="headerlink" href="#structure-de-l-entree-de-journal" title="Link to this heading"></a></h3>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>---
+title: Tâche ERPNext: {subject}
+date: {date_actuelle}
+<span class="gu">tags: [erpnext, task, project:{project}, status:{status}, priority:{priority}]</span>
+<span class="gu">---</span>
+
+<span class="gh"># Tâche ERPNext: {subject}</span>
+
+<span class="gu">## Détails de la tâche</span>
+<span class="k">-</span><span class="w"> </span><span class="gs">**ID**</span>: {task_id}
+<span class="k">-</span><span class="w"> </span><span class="gs">**Sujet**</span>: {subject}
+<span class="k">-</span><span class="w"> </span><span class="gs">**Projet**</span>: {project}
+<span class="k">-</span><span class="w"> </span><span class="gs">**Statut**</span>: {status}
+<span class="k">-</span><span class="w"> </span><span class="gs">**Priorité**</span>: {priority}
+<span class="k">-</span><span class="w"> </span><span class="gs">**Date de début**</span>: {exp_start_date}
+<span class="k">-</span><span class="w"> </span><span class="gs">**Date de fin**</span>: {exp_end_date}
+
+<span class="gu">## Description</span>
+{description}
+
+<span class="gu">## Actions réalisées</span>
+<span class="k">-</span><span class="w"> </span>Synchronisation depuis ERPNext le {date_heure_actuelle}
+
+<span class="gu">## Notes</span>
+<span class="k">-</span><span class="w"> </span>Cette entrée a été générée automatiquement à partir d&#39;une tâche ERPNext.
+<span class="k">-</span><span class="w"> </span>Pour mettre à jour la tâche dans ERPNext, modifiez cette entrée et exécutez la synchronisation vers ERPNext.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="entree-de-journal-note-erpnext">
+<h2>Entrée de journal → Note ERPNext<a class="headerlink" href="#entree-de-journal-note-erpnext" title="Link to this heading"></a></h2>
+<p>Lorsqu’une entrée de journal est convertie en note ERPNext, les données sont mappées comme suit:</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Champ du journal</th>
+<th>Champ ERPNext</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title</td>
+<td>title</td>
+</tr>
+<tr>
+<td>content</td>
+<td>content</td>
+</tr>
+</tbody>
+</table><section id="structure-de-la-note-erpnext">
+<h3>Structure de la note ERPNext<a class="headerlink" href="#structure-de-la-note-erpnext" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">title</span><span class="p">}</span>
+
+<span class="p">{</span><span class="n">content</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="entree-de-journal-tache-erpnext">
+<h2>Entrée de journal → Tâche ERPNext<a class="headerlink" href="#entree-de-journal-tache-erpnext" title="Link to this heading"></a></h2>
+<p>Lorsqu’une entrée de journal est utilisée pour mettre à jour une tâche ERPNext, les données sont extraites comme suit:</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Section de l'entrée</th>
+<th>Champ ERPNext</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID: {task_id}</td>
+<td>name</td>
+</tr>
+<tr>
+<td>Sujet: {subject}</td>
+<td>subject</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>description</td>
+</tr>
+<tr>
+<td>Statut: {status}</td>
+<td>status</td>
+</tr>
+<tr>
+<td>Priorité: {priority}</td>
+<td>priority</td>
+</tr>
+</tbody>
+</table><section id="extraction-des-donnees">
+<h3>Extraction des données<a class="headerlink" href="#extraction-des-donnees" title="Link to this heading"></a></h3>
+<p>L’extraction des données utilise des expressions régulières pour trouver les informations dans l’entrée de journal:</p>
+<ul class="simple">
+<li><p>L’ID de la tâche est extrait avec: <code class="docutils literal notranslate"><span class="pre">ID\s*:\s*([A-Za-z0-9-]+)</span></code></p></li>
+<li><p>Le sujet est extrait avec: <code class="docutils literal notranslate"><span class="pre">Sujet\s*:\s*(.+)$</span></code></p></li>
+<li><p>La description est extraite avec: <code class="docutils literal notranslate"><span class="pre">Description\s*\n(.*?)(?=\n##|\Z)</span></code></p></li>
+<li><p>Le statut est extrait avec: <code class="docutils literal notranslate"><span class="pre">Statut\s*:\s*(.+)$</span></code></p></li>
+<li><p>La priorité est extraite avec: <code class="docutils literal notranslate"><span class="pre">Priorité\s*:\s*(.+)$</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="tags-speciaux">
+<h2>Tags spéciaux<a class="headerlink" href="#tags-speciaux" title="Link to this heading"></a></h2>
+<p>Les tags suivants ont une signification particulière dans l’intégration ERPNext:</p>
+<ul class="simple">
+<li><p><strong>erpnext</strong>: Indique que l’entrée est liée à ERPNext</p></li>
+<li><p><strong>task</strong>: Indique que l’entrée est liée à une tâche ERPNext</p></li>
+<li><p><strong>project:{nom_du_projet}</strong>: Indique le projet associé à la tâche</p></li>
+<li><p><strong>status:{statut}</strong>: Indique le statut de la tâche</p></li>
+<li><p><strong>priority:{priorité}</strong>: Indique la priorité de la tâche</p></li>
+</ul>
+</section>
+<section id="statuts-et-priorites">
+<h2>Statuts et priorités<a class="headerlink" href="#statuts-et-priorites" title="Link to this heading"></a></h2>
+<section id="statuts-de-tache-erpnext">
+<h3>Statuts de tâche ERPNext<a class="headerlink" href="#statuts-de-tache-erpnext" title="Link to this heading"></a></h3>
+<p>Les statuts de tâche ERPNext standard sont:</p>
+<ul class="simple">
+<li><p>Open</p></li>
+<li><p>Working</p></li>
+<li><p>Pending Review</p></li>
+<li><p>Completed</p></li>
+<li><p>Cancelled</p></li>
+</ul>
+</section>
+<section id="priorites-de-tache-erpnext">
+<h3>Priorités de tâche ERPNext<a class="headerlink" href="#priorites-de-tache-erpnext" title="Link to this heading"></a></h3>
+<p>Les priorités de tâche ERPNext standard sont:</p>
+<ul class="simple">
+<li><p>Low</p></li>
+<li><p>Medium</p></li>
+<li><p>High</p></li>
+<li><p>Urgent</p></li>
+</ul>
+</section>
+</section>
+<section id="gestion-des-conflits">
+<h2>Gestion des conflits<a class="headerlink" href="#gestion-des-conflits" title="Link to this heading"></a></h2>
+<p>En cas de conflit lors de la synchronisation (par exemple, si une tâche a été modifiée à la fois dans ERPNext et dans le journal), la stratégie suivante est appliquée:</p>
+<ol class="simple">
+<li><p>Pour la synchronisation ERPNext → Journal: Les données ERPNext ont priorité</p></li>
+<li><p>Pour la synchronisation Journal → ERPNext: Les données du journal ont priorité</p></li>
+</ol>
+<p>Vous pouvez modifier ce comportement en éditant le fichier de configuration de l’intégration.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

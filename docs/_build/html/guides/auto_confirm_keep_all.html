@@ -1,0 +1,198 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’auto-confirmation des boîtes de dialogue “Keep All” &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’auto-confirmation des boîtes de dialogue “Keep All”</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/auto_confirm_keep_all.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-auto-confirmation-des-boites-de-dialogue-keep-all">
+<h1>Guide d’auto-confirmation des boîtes de dialogue “Keep All”<a class="headerlink" href="#guide-d-auto-confirmation-des-boites-de-dialogue-keep-all" title="Link to this heading"></a></h1>
+<p>Ce guide explique comment configurer l’auto-confirmation des boîtes de dialogue “Keep All” qui apparaissent dans VS Code lors de l’utilisation d’Augment.</p>
+<section id="probleme">
+<h2>Problème<a class="headerlink" href="#probleme" title="Link to this heading"></a></h2>
+<p>Lorsque Augment génère une grande quantité de texte ou de code, une boîte de dialogue “Cancel or Keep All” apparaît, vous demandant si vous souhaitez conserver tout le contenu ou l’annuler. Cette boîte de dialogue bloque l’exécution jusqu’à ce que vous y répondiez manuellement.</p>
+</section>
+<section id="solution">
+<h2>Solution<a class="headerlink" href="#solution" title="Link to this heading"></a></h2>
+<p>Nous avons créé un script AutoHotkey qui détecte automatiquement la boîte de dialogue “Keep All” et clique dessus pour vous, permettant ainsi à vos scripts de s’exécuter sans interruption.</p>
+</section>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>AutoHotkey (sera installé automatiquement si vous utilisez le paramètre <code class="docutils literal notranslate"><span class="pre">-InstallAutoHotkey</span></code>)</p></li>
+</ul>
+</section>
+<section id="installation-et-utilisation">
+<h2>Installation et utilisation<a class="headerlink" href="#installation-et-utilisation" title="Link to this heading"></a></h2>
+<section id="methode-1-utilisation-du-script-batch">
+<h3>Méthode 1 : Utilisation du script batch<a class="headerlink" href="#methode-1-utilisation-du-script-batch" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Exécutez le script batch suivant :</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span>\<span class="n">scripts</span>\<span class="n">cmd</span>\<span class="n">automation</span>\<span class="n">auto</span><span class="o">-</span><span class="n">confirm</span><span class="o">-</span><span class="n">keep</span><span class="o">-</span><span class="nb">all</span><span class="o">.</span><span class="n">cmd</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Si AutoHotkey n’est pas installé, ajoutez le paramètre <code class="docutils literal notranslate"><span class="pre">-InstallAutoHotkey</span></code> :</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span>\<span class="n">scripts</span>\<span class="n">cmd</span>\<span class="n">automation</span>\<span class="n">auto</span><span class="o">-</span><span class="n">confirm</span><span class="o">-</span><span class="n">keep</span><span class="o">-</span><span class="nb">all</span><span class="o">.</span><span class="n">cmd</span> <span class="o">-</span><span class="n">InstallAutoHotkey</span>
+</pre></div>
+</div>
+</section>
+<section id="methode-2-utilisation-directe-du-script-powershell">
+<h3>Méthode 2 : Utilisation directe du script PowerShell<a class="headerlink" href="#methode-2-utilisation-directe-du-script-powershell" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Exécutez le script PowerShell suivant :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">utils</span><span class="p">\</span><span class="n">automation</span><span class="p">\</span><span class="nb">Start-AutoConfirmKeepAll</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Si AutoHotkey n’est pas installé, ajoutez le paramètre <code class="docutils literal notranslate"><span class="pre">-InstallAutoHotkey</span></code> :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">utils</span><span class="p">\</span><span class="n">automation</span><span class="p">\</span><span class="nb">Start-AutoConfirmKeepAll</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-InstallAutoHotkey</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fonctionnement">
+<h2>Fonctionnement<a class="headerlink" href="#fonctionnement" title="Link to this heading"></a></h2>
+<p>Une fois lancé, le script s’exécute en arrière-plan et surveille l’apparition de la boîte de dialogue “Keep All” dans VS Code. Lorsqu’il détecte cette boîte de dialogue, il clique automatiquement sur le bouton “Keep All” pour vous.</p>
+</section>
+<section id="arret-du-script">
+<h2>Arrêt du script<a class="headerlink" href="#arret-du-script" title="Link to this heading"></a></h2>
+<p>Pour arrêter le script, vous pouvez :</p>
+<ol class="simple">
+<li><p>Appuyer sur <code class="docutils literal notranslate"><span class="pre">Ctrl+Alt+Q</span></code> lorsque VS Code est actif</p></li>
+<li><p>Exécuter la commande PowerShell suivante :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Stop-Process</span> <span class="n">-Name</span> <span class="n">AutoHotkey</span>
+</pre></div>
+</div>
+</section>
+<section id="suspension-temporaire">
+<h2>Suspension temporaire<a class="headerlink" href="#suspension-temporaire" title="Link to this heading"></a></h2>
+<p>Si vous souhaitez temporairement désactiver l’auto-confirmation sans arrêter complètement le script, appuyez sur <code class="docutils literal notranslate"><span class="pre">Ctrl+Alt+P</span></code>. Appuyez à nouveau sur <code class="docutils literal notranslate"><span class="pre">Ctrl+Alt+P</span></code> pour réactiver le script.</p>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<p>Si le script ne fonctionne pas comme prévu :</p>
+<ol class="simple">
+<li><p>Vérifiez qu’AutoHotkey est correctement installé</p></li>
+<li><p>Redémarrez le script avec le paramètre <code class="docutils literal notranslate"><span class="pre">-Force</span></code> pour forcer son redémarrage :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">utils</span><span class="p">\</span><span class="n">automation</span><span class="p">\</span><span class="nb">Start-AutoConfirmKeepAll</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Assurez-vous que VS Code est en focus lorsque la boîte de dialogue apparaît</p></li>
+</ol>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Le script ne fonctionne que lorsque VS Code est la fenêtre active</p></li>
+<li><p>Il peut y avoir un léger délai entre l’apparition de la boîte de dialogue et son auto-confirmation</p></li>
+<li><p>Le script doit être redémarré après chaque redémarrage de l’ordinateur</p></li>
+</ul>
+</section>
+<section id="support">
+<h2>Support<a class="headerlink" href="#support" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez des problèmes avec ce script, veuillez contacter le support technique ou ouvrir un ticket sur le dépôt GitHub du projet.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal de développement - 09/04/2023 &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Journal de développement - 09/04/2023</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/journal/2023-04-09-optimisation-parallelisation.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="journal-de-developpement-09-04-2023">
+<h1>Journal de développement - 09/04/2023<a class="headerlink" href="#journal-de-developpement-09-04-2023" title="Link to this heading"></a></h1>
+<section id="optimisation-de-la-parallelisation-en-powershell-5-1">
+<h2>Optimisation de la parallélisation en PowerShell 5.1<a class="headerlink" href="#optimisation-de-la-parallelisation-en-powershell-5-1" title="Link to this heading"></a></h2>
+<section id="contexte">
+<h3>Contexte<a class="headerlink" href="#contexte" title="Link to this heading"></a></h3>
+<p>Besoin d’améliorer les performances des scripts qui traitent de nombreux fichiers en parallèle, tout en restant compatible avec PowerShell 5.1.</p>
+</section>
+<section id="actions-realisees">
+<h3>Actions réalisées<a class="headerlink" href="#actions-realisees" title="Link to this heading"></a></h3>
+<section id="analyse-des-approches-de-parallelisation">
+<h4>1. Analyse des approches de parallélisation<a class="headerlink" href="#analyse-des-approches-de-parallelisation" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Comparaison des différentes méthodes de parallélisation disponibles en PowerShell 5.1</p>
+<ul>
+<li><p>Jobs PowerShell traditionnels (Start-Job)</p></li>
+<li><p>Runspace Pools</p></li>
+<li><p>Approche par lots (batch processing)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="implementation-d-une-fonction-optimisee">
+<h4>2. Implémentation d’une fonction optimisée<a class="headerlink" href="#implementation-d-une-fonction-optimisee" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Création de la fonction <code class="docutils literal notranslate"><span class="pre">Invoke-OptimizedParallel</span></code> utilisant des Runspace Pools</p></li>
+<li><p>Implémentation d’une version simplifiée compatible avec PowerShell 5.1</p></li>
+<li><p>Gestion robuste des erreurs et nettoyage des ressources</p></li>
+</ul>
+</section>
+<section id="tests-de-performance">
+<h4>3. Tests de performance<a class="headerlink" href="#tests-de-performance" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Création d’un script de test <code class="docutils literal notranslate"><span class="pre">Test-ParallelPerformance.ps1</span></code></p></li>
+<li><p>Comparaison des performances entre traitement séquentiel, Jobs PowerShell et Runspace Pools</p></li>
+<li><p>Résultats : Runspace Pools environ 10 fois plus rapides que les Jobs PowerShell</p></li>
+</ul>
+</section>
+<section id="integration-au-module-de-gestion-des-erreurs">
+<h4>4. Intégration au module de gestion des erreurs<a class="headerlink" href="#integration-au-module-de-gestion-des-erreurs" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Ajout de la capacité à traiter les erreurs en parallèle</p></li>
+<li><p>Collecte des résultats et des erreurs dans un format standardisé</p></li>
+</ul>
+</section>
+</section>
+<section id="lecons-apprises">
+<h3>Leçons apprises<a class="headerlink" href="#lecons-apprises" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Limitations de PowerShell 5.1</strong> : Certaines fonctionnalités comme <code class="docutils literal notranslate"><span class="pre">WaitHandle.WaitAny</span></code> et <code class="docutils literal notranslate"><span class="pre">UseDefaultThreadOptions</span></code> ne fonctionnent pas correctement dans PowerShell 5.1.</p></li>
+<li><p><strong>Gestion des variables dans les Runspaces</strong> : Les variables de préférence (<code class="docutils literal notranslate"><span class="pre">$VerbosePreference</span></code>, etc.) ne sont pas directement accessibles via <code class="docutils literal notranslate"><span class="pre">$using:</span></code> dans PowerShell 5.1.</p></li>
+<li><p><strong>Performances</strong> : Les Runspace Pools sont significativement plus performants que les Jobs PowerShell traditionnels car ils utilisent des threads dans le même processus au lieu de créer de nouveaux processus.</p></li>
+<li><p><strong>Gestion des ressources</strong> : Il est crucial de nettoyer correctement les ressources (Dispose des instances PowerShell et fermeture du RunspacePool) pour éviter les fuites de mémoire.</p></li>
+<li><p><strong>Approche simplifiée</strong> : Une implémentation plus simple et robuste est souvent préférable à une solution plus complexe avec des fonctionnalités avancées qui peuvent ne pas être compatibles.</p></li>
+</ol>
+</section>
+<section id="ameliorations-futures">
+<h3>Améliorations futures<a class="headerlink" href="#ameliorations-futures" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implémenter un mécanisme de limitation dynamique basé sur l’utilisation des ressources système</p></li>
+<li><p>Ajouter la possibilité de traiter les fichiers par lots pour réduire encore plus les frais généraux</p></li>
+<li><p>Créer des fonctions spécialisées pour des cas d’utilisation spécifiques (analyse de code, correction de code, etc.)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

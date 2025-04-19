@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide Complet des Extraits JSON pour l’Automatisation n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide Complet des Extraits JSON pour l’Automatisation n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/n8n/N8N_JSON_SNIPPETS_GUIDE.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-complet-des-extraits-json-pour-l-automatisation-n8n">
+<h1>Guide Complet des Extraits JSON pour l’Automatisation n8n<a class="headerlink" href="#guide-complet-des-extraits-json-pour-l-automatisation-n8n" title="Link to this heading"></a></h1>
+<p>Lors de la création d’automatisations dans n8n, la gestion appropriée des configurations JSON est essentielle, en particulier pour les nœuds avancés comme le module Agent IA. Ce guide compile des extraits JSON clés et des modèles pour configurer efficacement divers composants n8n, avec un accent particulier sur la fonctionnalité Agent IA.</p>
+<section id="structure-fondamentale-des-donnees-json-de-n8n">
+<h2>Structure Fondamentale des Données JSON de n8n<a class="headerlink" href="#structure-fondamentale-des-donnees-json-de-n8n" title="Link to this heading"></a></h2>
+<p>Dans n8n, les données circulent entre les nœuds dans une structure JSON standardisée. Comprendre cette structure est crucial pour une automatisation efficace :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;json&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;property1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value1&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;property2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value2&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;binary&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;json&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;property1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anotherValue1&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;property2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anotherValue2&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;binary&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Chaque élément de ce tableau représente une donnée traitée dans votre workflow. À partir de la version 0.166.0, n8n ajoute automatiquement la clé json si elle est manquante et enveloppe les éléments dans un tableau si nécessaire lors de l’utilisation des nœuds Function ou Code.</p>
+</section>
+<section id="configuration-json-du-module-agent-ia">
+<h2>Configuration JSON du Module Agent IA<a class="headerlink" href="#configuration-json-du-module-agent-ia" title="Link to this heading"></a></h2>
+<p>Le module Agent IA dans n8n propose plusieurs types d’agents, chacun nécessitant des configurations JSON spécifiques. Voici des extraits pour les types les plus courants :</p>
+<section id="configuration-de-l-agent-tools-par-defaut">
+<h3>Configuration de l’Agent Tools (Par Défaut)<a class="headerlink" href="#configuration-de-l-agent-tools-par-defaut" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tools&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You are a helpful assistant that uses tools to find information and accomplish tasks.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;verbose&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Cette configuration met en place l’Agent Tools par défaut qui peut utiliser des outils externes et des API pour effectuer des actions et récupérer des informations.</p>
+</section>
+<section id="configuration-de-l-agent-conversationnel">
+<h3>Configuration de l’Agent Conversationnel<a class="headerlink" href="#configuration-de-l-agent-conversationnel" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;conversational&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You are a helpful customer service agent for our company.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’Agent Conversationnel est idéal pour les chatbots et les assistants virtuels, car il peut maintenir le contexte et comprendre l’intention de l’utilisateur.</p>
+</section>
+<section id="configuration-d-agent-avec-memoire">
+<h3>Configuration d’Agent avec Mémoire<a class="headerlink" href="#configuration-d-agent-avec-memoire" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tools&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You are an assistant with memory capabilities. Use your tools to remember important information from our conversations.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;memory-add&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;memory-retrieve&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Cette configuration crée un agent IA avec des capacités de mémoire à long terme pour maintenir le contexte à travers les interactions.</p>
+</section>
+</section>
+<section id="gestion-des-problemes-de-sortie-de-l-agent-ia">
+<h2>Gestion des Problèmes de Sortie de l’Agent IA<a class="headerlink" href="#gestion-des-problemes-de-sortie-de-l-agent-ia" title="Link to this heading"></a></h2>
+<p>Un défi courant avec l’Agent IA est qu’il produit souvent des résultats sous forme de chaîne de caractères à l’intérieur d’un objet JSON, ce qui peut causer des problèmes lors du traitement ultérieur :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{\n \&quot;countries\&quot;: [\n {\n \&quot;name\&quot;: \&quot;China\&quot;,\n \&quot;population\&quot;: 1411778724\n },\n {\n \&quot;name\&quot;: \&quot;India\&quot;,\n \&quot;population\&quot;: 1387297452\n },\n {\n \&quot;name\&quot;: \&quot;United States\&quot;,\n \&quot;population\&quot;: 331893745\n },\n {\n \&quot;name\&quot;: \&quot;Indonesia\&quot;,\n \&quot;population\&quot;: 276362965\n },\n {\n \&quot;name\&quot;: \&quot;Pakistan\&quot;,\n \&quot;population\&quot;: 225199937\n }\n ]\n}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Pour traiter cette sortie, vous devrez généralement utiliser un nœud Code pour analyser la chaîne en un objet JSON approprié :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Analyser la sortie chaîne de l&#39;Agent IA en JSON utilisable</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">outputStr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$json</span><span class="p">.</span><span class="nx">output</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">parsedData</span><span class="p">;</span>
+<span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">parsedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">outputStr</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="nx">parsedData</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Gérer le cas où la sortie n&#39;est pas un JSON valide</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Could not parse output as JSON&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">original</span><span class="o">:</span><span class="w"> </span><span class="nx">outputStr</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fournir-des-exemples-json-aux-agents-ia">
+<h2>Fournir des Exemples JSON aux Agents IA<a class="headerlink" href="#fournir-des-exemples-json-aux-agents-ia" title="Link to this heading"></a></h2>
+<p>Lorsque vous demandez aux agents IA de produire du JSON structuré, vous pouvez rencontrer l’erreur “Single ‘{’ in template”. Cela se produit parce que les accolades dans votre exemple JSON entrent en conflit avec la syntaxe d’expression de n8n.</p>
+<p>Pour éviter cela, vous pouvez utiliser l’une de ces approches :</p>
+<section id="utiliser-un-noeud-code-pour-generer-l-exemple">
+<h3>1. Utiliser un Nœud Code pour Générer l’Exemple<a class="headerlink" href="#utiliser-un-noeud-code-pour-generer-l-exemple" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Générer un exemple JSON avant le nœud Agent IA</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;Item1&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;This is a test&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Somedata&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;Frog&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">6</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Cat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">7</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Dog&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">9</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">};</span>
+<span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">example</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">example</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span>
+</pre></div>
+</div>
+<p>Ensuite, dans votre nœud Agent IA, vous pouvez référencer cet exemple avec <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">$json.example</span> <span class="pre">}}</span></code>.</p>
+</section>
+<section id="utiliser-la-fonction-fromai-methode-plus-recente">
+<h3>2. Utiliser la Fonction fromAI (Méthode Plus Récente)<a class="headerlink" href="#utiliser-la-fonction-fromai-methode-plus-recente" title="Link to this heading"></a></h3>
+<p>Pour les versions plus récentes de n8n, la fonction $fromAI fournit une approche plus propre pour gérer les sorties de l’agent IA :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $fromAI.json.specificProperty }}
+</pre></div>
+</div>
+<p>Cela vous permet de référencer directement les propriétés de la sortie de l’IA dans les nœuds suivants sans analyse manuelle.</p>
+</section>
+</section>
+<section id="travailler-avec-les-outils-http-dans-les-agents-ia">
+<h2>Travailler avec les Outils HTTP dans les Agents IA<a class="headerlink" href="#travailler-avec-les-outils-http-dans-les-agents-ia" title="Link to this heading"></a></h2>
+<p>Lors de la configuration d’outils HTTP pour les agents IA qui nécessitent des paramètres JSON :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://api.example.com/endpoint&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;headers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;bodyParametersUi&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;parameter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ids&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ [\&quot;ID\&quot;] }}&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Le format approprié pour les paramètres de tableau doit être explicitement décrit dans la description de l’outil pour s’assurer que l’IA les formate correctement.</p>
+</section>
+<section id="preserver-les-champs-json-d-entree-dans-la-sortie-de-l-agent-ia">
+<h2>Préserver les Champs JSON d’Entrée dans la Sortie de l’Agent IA<a class="headerlink" href="#preserver-les-champs-json-d-entree-dans-la-sortie-de-l-agent-ia" title="Link to this heading"></a></h2>
+<p>Un défi courant est de maintenir les champs d’entrée (comme les IDs) dans la sortie de l’agent IA. Comme l’agent IA pourrait ne pas inclure de manière fiable ces champs dans sa réponse, une meilleure approche consiste à utiliser un nœud Code après l’Agent IA pour fusionner l’entrée originale avec la sortie de l’agent :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Préserver l&#39;ID de l&#39;entrée tout en utilisant la sortie de l&#39;agent IA</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">originalId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$node</span><span class="p">[</span><span class="s2">&quot;PreviousNode&quot;</span><span class="p">].</span><span class="nx">first</span><span class="p">().</span><span class="nx">json</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">aiOutput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$json</span><span class="p">.</span><span class="nx">output</span><span class="p">;</span>
+<span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="nx">originalId</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">aiResult</span><span class="o">:</span><span class="w"> </span><span class="nx">aiOutput</span>
+<span class="w">    </span><span class="c1">// Ajoutez tout autre champ que vous souhaitez préserver</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="traitement-de-plusieurs-elements-avec-les-agents-ia">
+<h2>Traitement de Plusieurs Éléments avec les Agents IA<a class="headerlink" href="#traitement-de-plusieurs-elements-avec-les-agents-ia" title="Link to this heading"></a></h2>
+<p>Par défaut, l’Agent IA traite chaque élément individuellement, ce qui peut prendre du temps pour le traitement par lots. Pour traiter plusieurs éléments en un seul appel :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Collecter tous les éléments dans un seul tableau pour l&#39;agent IA</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">allItems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$input</span><span class="p">.</span><span class="nx">all</span><span class="p">().</span><span class="nx">map</span><span class="p">(</span><span class="nx">item</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">item</span><span class="p">.</span><span class="nx">json</span><span class="p">);</span>
+<span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">combinedData</span><span class="o">:</span><span class="w"> </span><span class="nx">allItems</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">prompt</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Process all these items at once: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">allItems</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="formatage-de-sortie-structuree-pour-les-agents-ia">
+<h2>Formatage de Sortie Structurée pour les Agents IA<a class="headerlink" href="#formatage-de-sortie-structuree-pour-les-agents-ia" title="Link to this heading"></a></h2>
+<p>Pour obtenir une sortie structurée cohérente des agents IA, fournissez des instructions claires de format de sortie dans votre message système. Pour les sorties JSON :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You are a helpful assistant. Always respond in valid JSON format following this structure:\n\n{\n  \&quot;category\&quot;: \&quot;[Category of the request]\&quot;,\n \&quot;response\&quot;: \&quot;[Your detailed response]\&quot;,\n \&quot;nextSteps\&quot;: [\&quot;step1\&quot;, \&quot;step2\&quot;, \&quot;etc\&quot;]\n}\n\nEnsure your entire response is valid JSON.&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="utiliser-des-expressions-pour-acceder-aux-donnees-json">
+<h2>Utiliser des Expressions pour Accéder aux Données JSON<a class="headerlink" href="#utiliser-des-expressions-pour-acceder-aux-donnees-json" title="Link to this heading"></a></h2>
+<p>n8n fournit une syntaxe d’expression puissante pour accéder et manipuler les données JSON :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $json.property1 }}
+</pre></div>
+</div>
+<p>Pour les propriétés imbriquées plus profondes :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $json.parent.child.property }}
+</pre></div>
+</div>
+<p>Pour accéder aux données d’un nœud précédent spécifique :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $node[&quot;NodeName&quot;].json.property }}
+</pre></div>
+</div>
+</section>
+<section id="techniques-avancees-pour-les-agents-ia">
+<h2>Techniques Avancées pour les Agents IA<a class="headerlink" href="#techniques-avancees-pour-les-agents-ia" title="Link to this heading"></a></h2>
+<section id="chainage-d-agents">
+<h3>Chaînage d’Agents<a class="headerlink" href="#chainage-d-agents" title="Link to this heading"></a></h3>
+<p>Pour des tâches complexes, vous pouvez chaîner plusieurs agents IA, chacun spécialisé dans une partie spécifique du processus :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Nœud Code pour préparer l&#39;entrée pour le prochain agent</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">firstAgentOutput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$json</span><span class="p">.</span><span class="nx">output</span><span class="p">;</span>
+<span class="c1">// Extraire les informations pertinentes ou transformer si nécessaire</span>
+<span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">previousAgentResult</span><span class="o">:</span><span class="w"> </span><span class="nx">firstAgentOutput</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">nextAgentInstruction</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Continue processing based on the previous agent&#39;s output&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="validation-et-nettoyage-des-sorties-ia">
+<h3>Validation et Nettoyage des Sorties IA<a class="headerlink" href="#validation-et-nettoyage-des-sorties-ia" title="Link to this heading"></a></h3>
+<p>Pour garantir que les sorties de l’IA sont utilisables dans les étapes suivantes du workflow :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Valider et nettoyer la sortie JSON de l&#39;IA</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">aiOutput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$json</span><span class="p">.</span><span class="nx">output</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">processedOutput</span><span class="p">;</span>
+
+<span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Tenter d&#39;analyser si c&#39;est une chaîne JSON</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">parsedOutput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">aiOutput</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;string&#39;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">aiOutput</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">aiOutput</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Valider les champs requis</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">parsedOutput</span><span class="p">.</span><span class="nx">requiredField</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s2">&quot;Missing required field&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Nettoyer/normaliser les données</span>
+<span class="w">  </span><span class="nx">processedOutput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">...</span><span class="nx">parsedOutput</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">normalizedField</span><span class="o">:</span><span class="w"> </span><span class="nx">parsedOutput</span><span class="p">.</span><span class="nx">someField</span><span class="p">.</span><span class="nx">trim</span><span class="p">().</span><span class="nx">toLowerCase</span><span class="p">()</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="nx">processedOutput</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Gérer les erreurs avec une sortie de secours</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">      </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span>
+<span class="w">      </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed to process AI output: </span><span class="si">${</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">fallbackData</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* données de secours */</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques-pour-les-configurations-json-dans-n8n">
+<h2>Bonnes Pratiques pour les Configurations JSON dans n8n<a class="headerlink" href="#bonnes-pratiques-pour-les-configurations-json-dans-n8n" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Validation des Entrées/Sorties</strong> : Toujours valider les données avant et après le traitement par l’IA</p></li>
+<li><p><strong>Gestion des Erreurs Robuste</strong> : Inclure des blocs try/catch pour gérer les formats inattendus</p></li>
+<li><p><strong>Documentation</strong> : Documenter clairement la structure attendue des données dans les messages système</p></li>
+<li><p><strong>Tests</strong> : Tester avec divers scénarios d’entrée pour s’assurer que votre configuration gère tous les cas</p></li>
+<li><p><strong>Modularité</strong> : Diviser les tâches complexes en étapes plus petites et plus gérables</p></li>
+<li><p><strong>Versionnage</strong> : Garder une trace des modifications de configuration pour faciliter le débogage</p></li>
+<li><p><strong>Optimisation des Performances</strong> : Traiter les données par lots lorsque cela est possible pour réduire les appels API</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

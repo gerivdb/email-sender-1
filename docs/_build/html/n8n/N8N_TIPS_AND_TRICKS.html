@@ -1,0 +1,620 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GUIDE COMPLET : DÉFINITIONS JSON DES NŒUDS N8N, TOUS LES OUTILS, NUANCES D’INTÉGRATION ET MANIPULATION D’AGENT IA &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">GUIDE COMPLET : DÉFINITIONS JSON DES NŒUDS N8N, TOUS LES OUTILS, NUANCES D’INTÉGRATION ET MANIPULATION D’AGENT IA</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/n8n/N8N_TIPS_AND_TRICKS.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-complet-definitions-json-des-noeuds-n8n-tous-les-outils-nuances-d-integration-et-manipulation-d-agent-ia">
+<h1>GUIDE COMPLET : DÉFINITIONS JSON DES NŒUDS N8N, TOUS LES OUTILS, NUANCES D’INTÉGRATION ET MANIPULATION D’AGENT IA<a class="headerlink" href="#guide-complet-definitions-json-des-noeuds-n8n-tous-les-outils-nuances-d-integration-et-manipulation-d-agent-ia" title="Link to this heading"></a></h1>
+<p>Ce document combine une vue d’ensemble des structures JSON des nœuds n8n avec des sections détaillées sur tous les outils rencontrés — des déclencheurs de chat et notes autocollantes aux intégrations avec Pinecone, Airtable, PostgreSQL, Google Docs, Google Calendar, Telegram, API HTTP, SerpAPI, outils de Workflow, et plus encore. Il couvre également les meilleures pratiques pour manipuler le module Agent IA et aborde les problèmes courants de valeur de propriété lors de la génération de JSON via les LLM.</p>
+<section id="structure-json-generale-des-noeuds-n8n">
+<h2>1. STRUCTURE JSON GÉNÉRALE DES NŒUDS N8N<a class="headerlink" href="#structure-json-generale-des-noeuds-n8n" title="Link to this heading"></a></h2>
+<section id="vue-d-ensemble">
+<h3>Vue d’ensemble :<a class="headerlink" href="#vue-d-ensemble" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Chaque nœud est défini comme un objet JSON avec un ensemble commun de clés.</p></li>
+<li><p>Ces clés s’appliquent à tous les types de nœuds, qu’ils gèrent des déclencheurs, le traitement de données, la documentation ou des intégrations externes.</p></li>
+</ul>
+</section>
+<section id="champs-principaux-de-haut-niveau">
+<h3>Champs principaux de haut niveau :<a class="headerlink" href="#champs-principaux-de-haut-niveau" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>id :</strong> Identifiant unique (généralement un UUID). Doit être unique au sein d’un workflow.</p></li>
+<li><p><strong>name :</strong> Étiquette lisible par l’humain (ex : “When Chat Message Received”, “Airtable - Update Records”).</p></li>
+<li><p><strong>type :</strong> Définit la fonctionnalité du nœud ; exemples :</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;&#64;n8n/n8n-nodes-langchain.chatTrigger&quot;</span></code> pour les déclencheurs de chat.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;n8n-nodes-base.stickyNote&quot;</span></code> pour les annotations.</p></li>
+<li><p>D’autres outils utilisent des identifiants de type spécifiques.</p></li>
+</ul>
+</li>
+<li><p><strong>typeVersion :</strong> Version du schéma (communément 1, 1.1, 1.7, etc.). Les versions supérieures peuvent prendre en charge des fonctionnalités supplémentaires.</p></li>
+<li><p><strong>position :</strong> Un tableau <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y]</span></code> déterminant le placement du nœud sur le canevas visuel.</p></li>
+<li><p><strong>parameters :</strong> Un objet imbriqué contenant des configurations spécifiques au nœud (actions, identifiants, texte d’interface utilisateur, etc.).</p></li>
+</ul>
+</section>
+<section id="meilleures-pratiques">
+<h3>Meilleures pratiques :<a class="headerlink" href="#meilleures-pratiques" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Utilisez des noms descriptifs et des positions logiques pour maintenir un workflow organisé.</p></li>
+<li><p>Exploitez le langage d’expression de n8n (ex : <code class="docutils literal notranslate"><span class="pre">={{</span> <span class="pre">$json[&quot;field&quot;]</span> <span class="pre">}}</span></code>) pour le contenu dynamique.</p></li>
+<li><p>Validez votre JSON (ex : avec un linter) pour détecter les problèmes de valeur de propriété comme les guillemets inappropriés, les virgules traînantes ou les incompatibilités de type.</p></li>
+</ul>
+</section>
+</section>
+<section id="noeuds-declencheurs-de-chat-n8n-n8n-nodes-langchain-chattrigger">
+<h2>2. NŒUDS DÉCLENCHEURS DE CHAT (&#64;n8n/n8n-nodes-langchain.chatTrigger)<a class="headerlink" href="#noeuds-declencheurs-de-chat-n8n-n8n-nodes-langchain-chattrigger" title="Link to this heading"></a></h2>
+<section id="objectif">
+<h3>Objectif :<a class="headerlink" href="#objectif" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Écouter les messages de chat entrants via des webhooks ou des widgets de chat intégrés.</p></li>
+<li><p>Agir comme point d’entrée pour les workflows basés sur la conversation.</p></li>
+</ul>
+</section>
+<section id="parametres-cles">
+<h3>Paramètres clés :<a class="headerlink" href="#parametres-cles" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>webhookId :</strong> Identifiant unique liant le nœud à son point de terminaison webhook.</p></li>
+<li><p><strong>mode :</strong> Généralement <code class="docutils literal notranslate"><span class="pre">&quot;webhook&quot;</span></code> pour indiquer le mode de réception d’événements.</p></li>
+<li><p><strong>public (boolean) :</strong> Détermine si le point de terminaison du chat est ouvert à l’accès public. Utilisez avec des <code class="docutils literal notranslate"><span class="pre">allowedOrigins</span></code> sécurisés.</p></li>
+<li><p><strong>initialMessages :</strong> Texte de salutation ou d’instruction prédéfini (prend en charge Markdown et les expressions dynamiques).</p></li>
+<li><p><strong>options :</strong> Paramètres avancés incluant :</p>
+<ul>
+<li><p><strong>responseMode :</strong> Comment les réponses sont envoyées (ex : <code class="docutils literal notranslate"><span class="pre">&quot;responseNode&quot;</span></code>).</p></li>
+<li><p><strong>allowedOrigins :</strong> Domaines autorisés à accéder au point de terminaison du chat.</p></li>
+<li><p><strong>title/subtitle :</strong> Texte d’interface utilisateur personnalisé.</p></li>
+<li><p><strong>allowFileUploads :</strong> Activer/désactiver les téléchargements de fichiers.</p></li>
+<li><p><strong>loadPreviousSession :</strong> Gère la persistance de session (ex : <code class="docutils literal notranslate"><span class="pre">&quot;memory&quot;</span></code>).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nuances">
+<h3>Nuances :<a class="headerlink" href="#nuances" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Assurez-vous que le webhookId de chaque Chat Trigger est unique.</p></li>
+<li><p>Les expressions dynamiques dans initialMessages permettent une personnalisation à l’exécution.</p></li>
+<li><p>Différentes typeVersions (1 vs. 1.1) peuvent offrir des paramètres variables.</p></li>
+</ul>
+</section>
+</section>
+<section id="noeuds-sticky-note-n8n-nodes-base-stickynote">
+<h2>3. NŒUDS STICKY NOTE (n8n-nodes-base.stickyNote)<a class="headerlink" href="#noeuds-sticky-note-n8n-nodes-base-stickynote" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Objectif :<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fournir de la documentation, des annotations ou des rappels dans le workflow.</p></li>
+<li><p>N’affectent pas le flux de données ; purement à usage informatif.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Paramètres clés :<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>content :</strong> Le texte affiché (prend en charge Markdown pour les en-têtes, listes, blocs de code, liens, images).</p></li>
+<li><p><strong>width &amp; height :</strong> Définissent les dimensions visuelles sur le canevas.</p></li>
+<li><p><strong>color (optionnel) :</strong> Code numérique pour attribuer une couleur de fond pour la différenciation visuelle.</p></li>
+</ul>
+</section>
+<section id="conseils-d-utilisation">
+<h3>Conseils d’utilisation :<a class="headerlink" href="#conseils-d-utilisation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Placez les notes autocollantes près des nœuds associés pour ajouter du contexte.</p></li>
+<li><p>Utilisez un formatage Markdown clair et concis.</p></li>
+<li><p>Mettez à jour les notes régulièrement à mesure que les workflows évoluent.</p></li>
+</ul>
+</section>
+</section>
+<section id="module-agent-ia-n8n-nodes-langchain-agent">
+<h2>4. MODULE AGENT IA (n8n-nodes-langchain.agent)<a class="headerlink" href="#module-agent-ia-n8n-nodes-langchain-agent" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>Objectif :<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Traiter les entrées utilisateur et générer des réponses interactives contextuelles.</p></li>
+<li><p>Invoquer dynamiquement d’autres outils en fonction du contexte de conversation et de la mémoire.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Paramètres clés :<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>text :</strong> Entrée principale, généralement définie dynamiquement (ex : <code class="docutils literal notranslate"><span class="pre">={{</span> <span class="pre">$json.chatInput</span> <span class="pre">}}</span></code>).</p></li>
+<li><p><strong>options :</strong> Contient un <code class="docutils literal notranslate"><span class="pre">systemMessage</span></code> détaillé qui :</p>
+<ul>
+<li><p>Définit le rôle et le comportement de l’agent IA.</p></li>
+<li><p>Fournit des directives pour la gestion de la mémoire et l’invocation d’outils.</p></li>
+<li><p>Peut inclure des instructions supplémentaires pour le formatage des réponses.</p></li>
+</ul>
+</li>
+<li><p><strong>promptType :</strong> Généralement <code class="docutils literal notranslate"><span class="pre">&quot;define&quot;</span></code>, appliquant les règles du message système.</p></li>
+</ul>
+</section>
+<section id="integration-memoire">
+<h3>Intégration &amp; Mémoire :<a class="headerlink" href="#integration-memoire" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Se connecte avec des sous-fonctions via des ports comme <code class="docutils literal notranslate"><span class="pre">ai_tool</span></code>, <code class="docutils literal notranslate"><span class="pre">ai_memory</span></code>, et <code class="docutils literal notranslate"><span class="pre">ai_languageModel</span></code>.</p></li>
+<li><p>Souvent associé à des nœuds de mémoire (ex : <code class="docutils literal notranslate"><span class="pre">memoryBufferWindow</span></code>) pour fournir l’historique de conversation.</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Nuances :<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Élaborez soigneusement le systemMessage pour gérer divers scénarios.</p></li>
+<li><p>Validez la sortie JSON pour les problèmes de valeur de propriété (voir Section 6).</p></li>
+<li><p>Expérimentez avec différents modèles (ex : “gpt-4o” vs. “gpt-4o-mini”) pour l’équilibre performance/coût.</p></li>
+</ul>
+</section>
+<section id="exemples-de-snippets">
+<h3>Exemples de snippets :<a class="headerlink" href="#exemples-de-snippets" title="Link to this heading"></a></h3>
+<p><em>Configuration minimale d’Agent IA :</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AI Agent for Chat&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@n8n/n8n-nodes-langchain.agent&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;={{ $json.chatInput }}&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;=You are a helpful assistant.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;promptType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;define&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;typeVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.7</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><em>Agent IA avec intégration de Calendrier :</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-2&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Calendar AI Agent&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@n8n/n8n-nodes-langchain.agent&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;={{ $json.chatInput }}&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;=You are a Google Calendar assistant. Ask for event details before creating an event.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;promptType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;define&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;typeVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.7</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><em>Agent IA avec intégration de Mémoire :</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-3&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AI Agent with Memory&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@n8n/n8n-nodes-langchain.agent&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;={{ $json.chatInput }}&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;=Use long-term memory to provide context-aware responses.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;promptType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;define&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;typeVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.7</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="noeuds-de-memoire-tampon-n8n-nodes-langchain-memorybufferwindow">
+<h2>5. NŒUDS DE MÉMOIRE TAMPON (n8n-nodes-langchain.memoryBufferWindow)<a class="headerlink" href="#noeuds-de-memoire-tampon-n8n-nodes-langchain-memorybufferwindow" title="Link to this heading"></a></h2>
+<section id="id6">
+<h3>Objectif :<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Gérer l’historique temporaire de conversation pour l’agent IA.</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>Paramètres clés :<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>sessionKey :</strong> Identifiant pour la session de mémoire (peut être dynamique).</p></li>
+<li><p><strong>contextWindowLength :</strong> Nombre de messages à conserver dans la fenêtre de contexte.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>Conseils d’utilisation :<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ajustez contextWindowLength en fonction de la complexité de la conversation.</p></li>
+<li><p>Utilisez des clés de session cohérentes pour maintenir la continuité de la mémoire.</p></li>
+</ul>
+</section>
+</section>
+<section id="outils-d-integration-leurs-operations">
+<h2>6. OUTILS D’INTÉGRATION &amp; LEURS OPÉRATIONS<a class="headerlink" href="#outils-d-integration-leurs-operations" title="Link to this heading"></a></h2>
+<p>Cette section détaille chaque outil externe rencontré et ses nuances spécifiques.</p>
+<section id="pinecone">
+<h3>6.1. PINECONE<a class="headerlink" href="#pinecone" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Interface avec la base de données vectorielle de Pinecone pour l’indexation, l’insertion et l’interrogation de vecteurs.</p></li>
+</ul>
+<p><strong>Opérations clés :</strong></p>
+<ul class="simple">
+<li><p>Création/Mise à jour d’index – Définir les noms d’index, dimensions et métriques.</p></li>
+<li><p>Insertion de vecteurs – Mapper les champs JSON aux données vectorielles ; le schéma doit correspondre à l’index.</p></li>
+<li><p>Interrogation de vecteurs – Récupérer des vecteurs similaires basés sur des paramètres de requête.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Assurez-vous que les identifiants API et les mappages de champs sont précis.</p></li>
+<li><p>Utilisez des noms de nœuds descriptifs (ex : “Pinecone - Upsert Vectors”).</p></li>
+</ul>
+</section>
+<section id="airtable">
+<h3>6.2. AIRTABLE<a class="headerlink" href="#airtable" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Gérer les enregistrements dans les bases Airtable.</p></li>
+</ul>
+<p><strong>Opérations clés :</strong></p>
+<ul class="simple">
+<li><p>Lecture, Création, Mise à jour et Suppression d’enregistrements.</p></li>
+<li><p>Mappage de champs : les clés JSON doivent correspondre exactement aux noms de colonnes Airtable.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Sécurisez les clés API via les identifiants.</p></li>
+<li><p>Utilisez des expressions dynamiques pour gérer les données d’enregistrement.</p></li>
+</ul>
+</section>
+<section id="postgresql">
+<h3>6.3. POSTGRESQL<a class="headerlink" href="#postgresql" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Exécuter des requêtes SQL pour manipuler des données.</p></li>
+</ul>
+<p><strong>Opérations clés :</strong></p>
+<ul class="simple">
+<li><p>Requêtes SELECT, INSERT, UPDATE, DELETE.</p></li>
+<li><p>Utilisez des requêtes paramétrées pour éviter l’injection SQL.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Assurez-vous que la syntaxe SQL est valide et que les valeurs dynamiques sont correctement insérées.</p></li>
+<li><p>Utilisez des nœuds comme postgresTool pour les tâches de manipulation JSON.</p></li>
+</ul>
+</section>
+<section id="google-docs">
+<h3>6.4. GOOGLE DOCS<a class="headerlink" href="#google-docs" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Récupérer ou mettre à jour des Google Docs pour stocker la mémoire à long terme ou des notes.</p></li>
+</ul>
+<p><strong>Opérations clés :</strong></p>
+<ul class="simple">
+<li><p>“get” pour la récupération et “update” pour l’insertion de contenu.</p></li>
+<li><p>Utilisez actionsUi (dans googleDocsTool) pour définir les charges utiles JSON pour les opérations.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Liez les identifiants OAuth corrects.</p></li>
+<li><p>Mappez correctement les champs dynamiques (ex : dates, contenu de mémoire).</p></li>
+</ul>
+</section>
+<section id="google-calendar">
+<h3>6.5. GOOGLE CALENDAR<a class="headerlink" href="#google-calendar" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Récupérer ou créer des événements dans Google Calendar.</p></li>
+</ul>
+<p><strong>Opérations clés :</strong></p>
+<ul class="simple">
+<li><p>Get Events : Utilisez des filtres de plage de dates avec des expressions dynamiques.</p></li>
+<li><p>Create Events : Spécifiez début, fin, résumé, description et champs supplémentaires (participants, données de conférence).</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Validez les formats de date (YYYY-MM-DD HH:mm:ss).</p></li>
+<li><p>Assurez-vous que les mappages de champs de calendrier correspondent à l’API Google Calendar.</p></li>
+</ul>
+</section>
+<section id="telegram">
+<h3>6.6. TELEGRAM<a class="headerlink" href="#telegram" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Gérer la messagerie via Telegram.</p></li>
+</ul>
+<p><strong>Types de nœuds clés :</strong></p>
+<ul class="simple">
+<li><p>telegramTrigger : Pour recevoir des messages.</p></li>
+<li><p>telegram : Pour envoyer des réponses textuelles.</p></li>
+<li><p>telegramTool : Pour envoyer des fichiers/documents.</p></li>
+</ul>
+<p><strong>Paramètres clés :</strong></p>
+<ul class="simple">
+<li><p>webhookId (pour les déclencheurs), chatId, text, file (URL), et additionalFields (ex : parse_mode).</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Utilisez des expressions dynamiques pour récupérer les IDs de chat.</p></li>
+<li><p>Testez avec des identifiants sandbox lorsque c’est possible.</p></li>
+</ul>
+</section>
+<section id="requete-http">
+<h3>6.7. REQUÊTE HTTP<a class="headerlink" href="#requete-http" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Effectuer des appels API HTTP génériques (ex : pour la génération d’image DALL-E).</p></li>
+</ul>
+<p><strong>Paramètres clés :</strong></p>
+<ul class="simple">
+<li><p>url, method, sendBody, sendHeaders.</p></li>
+<li><p>authentication : Identifiants prédéfinis ou génériques.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Assurez-vous que les corps JSON sont valides.</p></li>
+<li><p>Utilisez ce nœud pour appeler des API externes comme DALL-E en définissant le modèle dans la charge utile.</p></li>
+</ul>
+</section>
+<section id="outil-serpapi">
+<h3>6.8. OUTIL SERPAPI<a class="headerlink" href="#outil-serpapi" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Interroger les données de moteur de recherche via SerpAPI.</p></li>
+</ul>
+<p><strong>Paramètres clés :</strong></p>
+<ul class="simple">
+<li><p>options : Paramètres de requête supplémentaires.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Liez les identifiants SerpAPI appropriés.</p></li>
+<li><p>Formulez des requêtes de recherche dynamiques basées sur l’entrée utilisateur.</p></li>
+</ul>
+</section>
+<section id="outil-workflow">
+<h3>6.9. OUTIL WORKFLOW<a class="headerlink" href="#outil-workflow" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Déclencher ou exécuter des workflows séparés (ex : création de tâche).</p></li>
+</ul>
+<p><strong>Paramètres clés :</strong></p>
+<ul class="simple">
+<li><p>name, workflowId, schemaType, et inputSchema.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Validez que le schéma JSON d’entrée correspond au workflow cible.</p></li>
+<li><p>Utilisez pour automatiser des sous-workflows.</p></li>
+</ul>
+</section>
+<section id="outil-gmail">
+<h3>6.10. OUTIL GMAIL<a class="headerlink" href="#outil-gmail" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Envoyer des emails via Gmail.</p></li>
+</ul>
+<p><strong>Paramètres clés :</strong></p>
+<ul class="simple">
+<li><p>sendTo, subject, message, additionalFields.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Personnalisez les emails avec des expressions dynamiques.</p></li>
+<li><p>Assurez-vous que les identifiants OAuth sont correctement définis.</p></li>
+</ul>
+</section>
+<section id="supabase">
+<h3>6.11. SUPABASE<a class="headerlink" href="#supabase" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Interagir avec les bases de données Supabase.</p></li>
+</ul>
+<p><strong>Paramètres clés :</strong></p>
+<ul class="simple">
+<li><p>tableId, fieldsUi (mappage des données JSON aux champs de table).</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Assurez-vous que le schéma de données s’aligne avec votre table Supabase.</p></li>
+<li><p>Sécurisez les clés API via les identifiants.</p></li>
+</ul>
+</section>
+<section id="noeuds-generiques-auxiliaires">
+<h3>6.12. NŒUDS GÉNÉRIQUES &amp; AUXILIAIRES<a class="headerlink" href="#noeuds-generiques-auxiliaires" title="Link to this heading"></a></h3>
+<p><strong>Objectif :</strong></p>
+<ul class="simple">
+<li><p>Gérer des opérations générales telles que les assignations de valeurs, la fusion de données, la division des sorties, les conditionnels et le déclenchement de sous-workflows.</p></li>
+</ul>
+<p><strong>Exemples clés :</strong></p>
+<ul class="simple">
+<li><p>Nœuds Set : Pour assigner des valeurs (ex : prompts système).</p></li>
+<li><p>Merge, Aggregate, Split Out : Pour l’orchestration de données.</p></li>
+<li><p>Nœuds If : Pour la logique conditionnelle.</p></li>
+<li><p>Execute Workflow Trigger &amp; Respond To Webhook : Pour le contrôle de flux.</p></li>
+</ul>
+<p><strong>Nuances :</strong></p>
+<ul class="simple">
+<li><p>Gardez les configurations propres et validez les expressions dynamiques.</p></li>
+</ul>
+</section>
+</section>
+<section id="notes-supplementaires-sur-la-manipulation-d-agent-ia-de-memoire">
+<h2>7. NOTES SUPPLÉMENTAIRES SUR LA MANIPULATION D’AGENT IA &amp; DE MÉMOIRE<a class="headerlink" href="#notes-supplementaires-sur-la-manipulation-d-agent-ia-de-memoire" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Le module Agent IA orchestre des réponses intelligentes et des appels d’outils.</p></li>
+<li><p>Les fonctionnalités clés incluent :</p>
+<ul>
+<li><p>Traitement de l’entrée utilisateur via le paramètre “text”.</p></li>
+<li><p>Guidage du comportement avec un “options.systemMessage” détaillé (qui peut inclure la mémoire, les règles d’appel d’outils et les réponses de secours).</p></li>
+<li><p>Connexion aux nœuds de mémoire (ex : memoryBufferWindow) pour la rétention de contexte.</p></li>
+</ul>
+</li>
+<li><p>Meilleures pratiques :</p>
+<ul>
+<li><p>Élaborez des messages système complets qui couvrent les cas limites.</p></li>
+<li><p>Utilisez des expressions dynamiques pour s’adapter aux entrées variables.</p></li>
+<li><p>Testez le flux conversationnel complet pour garantir que les valeurs dynamiques (ex : détails d’événement) passent correctement entre les nœuds.</p></li>
+<li><p>Validez les sorties JSON pour éviter les problèmes courants de valeur de propriété (voir Section 6).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="problemes-courants-de-valeur-de-propriete-avec-le-json-genere-par-llm">
+<h2>8. PROBLÈMES COURANTS DE VALEUR DE PROPRIÉTÉ AVEC LE JSON GÉNÉRÉ PAR LLM<a class="headerlink" href="#problemes-courants-de-valeur-de-propriete-avec-le-json-genere-par-llm" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Guillemets :</strong></p>
+<ul>
+<li><p>Utilisez des guillemets doubles pour les noms de propriété et les valeurs de chaîne.</p></li>
+</ul>
+</li>
+<li><p><strong>Virgules traînantes :</strong></p>
+<ul>
+<li><p>Évitez les virgules traînantes après le dernier élément dans les objets ou tableaux.</p></li>
+</ul>
+</li>
+<li><p><strong>Incompatibilités de type de données :</strong></p>
+<ul>
+<li><p>N’enveloppez pas les valeurs numériques ou booléennes dans des guillemets.</p></li>
+</ul>
+</li>
+<li><p><strong>Sensibilité à la casse :</strong></p>
+<ul>
+<li><p>Assurez-vous que les noms de propriété correspondent à la casse attendue.</p></li>
+</ul>
+</li>
+<li><p><strong>Crochets/Accolades :</strong></p>
+<ul>
+<li><p>Confirmez que toutes les structures JSON sont correctement ouvertes et fermées.</p></li>
+</ul>
+</li>
+<li><p><strong>Validation :</strong></p>
+<ul>
+<li><p>Exécutez votre JSON à travers des validateurs pour détecter les erreurs de syntaxe.</p></li>
+</ul>
+</li>
+<li><p><strong>Prompting LLM :</strong></p>
+<ul>
+<li><p>Lorsque vous instruisez les LLM pour générer du JSON, spécifiez “output valid JSON” et avertissez de ces pièges courants.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="conclusions-finales">
+<h2>9. CONCLUSIONS FINALES<a class="headerlink" href="#conclusions-finales" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Nœuds déclencheurs de chat :</strong></p>
+<ul>
+<li><p>Agissent comme points d’entrée pour les workflows basés sur la conversation avec des paramètres nuancés pour l’accès public et les salutations dynamiques.</p></li>
+</ul>
+</li>
+<li><p><strong>Nœuds Sticky Note :</strong></p>
+<ul>
+<li><p>Servent de documentation dans le workflow et sont essentiels pour la clarté dans les workflows complexes.</p></li>
+</ul>
+</li>
+<li><p><strong>Module Agent IA :</strong></p>
+<ul>
+<li><p>Intègre l’entrée utilisateur, la mémoire dynamique et les appels d’outils pour générer des réponses contextuelles.</p></li>
+</ul>
+</li>
+<li><p><strong>Outils d’intégration :</strong></p>
+<ul>
+<li><p>Chaque outil externe (Pinecone, Airtable, PostgreSQL, Google Docs/Calendar, Telegram, Requête HTTP, SerpAPI, Outil Workflow, Gmail, Supabase) a des besoins de configuration spécifiques et nécessite des mappages de champs précis.</p></li>
+</ul>
+</li>
+<li><p><strong>JSON généré par LLM :</strong></p>
+<ul>
+<li><p>Abordez les problèmes courants de valeur de propriété par un formatage et une validation soigneux.</p></li>
+</ul>
+</li>
+<li><p><strong>Globalement :</strong></p>
+<ul>
+<li><p>Combiner des structures de nœuds bien documentées avec des configurations d’intégration rigoureuses conduit à des workflows robustes et maintenables.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

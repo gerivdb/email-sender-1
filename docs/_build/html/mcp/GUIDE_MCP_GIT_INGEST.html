@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation du MCP Git Ingest dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation du MCP Git Ingest dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/mcp/GUIDE_MCP_GIT_INGEST.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-du-mcp-git-ingest-dans-n8n">
+<h1>Guide d’utilisation du MCP Git Ingest dans n8n<a class="headerlink" href="#guide-d-utilisation-du-mcp-git-ingest-dans-n8n" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Le MCP Git Ingest est un serveur MCP (Model Context Protocol) qui permet d’explorer et de lire les structures de dépôts GitHub et les fichiers importants. Ce guide vous explique comment configurer et utiliser le MCP Git Ingest dans vos workflows n8n.</p>
+</section>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>n8n version 1.0.0 ou ultérieure</p></li>
+<li><p>Python 3.8 ou ultérieur</p></li>
+<li><p>uvx (installé via pip)</p></li>
+<li><p>mcp-git-ingest (installé via pip)</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<ol>
+<li><p>Assurez-vous que Python et pip sont installés sur votre système.</p></li>
+<li><p>Installez uvx et mcp-git-ingest :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">uvx</span><span class="p">==</span><span class="n">1</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="p">+</span><span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">adhikasp</span><span class="p">/</span><span class="n">mcp-git-ingest</span>
+</pre></div>
+</div>
+</li>
+<li><p>Exécutez le script <code class="docutils literal notranslate"><span class="pre">scripts\configure-mcp-git-ingest.ps1</span></code> pour configurer le MCP Git Ingest dans n8n :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">configure-mcp-git-ingest</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="configuration-dans-n8n">
+<h2>Configuration dans n8n<a class="headerlink" href="#configuration-dans-n8n" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ouvrez n8n et accédez à “Credentials”</p></li>
+<li><p>Vérifiez que l’identifiant “MCP Git Ingest” a été créé</p></li>
+<li><p>Si ce n’est pas le cas, créez un nouvel identifiant “MCP Client (STDIO) API” avec les paramètres suivants :</p>
+<ul class="simple">
+<li><p><strong>Credential Name</strong>: MCP Git Ingest</p></li>
+<li><p><strong>Command</strong>: Chemin complet vers mcp-git-ingest.cmd</p></li>
+<li><p><strong>Arguments</strong>: (laissez vide)</p></li>
+<li><p><strong>Environments</strong>: N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="utilisation-dans-les-workflows">
+<h2>Utilisation dans les workflows<a class="headerlink" href="#utilisation-dans-les-workflows" title="Link to this heading"></a></h2>
+<p>Le MCP Git Ingest fournit deux outils principaux :</p>
+<section id="github-directory-structure">
+<h3>1. github_directory_structure<a class="headerlink" href="#github-directory-structure" title="Link to this heading"></a></h3>
+<p>Cet outil permet d’obtenir la structure d’un dépôt GitHub sous forme d’arborescence.</p>
+<section id="parametres">
+<h4>Paramètres :<a class="headerlink" href="#parametres" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>repo_url</strong> : URL du dépôt GitHub (ex: https://github.com/adhikasp/mcp-git-ingest)</p></li>
+</ul>
+</section>
+<section id="exemple-d-utilisation">
+<h4>Exemple d’utilisation :<a class="headerlink" href="#exemple-d-utilisation" title="Link to this heading"></a></h4>
+<ol class="simple">
+<li><p>Ajoutez un nœud MCP Client à votre workflow</p></li>
+<li><p>Sélectionnez l’identifiant “MCP Git Ingest”</p></li>
+<li><p>Configurez l’opération “Execute Tool”</p></li>
+<li><p>Sélectionnez l’outil “github_directory_structure”</p></li>
+<li><p>Définissez le paramètre “repo_url” avec l’URL du dépôt GitHub</p></li>
+</ol>
+</section>
+</section>
+<section id="github-read-important-files">
+<h3>2. github_read_important_files<a class="headerlink" href="#github-read-important-files" title="Link to this heading"></a></h3>
+<p>Cet outil permet de lire le contenu de fichiers spécifiques dans un dépôt GitHub.</p>
+<section id="id1">
+<h4>Paramètres :<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>repo_url</strong> : URL du dépôt GitHub (ex: https://github.com/adhikasp/mcp-git-ingest)</p></li>
+<li><p><strong>file_paths</strong> : Liste des chemins de fichiers à lire (ex: [”README.md”, “src/main.py”])</p></li>
+</ul>
+</section>
+<section id="id2">
+<h4>Exemple d’utilisation :<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ol class="simple">
+<li><p>Ajoutez un nœud MCP Client à votre workflow</p></li>
+<li><p>Sélectionnez l’identifiant “MCP Git Ingest”</p></li>
+<li><p>Configurez l’opération “Execute Tool”</p></li>
+<li><p>Sélectionnez l’outil “github_read_important_files”</p></li>
+<li><p>Définissez les paramètres “repo_url” et “file_paths”</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="exemple-de-workflow">
+<h2>Exemple de workflow<a class="headerlink" href="#exemple-de-workflow" title="Link to this heading"></a></h2>
+<p>Voici un exemple de workflow qui utilise le MCP Git Ingest pour explorer un dépôt GitHub et lire ses fichiers importants :</p>
+<ol class="simple">
+<li><p><strong>Déclencheur</strong> : Nœud “Manual Trigger”</p></li>
+<li><p><strong>Exploration du dépôt</strong> : Nœud MCP Client avec l’outil “github_directory_structure”</p></li>
+<li><p><strong>Lecture des fichiers</strong> : Nœud MCP Client avec l’outil “github_read_important_files”</p></li>
+<li><p><strong>Traitement des données</strong> : Nœuds supplémentaires pour traiter les informations obtenues</p></li>
+</ol>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez des problèmes avec le MCP Git Ingest :</p>
+<ol>
+<li><p>Vérifiez que Python et uvx sont correctement installés :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="p">-</span><span class="n">-version</span>
+<span class="n">uvx</span> <span class="p">-</span><span class="n">-version</span>
+</pre></div>
+</div>
+</li>
+<li><p>Vérifiez que la variable d’environnement N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE est définie à true :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="no">[Environment]</span><span class="p">::</span><span class="n">GetEnvironmentVariable</span><span class="p">(</span><span class="s1">&#39;N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Vérifiez que le fichier mcp-git-ingest.cmd est exécutable :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">mcp-git-ingest</span><span class="p">.</span><span class="n">cmd</span>
+</pre></div>
+</div>
+</li>
+<li><p>Consultez les logs de n8n pour voir les erreurs éventuelles.</p></li>
+</ol>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/adhikasp/mcp-git-ingest">GitHub du projet mcp-git-ingest</a></p></li>
+<li><p><a class="reference external" href="https://modelcontextprotocol.ai/">Documentation du Model Context Protocol</a></p></li>
+<li><p><a class="reference internal" href="GUIDE_FINAL_MCP.html"><span class="doc">Guide d’utilisation des MCP dans n8n</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

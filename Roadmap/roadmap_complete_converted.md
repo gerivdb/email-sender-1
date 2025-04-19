@@ -1268,12 +1268,12 @@
 ## 4. Docs
 **Description**: Documentation technique, guides utilisateurs et ressources d'apprentissage.
 **Responsable**: Équipe Documentation
-**Statut global**: En cours - 40%
+**Statut global**: En cours - 60%
 
 ### 4.1 Documentation technique
 **Complexité**: Moyenne
 **Temps estimé total**: 10 jours
-**Progression globale**: 60%
+**Progression globale**: 80%
 **Dépendances**: Modules implémentés
 
 #### Outils et technologies
@@ -1441,23 +1441,23 @@
 #### 4.1.2 Documentation des API
 **Complexité**: Moyenne
 **Temps estimé**: 3 jours
-**Progression**: 0% - *À commencer*
+**Progression**: 100% - *Terminé*
 **Date de début prévue**: 05/02/2025
 **Date d'achèvement prévue**: 07/02/2025
 **Responsable**: Équipe Documentation
 **Tags**: #documentation #api #sphinx
 
-- [ ] **Phase 1**: Configuration de Sphinx et documentation API CycleDetector
-- [ ] **Phase 2**: Documentation API DependencyManager et MCPManager
-- [ ] **Phase 3**: Documentation API InputSegmenter et génération
+- [x] **Phase 1**: Configuration de Sphinx et documentation API CycleDetector
+- [x] **Phase 2**: Documentation API DependencyManager et MCPManager
+- [x] **Phase 3**: Documentation API InputSegmenter et génération
 
 ##### Fichiers à créer/modifier
 | Chemin | Description | Statut |
 |--------|-------------|--------|
-| `docs/api/CycleDetector.rst` | Documentation API du module de détection de cycles | À créer |
-| `docs/api/DependencyManager.rst` | Documentation API du gestionnaire de dépendances | À créer |
-| `docs/api/MCPManager.rst` | Documentation API du module MCP | À créer |
-| `docs/api/InputSegmenter.rst` | Documentation API du module de segmentation | À créer |
+| `docs/api/CycleDetector.rst` | Documentation API du module de détection de cycles | Terminé |
+| `docs/api/DependencyManager.rst` | Documentation API du gestionnaire de dépendances | Terminé |
+| `docs/api/MCPManager.rst` | Documentation API du module MCP | Terminé |
+| `docs/api/InputSegmenter.rst` | Documentation API du module de segmentation | Terminé |
 
 ##### Format de journalisation
 ```json
@@ -1466,91 +1466,91 @@
   "version": "1.0.0",
   "date": "2025-02-07",
   "changes": [
-    {"feature": "Documentation API CycleDetector", "status": "À commencer"},
-    {"feature": "Documentation API DependencyManager", "status": "À commencer"},
-    {"feature": "Documentation API MCPManager", "status": "À commencer"},
-    {"feature": "Documentation API InputSegmenter", "status": "À commencer"}
+    {"feature": "Documentation API CycleDetector", "status": "Terminé"},
+    {"feature": "Documentation API DependencyManager", "status": "Terminé"},
+    {"feature": "Documentation API MCPManager", "status": "Terminé"},
+    {"feature": "Documentation API InputSegmenter", "status": "Terminé"}
   ]
 }
 ```
 
-##### [ ] Jour 1 - Configuration de Sphinx et documentation API CycleDetector (8h)
-- [ ] **Sous-tâche 1.1**: Configurer Sphinx pour la génération de documentation (2h)
+##### [x] Jour 1 - Configuration de Sphinx et documentation API CycleDetector (8h)
+- [x] **Sous-tâche 1.1**: Configurer Sphinx pour la génération de documentation (2h)
   - **Description**: Installer et configurer Sphinx avec les extensions nécessaires
   - **Livrable**: Configuration Sphinx
   - **Fichier**: `docs/conf.py`
   - **Outils**: Sphinx, Python
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 1.2**: Créer la structure de la documentation API (1h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 1.2**: Créer la structure de la documentation API (1h)
   - **Description**: Définir les sections et sous-sections de la documentation API
   - **Livrable**: Structure de la documentation API
   - **Fichier**: `docs/api/index.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 1.3**: Générer la documentation API pour CycleDetector (3h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 1.3**: Générer la documentation API pour CycleDetector (3h)
   - **Description**: Extraire et formater la documentation API du module
   - **Livrable**: Documentation API
   - **Fichier**: `docs/api/CycleDetector.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 1.4**: Ajouter des exemples d'utilisation (2h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 1.4**: Ajouter des exemples d'utilisation (2h)
   - **Description**: Créer des exemples d'utilisation de l'API
   - **Livrable**: Exemples d'utilisation
   - **Fichier**: `docs/api/examples/CycleDetector_Examples.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
+  - **Statut**: Terminé
 
-##### [ ] Jour 2 - Documentation API DependencyManager et MCPManager (8h)
-- [ ] **Sous-tâche 2.1**: Générer la documentation API pour DependencyManager (3h)
+##### [x] Jour 2 - Documentation API DependencyManager et MCPManager (8h)
+- [x] **Sous-tâche 2.1**: Générer la documentation API pour DependencyManager (3h)
   - **Description**: Extraire et formater la documentation API du module
   - **Livrable**: Documentation API
   - **Fichier**: `docs/api/DependencyManager.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 2.2**: Ajouter des exemples d'utilisation pour DependencyManager (1h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 2.2**: Ajouter des exemples d'utilisation pour DependencyManager (1h)
   - **Description**: Créer des exemples d'utilisation de l'API
   - **Livrable**: Exemples d'utilisation
   - **Fichier**: `docs/api/examples/DependencyManager_Examples.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 2.3**: Générer la documentation API pour MCPManager (3h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 2.3**: Générer la documentation API pour MCPManager (3h)
   - **Description**: Extraire et formater la documentation API du module
   - **Livrable**: Documentation API
   - **Fichier**: `docs/api/MCPManager.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 2.4**: Ajouter des exemples d'utilisation pour MCPManager (1h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 2.4**: Ajouter des exemples d'utilisation pour MCPManager (1h)
   - **Description**: Créer des exemples d'utilisation de l'API
   - **Livrable**: Exemples d'utilisation
   - **Fichier**: `docs/api/examples/MCPManager_Examples.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
+  - **Statut**: Terminé
 
-##### [ ] Jour 3 - Documentation API InputSegmenter et génération de la documentation (8h)
-- [ ] **Sous-tâche 3.1**: Générer la documentation API pour InputSegmenter (3h)
+##### [x] Jour 3 - Documentation API InputSegmenter et génération de la documentation (8h)
+- [x] **Sous-tâche 3.1**: Générer la documentation API pour InputSegmenter (3h)
   - **Description**: Extraire et formater la documentation API du module
   - **Livrable**: Documentation API
   - **Fichier**: `docs/api/InputSegmenter.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 3.2**: Ajouter des exemples d'utilisation pour InputSegmenter (1h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 3.2**: Ajouter des exemples d'utilisation pour InputSegmenter (1h)
   - **Description**: Créer des exemples d'utilisation de l'API
   - **Livrable**: Exemples d'utilisation
   - **Fichier**: `docs/api/examples/InputSegmenter_Examples.rst`
   - **Outils**: Sphinx, reStructuredText
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 3.3**: Générer la documentation HTML (2h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 3.3**: Générer la documentation HTML (2h)
   - **Description**: Générer la documentation HTML avec Sphinx
   - **Livrable**: Documentation HTML
   - **Fichier**: `docs/_build/html/`
   - **Outils**: Sphinx, Python
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 3.4**: Vérifier et corriger les problèmes (2h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 3.4**: Vérifier et corriger les problèmes (2h)
   - **Description**: Vérifier la documentation générée et corriger les problèmes
   - **Livrable**: Documentation corrigée
   - **Fichier**: `docs/_build/html/`
   - **Outils**: Sphinx, Python
-  - **Statut**: Non commencé
+  - **Statut**: Terminé
 
 #### 4.1.3 Guides d'utilisation
 **Complexité**: Moyenne

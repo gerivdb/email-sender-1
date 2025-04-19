@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation : Segmentation d’entrées &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation : Segmentation d’entrées</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user-guides/InputSegmentation.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-segmentation-d-entrees">
+<h1>Guide d’utilisation : Segmentation d’entrées<a class="headerlink" href="#guide-d-utilisation-segmentation-d-entrees" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Ce guide explique comment utiliser les fonctionnalités de segmentation d’entrées pour traiter efficacement des données volumineuses avec Agent Auto et d’autres systèmes ayant des contraintes de taille d’entrée.</p>
+</section>
+<section id="pourquoi-segmenter-les-entrees">
+<h2>Pourquoi segmenter les entrées ?<a class="headerlink" href="#pourquoi-segmenter-les-entrees" title="Link to this heading"></a></h2>
+<p>La segmentation d’entrées est utile dans plusieurs situations :</p>
+<ul class="simple">
+<li><p><strong>Limites de taille d’API</strong> : De nombreuses API ont des limites sur la taille des requêtes.</p></li>
+<li><p><strong>Traitement de grands fichiers</strong> : Les fichiers volumineux peuvent être difficiles à traiter en une seule fois.</p></li>
+<li><p><strong>Optimisation de la mémoire</strong> : La segmentation permet de réduire l’utilisation de la mémoire.</p></li>
+<li><p><strong>Reprise sur erreur</strong> : Si une partie échoue, seule cette partie doit être retraitée.</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Aucune installation spéciale n’est requise. Les scripts de segmentation d’entrées sont inclus dans le projet.</p>
+</section>
+<section id="configuration-pour-agent-auto">
+<h2>Configuration pour Agent Auto<a class="headerlink" href="#configuration-pour-agent-auto" title="Link to this heading"></a></h2>
+<p>Pour configurer la segmentation automatique pour Agent Auto :</p>
+<ol class="simple">
+<li><p>Ouvrez PowerShell.</p></li>
+<li><p>Exécutez le script d’initialisation :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">agent-auto</span><span class="p">\</span><span class="nb">Initialize-AgentAutoSegmentation</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Enable</span> <span class="n">-MaxInputSizeKB</span> <span class="n">15</span> <span class="n">-ChunkSizeKB</span> <span class="n">7</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Cette commande activera la segmentation automatique avec une taille maximale d’entrée de 15 KB et une taille de segment de 7 KB.</p></li>
+</ol>
+</section>
+<section id="utilisation-de-base">
+<h2>Utilisation de base<a class="headerlink" href="#utilisation-de-base" title="Link to this heading"></a></h2>
+<section id="segmenter-un-texte">
+<h3>Segmenter un texte<a class="headerlink" href="#segmenter-un-texte" title="Link to this heading"></a></h3>
+<p>Pour segmenter une chaîne de texte volumineuse :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmentation</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Initialize-InputSegmentation</span> <span class="n">-MaxInputSizeKB</span> <span class="n">10</span> <span class="n">-DefaultChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;A&quot;</span> <span class="p">*</span> <span class="n">20KB</span>  <span class="c"># Texte de 20 KB</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-TextInput</span> <span class="n">-Text</span> <span class="nv">$text</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="segmenter-un-objet-json">
+<h3>Segmenter un objet JSON<a class="headerlink" href="#segmenter-un-objet-json" title="Link to this heading"></a></h3>
+<p>Pour segmenter un objet JSON volumineux :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmentation</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Initialize-InputSegmentation</span> <span class="n">-MaxInputSizeKB</span> <span class="n">10</span> <span class="n">-DefaultChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nv">$json</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">items</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="n">500</span><span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span>
+    <span class="nv">$json</span><span class="p">.</span><span class="n">items</span> <span class="p">+=</span> <span class="p">@{</span>
+        <span class="n">id</span> <span class="p">=</span> <span class="nv">$i</span>
+        <span class="n">name</span> <span class="p">=</span> <span class="s2">&quot;Item $i&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-JsonInput</span> <span class="n">-JsonObject</span> <span class="nv">$json</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="segmenter-un-fichier">
+<h3>Segmenter un fichier<a class="headerlink" href="#segmenter-un-fichier" title="Link to this heading"></a></h3>
+<p>Pour segmenter un fichier volumineux :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmentation</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Initialize-InputSegmentation</span> <span class="n">-MaxInputSizeKB</span> <span class="n">10</span> <span class="n">-DefaultChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-FileInput</span> <span class="n">-FilePath</span> <span class="s2">&quot;.\data\large_file.txt&quot;</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="utiliser-la-fonction-generique">
+<h3>Utiliser la fonction générique<a class="headerlink" href="#utiliser-la-fonction-generique" title="Link to this heading"></a></h3>
+<p>Pour segmenter automatiquement différents types d’entrées :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmentation</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Initialize-InputSegmentation</span> <span class="n">-MaxInputSizeKB</span> <span class="n">10</span> <span class="n">-DefaultChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nv">$input</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s2">&quot;.\data\large_file.txt&quot;</span> <span class="n">-Raw</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-Input</span> <span class="n">-Input</span> <span class="nv">$input</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de segments: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="options-avancees">
+<h2>Options avancées<a class="headerlink" href="#options-avancees" title="Link to this heading"></a></h2>
+<section id="preserver-les-sauts-de-ligne">
+<h3>Préserver les sauts de ligne<a class="headerlink" href="#preserver-les-sauts-de-ligne" title="Link to this heading"></a></h3>
+<p>Pour segmenter un texte en préservant les sauts de ligne :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$text</span> <span class="p">=</span> <span class="s2">&quot;Ligne 1</span><span class="se">`n</span><span class="s2">Ligne 2</span><span class="se">`n</span><span class="s2">Ligne 3&quot;</span> <span class="p">*</span> <span class="n">1KB</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-TextInput</span> <span class="n">-Text</span> <span class="nv">$text</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span> <span class="n">-PreserveLines</span>
+</pre></div>
+</div>
+<p>Cette option garantit que les segments se terminent par des sauts de ligne complets.</p>
+</section>
+<section id="executer-un-script-avec-segmentation">
+<h3>Exécuter un script avec segmentation<a class="headerlink" href="#executer-un-script-avec-segmentation" title="Link to this heading"></a></h3>
+<p>Pour exécuter un script sur chaque segment d’une entrée volumineuse :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$input</span> <span class="p">=</span> <span class="s2">&quot;A&quot;</span> <span class="p">*</span> <span class="n">20KB</span>
+<span class="nv">$results</span> <span class="p">=</span> <span class="nb">Invoke-WithSegmentation</span> <span class="n">-Input</span> <span class="nv">$input</span> <span class="n">-ScriptBlock</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$segment</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;Processed: </span><span class="p">$(</span><span class="nv">$segment</span><span class="p">.</span><span class="n">Length</span><span class="p">)</span><span class="s2"> bytes&quot;</span>
+<span class="p">}</span> <span class="n">-Id</span> <span class="s2">&quot;my-task&quot;</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+</pre></div>
+</div>
+</section>
+<section id="sauvegarder-et-recuperer-l-etat-de-segmentation">
+<h3>Sauvegarder et récupérer l’état de segmentation<a class="headerlink" href="#sauvegarder-et-recuperer-l-etat-de-segmentation" title="Link to this heading"></a></h3>
+<p>Pour sauvegarder l’état de segmentation et le récupérer plus tard :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$id</span> <span class="p">=</span> <span class="s2">&quot;my-segmentation-task&quot;</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-Input</span> <span class="n">-Input</span> <span class="nv">$largeInput</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+<span class="nb">Save-SegmentationState</span> <span class="n">-Id</span> <span class="nv">$id</span> <span class="n">-Segments</span> <span class="nv">$segments</span> <span class="n">-CurrentIndex</span> <span class="n">0</span>
+
+<span class="c"># Plus tard, récupérer l&#39;état</span>
+<span class="nv">$state</span> <span class="p">=</span> <span class="nb">Get-SegmentationState</span> <span class="n">-Id</span> <span class="nv">$id</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$state</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$currentIndex</span> <span class="p">=</span> <span class="nv">$state</span><span class="p">.</span><span class="n">CurrentIndex</span>
+    <span class="nv">$segments</span> <span class="p">=</span> <span class="nv">$state</span><span class="p">.</span><span class="n">Segments</span>
+    
+    <span class="c"># Continuer le traitement à partir de l&#39;index actuel</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">=</span> <span class="nv">$currentIndex</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span>
+        <span class="c"># Traiter le segment</span>
+        <span class="k">Process</span><span class="n">-Segment</span> <span class="n">-Segment</span> <span class="nv">$segments</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span>
+        
+        <span class="c"># Mettre à jour l&#39;état</span>
+        <span class="nb">Save-SegmentationState</span> <span class="n">-Id</span> <span class="nv">$id</span> <span class="n">-Segments</span> <span class="nv">$segments</span> <span class="n">-CurrentIndex</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">+</span> <span class="n">1</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="exemples-pratiques">
+<h2>Exemples pratiques<a class="headerlink" href="#exemples-pratiques" title="Link to this heading"></a></h2>
+<section id="exemple-1-traiter-un-fichier-csv-volumineux">
+<h3>Exemple 1 : Traiter un fichier CSV volumineux<a class="headerlink" href="#exemple-1-traiter-un-fichier-csv-volumineux" title="Link to this heading"></a></h3>
+<p>Supposons que vous avez un fichier CSV volumineux que vous devez traiter :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmentation</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Initialize-InputSegmentation</span> <span class="n">-MaxInputSizeKB</span> <span class="n">100</span> <span class="n">-DefaultChunkSizeKB</span> <span class="n">50</span>
+
+<span class="nv">$csvFile</span> <span class="p">=</span> <span class="s2">&quot;.\data\large_data.csv&quot;</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-FileInput</span> <span class="n">-FilePath</span> <span class="nv">$csvFile</span> <span class="n">-ChunkSizeKB</span> <span class="n">50</span> <span class="n">-PreserveLines</span>
+
+<span class="nv">$results</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$segment</span> <span class="k">in</span> <span class="nv">$segments</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c"># Convertir le segment en objet CSV</span>
+    <span class="nv">$csvData</span> <span class="p">=</span> <span class="nv">$segment</span> <span class="p">|</span> <span class="nb">ConvertFrom-Csv</span>
+    
+    <span class="c"># Traiter les données CSV</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$row</span> <span class="k">in</span> <span class="nv">$csvData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c"># Traitement...</span>
+        <span class="nv">$results</span> <span class="p">+=</span> <span class="nv">$row</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total de lignes traitées: </span><span class="p">$(</span><span class="nv">$results</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-appels-api-avec-segmentation">
+<h3>Exemple 2 : Appels API avec segmentation<a class="headerlink" href="#exemple-2-appels-api-avec-segmentation" title="Link to this heading"></a></h3>
+<p>Si vous devez envoyer des données volumineuses à une API avec une limite de taille :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmentation</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Initialize-InputSegmentation</span> <span class="n">-MaxInputSizeKB</span> <span class="n">10</span> <span class="n">-DefaultChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nv">$data</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">items</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="n">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span>
+    <span class="nv">$data</span><span class="p">.</span><span class="n">items</span> <span class="p">+=</span> <span class="p">@{</span>
+        <span class="n">id</span> <span class="p">=</span> <span class="nv">$i</span>
+        <span class="n">name</span> <span class="p">=</span> <span class="s2">&quot;Item $i&quot;</span>
+        <span class="n">value</span> <span class="p">=</span> <span class="s2">&quot;Value $i&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-JsonInput</span> <span class="n">-JsonObject</span> <span class="nv">$data</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nv">$responses</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$segment</span> <span class="k">in</span> <span class="nv">$segments</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c"># Convertir le segment en JSON</span>
+    <span class="nv">$jsonData</span> <span class="p">=</span> <span class="nv">$segment</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Compress</span>
+    
+    <span class="c"># Envoyer à l&#39;API</span>
+    <span class="nv">$response</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="s2">&quot;https://api.example.com/data&quot;</span> <span class="n">-Method</span> <span class="n">Post</span> <span class="n">-Body</span> <span class="nv">$jsonData</span> <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span>
+    <span class="nv">$responses</span> <span class="p">+=</span> <span class="nv">$response</span>
+<span class="p">}</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de requêtes API: </span><span class="p">$(</span><span class="nv">$segments</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Réponses reçues: </span><span class="p">$(</span><span class="nv">$responses</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-3-utilisation-avec-agent-auto">
+<h3>Exemple 3 : Utilisation avec Agent Auto<a class="headerlink" href="#exemple-3-utilisation-avec-agent-auto" title="Link to this heading"></a></h3>
+<p>Pour utiliser la segmentation avec Agent Auto :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser la segmentation pour Agent Auto</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">agent-auto</span><span class="p">\</span><span class="nb">Initialize-AgentAutoSegmentation</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Enable</span> <span class="n">-MaxInputSizeKB</span> <span class="n">15</span> <span class="n">-ChunkSizeKB</span> <span class="n">7</span> <span class="n">-PreserveLines</span>
+
+<span class="c"># Utiliser la segmentation avec Agent Auto</span>
+<span class="nv">$largeInput</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s2">&quot;.\data\large_file.txt&quot;</span> <span class="n">-Raw</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">agent-auto</span><span class="p">\</span><span class="n">Example-AgentAutoSegmentation</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Input</span> <span class="nv">$largeInput</span> <span class="n">-InputType</span> <span class="s2">&quot;Text&quot;</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\output&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<section id="pour-une-segmentation-efficace">
+<h3>Pour une segmentation efficace<a class="headerlink" href="#pour-une-segmentation-efficace" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Choisissez la bonne taille de segment</strong> : Une taille trop petite augmente la surcharge, une taille trop grande peut dépasser les limites.</p></li>
+<li><p><strong>Préservez les sauts de ligne</strong> pour les données textuelles structurées.</p></li>
+<li><p><strong>Utilisez des IDs uniques</strong> pour les tâches de segmentation afin d’éviter les conflits.</p></li>
+<li><p><strong>Sauvegardez régulièrement l’état</strong> pour les traitements longs.</p></li>
+<li><p><strong>Vérifiez la taille des entrées</strong> avant de les traiter pour éviter les erreurs.</p></li>
+</ol>
+</section>
+<section id="pour-l-integration-avec-agent-auto">
+<h3>Pour l’intégration avec Agent Auto<a class="headerlink" href="#pour-l-integration-avec-agent-auto" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Configurez des limites appropriées</strong> en fonction des capacités de votre système.</p></li>
+<li><p><strong>Testez avec des données réelles</strong> pour vérifier que la segmentation fonctionne correctement.</p></li>
+<li><p><strong>Surveillez les performances</strong> pour ajuster les paramètres si nécessaire.</p></li>
+</ol>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="probleme-segments-incorrects">
+<h3>Problème : Segments incorrects<a class="headerlink" href="#probleme-segments-incorrects" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Vérifiez si l’option <code class="docutils literal notranslate"><span class="pre">-PreserveLines</span></code> est nécessaire pour votre type de données.</p>
+</section>
+<section id="probleme-erreurs-de-memoire">
+<h3>Problème : Erreurs de mémoire<a class="headerlink" href="#probleme-erreurs-de-memoire" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Réduisez la taille des segments et traitez-les séquentiellement plutôt qu’en parallèle.</p>
+</section>
+<section id="probleme-perte-de-contexte-entre-les-segments">
+<h3>Problème : Perte de contexte entre les segments<a class="headerlink" href="#probleme-perte-de-contexte-entre-les-segments" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Pour les objets JSON, assurez-vous que les métadonnées importantes sont incluses dans chaque segment.</p>
+</section>
+</section>
+<section id="integration-avec-d-autres-outils">
+<h2>Intégration avec d’autres outils<a class="headerlink" href="#integration-avec-d-autres-outils" title="Link to this heading"></a></h2>
+<section id="integration-avec-le-traitement-parallele">
+<h3>Intégration avec le traitement parallèle<a class="headerlink" href="#integration-avec-le-traitement-parallele" title="Link to this heading"></a></h3>
+<p>Vous pouvez combiner la segmentation avec le traitement parallèle pour une efficacité maximale :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmentation</span><span class="p">.</span><span class="n">psm1</span>
+<span class="p">.</span> <span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">performance</span><span class="p">\</span><span class="nb">Optimize-ParallelExecution</span><span class="p">.</span><span class="n">ps1</span>
+
+<span class="nv">$input</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s2">&quot;.\data\large_file.txt&quot;</span> <span class="n">-Raw</span>
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-Input</span> <span class="n">-Input</span> <span class="nv">$input</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+
+<span class="nv">$results</span> <span class="p">=</span> <span class="nb">Optimize-ParallelExecution</span> <span class="n">-Data</span> <span class="nv">$segments</span> <span class="n">-ScriptBlock</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$segment</span><span class="p">)</span>
+    <span class="c"># Traiter le segment</span>
+    <span class="k">return</span> <span class="s2">&quot;Processed: </span><span class="p">$(</span><span class="nv">$segment</span><span class="p">.</span><span class="n">Length</span><span class="p">)</span><span class="s2"> bytes&quot;</span>
+<span class="p">}</span> <span class="n">-MaxThreads</span> <span class="n">4</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-avec-le-cache-predictif">
+<h3>Intégration avec le cache prédictif<a class="headerlink" href="#integration-avec-le-cache-predictif" title="Link to this heading"></a></h3>
+<p>Vous pouvez mettre en cache les résultats de segmentation pour éviter de recalculer les segments :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">InputSegmentation</span><span class="p">.</span><span class="n">psm1</span>
+<span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">modules</span><span class="p">\</span><span class="n">PredictiveCache</span><span class="p">.</span><span class="n">psm1</span>
+
+<span class="nb">Initialize-PredictiveCache</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CachePath</span> <span class="s2">&quot;.\cache&quot;</span> <span class="n">-ModelPath</span> <span class="s2">&quot;.\models&quot;</span> <span class="n">-MaxCacheSize</span> <span class="n">100MB</span> <span class="n">-DefaultTTL</span> <span class="n">3600</span>
+
+<span class="nv">$input</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s2">&quot;.\data\large_file.txt&quot;</span> <span class="n">-Raw</span>
+<span class="nv">$inputHash</span> <span class="p">=</span> <span class="no">[System.Security.Cryptography.SHA256]</span><span class="p">::</span><span class="n">Create</span><span class="p">().</span><span class="n">ComputeHash</span><span class="p">(</span><span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$input</span><span class="p">))</span>
+<span class="nv">$cacheKey</span> <span class="p">=</span> <span class="no">[System.BitConverter]</span><span class="p">::</span><span class="n">ToString</span><span class="p">(</span><span class="nv">$inputHash</span><span class="p">).</span><span class="n">Replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Get-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$segments</span> <span class="o">-eq</span> <span class="nv">$null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$segments</span> <span class="p">=</span> <span class="nb">Split-Input</span> <span class="n">-Input</span> <span class="nv">$input</span> <span class="n">-ChunkSizeKB</span> <span class="n">5</span>
+    <span class="nb">Set-PredictiveCache</span> <span class="n">-Key</span> <span class="nv">$cacheKey</span> <span class="n">-Value</span> <span class="nv">$segments</span>
+<span class="p">}</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$segment</span> <span class="k">in</span> <span class="nv">$segments</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c"># Traiter le segment</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>La segmentation d’entrées est un outil puissant pour traiter des données volumineuses de manière efficace. En utilisant les fonctionnalités de segmentation, vous pouvez surmonter les limites de taille et optimiser les performances de vos scripts.</p>
+<p>Pour plus d’informations techniques, consultez la <a class="reference internal" href="../technical/InputSegmentation.html"><span class="doc">documentation technique du module InputSegmentation</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

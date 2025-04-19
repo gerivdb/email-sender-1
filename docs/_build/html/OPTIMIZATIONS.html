@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMAIL_SENDER_1 - Optimisations et Améliorations &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">EMAIL_SENDER_1 - Optimisations et Améliorations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/OPTIMIZATIONS.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="email-sender-1-optimisations-et-ameliorations">
+<h1>EMAIL_SENDER_1 - Optimisations et Améliorations<a class="headerlink" href="#email-sender-1-optimisations-et-ameliorations" title="Link to this heading"></a></h1>
+<p>Ce projet contient des optimisations et améliorations pour le projet EMAIL_SENDER_1, notamment pour éviter les erreurs cycliques, autonomiser Agent Auto, maximiser l’efficacité de l’implémentation et exploiter les performances matérielles.</p>
+<section id="table-des-matieres">
+<h2>Table des matières<a class="headerlink" href="#table-des-matieres" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="#d%C3%A9tection-et-pr%C3%A9vention-des-cycles">Détection et prévention des cycles</a></p></li>
+<li><p><a class="reference external" href="#segmentation-des-entr%C3%A9es-pour-agent-auto">Segmentation des entrées pour Agent Auto</a></p></li>
+<li><p><a class="reference external" href="#optimisations-dimpl%C3%A9mentation">Optimisations d’implémentation</a></p></li>
+<li><p><a class="reference external" href="#optimisations-de-performance">Optimisations de performance</a></p></li>
+<li><p><a class="reference external" href="#installation">Installation</a></p></li>
+<li><p><a class="reference external" href="#utilisation">Utilisation</a></p></li>
+<li><p><a class="reference external" href="#tests">Tests</a></p></li>
+<li><p><a class="reference external" href="#contribution">Contribution</a></p></li>
+</ul>
+</section>
+<section id="detection-et-prevention-des-cycles">
+<h2>Détection et prévention des cycles<a class="headerlink" href="#detection-et-prevention-des-cycles" title="Link to this heading"></a></h2>
+<p>Le système de détection et prévention des cycles permet d’éviter les boucles infinies et les erreurs récursives dans les scripts, les dépendances et les workflows n8n.</p>
+<section id="composants">
+<h3>Composants<a class="headerlink" href="#composants" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>modules/CycleDetector.psm1</strong> : Module principal pour la détection des cycles</p></li>
+<li><p><strong>scripts/maintenance/error-prevention/Detect-CyclicDependencies.ps1</strong> : Script pour analyser et détecter les cycles</p></li>
+<li><p><strong>scripts/maintenance/error-prevention/Test-CycleDetection.ps1</strong> : Tests pour le système de détection</p></li>
+<li><p><strong>scripts/n8n/workflow-validation/Validate-WorkflowCycles.ps1</strong> : Validation des cycles dans les workflows n8n</p></li>
+<li><p><strong>scripts/n8n/workflow-validation/Validate-AllWorkflows.ps1</strong> : Validation complète des workflows n8n</p></li>
+</ul>
+</section>
+<section id="fonctionnalites">
+<h3>Fonctionnalités<a class="headerlink" href="#fonctionnalites" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Détection des cycles dans les dépendances de scripts</p></li>
+<li><p>Détection des cycles dans les appels de fonctions</p></li>
+<li><p>Détection des cycles dans les workflows n8n</p></li>
+<li><p>Journalisation des cycles détectés</p></li>
+<li><p>Correction automatique des cycles (optionnelle)</p></li>
+</ul>
+</section>
+<section id="exemple-d-utilisation">
+<h3>Exemple d’utilisation<a class="headerlink" href="#exemple-d-utilisation" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Détecter les cycles dans un dossier de scripts</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">maintenance</span><span class="p">\</span><span class="n">error-prevention</span><span class="p">\</span><span class="n">Detect-CyclicDependencies</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\reports\dependencies.json&quot;</span>
+
+<span class="c"># Valider les workflows n8n</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">n8n</span><span class="p">\</span><span class="n">workflow-validation</span><span class="p">\</span><span class="n">Validate-AllWorkflows</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-WorkflowsPath</span> <span class="s2">&quot;.\workflows&quot;</span> <span class="n">-ReportsPath</span> <span class="s2">&quot;.\reports\workflows&quot;</span> <span class="n">-GenerateReport</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="segmentation-des-entrees-pour-agent-auto">
+<h2>Segmentation des entrées pour Agent Auto<a class="headerlink" href="#segmentation-des-entrees-pour-agent-auto" title="Link to this heading"></a></h2>
+<p>Le système de segmentation des entrées permet à Agent Auto de traiter des entrées volumineuses en les divisant automatiquement en segments plus petits.</p>
+<section id="id1">
+<h3>Composants<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>modules/InputSegmentation.psm1</strong> : Module principal pour la segmentation des entrées</p></li>
+<li><p><strong>scripts/agent-auto/Segment-AgentAutoInput.ps1</strong> : Script pour segmenter les entrées</p></li>
+<li><p><strong>scripts/agent-auto/Test-InputSegmentation.ps1</strong> : Tests pour le système de segmentation</p></li>
+<li><p><strong>scripts/agent-auto/Initialize-AgentAutoSegmentation.ps1</strong> : Initialisation de la segmentation pour Agent Auto</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Fonctionnalités<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Segmentation automatique des entrées texte</p></li>
+<li><p>Segmentation automatique des entrées JSON</p></li>
+<li><p>Segmentation automatique des fichiers</p></li>
+<li><p>Préservation de l’état pour reprendre le traitement</p></li>
+<li><p>Configuration via .augment/config.json</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Exemple d’utilisation<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser la segmentation pour Agent Auto</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">agent-auto</span><span class="p">\</span><span class="nb">Initialize-AgentAutoSegmentation</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Enable</span> <span class="n">-MaxInputSizeKB</span> <span class="n">15</span> <span class="n">-ChunkSizeKB</span> <span class="n">7</span>
+
+<span class="c"># Segmenter une entrée manuellement</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">agent-auto</span><span class="p">\</span><span class="n">Segment-AgentAutoInput</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Input</span> <span class="s2">&quot;chemin/vers/fichier.json&quot;</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\output\segments&quot;</span> <span class="n">-InputType</span> <span class="n">File</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="optimisations-d-implementation">
+<h2>Optimisations d’implémentation<a class="headerlink" href="#optimisations-d-implementation" title="Link to this heading"></a></h2>
+<p>Diverses optimisations pour maximiser l’efficacité de l’implémentation.</p>
+<section id="id4">
+<h3>Composants<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>scripts/maintenance/mcp/Detect-MCPServers.ps1</strong> : Détection améliorée des serveurs MCP</p></li>
+<li><p><strong>scripts/maintenance/ps7-migration/Test-PSVersionCompatibility.ps1</strong> : Test de compatibilité PowerShell 7</p></li>
+<li><p><strong>modules/PredictiveCache.psm1</strong> : Cache prédictif pour n8n</p></li>
+<li><p><strong>scripts/n8n/cache/Initialize-N8nPredictiveCache.ps1</strong> : Initialisation du cache prédictif pour n8n</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Fonctionnalités<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Détection automatique des serveurs MCP (locaux et cloud)</p></li>
+<li><p>Test et correction de compatibilité PowerShell 7</p></li>
+<li><p>Cache prédictif pour anticiper les besoins en données</p></li>
+<li><p>Intégration avec n8n via webhooks</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Exemple d’utilisation<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Détecter les serveurs MCP</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">maintenance</span><span class="p">\</span><span class="n">mcp</span><span class="p">\</span><span class="n">Detect-MCPServers</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Scan</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\mcp-servers\detected.json&quot;</span>
+
+<span class="c"># Tester la compatibilité PowerShell 7</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">maintenance</span><span class="p">\</span><span class="n">ps7-migration</span><span class="p">\</span><span class="nb">Test-PSVersionCompatibility</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\reports\ps7_compatibility.json&quot;</span>
+
+<span class="c"># Initialiser le cache prédictif pour n8n</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">n8n</span><span class="p">\</span><span class="n">cache</span><span class="p">\</span><span class="nb">Initialize-N8nPredictiveCache</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-ApiKey</span> <span class="s2">&quot;n8n_api_key&quot;</span> <span class="n">-MaxCacheSizeMB</span> <span class="n">200</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="optimisations-de-performance">
+<h2>Optimisations de performance<a class="headerlink" href="#optimisations-de-performance" title="Link to this heading"></a></h2>
+<p>Optimisations pour exploiter les performances matérielles, notamment via le parallélisme.</p>
+<section id="id7">
+<h3>Composants<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>scripts/performance/Measure-ScriptPerformance.ps1</strong> : Mesure des performances des scripts</p></li>
+<li><p><strong>scripts/performance/Optimize-ParallelExecution.ps1</strong> : Optimisation de l’exécution parallèle</p></li>
+<li><p><strong>scripts/performance/Example-ParallelProcessing.ps1</strong> : Exemple d’optimisation du traitement parallèle</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>Fonctionnalités<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Mesure du temps d’exécution, de l’utilisation CPU et mémoire</p></li>
+<li><p>Optimisation via Runspace Pools</p></li>
+<li><p>Optimisation via traitement par lots</p></li>
+<li><p>Optimisation via ForEach-Object -Parallel (PowerShell 7+)</p></li>
+<li><p>Comparaison des différentes méthodes</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>Exemple d’utilisation<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Mesurer les performances d&#39;un script</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">performance</span><span class="p">\</span><span class="nb">Measure-ScriptPerformance</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-ScriptPath</span> <span class="s2">&quot;.\scripts\example.ps1&quot;</span> <span class="n">-Iterations</span> <span class="n">5</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\reports\performance.json&quot;</span>
+
+<span class="c"># Optimiser l&#39;exécution parallèle</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">performance</span><span class="p">\</span><span class="nb">Optimize-ParallelExecution</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-ScriptPath</span> <span class="s2">&quot;.\scripts\process-data.ps1&quot;</span> <span class="n">-InputData</span> <span class="nv">$data</span> <span class="n">-MaxThreads</span> <span class="n">8</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\output\results.json&quot;</span>
+
+<span class="c"># Exemple de traitement parallèle</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">performance</span><span class="p">\</span><span class="n">Example-ParallelProcessing</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Assurez-vous que les dossiers nécessaires existent :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Créer les dossiers nécessaires</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;modules&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;scripts/maintenance/error-prevention&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;scripts/maintenance/mcp&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;scripts/maintenance/ps7-migration&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;scripts/agent-auto&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;scripts/n8n/workflow-validation&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;scripts/n8n/cache&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;scripts/performance&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;logs/cycles&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;logs/segmentation&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;cache/predictive&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;cache/agent_auto&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;reports/performance&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+<span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;reports/workflows&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Initialisez les composants nécessaires :</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialiser la segmentation pour Agent Auto</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">agent-auto</span><span class="p">\</span><span class="nb">Initialize-AgentAutoSegmentation</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Enable</span>
+
+<span class="c"># Initialiser le cache prédictif pour n8n</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">n8n</span><span class="p">\</span><span class="n">cache</span><span class="p">\</span><span class="nb">Initialize-N8nPredictiveCache</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+<section id="utilisation">
+<h2>Utilisation<a class="headerlink" href="#utilisation" title="Link to this heading"></a></h2>
+<p>Consultez les sections spécifiques ci-dessus pour des exemples d’utilisation de chaque composant.</p>
+</section>
+<section id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Link to this heading"></a></h2>
+<p>Des tests sont disponibles pour chaque composant :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Tester la détection de cycles</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">maintenance</span><span class="p">\</span><span class="n">error-prevention</span><span class="p">\</span><span class="nb">Test-CycleDetection</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-GenerateReport</span>
+
+<span class="c"># Tester la segmentation des entrées</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">agent-auto</span><span class="p">\</span><span class="nb">Test-InputSegmentation</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-GenerateReport</span>
+
+<span class="c"># Tester les performances</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">performance</span><span class="p">\</span><span class="n">Example-ParallelProcessing</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+<section id="contribution">
+<h2>Contribution<a class="headerlink" href="#contribution" title="Link to this heading"></a></h2>
+<p>Les contributions sont les bienvenues ! Veuillez suivre ces étapes :</p>
+<ol class="simple">
+<li><p>Forkez le dépôt</p></li>
+<li><p>Créez une branche pour votre fonctionnalité (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">feature/amazing-feature</span></code>)</p></li>
+<li><p>Committez vos changements (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">'Add</span> <span class="pre">some</span> <span class="pre">amazing</span> <span class="pre">feature'</span></code>)</p></li>
+<li><p>Poussez vers la branche (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">feature/amazing-feature</span></code>)</p></li>
+<li><p>Ouvrez une Pull Request</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

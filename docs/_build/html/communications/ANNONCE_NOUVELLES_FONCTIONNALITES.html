@@ -1,0 +1,173 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Annonce : Nouvelles fonctionnalités et organisation du dépôt Email Sender 1 &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Annonce : Nouvelles fonctionnalités et organisation du dépôt Email Sender 1</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/communications/ANNONCE_NOUVELLES_FONCTIONNALITES.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="annonce-nouvelles-fonctionnalites-et-organisation-du-depot-email-sender-1">
+<h1>Annonce : Nouvelles fonctionnalités et organisation du dépôt Email Sender 1<a class="headerlink" href="#annonce-nouvelles-fonctionnalites-et-organisation-du-depot-email-sender-1" title="Link to this heading"></a></h1>
+<p>Chers membres de l’équipe,</p>
+<p>Nous avons le plaisir de vous annoncer la mise en place de plusieurs améliorations importantes dans notre dépôt Email Sender 1. Ces changements visent à améliorer l’efficacité, la stabilité et la maintenabilité de notre projet.</p>
+<section id="principales-nouveautes">
+<h2>Principales nouveautés<a class="headerlink" href="#principales-nouveautes" title="Link to this heading"></a></h2>
+<section id="mcp-git-ingest-ameliore">
+<h3>1. MCP Git Ingest amélioré<a class="headerlink" href="#mcp-git-ingest-ameliore" title="Link to this heading"></a></h3>
+<p>Le MCP Git Ingest a été entièrement revu pour utiliser Python directement au lieu de npm. Cette modification résout les problèmes de dépendances que nous rencontrions et améliore considérablement la stabilité du serveur.</p>
+<p><strong>Avantages :</strong></p>
+<ul class="simple">
+<li><p>Plus de problèmes de package.json manquant</p></li>
+<li><p>Meilleure stabilité et performances</p></li>
+<li><p>Support des requêtes HTTP pour les tests</p></li>
+<li><p>Intégration plus fluide avec Augment et n8n</p></li>
+</ul>
+</section>
+<section id="nouveau-mcp-gdrive">
+<h3>2. Nouveau MCP GDrive<a class="headerlink" href="#nouveau-mcp-gdrive" title="Link to this heading"></a></h3>
+<p>Un nouveau MCP pour interagir avec Google Drive a été ajouté au projet. Ce MCP permet d’accéder et de manipuler des fichiers Google Drive directement depuis n8n ou Augment.</p>
+<p><strong>Fonctionnalités :</strong></p>
+<ul class="simple">
+<li><p>Recherche de fichiers dans Google Drive</p></li>
+<li><p>Lecture du contenu des fichiers</p></li>
+<li><p>Support des méthodes avancées de l’API Google Drive</p></li>
+</ul>
+</section>
+<section id="organisation-automatique-du-depot">
+<h3>3. Organisation automatique du dépôt<a class="headerlink" href="#organisation-automatique-du-depot" title="Link to this heading"></a></h3>
+<p>Des scripts d’automatisation ont été ajoutés pour organiser automatiquement le dépôt selon une structure cohérente. Ces scripts permettent de maintenir une organisation claire et efficace du code.</p>
+<p><strong>Fonctionnalités :</strong></p>
+<ul class="simple">
+<li><p>Organisation automatique des fichiers par type et usage</p></li>
+<li><p>Hooks Git pour maintenir la cohérence</p></li>
+<li><p>Scripts de maintenance pour nettoyer les fichiers obsolètes</p></li>
+</ul>
+</section>
+<section id="configuration-vs-code-simplifiee">
+<h3>4. Configuration VS Code simplifiée<a class="headerlink" href="#configuration-vs-code-simplifiee" title="Link to this heading"></a></h3>
+<p>La configuration de VS Code pour Augment a été simplifiée avec un script qui met à jour automatiquement les paramètres.</p>
+</section>
+</section>
+<section id="comment-utiliser-ces-nouvelles-fonctionnalites">
+<h2>Comment utiliser ces nouvelles fonctionnalités<a class="headerlink" href="#comment-utiliser-ces-nouvelles-fonctionnalites" title="Link to this heading"></a></h2>
+<p>Toutes ces nouveautés sont documentées en détail dans le dépôt :</p>
+<ol class="simple">
+<li><p><a class="reference internal" href="../guides/GUIDE_NOUVELLES_FONCTIONNALITES.html"><span class="doc">Guide des nouvelles fonctionnalités</span></a></p></li>
+<li><p><a class="reference internal" href="../guides/GUIDE_MCP_GIT_INGEST.html"><span class="doc">Guide MCP Git Ingest</span></a></p></li>
+<li><p><a class="reference internal" href="../guides/GUIDE_ORGANISATION_AUTOMATIQUE.html"><span class="doc">Guide d’organisation automatique</span></a></p></li>
+</ol>
+<p>Pour mettre à jour votre environnement local, suivez ces étapes :</p>
+<ol class="simple">
+<li><p>Mettez à jour votre dépôt local : <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">origin</span> <span class="pre">main</span></code></p></li>
+<li><p>Configurez les MCP : <code class="docutils literal notranslate"><span class="pre">.\scripts\setup\configure-mcp-git-ingest.ps1</span></code></p></li>
+<li><p>Configurez VS Code : <code class="docutils literal notranslate"><span class="pre">.\scripts\setup\update-vscode-settings.ps1</span></code></p></li>
+<li><p>Configurez l’organisation automatique : <code class="docutils literal notranslate"><span class="pre">.\scripts\setup\setup-auto-organization.ps1</span></code></p></li>
+</ol>
+</section>
+<section id="prochaines-etapes">
+<h2>Prochaines étapes<a class="headerlink" href="#prochaines-etapes" title="Link to this heading"></a></h2>
+<p>Nous prévoyons de continuer à améliorer le projet avec :</p>
+<ol class="simple">
+<li><p>Plus de MCP pour d’autres services cloud</p></li>
+<li><p>Amélioration des workflows de test</p></li>
+<li><p>Documentation plus complète</p></li>
+</ol>
+<p>N’hésitez pas à nous faire part de vos commentaires et suggestions pour améliorer encore davantage notre projet.</p>
+<p>Cordialement,
+L’équipe Email Sender 1</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemples d’utilisation de l’API n8n (Version locale) &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Exemples d’utilisation de l’API n8n (Version locale)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/N8N_API_EXAMPLES.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="exemples-d-utilisation-de-l-api-n8n-version-locale">
+<h1>Exemples d’utilisation de l’API n8n (Version locale)<a class="headerlink" href="#exemples-d-utilisation-de-l-api-n8n-version-locale" title="Link to this heading"></a></h1>
+<p>Ce document contient des exemples concrets d’utilisation des endpoints fonctionnels de l’API n8n sur votre instance locale.</p>
+<p>URL de base: http://localhost:5678</p>
+<section id="table-des-matieres">
+<h2>Table des matieres<a class="headerlink" href="#table-des-matieres" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="#workflows">Workflows</a></p></li>
+<li><p><a class="reference external" href="#executions">Executions</a></p></li>
+<li><p><a class="reference external" href="#tags">Tags</a></p></li>
+<li><p><a class="reference external" href="#utilisateurs">Utilisateurs</a></p></li>
+</ul>
+</section>
+<section id="endpoints-fonctionnels">
+<h2>Endpoints fonctionnels<a class="headerlink" href="#endpoints-fonctionnels" title="Link to this heading"></a></h2>
+<p>Voici les endpoints qui fonctionnent sur votre instance n8n:</p>
+<ol class="simple">
+<li><p>GET /api/v1/workflows - Liste tous les workflows</p></li>
+<li><p>GET /api/v1/executions - Liste toutes les executions</p></li>
+<li><p>GET /api/v1/tags - Liste tous les tags</p></li>
+<li><p>POST /api/v1/tags - Cree un nouveau tag</p></li>
+<li><p>GET /api/v1/users - Liste tous les utilisateurs</p></li>
+</ol>
+</section>
+<section id="workflows">
+<h2>Workflows<a class="headerlink" href="#workflows" title="Link to this heading"></a></h2>
+<section id="liste-des-workflows">
+<h3>Liste des workflows<a class="headerlink" href="#liste-des-workflows" title="Link to this heading"></a></h3>
+<section id="requete">
+<h4>Requete<a class="headerlink" href="#requete" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">powershell</span> <span class="pre">Invoke-RestMethod</span> <span class="pre">-Uri</span> <span class="pre">&quot;http://localhost:5678/api/v1/workflows&quot;</span> <span class="pre">-Method</span> <span class="pre">Get</span> <span class="pre">-Headers</span> <span class="pre">&#64;{</span> <span class="pre">&quot;X-N8N-API-KEY&quot;</span> <span class="pre">=</span> <span class="pre">&quot;votre-jeton-api&quot;</span> <span class="pre">}</span> </code></p>
+</section>
+<section id="reponse">
+<h4>Reponse<a class="headerlink" href="#reponse" title="Link to this heading"></a></h4>
+<p>`json
+{
+“data”: [    {
+“createdAt”:  “2025-04-04T19:50:26.249Z”,
+“updatedAt”:  “2025-04-04T19:50:26.249Z”,
+“id”:  “20SfVS1GVrswV6Zu”,
+“name”:  “Email Sender - Phase 2 (G�n�ration \u0026 Envoi des Emails)”,
+“active”:  false,
+“nodes”:  [
+“&#64;{parameters=; id=a0143ff5-d39f-446c-b1f9-dd148ae80ce1; name=Trigger Phase 2; type=n8n-nodes-base.executeWorkflow; typeVersion=1; position=System.Object[]}”,
+“&#64;{parameters=; id=b0143ff5-d39f-446c-b1f9-dd148ae80ce2; name=Superviseur IA (DeepSeek v3); type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=c0143ff5-d39f-446c-b1f9-dd148ae80ce3; name=Prep DeepSeek Cal; type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=3faccf85-c7bd-4d20-8ce0-abf8ebedb14c; name=Appel API; type=n8n-nodes-base.httpRequest; typeVersion=4.1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; id=8c5bdd98-92f0-4b2c-9d8c-d9b9dc76752b; name=Set Message G�n�r� IA; type=n8n-nodes-base.set; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=84ff84d6-4b23-4169-aae4-2dfd77d22cc8; name=Fusion LOT1 + Lieux; type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=94ff84d6-4b23-4169-aae4-2dfd77d22cc9; name=Fusion IA + Contacts; type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=f8aa20be-3218-4144-9b82-23592378def7; name=Personnalisation Message; type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=fb17c164-0d0a-42a6-8373-f2402238ae6f; name=Get Gmail Template; type=n8n-nodes-base.gmail; typeVersion=2.1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; id=3f5b2bd1-4485-4c55-8e51-339033be453b; name=Inject Message into HTML; type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=f0ef9b9c-0eba-4238-b366-3d28a84429d0; name=Create Final Gmail Draft; type=n8n-nodes-base.gmail; typeVersion=2.1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; id=2649c986-4f25-4ae5-baef-dbed32b8cc7e; name=Set Delay Config; type=n8n-nodes-base.set; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=df75c3b2-ad3a-477e-9480-c253ec4a0858; name=Calc Random Delay; type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=80570037-507c-4767-a947-c009e69a5e8b; name=Wait Anti-Spam; type=n8n-nodes-base.wait; typeVersion=1; position=System.Object[]; webhookId=1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p}”,
+“&#64;{parameters=; id=671105b1-2405-4f83-8f16-3c4ad34a22a6; name=Update Notion Status; type=n8n-nodes-base.notion; typeVersion=1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; type=n8n-nodes-base.stickyNote; typeVersion=1; position=System.Object[]; id=b59a6337-cc99-4396-940b-3f17a585b003; name=Sticky Note Phase 2}”
+],
+“connections”:  {
+“a0143ff5-d39f-446c-b1f9-dd148ae80ce1”:  “&#64;{main=System.Object[]}”,
+“b0143ff5-d39f-446c-b1f9-dd148ae80ce2”:  “&#64;{main=System.Object[]}”,
+“c0143ff5-d39f-446c-b1f9-dd148ae80ce3”:  “&#64;{main=System.Object[]}”,
+“3faccf85-c7bd-4d20-8ce0-abf8ebedb14c”:  “&#64;{main=System.Object[]}”,
+“8c5bdd98-92f0-4b2c-9d8c-d9b9dc76752b”:  “&#64;{main=System.Object[]}”,
+“84ff84d6-4b23-4169-aae4-2dfd77d22cc8”:  “&#64;{main=System.Object[]}”,
+“94ff84d6-4b23-4169-aae4-2dfd77d22cc9”:  “&#64;{main=System.Object[]}”,
+“f8aa20be-3218-4144-9b82-23592378def7”:  “&#64;{main=System.Object[]}”,
+“fb17c164-0d0a-42a6-8373-f2402238ae6f”:  “&#64;{main=System.Object[]}”,
+“3f5b2bd1-4485-4c55-8e51-339033be453b”:  “&#64;{main=System.Object[]}”,
+“f0ef9b9c-0eba-4238-b366-3d28a84429d0”:  “&#64;{main=System.Object[]}”,
+“2649c986-4f25-4ae5-baef-dbed32b8cc7e”:  “&#64;{main=System.Object[]}”,
+“df75c3b2-ad3a-477e-9480-c253ec4a0858”:  “&#64;{main=System.Object[]}”,
+“80570037-507c-4767-a947-c009e69a5e8b”:  “&#64;{main=System.Object[]}”
+},
+“settings”:  {
+“executionOrder”:  “v1”
+},
+“staticData”:  null,
+“meta”:  null,
+“pinData”:  null,
+“versionId”:  “44405881-cb57-4f2f-a790-0a6b76386622”,
+“triggerCount”:  0,
+“tags”:  [</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="p">]</span>
+</pre></div>
+</div>
+<p>},
+{
+“createdAt”:  “2025-04-04T19:50:26.415Z”,
+“updatedAt”:  “2025-04-04T19:50:26.415Z”,
+“id”:  “8lFgC7hFqQWoDFdJ”,
+“name”:  “Email Sender - Phase 3 (Traitement des R�ponses)”,
+“active”:  false,
+“nodes”:  [
+“&#64;{parameters=; id=8d417011-1f73-4706-abeb-be21c52f1195; name=Trigger Gmail R�ponse; type=n8n-nodes-base.gmail; typeVersion=2.1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; id=c51a167d-b1de-4f76-a30e-ceca5b8c8742; name=Cherche Email Notion; type=n8n-nodes-base.notion; typeVersion=1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; id=a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d; name=Analyse IA R�ponse; type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=8a8459bc-d38a-43ef-92b3-5517ba97a1a1; name=Update Notion R�pondu; type=n8n-nodes-base.notion; typeVersion=1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; id=47f136ed-17fc-4e0d-b8e2-c1c48c52d589; name=Check DEAL; type=n8n-nodes-base.if; typeVersion=1; position=System.Object[]}”,
+“&#64;{parameters=; type=n8n-nodes-base.stickyNote; typeVersion=1; position=System.Object[]; id=429a26dc-88cf-45c5-98c4-65528ad50da3; name=Sticky Note Phase 3}”
+],
+“connections”:  {
+“8d417011-1f73-4706-abeb-be21c52f1195”:  “&#64;{main=System.Object[]}”,
+“c51a167d-b1de-4f76-a30e-ceca5b8c8742”:  “&#64;{main=System.Object[]}”,
+“a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d”:  “&#64;{main=System.Object[]}”,
+“8a8459bc-d38a-43ef-92b3-5517ba97a1a1”:  “&#64;{main=System.Object[]}”
+},
+“settings”:  {
+“executionOrder”:  “v1”
+},
+“staticData”:  null,
+“meta”:  null,
+“pinData”:  null,
+“versionId”:  “5b883673-197e-4ce5-8e2d-1247c0f8de63”,
+“triggerCount”:  0,
+“tags”:  [</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="p">]</span>
+</pre></div>
+</div>
+<p>},
+{
+“createdAt”:  “2025-04-04T19:50:26.770Z”,
+“updatedAt”:  “2025-04-04T19:50:26.770Z”,
+“id”:  “Abqyny8wms6ArE17”,
+“name”:  “Email Sender - Phase 5 (Suivi Post-Concert)”,
+“active”:  false,
+“nodes”:  [
+“&#64;{parameters=; id=3b7319d1-e905-4843-8f1e-30793b97e403; name=Concert ? Timer J+3; type=n8n-nodes-base.cron; typeVersion=1; position=System.Object[]}”,
+“&#64;{parameters=; id=894f9cd2-f4f7-4ecd-a5b1-7fe91fb87260; name=Get Recent Concerts; type=n8n-nodes-base.notion; typeVersion=1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; id=3802bc6c-c156-479d-81a7-24a1235f0d18; name=Pr�parer Emails Remerciement; type=n8n-nodes-base.code; typeVersion=2; position=System.Object[]}”,
+“&#64;{parameters=; id=f0ef9b9c-0eba-4238-b366-3d28a84429d0; name=Send Thank You Email; type=n8n-nodes-base.gmail; typeVersion=2.1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; id=671105b1-2405-4f83-8f16-3c4ad34a22a6; name=Update Notion Status; type=n8n-nodes-base.notion; typeVersion=1; position=System.Object[]; credentials=}”,
+“&#64;{parameters=; type=n8n-nodes-base.stickyNote; typeVersion=1; position=System.Object[]; id=d8679572-aef3-4d0d-bb2c-e6dd340a5deb; name=Sticky Note Phase 5}”
+],
+“connections”:  {
+“3b7319d1-e905-4843-8f1e-30793b97e403”:  “&#64;{main=System.Object[]}”,
+“894f9cd2-f4f7-4ecd-a5b1-7fe91fb87260”:  “&#64;{main=System.Object[]}”,
+“3802bc6c-c156-479d-81a7-24a1235f0d18”:  “&#64;{main=System.Object[]}”,
+“f0ef9b9c-0eba-4238-b366-3d28a84429d0”:  “&#64;{main=System.Object[]}”
+},
+“settings”:  {
+“executionOrder”:  “v1”
+},
+“staticData”:  null,
+“meta”:  null,
+“pinData”:  null,
+“versionId”:  “9309afb9-a3ea-4ff0-9a67-882172c50c74”,
+“triggerCount”:  0,
+“tags”:  [</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="p">]</span>
+</pre></div>
+</div>
+<p>}
+// … plus d’elements …  ],
+“nextCursor”: null
+}
+`</p>
+</section>
+<section id="proprietes-importantes">
+<h4>Proprietes importantes<a class="headerlink" href="#proprietes-importantes" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>data - Tableau contenant les workflows</p>
+<ul>
+<li><p>id - Identifiant unique du workflow</p></li>
+<li></li>
+</ul>
+</li>
+</ul>
+<p>ame - Nom du workflow</p>
+<ul class="simple">
+<li><p>ctive - Indique si le workflow est actif</p></li>
+<li><p>createdAt - Date de creation du workflow</p></li>
+<li><p>updatedAt - Date de derniere mise a jour du workflow</p></li>
+</ul>
+</section>
+<section id="exemple-d-utilisation">
+<h4>Exemple d’utilisation<a class="headerlink" href="#exemple-d-utilisation" title="Link to this heading"></a></h4>
+<p>`powershell</p>
+</section>
+</section>
+</section>
+</section>
+<section id="recuperer-tous-les-workflows">
+<h1>Recuperer tous les workflows<a class="headerlink" href="#recuperer-tous-les-workflows" title="Link to this heading"></a></h1>
+<p>$workflows = Invoke-RestMethod -Uri “http://localhost:5678/api/v1/workflows” -Method Get -Headers $headers</p>
+</section>
+<section id="afficher-les-noms-des-workflows">
+<h1>Afficher les noms des workflows<a class="headerlink" href="#afficher-les-noms-des-workflows" title="Link to this heading"></a></h1>
+<p>$workflows.data | ForEach-Object { Write-Host $_.name }</p>
+</section>
+<section id="recuperer-les-ids-des-workflows-actifs">
+<h1>Recuperer les IDs des workflows actifs<a class="headerlink" href="#recuperer-les-ids-des-workflows-actifs" title="Link to this heading"></a></h1>
+<p>$activeWorkflowIds = $workflows.data | Where-Object { $_.active -eq $true } | Select-Object -ExpandProperty id
+`</p>
+<section id="executions">
+<h2>Executions<a class="headerlink" href="#executions" title="Link to this heading"></a></h2>
+<section id="liste-des-executions">
+<h3>Liste des executions<a class="headerlink" href="#liste-des-executions" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4>Requete<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">powershell</span> <span class="pre">Invoke-RestMethod</span> <span class="pre">-Uri</span> <span class="pre">&quot;http://localhost:5678/api/v1/executions&quot;</span> <span class="pre">-Method</span> <span class="pre">Get</span> <span class="pre">-Headers</span> <span class="pre">&#64;{</span> <span class="pre">&quot;X-N8N-API-KEY&quot;</span> <span class="pre">=</span> <span class="pre">&quot;votre-jeton-api&quot;</span> <span class="pre">}</span> </code></p>
+</section>
+<section id="id2">
+<h4>Reponse<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>`json{
+“data”:  [</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="p">],</span>
+<span class="s2">&quot;nextCursor&quot;</span><span class="p">:</span>  <span class="n">null</span>
+</pre></div>
+</div>
+<p>}`</p>
+</section>
+<section id="id3">
+<h4>Proprietes importantes<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>data - Tableau contenant les executions</p>
+<ul>
+<li><p>id - Identifiant unique de l’execution</p></li>
+<li><p>inished - Indique si l’execution est terminee</p></li>
+<li><p>status - Statut de l’execution (success, error, etc.)</p></li>
+<li><p>startedAt - Date de debut de l’execution</p></li>
+<li><p>stoppedAt - Date de fin de l’execution</p></li>
+<li><p>workflowId - ID du workflow execute</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id4">
+<h4>Exemple d’utilisation<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<p>`powershell</p>
+</section>
+</section>
+</section>
+</section>
+<section id="recuperer-toutes-les-executions">
+<h1>Recuperer toutes les executions<a class="headerlink" href="#recuperer-toutes-les-executions" title="Link to this heading"></a></h1>
+<p>$executions = Invoke-RestMethod -Uri “http://localhost:5678/api/v1/executions” -Method Get -Headers $headers</p>
+</section>
+<section id="afficher-les-executions-recentes">
+<h1>Afficher les executions recentes<a class="headerlink" href="#afficher-les-executions-recentes" title="Link to this heading"></a></h1>
+<p>$executions.data | Sort-Object startedAt -Descending | Select-Object -First 5 | Format-Table id, workflowId, status</p>
+</section>
+<section id="recuperer-les-executions-en-erreur">
+<h1>Recuperer les executions en erreur<a class="headerlink" href="#recuperer-les-executions-en-erreur" title="Link to this heading"></a></h1>
+<p>$failedExecutions = $executions.data | Where-Object { $_.status -eq “error” }
+`</p>
+<section id="tags">
+<h2>Tags<a class="headerlink" href="#tags" title="Link to this heading"></a></h2>
+<section id="liste-des-tags">
+<h3>Liste des tags<a class="headerlink" href="#liste-des-tags" title="Link to this heading"></a></h3>
+<section id="id5">
+<h4>Requete<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">powershell</span> <span class="pre">Invoke-RestMethod</span> <span class="pre">-Uri</span> <span class="pre">&quot;http://localhost:5678/api/v1/tags&quot;</span> <span class="pre">-Method</span> <span class="pre">Get</span> <span class="pre">-Headers</span> <span class="pre">&#64;{</span> <span class="pre">&quot;X-N8N-API-KEY&quot;</span> <span class="pre">=</span> <span class="pre">&quot;votre-jeton-api&quot;</span> <span class="pre">}</span> </code></p>
+</section>
+<section id="id6">
+<h4>Reponse<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">json{</span> <span class="pre">&quot;data&quot;:</span>&#160; <span class="pre">[</span> <span class="pre">{</span> <span class="pre">&quot;createdAt&quot;:</span>&#160; <span class="pre">&quot;2025-04-04T20:08:53.301Z&quot;,</span> <span class="pre">&quot;updatedAt&quot;:</span>&#160; <span class="pre">&quot;2025-04-04T20:08:53.301Z&quot;,</span> <span class="pre">&quot;id&quot;:</span>&#160; <span class="pre">&quot;OYN2tV47hOb32z8T&quot;,</span> <span class="pre">&quot;name&quot;:</span>&#160; <span class="pre">&quot;Test</span> <span class="pre">Tag&quot;</span> <span class="pre">}</span> <span class="pre">],</span> <span class="pre">&quot;nextCursor&quot;:</span>&#160; <span class="pre">null</span> <span class="pre">}</span></code></p>
+</section>
+<section id="id7">
+<h4>Proprietes importantes<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>data - Tableau contenant les tags</p>
+<ul>
+<li><p>id - Identifiant unique du tag</p></li>
+<li></li>
+</ul>
+</li>
+</ul>
+<p>ame - Nom du tag</p>
+<ul class="simple">
+<li><p>createdAt - Date de creation du tag</p></li>
+<li><p>updatedAt - Date de derniere mise a jour du tag</p></li>
+</ul>
+</section>
+<section id="id8">
+<h4>Exemple d’utilisation<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<p>`powershell</p>
+</section>
+</section>
+</section>
+</section>
+<section id="recuperer-tous-les-tags">
+<h1>Recuperer tous les tags<a class="headerlink" href="#recuperer-tous-les-tags" title="Link to this heading"></a></h1>
+<p>$tags = Invoke-RestMethod -Uri “http://localhost:5678/api/v1/tags” -Method Get -Headers $headers</p>
+</section>
+<section id="afficher-les-noms-des-tags">
+<h1>Afficher les noms des tags<a class="headerlink" href="#afficher-les-noms-des-tags" title="Link to this heading"></a></h1>
+<p>$tags.data | ForEach-Object { Write-Host $_.name }</p>
+</section>
+<section id="recuperer-les-ids-des-tags">
+<h1>Recuperer les IDs des tags<a class="headerlink" href="#recuperer-les-ids-des-tags" title="Link to this heading"></a></h1>
+<p>$tagIds = $tags.data | Select-Object -ExpandProperty id
+`</p>
+<section id="creation-d-un-tag">
+<h2>Creation d’un tag<a class="headerlink" href="#creation-d-un-tag" title="Link to this heading"></a></h2>
+<section id="id9">
+<h3>Requete<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>`powershell
+$body = &#64;{
+name = “Mon Tag”
+} | ConvertTo-Json</p>
+<p>Invoke-RestMethod -Uri “http://localhost:5678/api/v1/tags” -Method Post -Headers &#64;{ “X-N8N-API-KEY” = “votre-jeton-api” } -Body $body -ContentType “application/json”
+`</p>
+</section>
+<section id="id10">
+<h3>Reponse<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">json{</span> <span class="pre">&quot;name&quot;:</span>&#160; <span class="pre">&quot;Test</span> <span class="pre">Tag</span> <span class="pre">20250404221004&quot;,</span> <span class="pre">&quot;id&quot;:</span>&#160; <span class="pre">&quot;SF5G7l7qfj2VyHHV&quot;,</span> <span class="pre">&quot;createdAt&quot;:</span>&#160; <span class="pre">&quot;2025-04-04T20:10:04.888Z&quot;,</span> <span class="pre">&quot;updatedAt&quot;:</span>&#160; <span class="pre">&quot;2025-04-04T20:10:04.888Z&quot;</span> <span class="pre">}</span></code></p>
+</section>
+<section id="id11">
+<h3>Proprietes importantes<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>id - Identifiant unique du tag cree</p></li>
+<li></li>
+</ul>
+<p>ame - Nom du tag</p>
+<ul class="simple">
+<li><p>createdAt - Date de creation du tag</p></li>
+<li><p>updatedAt - Date de derniere mise a jour du tag</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>Exemple d’utilisation<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<p>`powershell</p>
+</section>
+</section>
+</section>
+<section id="creer-un-nouveau-tag">
+<h1>Creer un nouveau tag<a class="headerlink" href="#creer-un-nouveau-tag" title="Link to this heading"></a></h1>
+<p>$body = &#64;{
+name = “Nouveau Tag”
+} | ConvertTo-Json</p>
+<p>$newTag = Invoke-RestMethod -Uri “http://localhost:5678/api/v1/tags” -Method Post -Headers $headers -Body $body -ContentType “application/json”</p>
+</section>
+<section id="afficher-l-id-du-tag-cree">
+<h1>Afficher l’ID du tag cree<a class="headerlink" href="#afficher-l-id-du-tag-cree" title="Link to this heading"></a></h1>
+<p>Write-Host “Tag cree avec l’ID: $($newTag.id)”
+`</p>
+<section id="utilisateurs">
+<h2>Utilisateurs<a class="headerlink" href="#utilisateurs" title="Link to this heading"></a></h2>
+<section id="liste-des-utilisateurs">
+<h3>Liste des utilisateurs<a class="headerlink" href="#liste-des-utilisateurs" title="Link to this heading"></a></h3>
+<section id="id13">
+<h4>Requete<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">powershell</span> <span class="pre">Invoke-RestMethod</span> <span class="pre">-Uri</span> <span class="pre">&quot;http://localhost:5678/api/v1/users&quot;</span> <span class="pre">-Method</span> <span class="pre">Get</span> <span class="pre">-Headers</span> <span class="pre">&#64;{</span> <span class="pre">&quot;X-N8N-API-KEY&quot;</span> <span class="pre">=</span> <span class="pre">&quot;votre-jeton-api&quot;</span> <span class="pre">}</span> </code></p>
+</section>
+<section id="id14">
+<h4>Reponse<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">json{</span> <span class="pre">&quot;data&quot;:</span>&#160; <span class="pre">[</span> <span class="pre">{</span> <span class="pre">&quot;id&quot;:</span>&#160; <span class="pre">&quot;f72908bd-0beb-47c4-9833-38c5fdf66edd&quot;,</span> <span class="pre">&quot;email&quot;:</span>&#160; <span class="pre">&quot;gerivonderbitsh+1&#64;gmail.com&quot;,</span> <span class="pre">&quot;firstName&quot;:</span>&#160; <span class="pre">&quot;Geri&quot;,</span> <span class="pre">&quot;lastName&quot;:</span>&#160; <span class="pre">&quot;VON</span> <span class="pre">DER</span> <span class="pre">BITSH&quot;,</span> <span class="pre">&quot;createdAt&quot;:</span>&#160; <span class="pre">&quot;2025-04-04T18:54:13.121Z&quot;,</span> <span class="pre">&quot;updatedAt&quot;:</span>&#160; <span class="pre">&quot;2025-04-04T18:57:28.554Z&quot;,</span> <span class="pre">&quot;isPending&quot;:</span>&#160; <span class="pre">false</span> <span class="pre">}</span> <span class="pre">],</span> <span class="pre">&quot;nextCursor&quot;:</span>&#160; <span class="pre">null</span> <span class="pre">}</span></code></p>
+</section>
+<section id="id15">
+<h4>Proprietes importantes<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>data - Tableau contenant les utilisateurs</p>
+<ul>
+<li><p>id - Identifiant unique de l’utilisateur</p></li>
+<li><p>email - Adresse email de l’utilisateur</p></li>
+<li><p>irstName - Prenom de l’utilisateur</p></li>
+<li><p>lastName - Nom de l’utilisateur</p></li>
+<li><p>isOwner - Indique si l’utilisateur est proprietaire</p></li>
+<li><p>isPending - Indique si l’utilisateur est en attente d’activation</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id16">
+<h4>Exemple d’utilisation<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<p>`powershell</p>
+</section>
+</section>
+</section>
+</section>
+<section id="recuperer-tous-les-utilisateurs">
+<h1>Recuperer tous les utilisateurs<a class="headerlink" href="#recuperer-tous-les-utilisateurs" title="Link to this heading"></a></h1>
+<p>$users = Invoke-RestMethod -Uri “http://localhost:5678/api/v1/users” -Method Get -Headers $headers</p>
+</section>
+<section id="afficher-les-emails-des-utilisateurs">
+<h1>Afficher les emails des utilisateurs<a class="headerlink" href="#afficher-les-emails-des-utilisateurs" title="Link to this heading"></a></h1>
+<p>$users.data | ForEach-Object { Write-Host $_.email }</p>
+</section>
+<section id="recuperer-les-ids-des-utilisateurs-actifs-non-en-attente">
+<h1>Recuperer les IDs des utilisateurs actifs (non en attente)<a class="headerlink" href="#recuperer-les-ids-des-utilisateurs-actifs-non-en-attente" title="Link to this heading"></a></h1>
+<p>$activeUserIds = $users.data | Where-Object { $_.isPending -eq $false } | Select-Object -ExpandProperty id
+`</p>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Cette documentation a ete generee automatiquement en testant les endpoints fonctionnels de l’API n8n sur votre instance locale.</p>
+<section id="remarques-importantes">
+<h3>Remarques importantes<a class="headerlink" href="#remarques-importantes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Les exemples fournis utilisent PowerShell, mais vous pouvez adapter ces requetes a d’autres langages de programmation.</p></li>
+<li><p>Remplacez toujours “votre-jeton-api” par votre jeton d’API n8n reel.</p></li>
+<li><p>Les reponses peuvent varier en fonction de votre configuration n8n et des donnees presentes dans votre instance.</p></li>
+<li><p>Cette documentation a ete generee le 04/04/2025 22:10:05.</p></li>
+<li><p>Version de n8n testee: Verifiez votre version dans l’interface utilisateur de n8n.</p></li>
+</ul>
+</section>
+<section id="ressources-additionnelles">
+<h3>Ressources additionnelles<a class="headerlink" href="#ressources-additionnelles" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.n8n.io/">Documentation officielle de n8n</a></p></li>
+<li><p><a class="reference external" href="http://localhost:5678/api/v1/docs/">Documentation de l’API n8n</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

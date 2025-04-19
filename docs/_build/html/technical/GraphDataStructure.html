@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Structure de données pour la représentation des graphes &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Structure de données pour la représentation des graphes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/technical/GraphDataStructure.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="structure-de-donnees-pour-la-representation-des-graphes">
+<h1>Structure de données pour la représentation des graphes<a class="headerlink" href="#structure-de-donnees-pour-la-representation-des-graphes" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Ce document définit la structure de données utilisée pour représenter les graphes dans le module <code class="docutils literal notranslate"><span class="pre">CycleDetector.psm1</span></code>. Une conception efficace de cette structure est essentielle pour les performances et la flexibilité du module.</p>
+</section>
+<section id="representation-des-graphes">
+<h2>Représentation des graphes<a class="headerlink" href="#representation-des-graphes" title="Link to this heading"></a></h2>
+<section id="structure-principale">
+<h3>Structure principale<a class="headerlink" href="#structure-principale" title="Link to this heading"></a></h3>
+<p>Les graphes sont représentés à l’aide de tables de hachage (hashtables) PowerShell, où :</p>
+<ul class="simple">
+<li><p>Les <strong>clés</strong> sont les identifiants des nœuds</p></li>
+<li><p>Les <strong>valeurs</strong> sont des tableaux contenant les identifiants des nœuds adjacents (voisins)</p></li>
+</ul>
+<p>Cette représentation est connue sous le nom de <strong>liste d’adjacence</strong>.</p>
+</section>
+<section id="exemple-de-graphe-simple">
+<h3>Exemple de graphe simple<a class="headerlink" href="#exemple-de-graphe-simple" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>A → B → C
+↓   ↑
+D → E
+</pre></div>
+</div>
+<p>Ce graphe serait représenté par la table de hachage suivante :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$graph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="s2">&quot;D&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;E&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;E&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="avantages-de-cette-representation">
+<h3>Avantages de cette représentation<a class="headerlink" href="#avantages-de-cette-representation" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Efficacité spatiale</strong> : Pour les graphes clairsemés (peu d’arêtes par rapport au nombre de nœuds), cette représentation est économe en mémoire.</p></li>
+<li><p><strong>Accès rapide</strong> : L’accès aux voisins d’un nœud est en O(1).</p></li>
+<li><p><strong>Simplicité</strong> : Structure native de PowerShell, facile à manipuler.</p></li>
+<li><p><strong>Flexibilité</strong> : Peut représenter des graphes dirigés et non dirigés.</p></li>
+</ol>
+</section>
+<section id="inconvenients">
+<h3>Inconvénients<a class="headerlink" href="#inconvenients" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Vérification d’arête</strong> : Vérifier l’existence d’une arête spécifique est en O(d) où d est le degré du nœud.</p></li>
+<li><p><strong>Suppression d’arête</strong> : La suppression d’une arête nécessite de recréer le tableau de voisins.</p></li>
+</ol>
+</section>
+</section>
+<section id="types-de-graphes-supportes">
+<h2>Types de graphes supportés<a class="headerlink" href="#types-de-graphes-supportes" title="Link to this heading"></a></h2>
+<section id="graphes-diriges">
+<h3>Graphes dirigés<a class="headerlink" href="#graphes-diriges" title="Link to this heading"></a></h3>
+<p>Les graphes dirigés sont représentés naturellement par cette structure. Une arête de A vers B est représentée par la présence de B dans la liste des voisins de A.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$directedGraph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="graphes-non-diriges">
+<h3>Graphes non dirigés<a class="headerlink" href="#graphes-non-diriges" title="Link to this heading"></a></h3>
+<p>Pour les graphes non dirigés, chaque arête est représentée deux fois : une fois dans chaque direction.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$undirectedGraph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="graphes-ponderes">
+<h3>Graphes pondérés<a class="headerlink" href="#graphes-ponderes" title="Link to this heading"></a></h3>
+<p>Pour les graphes pondérés, nous utilisons une structure légèrement différente où les voisins sont représentés par des objets contenant l’identifiant du nœud et le poids de l’arête.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$weightedGraph</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">=</span> <span class="p">@(</span>
+        <span class="no">[PSCustomObject]</span><span class="p">@{</span> <span class="n">Node</span> <span class="p">=</span> <span class="s2">&quot;B&quot;</span><span class="p">;</span> <span class="n">Weight</span> <span class="p">=</span> <span class="n">5</span> <span class="p">},</span>
+        <span class="no">[PSCustomObject]</span><span class="p">@{</span> <span class="n">Node</span> <span class="p">=</span> <span class="s2">&quot;C&quot;</span><span class="p">;</span> <span class="n">Weight</span> <span class="p">=</span> <span class="n">3</span> <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">=</span> <span class="p">@(</span>
+        <span class="no">[PSCustomObject]</span><span class="p">@{</span> <span class="n">Node</span> <span class="p">=</span> <span class="s2">&quot;D&quot;</span><span class="p">;</span> <span class="n">Weight</span> <span class="p">=</span> <span class="n">2</span> <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="s2">&quot;C&quot;</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="s2">&quot;D&quot;</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="representations-specifiques">
+<h2>Représentations spécifiques<a class="headerlink" href="#representations-specifiques" title="Link to this heading"></a></h2>
+<section id="dependances-de-scripts">
+<h3>Dépendances de scripts<a class="headerlink" href="#dependances-de-scripts" title="Link to this heading"></a></h3>
+<p>Pour les dépendances de scripts, les nœuds sont les chemins des fichiers et les arêtes représentent les relations de dépendance.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$scriptDependencies</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;.\scripts\A.ps1&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;.\scripts\B.ps1&quot;</span><span class="p">,</span> <span class="s2">&quot;.\scripts\C.ps1&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;.\scripts\B.ps1&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;.\scripts\D.ps1&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;.\scripts\C.ps1&quot;</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="s2">&quot;.\scripts\D.ps1&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;.\scripts\C.ps1&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="workflows-n8n">
+<h3>Workflows n8n<a class="headerlink" href="#workflows-n8n" title="Link to this heading"></a></h3>
+<p>Pour les workflows n8n, les nœuds sont les identifiants des nœuds du workflow et les arêtes représentent les connexions entre les nœuds.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$n8nWorkflow</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;node1&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;node2&quot;</span><span class="p">,</span> <span class="s2">&quot;node3&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;node2&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;node4&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;node3&quot;</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;node4&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;node4&quot;</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="operations-sur-les-graphes">
+<h2>Opérations sur les graphes<a class="headerlink" href="#operations-sur-les-graphes" title="Link to this heading"></a></h2>
+<section id="creation-d-un-graphe">
+<h3>Création d’un graphe<a class="headerlink" href="#creation-d-un-graphe" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">New-Graph</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">()</span>
+    
+    <span class="k">return</span> <span class="p">@{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="ajout-d-un-noeud">
+<h3>Ajout d’un nœud<a class="headerlink" href="#ajout-d-un-noeud" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Add-GraphNode</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[hashtable]</span><span class="nv">$Graph</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$Node</span>
+    <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="nv">$Node</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$Node</span><span class="p">]</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$Graph</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="ajout-d-une-arete">
+<h3>Ajout d’une arête<a class="headerlink" href="#ajout-d-une-arete" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Add-GraphEdge</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[hashtable]</span><span class="nv">$Graph</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$FromNode</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$ToNode</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Ajouter les nœuds s&#39;ils n&#39;existent pas</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="nv">$FromNode</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$FromNode</span><span class="p">]</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="nv">$ToNode</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$ToNode</span><span class="p">]</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Ajouter l&#39;arête si elle n&#39;existe pas déjà</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$Graph</span><span class="p">[</span><span class="nv">$FromNode</span><span class="p">]</span> <span class="o">-notcontains</span> <span class="nv">$ToNode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$FromNode</span><span class="p">]</span> <span class="p">=</span> <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$FromNode</span><span class="p">]</span> <span class="p">+</span> <span class="nv">$ToNode</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$Graph</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="suppression-d-une-arete">
+<h3>Suppression d’une arête<a class="headerlink" href="#suppression-d-une-arete" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Remove-GraphEdge</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[hashtable]</span><span class="nv">$Graph</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$FromNode</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$ToNode</span>
+    <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$Graph</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="nv">$FromNode</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$FromNode</span><span class="p">]</span> <span class="p">=</span> <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$FromNode</span><span class="p">]</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span> <span class="o">-ne</span> <span class="nv">$ToNode</span> <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$Graph</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="conversion-d-un-graphe-en-chaine">
+<h3>Conversion d’un graphe en chaîne<a class="headerlink" href="#conversion-d-un-graphe-en-chaine" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">ConvertTo-GraphString</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[hashtable]</span><span class="nv">$Graph</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$result</span> <span class="p">=</span> <span class="s2">&quot;&quot;</span>
+    
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$node</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">Keys</span> <span class="p">|</span> <span class="nb">Sort-Object</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$neighbors</span> <span class="p">=</span> <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$node</span><span class="p">]</span> <span class="n">-join</span> <span class="s2">&quot;, &quot;</span>
+        <span class="nv">$result</span> <span class="p">+=</span> <span class="s2">&quot;$node -&gt; [$neighbors]</span><span class="se">`n</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$result</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="optimisations">
+<h2>Optimisations<a class="headerlink" href="#optimisations" title="Link to this heading"></a></h2>
+<section id="mise-en-cache-des-resultats">
+<h3>Mise en cache des résultats<a class="headerlink" href="#mise-en-cache-des-resultats" title="Link to this heading"></a></h3>
+<p>Pour améliorer les performances, nous utiliserons une table de hachage pour mettre en cache les résultats de détection de cycles.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$script:CycleCache</span> <span class="p">=</span> <span class="p">@{}</span>
+
+<span class="k">function</span> <span class="nb">Get-CachedCycleResult</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$GraphKey</span>
+    <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$script:CycleCache</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="nv">$GraphKey</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$script:CycleCache</span><span class="p">[</span><span class="nv">$GraphKey</span><span class="p">]</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$null</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nb">Set-CachedCycleResult</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$GraphKey</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[PSCustomObject]</span><span class="nv">$Result</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$script:CycleCache</span><span class="p">[</span><span class="nv">$GraphKey</span><span class="p">]</span> <span class="p">=</span> <span class="nv">$Result</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="hachage-de-graphe">
+<h3>Hachage de graphe<a class="headerlink" href="#hachage-de-graphe" title="Link to this heading"></a></h3>
+<p>Pour utiliser efficacement le cache, nous avons besoin d’une fonction de hachage pour les graphes.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Get-GraphHash</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[hashtable]</span><span class="nv">$Graph</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$stringBuilder</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">StringBuilder</span>
+    
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$node</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">Keys</span> <span class="p">|</span> <span class="nb">Sort-Object</span><span class="p">)</span> <span class="p">{</span>
+        <span class="no">[void]</span><span class="nv">$stringBuilder</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="nv">$node</span><span class="p">)</span>
+        <span class="no">[void]</span><span class="nv">$stringBuilder</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$neighbor</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$node</span><span class="p">]</span> <span class="p">|</span> <span class="nb">Sort-Object</span><span class="p">)</span> <span class="p">{</span>
+            <span class="no">[void]</span><span class="nv">$stringBuilder</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="nv">$neighbor</span><span class="p">)</span>
+            <span class="no">[void]</span><span class="nv">$stringBuilder</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="no">[void]</span><span class="nv">$stringBuilder</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="nv">$graphString</span> <span class="p">=</span> <span class="nv">$stringBuilder</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span>
+    <span class="nv">$hash</span> <span class="p">=</span> <span class="no">[System.Security.Cryptography.SHA256]</span><span class="p">::</span><span class="n">Create</span><span class="p">().</span><span class="n">ComputeHash</span><span class="p">(</span>
+        <span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$graphString</span><span class="p">)</span>
+    <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="no">[System.Convert]</span><span class="p">::</span><span class="n">ToBase64String</span><span class="p">(</span><span class="nv">$hash</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="considerations-de-performance">
+<h2>Considérations de performance<a class="headerlink" href="#considerations-de-performance" title="Link to this heading"></a></h2>
+<section id="taille-des-graphes">
+<h3>Taille des graphes<a class="headerlink" href="#taille-des-graphes" title="Link to this heading"></a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Taille du graphe</th>
+<th>Nombre de nœuds</th>
+<th>Nombre d'arêtes</th>
+<th>Mémoire estimée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Petit</td>
+<td>&lt; 100</td>
+<td>&lt; 500</td>
+<td>&lt; 1 MB</td>
+</tr>
+<tr>
+<td>Moyen</td>
+<td>100 - 1 000</td>
+<td>500 - 5 000</td>
+<td>1 - 10 MB</td>
+</tr>
+<tr>
+<td>Grand</td>
+<td>1 000 - 10 000</td>
+<td>5 000 - 50 000</td>
+<td>10 - 100 MB</td>
+</tr>
+<tr>
+<td>Très grand</td>
+<td>&gt; 10 000</td>
+<td>&gt; 50 000</td>
+<td>&gt; 100 MB</td>
+</tr>
+</tbody>
+</table></section>
+<section id="optimisations-pour-les-grands-graphes">
+<h3>Optimisations pour les grands graphes<a class="headerlink" href="#optimisations-pour-les-grands-graphes" title="Link to this heading"></a></h3>
+<p>Pour les grands graphes, nous utiliserons les optimisations suivantes :</p>
+<ol class="simple">
+<li><p><strong>Implémentation itérative</strong> de l’algorithme DFS pour éviter les problèmes de débordement de pile</p></li>
+<li><p><strong>Mise en cache des résultats intermédiaires</strong> pour éviter les calculs redondants</p></li>
+<li><p><strong>Limitation de profondeur configurable</strong> pour éviter les recherches trop profondes</p></li>
+<li><p><strong>Traitement par lots</strong> pour les graphes très grands</p></li>
+</ol>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>La représentation des graphes par liste d’adjacence offre un bon compromis entre efficacité spatiale, performance et simplicité d’implémentation. Cette structure sera utilisée comme base pour le module <code class="docutils literal notranslate"><span class="pre">CycleDetector.psm1</span></code>.</p>
+<p>Les optimisations proposées permettront d’assurer de bonnes performances même sur des graphes de grande taille, tout en maintenant la clarté et la maintenabilité du code.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

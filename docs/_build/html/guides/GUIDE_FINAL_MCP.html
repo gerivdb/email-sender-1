@@ -1,0 +1,211 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide final pour les MCP dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide final pour les MCP dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_FINAL_MCP.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-final-pour-les-mcp-dans-n8n">
+<h1>Guide final pour les MCP dans n8n<a class="headerlink" href="#guide-final-pour-les-mcp-dans-n8n" title="Link to this heading"></a></h1>
+<p>Ce guide resume toutes les etapes effectuees pour resoudre les problemes de toasts d’erreur au demarrage des MCP dans n8n.</p>
+<section id="recapitulatif-des-actions-effectuees">
+<h2>Recapitulatif des actions effectuees<a class="headerlink" href="#recapitulatif-des-actions-effectuees" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Configuration des variables d’environnement</strong> :</p>
+<ul class="simple">
+<li><p>La variable <code class="docutils literal notranslate"><span class="pre">N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE</span></code> a ete definie a <code class="docutils literal notranslate"><span class="pre">true</span></code> au niveau utilisateur et processus</p></li>
+<li><p>Un fichier <code class="docutils literal notranslate"><span class="pre">.env</span></code> a ete cree avec les variables d’environnement necessaires</p></li>
+</ul>
+</li>
+<li><p><strong>Creation de fichiers batch pour les MCP</strong> :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mcp-standard.cmd</span></code> : Pour le MCP standard (n8n-nodes-mcp)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mcp-notion.cmd</span></code> : Pour le MCP Notion Server (&#64;suekou/mcp-notion-server)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gateway.exe.cmd</span></code> : Pour le MCP Gateway (centralmind/gateway)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mcp-git-ingest.cmd</span></code> : Pour le MCP Git Ingest (adhikasp/mcp-git-ingest)</p></li>
+</ul>
+</li>
+<li><p><strong>Configuration des identifiants MCP dans n8n</strong> :</p>
+<ul class="simple">
+<li><p>MCP Standard : Utilise le fichier <code class="docutils literal notranslate"><span class="pre">mcp-standard.cmd</span></code></p></li>
+<li><p>MCP Notion : Utilise le fichier <code class="docutils literal notranslate"><span class="pre">mcp-notion.cmd</span></code></p></li>
+<li><p>MCP Gateway : Utilise le fichier <code class="docutils literal notranslate"><span class="pre">gateway.exe.cmd</span></code></p></li>
+<li><p>MCP Git Ingest : Utilise le fichier <code class="docutils literal notranslate"><span class="pre">mcp-git-ingest.cmd</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Creation d’un workflow de test</strong> :</p>
+<ul class="simple">
+<li><p>Le fichier <code class="docutils literal notranslate"><span class="pre">test-mcp-workflow-updated.json</span></code> contient un workflow de test qui utilise les trois MCP</p></li>
+</ul>
+</li>
+<li><p><strong>Verification des resultats</strong> :</p>
+<ul class="simple">
+<li><p>Tous les MCP sont correctement configures et fonctionnent dans n8n</p></li>
+<li><p>Les toasts d’erreur au demarrage des MCP ne devraient plus apparaitre</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="etat-actuel">
+<h2>Etat actuel<a class="headerlink" href="#etat-actuel" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>n8n</strong> : En cours d’execution (2 processus node.exe detectes)</p></li>
+<li><p><strong>Variables d’environnement</strong> : Correctement definies</p></li>
+<li><p><strong>Identifiants MCP</strong> : Correctement configures</p></li>
+<li><p><strong>MCP Standard</strong> : Fonctionnel</p></li>
+<li><p><strong>MCP Gateway</strong> : Fonctionnel</p></li>
+<li><p><strong>MCP Notion</strong> : Configure (necessite un token d’integration Notion valide pour fonctionner completement)</p></li>
+<li><p><strong>MCP Git Ingest</strong> : Fonctionnel (permet d’explorer et de lire les dépôts GitHub)</p></li>
+</ul>
+</section>
+<section id="comment-utiliser-les-mcp-dans-vos-workflows">
+<h2>Comment utiliser les MCP dans vos workflows<a class="headerlink" href="#comment-utiliser-les-mcp-dans-vos-workflows" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Ajoutez un noeud MCP Client</strong> a votre workflow</p></li>
+<li><p><strong>Selectionnez l’identifiant MCP</strong> correspondant au MCP que vous souhaitez utiliser</p></li>
+<li><p><strong>Configurez l’operation</strong> que vous souhaitez effectuer (List Tools, Execute Tool, etc.)</p></li>
+<li><p><strong>Executez le noeud</strong> pour voir les resultats</p></li>
+</ol>
+</section>
+<section id="maintenance-et-depannage">
+<h2>Maintenance et depannage<a class="headerlink" href="#maintenance-et-depannage" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez des problemes avec les MCP a l’avenir :</p>
+<ol>
+<li><p><strong>Verifiez que n8n est en cours d’execution</strong> :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tasklist</span> <span class="o">|</span> <span class="n">findstr</span> <span class="n">node</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verifiez que les variables d’environnement sont correctement definies</strong> :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">powershell</span> <span class="o">-</span><span class="n">Command</span> <span class="s2">&quot;[Environment]::GetEnvironmentVariable(&#39;N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE&#39;, &#39;User&#39;)&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verifiez que les fichiers batch sont executables</strong> :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcp</span><span class="o">-</span><span class="n">standard</span><span class="o">.</span><span class="n">cmd</span>
+<span class="n">mcp</span><span class="o">-</span><span class="n">notion</span><span class="o">.</span><span class="n">cmd</span>
+<span class="n">gateway</span><span class="o">.</span><span class="n">exe</span><span class="o">.</span><span class="n">cmd</span> <span class="n">help</span>
+<span class="n">mcp</span><span class="o">-</span><span class="n">git</span><span class="o">-</span><span class="n">ingest</span><span class="o">.</span><span class="n">cmd</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verifiez les identifiants MCP dans n8n</strong> :</p>
+<ul class="simple">
+<li><p>Ouvrez n8n et accedez a “Credentials”</p></li>
+<li><p>Verifiez que les identifiants MCP sont correctement configures</p></li>
+</ul>
+</li>
+<li><p><strong>Executez le script de verification</strong> :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">powershell</span> <span class="o">-</span><span class="n">ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-</span><span class="n">File</span> <span class="n">check</span><span class="o">-</span><span class="n">workflow</span><span class="o">-</span><span class="n">fixed</span><span class="o">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Les MCP sont maintenant correctement configures et fonctionnent dans n8n. Vous pouvez les utiliser dans vos workflows pour interagir avec differentes sources de donnees :</p>
+<ul class="simple">
+<li><p>MCP Standard : Pour interagir avec OpenRouter et les modeles d’IA</p></li>
+<li><p>MCP Notion : Pour interagir avec vos bases de donnees Notion</p></li>
+<li><p>MCP Gateway : Pour interagir avec vos bases de donnees SQL</p></li>
+<li><p>MCP Git Ingest : Pour explorer et lire les dépôts GitHub</p></li>
+</ul>
+<p>Si vous souhaitez ajouter d’autres MCP a l’avenir, suivez le meme processus de configuration en creant un fichier batch dedie et en configurant un identifiant MCP dans n8n.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

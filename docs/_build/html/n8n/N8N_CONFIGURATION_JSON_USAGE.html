@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration et Utilisation du JSON dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Configuration et Utilisation du JSON dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/n8n/N8N_CONFIGURATION_JSON_USAGE.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration-et-utilisation-du-json-dans-n8n">
+<h1>Configuration et Utilisation du JSON dans n8n<a class="headerlink" href="#configuration-et-utilisation-du-json-dans-n8n" title="Link to this heading"></a></h1>
+<p>Ce guide offre une exploration détaillée des capacités d’automatisation de n8n, avec un accent particulier sur les extraits JSON pour diverses configurations de nœuds. Cette fiche de référence sert de ressource complète pour les débutants comme pour les utilisateurs avancés souhaitant exploiter toute la puissance de la plateforme d’automatisation de workflow de n8n.</p>
+<section id="comprendre-la-structure-de-donnees-de-n8n">
+<h2>Comprendre la Structure de Données de n8n<a class="headerlink" href="#comprendre-la-structure-de-donnees-de-n8n" title="Link to this heading"></a></h2>
+<p>n8n transmet les données entre les nœuds sous forme de tableau d’objets, suivant une structure spécifique essentielle à comprendre pour créer des workflows efficaces. Toutes les données dans n8n suivent ce modèle fondamental :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;json&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;property1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value1&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;property2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value2&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;binary&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;json&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;property1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anotherValue1&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;property2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anotherValue2&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;binary&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Chaque entrée dans ce tableau est appelée un “item” et les nœuds traitent chaque item individuellement. Cette structure permet le traitement parallèle de plusieurs éléments de données à travers votre workflow. À partir de la version 0.166.0, lors de l’utilisation des nœuds Function ou Code, n8n ajoute automatiquement la clé json si elle est manquante et enveloppe les items dans un tableau si nécessaire.</p>
+</section>
+<section id="travailler-avec-les-donnees-json-de-n8n">
+<h2>Travailler avec les Données JSON de n8n<a class="headerlink" href="#travailler-avec-les-donnees-json-de-n8n" title="Link to this heading"></a></h2>
+<p>Lors de la manipulation de données dans n8n, vous aurez fréquemment besoin d’accéder aux propriétés des nœuds précédents. Vous pouvez utiliser des expressions pour cela :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $json.property1 }}
+</pre></div>
+</div>
+<p>Pour les propriétés imbriquées plus profondes :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $json.parent.child.property }}
+</pre></div>
+</div>
+<p>Pour accéder aux données d’un nœud précédent spécifique :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $node[&quot;NodeName&quot;].json.property }}
+</pre></div>
+</div>
+</section>
+<section id="configuration-du-noeud-edit-fields-set">
+<h2>Configuration du Nœud Edit Fields (Set)<a class="headerlink" href="#configuration-du-noeud-edit-fields-set" title="Link to this heading"></a></h2>
+<p>Le nœud Edit Fields est essentiel pour manipuler les données du workflow. Il vous permet de définir de nouvelles données et d’écraser des données existantes.</p>
+<section id="mode-de-mappage-manuel">
+<h3>Mode de Mappage Manuel<a class="headerlink" href="#mode-de-mappage-manuel" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;newField&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ $json.existingField }}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;combinedField&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ $json.firstName }} {{ $json.lastName }}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;staticField&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;This is a static value&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="mode-de-sortie-json">
+<h3>Mode de Sortie JSON<a class="headerlink" href="#mode-de-sortie-json" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jsonOutput&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;jsonOutput&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;newField&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ $json.existingField }}&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;processedData&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ $json.id }}&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ $now }}&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="support-de-la-notation-par-points">
+<h3>Support de la Notation par Points<a class="headerlink" href="#support-de-la-notation-par-points" title="Link to this heading"></a></h3>
+<p>Par défaut, n8n prend en charge la notation par points dans les noms de champs. Définir un nom comme <code class="docutils literal notranslate"><span class="pre">number.one</span></code> avec la valeur 20 produit :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;number&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;one&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Pour désactiver ce comportement, sélectionnez Add Option &gt; Support Dot Notation et définissez-le sur off.</p>
+</section>
+</section>
+<section id="implementation-du-noeud-code">
+<h2>Implémentation du Nœud Code<a class="headerlink" href="#implementation-du-noeud-code" title="Link to this heading"></a></h2>
+<p>Le nœud Code offre des moyens puissants de transformer les données par programmation. Il propose deux modes opérationnels :</p>
+<section id="executer-une-fois-pour-tous-les-items">
+<h3>Exécuter Une Fois pour Tous les Items<a class="headerlink" href="#executer-une-fois-pour-tous-les-items" title="Link to this heading"></a></h3>
+<p>Ce mode traite toutes les données entrantes en une seule fois, utile pour les opérations sur plusieurs items :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Exemple : Obtenir un Tableau à partir d&#39;un Objet</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">newItems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">inputData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$input</span><span class="p">.</span><span class="nx">all</span><span class="p">().</span><span class="nx">json</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">inputData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">newItems</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">modifiedData</span><span class="o">:</span><span class="w"> </span><span class="nx">item</span><span class="p">.</span><span class="nx">originalData</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">()</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+<span class="k">return</span><span class="w"> </span><span class="nx">newItems</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="executer-une-fois-pour-chaque-item">
+<h3>Exécuter Une Fois pour Chaque Item<a class="headerlink" href="#executer-une-fois-pour-chaque-item" title="Link to this heading"></a></h3>
+<p>Ce mode traite chaque item individuellement :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Exemple : Transformer un seul item</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$json</span><span class="p">;</span>
+<span class="nx">item</span><span class="p">.</span><span class="nx">processed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="nx">item</span><span class="p">.</span><span class="nx">modifiedAt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">();</span>
+<span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="diviser-le-json-en-items-separes">
+<h3>Diviser le JSON en Items Séparés<a class="headerlink" href="#diviser-le-json-en-items-separes" title="Link to this heading"></a></h3>
+<p>Une tâche courante est de diviser un JSON imbriqué en items individuels :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Diviser les données webhook entrantes en items séparés</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;Webhook&#39;</span><span class="p">).</span><span class="nx">all</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">students</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">item</span><span class="p">.</span><span class="nx">json</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">students</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="nx">studentKey</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">students</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">results</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="nx">students</span><span class="p">[</span><span class="nx">studentKey</span><span class="p">]</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">return</span><span class="w"> </span><span class="nx">results</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utiliser-les-expressions-dans-n8n">
+<h2>Utiliser les Expressions dans n8n<a class="headerlink" href="#utiliser-les-expressions-dans-n8n" title="Link to this heading"></a></h2>
+<p>Les expressions permettent de définir des paramètres dynamiques basés sur les données des nœuds précédents, du workflow ou de votre environnement.</p>
+<section id="syntaxe-d-expression-de-base">
+<h3>Syntaxe d’Expression de Base<a class="headerlink" href="#syntaxe-d-expression-de-base" title="Link to this heading"></a></h3>
+<p>Toutes les expressions ont le format <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">your</span> <span class="pre">expression</span> <span class="pre">here</span> <span class="pre">}}</span></code>.</p>
+</section>
+<section id="acceder-aux-donnees-des-noeuds-precedents">
+<h3>Accéder aux Données des Nœuds Précédents<a class="headerlink" href="#acceder-aux-donnees-des-noeuds-precedents" title="Link to this heading"></a></h3>
+<p>Pour obtenir des données d’un corps de webhook :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $json.city }}
+</pre></div>
+</div>
+<p>Cela accède aux données JSON entrantes en utilisant la variable $json de n8n et trouve la valeur de la propriété city.</p>
+</section>
+</section>
+<section id="configuration-du-noeud-ai-agent">
+<h2>Configuration du Nœud AI Agent<a class="headerlink" href="#configuration-du-noeud-ai-agent" title="Link to this heading"></a></h2>
+<p>Le nœud AI Agent apporte de puissantes capacités d’IA aux workflows n8n. Il fournit six options d’agent LangChain :</p>
+<section id="tools-agent-par-defaut">
+<h3>Tools Agent (Par Défaut)<a class="headerlink" href="#tools-agent-par-defaut" title="Link to this heading"></a></h3>
+<p>Cet agent utilise des outils externes et des API pour effectuer des actions et récupérer des informations. Exemple de configuration JSON :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tools&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You are a helpful assistant that uses tools to find information and accomplish tasks.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;verbose&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="agent-conversationnel">
+<h3>Agent Conversationnel<a class="headerlink" href="#agent-conversationnel" title="Link to this heading"></a></h3>
+<p>Cet agent maintient le contexte, comprend l’intention de l’utilisateur et fournit des réponses pertinentes. Idéal pour les chatbots et les assistants virtuels :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;conversational&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You are a helpful customer service agent for our company.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="construire-un-agent-ia-avec-memoire">
+<h3>Construire un Agent IA avec Mémoire<a class="headerlink" href="#construire-un-agent-ia-avec-memoire" title="Link to this heading"></a></h3>
+<p>Pour créer un agent IA avec mémoire à long terme :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tools&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;systemMessage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You are an assistant with memory capabilities. Use your tools to remember important information from our conversations.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;memory-add&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;memory-retrieve&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="exporter-et-importer-des-workflows">
+<h2>Exporter et Importer des Workflows<a class="headerlink" href="#exporter-et-importer-des-workflows" title="Link to this heading"></a></h2>
+<p>n8n sauvegarde les workflows au format JSON, permettant un partage et une réutilisation faciles.</p>
+<section id="methode-copier-coller">
+<h3>Méthode Copier-Coller<a class="headerlink" href="#methode-copier-coller" title="Link to this heading"></a></h3>
+<p>Vous pouvez copier une partie ou la totalité d’un workflow en utilisant les raccourcis clavier standard (Ctrl+C/Cmd+C et Ctrl+V/Cmd+V).</p>
+</section>
+<section id="importer-des-workflows-json">
+<h3>Importer des Workflows JSON<a class="headerlink" href="#importer-des-workflows-json" title="Link to this heading"></a></h3>
+<p>Pour importer un workflow JSON d’une source externe :</p>
+<ol class="simple">
+<li><p>Créez un nouveau workflow dans n8n</p></li>
+<li><p>Copiez le script JSON</p></li>
+<li><p>Collez-le directement dans l’éditeur de workflow en utilisant Ctrl+V/Cmd+V</p></li>
+<li><p>Connectez tous les comptes requis</p></li>
+<li><p>Personnalisez selon les besoins</p></li>
+<li><p>Sauvegardez le workflow</p></li>
+</ol>
+</section>
+</section>
+<section id="parcourir-les-donnees-json">
+<h2>Parcourir les Données JSON<a class="headerlink" href="#parcourir-les-donnees-json" title="Link to this heading"></a></h2>
+<p>Travailler avec des tableaux d’objets JSON est courant dans n8n :</p>
+<section id="utiliser-le-noeud-item-lists">
+<h3>Utiliser le Nœud Item Lists<a class="headerlink" href="#utiliser-le-noeud-item-lists" title="Link to this heading"></a></h3>
+<p>Pour diviser un tableau à partir de données entrantes :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $json.body.block }}
+</pre></div>
+</div>
+<p>Cela divise chaque bloc en items séparés qui peuvent être traités individuellement.</p>
+</section>
+</section>
+<section id="outils-et-convertisseurs">
+<h2>Outils et Convertisseurs<a class="headerlink" href="#outils-et-convertisseurs" title="Link to this heading"></a></h2>
+<p>n8n fournit plusieurs outils de conversion :</p>
+<section id="convertisseur-xml-vers-json">
+<h3>Convertisseur XML vers JSON<a class="headerlink" href="#convertisseur-xml-vers-json" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;convert&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xml&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ $json.xmlData }}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="convertisseur-csv-vers-json">
+<h3>Convertisseur CSV vers JSON<a class="headerlink" href="#convertisseur-csv-vers-json" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;convert&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;csv&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ $json.csvData }}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-avec-des-services-tiers">
+<h2>Intégration avec des Services Tiers<a class="headerlink" href="#integration-avec-des-services-tiers" title="Link to this heading"></a></h2>
+<p>n8n excelle dans la connexion de diverses plateformes et services.</p>
+<section id="integration-google-sheets">
+<h3>Intégration Google Sheets<a class="headerlink" href="#integration-google-sheets" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;appendOrUpdate&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;sheetId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOUR_SHEET_ID&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;range&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A:Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ $json.rowData }}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="automatiser-la-generation-de-json-avec-openai">
+<h3>Automatiser la Génération de JSON avec OpenAI<a class="headerlink" href="#automatiser-la-generation-de-json-avec-openai" title="Link to this heading"></a></h3>
+<p>Vous pouvez utiliser le nœud OpenAI pour générer automatiquement du JSON structuré :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Generate a JSON object with the following structure: {{ $json.structure }}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;json&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fonctionnalites-avancees-et-astuces">
+<h2>Fonctionnalités Avancées et Astuces<a class="headerlink" href="#fonctionnalites-avancees-et-astuces" title="Link to this heading"></a></h2>
+<section id="acceder-aux-donnees-d-un-webhook">
+<h3>Accéder aux Données d’un Webhook<a class="headerlink" href="#acceder-aux-donnees-d-un-webhook" title="Link to this heading"></a></h3>
+<p>Lors de la réception de données via un webhook, accédez à des éléments spécifiques en utilisant des expressions :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{ $json.body.ticker }}
+{{ $json.body.tf }}
+</pre></div>
+</div>
+<p>Pour les représentations de chaînes de JSON, vous devrez d’abord analyser la chaîne :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Dans un nœud Code</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">parsedBody</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">$json</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+<span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="nx">parsedBody</span><span class="w"> </span><span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="ajouter-des-donnees-du-noeud-precedent-a-chaque-item">
+<h3>Ajouter des Données du Nœud Précédent à Chaque Item<a class="headerlink" href="#ajouter-des-donnees-du-noeud-precedent-a-chaque-item" title="Link to this heading"></a></h3>
+<p>Lorsque vous divisez des données mais que vous avez besoin de conserver des informations de la source originale :</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Dans un nœud Code</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">eventName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;Webhook&#39;</span><span class="p">).</span><span class="nx">first</span><span class="p">().</span><span class="nx">json</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">event_name</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">student</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">$json</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">students</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">results</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">json</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="p">...</span><span class="nx">student</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">eventName</span><span class="o">:</span><span class="w"> </span><span class="nx">eventName</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+<span class="k">return</span><span class="w"> </span><span class="nx">results</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques-pour-la-manipulation-de-json-dans-n8n">
+<h2>Bonnes Pratiques pour la Manipulation de JSON dans n8n<a class="headerlink" href="#bonnes-pratiques-pour-la-manipulation-de-json-dans-n8n" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Structure Cohérente</strong> : Maintenez une structure de données cohérente tout au long de votre workflow pour faciliter le débogage et la maintenance.</p></li>
+<li><p><strong>Validation des Données</strong> : Utilisez des nœuds IF ou des blocs try/catch dans les nœuds Code pour valider les données avant de les traiter.</p></li>
+<li><p><strong>Documentation</strong> : Utilisez des nœuds Sticky Note pour documenter la structure des données à différentes étapes du workflow.</p></li>
+<li><p><strong>Gestion des Erreurs</strong> : Prévoyez des chemins alternatifs pour gérer les cas où les données ne correspondent pas à la structure attendue.</p></li>
+<li><p><strong>Optimisation des Performances</strong> : Pour les grands ensembles de données, utilisez “Run Once for All Items” dans les nœuds Code plutôt que de traiter chaque item individuellement.</p></li>
+<li><p><strong>Expressions Robustes</strong> : Utilisez l’opérateur de chaînage optionnel (<code class="docutils literal notranslate"><span class="pre">?.</span></code>) dans les expressions pour éviter les erreurs lorsque les propriétés peuvent être manquantes.</p></li>
+<li><p><strong>Débogage</strong> : Utilisez des nœuds Set temporaires avec <code class="docutils literal notranslate"><span class="pre">console.log()</span></code> pour inspecter les données à différentes étapes du workflow.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

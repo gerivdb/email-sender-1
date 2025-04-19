@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guideline pour l’utilisation d’Augment dans VS Code &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guideline pour l’utilisation d’Augment dans VS Code</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/augment_vscode_guidelines.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guideline-pour-l-utilisation-d-augment-dans-vs-code">
+<h1>Guideline pour l’utilisation d’Augment dans VS Code<a class="headerlink" href="#guideline-pour-l-utilisation-d-augment-dans-vs-code" title="Link to this heading"></a></h1>
+<section id="limites-des-entrees-inputs">
+<h2>1. Limites des entrées (inputs)<a class="headerlink" href="#limites-des-entrees-inputs" title="Link to this heading"></a></h2>
+<p><strong>Contrainte actuelle</strong> : Augment a une limite d’environ 8 000 à 10 000 caractères pour le paramètre <code class="docutils literal notranslate"><span class="pre">str_replace_entries</span></code>, due à la sérialisation des données entre le frontend et le backend.</p>
+<p><strong>Solutions de contournement</strong> :</p>
+<ul class="simple">
+<li><p><strong>Diviser manuellement les modifications</strong> :</p>
+<ul>
+<li><p>Séparez les gros changements en plusieurs appels (ex. : une fonction ou section par appel).</p></li>
+<li><p>Exemple : Éditez fonction1 dans un premier appel, puis fonction2 dans un second.</p></li>
+</ul>
+</li>
+<li><p><strong>Utiliser une approche par insertion</strong> :</p>
+<ul>
+<li><p>Préférez insérer du nouveau code plutôt que remplacer de gros blocs si possible.</p></li>
+</ul>
+</li>
+<li><p><strong>Créer des nouveaux fichiers avec save-file</strong> :</p>
+<ul>
+<li><p>Pour les fichiers entièrement nouveaux, utilisez la commande <code class="docutils literal notranslate"><span class="pre">save-file</span></code>, qui a moins de restrictions que <code class="docutils literal notranslate"><span class="pre">str_replace_entries</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<div><p><strong>Note</strong> : Aucun mécanisme automatique de division des entrées volumineuses n’existe actuellement, mais une amélioration est prévue dans une future mise à jour.</p>
+</div></blockquote>
+</section>
+<section id="gestion-des-fichiers">
+<h2>2. Gestion des fichiers<a class="headerlink" href="#gestion-des-fichiers" title="Link to this heading"></a></h2>
+<p><strong>Comportement</strong> : Augment ne modifie pas directement les fichiers existants comme Cline ; il crée de nouveaux fichiers ou nécessite des remplacements explicites.</p>
+<p><strong>Recommandations</strong> :</p>
+<ul class="simple">
+<li><p>Pour modifier un fichier existant, spécifiez clairement la région à remplacer via <code class="docutils literal notranslate"><span class="pre">str_replace_entries</span></code>.</p></li>
+<li><p>Vérifiez les erreurs comme <code class="docutils literal notranslate"><span class="pre">Cannot</span> <span class="pre">read</span> <span class="pre">file</span></code> ou <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">replacement</span> <span class="pre">was</span> <span class="pre">performed</span></code> si le texte cible (<code class="docutils literal notranslate"><span class="pre">oldStr</span></code>) ne correspond pas exactement au contenu du fichier.</p></li>
+</ul>
+<p><strong>Exemple d’erreur courante</strong> :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">No</span> <span class="n">replacement</span> <span class="n">was</span> <span class="n">performed</span><span class="p">,</span> <span class="n">oldStr</span> <span class="n">did</span> <span class="ow">not</span> <span class="n">appear</span> <span class="n">verbatim</span> <span class="ow">in</span> <span class="n">tools</span>\<span class="n">path</span><span class="o">-</span><span class="n">utils</span>\<span class="n">Path</span><span class="o">-</span><span class="n">Manager</span><span class="o">.</span><span class="n">psm1</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong> : Ajustez <code class="docutils literal notranslate"><span class="pre">oldStr</span></code> pour qu’il corresponde précisément au contenu existant (voir la diff fournie dans l’erreur).</p>
+</section>
+<section id="gestion-de-l-encodage-specifique-aux-fichiers-powershell">
+<h2>3. Gestion de l’encodage (spécifique aux fichiers PowerShell)<a class="headerlink" href="#gestion-de-l-encodage-specifique-aux-fichiers-powershell" title="Link to this heading"></a></h2>
+<p><strong>Problèmes potentiels</strong> : Les caractères accentués peuvent poser problème si l’encodage n’est pas correct (ex. : <code class="docutils literal notranslate"><span class="pre">OpÃ©ration</span></code> au lieu de <code class="docutils literal notranslate"><span class="pre">Opération</span></code>).</p>
+<p><strong>Solutions</strong> :</p>
+<ul>
+<li><p><strong>Enregistrer les fichiers en UTF-8 avec BOM</strong> :</p>
+<ul class="simple">
+<li><p>Dans VS Code, utilisez <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">Save</span> <span class="pre">with</span> <span class="pre">Encoding</span> <span class="pre">&gt;</span> <span class="pre">UTF-8</span> <span class="pre">with</span> <span class="pre">BOM</span></code> pour les scripts PowerShell (.ps1, .psm1).</p></li>
+</ul>
+</li>
+<li><p><strong>Ajouter une ligne au début des scripts PowerShell</strong> :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="no">[Console]</span><span class="p">::</span><span class="n">OutputEncoding</span> <span class="p">=</span> <span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Configurer le terminal PowerShell</strong> :</p>
+<ul class="simple">
+<li><p>Avant d’exécuter des scripts, tapez dans le terminal :</p></li>
+</ul>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">chcp</span> <span class="n">65001</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>Impact</strong> : Un mauvais encodage peut affecter la lecture des entrées par Augment ou l’affichage des sorties, mais les modifications de fichiers sont généralement bien gérées en UTF-8.</p>
+</section>
+<section id="configuration-recommandee-dans-vs-code">
+<h2>4. Configuration recommandée dans VS Code<a class="headerlink" href="#configuration-recommandee-dans-vs-code" title="Link to this heading"></a></h2>
+<p>Ajoutez ces paramètres dans <code class="docutils literal notranslate"><span class="pre">settings.json</span></code> (accessible via <code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span> <span class="pre">&gt;</span> <span class="pre">Preferences:</span> <span class="pre">Open</span> <span class="pre">Settings</span> <span class="pre">(JSON)</span></code>) pour optimiser Augment :</p>
+<ul class="simple">
+<li><p><strong>Gestion des fichiers volumineux</strong> :</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;files.maxMemoryForLargeFilesMB&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Affichage des résultats dans le terminal</strong> :</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;terminal.integrated.scrollback&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Encodage du terminal</strong> :</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;terminal.integrated.env.windows&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;LC_ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fr_FR.UTF-8&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>(Adaptez <code class="docutils literal notranslate"><span class="pre">windows</span></code> à <code class="docutils literal notranslate"><span class="pre">linux</span></code> ou <code class="docutils literal notranslate"><span class="pre">osx</span></code> selon votre système.)</p>
+<ul class="simple">
+<li><p><strong>Performance générale</strong> :</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;terminal.integrated.gpuAcceleration&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="resolution-des-erreurs-courantes">
+<h2>5. Résolution des erreurs courantes<a class="headerlink" href="#resolution-des-erreurs-courantes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Erreur</strong> : <code class="docutils literal notranslate"><span class="pre">Cannot</span> <span class="pre">read</span> <span class="pre">file:</span> <span class="pre">votre_fichier.ps1</span></code> :</p>
+<ul>
+<li><p>Vérifiez que le chemin du fichier est correct et accessible dans le projet.</p></li>
+</ul>
+</li>
+<li><p><strong>Erreur</strong> : <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">replacement</span> <span class="pre">was</span> <span class="pre">performed</span></code> :</p>
+<ul>
+<li><p>Consultez la diff fournie (ex. : <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Commentaire</span> <span class="pre">à</span> <span class="pre">remplacer</span></code> vs. <code class="docutils literal notranslate"><span class="pre">Nom</span> <span class="pre">du</span> <span class="pre">fichier</span> <span class="pre">:</span> <span class="pre">Path-Manager.psm1</span></code>) et ajustez <code class="docutils literal notranslate"><span class="pre">oldStr</span></code> pour correspondre au contenu exact.</p></li>
+<li><p><strong>Action</strong> : Relancez la commande après correction.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="ressources-et-support">
+<h2>6. Ressources et support<a class="headerlink" href="#ressources-et-support" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Documentation officielle</strong> : Consultez https://docs.augmentcode.com/ (URL à confirmer).</p></li>
+<li><p><strong>Signaler un problème</strong> :</p>
+<ul>
+<li><p>Utilisez le bouton de feedback dans l’interface d’Augment.</p></li>
+<li><p>Contactez support&#64;augmentcode.com (adresse à confirmer).</p></li>
+<li><p>Ouvrez un ticket sur le GitHub d’Augment si disponible.</p></li>
+</ul>
+</li>
+<li><p><strong>Communauté</strong> : Rejoignez le Discord ou Slack d’Augment pour des astuces supplémentaires.</p></li>
+<li><p><strong>Exemples</strong> : Explorez la section “Exemples” de la documentation.</p></li>
+</ul>
+</section>
+<section id="evolutions-futures">
+<h2>7. Évolutions futures<a class="headerlink" href="#evolutions-futures" title="Link to this heading"></a></h2>
+<p>La limitation des entrées volumineuses est connue et en cours de résolution.</p>
+<p>Une mise à jour dans les prochains mois devrait :</p>
+<ul class="simple">
+<li><p>Augmenter la taille maximale des inputs.</p></li>
+<li><p>Ajouter un mécanisme automatique pour diviser les grosses entrées.</p></li>
+</ul>
+</section>
+<section id="conseils-pratiques">
+<h2>Conseils pratiques<a class="headerlink" href="#conseils-pratiques" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Testez avec des petits inputs d’abord</strong> : Avant de travailler sur un gros fichier, validez votre flux avec un extrait de 10 lignes.</p></li>
+<li><p><strong>Sauvegardez vos fichiers</strong> : Utilisez un système de contrôle de version (comme Git) pour éviter les pertes de données en cas d’erreur.</p></li>
+<li><p><strong>Comparez manuellement si nécessaire</strong> : Si Augment ne fournit pas de vue split, utilisez la fonctionnalité de diff de VS Code (clic droit &gt; “Compare with…”).</p></li>
+</ul>
+<p>Cette guideline devrait vous permettre de travailler efficacement avec Augment tout en attendant les améliorations promises.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

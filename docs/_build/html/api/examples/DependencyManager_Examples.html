@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemples d’utilisation du module DependencyManager &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Exemples d’utilisation du module MCPManager" href="MCPManager_Examples.html" />
+    <link rel="prev" title="Exemples d’utilisation du module CycleDetector" href="CycleDetector_Examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Documentation des API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../CycleDetector.html">Module CycleDetector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../DependencyManager.html">Module DependencyManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCPManager.html">Module MCPManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../InputSegmenter.html">Module InputSegmenter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CycleDetector_Examples.html">Exemples d’utilisation du module CycleDetector</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exemples d’utilisation du module DependencyManager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exemple-1-analyse-des-dependances-d-un-script">Exemple 1: Analyse des dépendances d’un script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exemple-2-resolution-de-l-ordre-d-execution-des-scripts">Exemple 2: Résolution de l’ordre d’exécution des scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exemple-3-test-des-dependances-d-un-module-powershell">Exemple 3: Test des dépendances d’un module PowerShell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exemple-4-generation-de-statistiques-sur-les-dependances">Exemple 4: Génération de statistiques sur les dépendances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exemple-5-optimisation-des-dependances">Exemple 5: Optimisation des dépendances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exemple-6-integration-avec-le-module-cycledetector">Exemple 6: Intégration avec le module CycleDetector</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="MCPManager_Examples.html">Exemples d’utilisation du module MCPManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="InputSegmenter_Examples.html">Exemples d’utilisation du module InputSegmenter</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Documentation des API</a></li>
+      <li class="breadcrumb-item active">Exemples d’utilisation du module DependencyManager</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/examples/DependencyManager_Examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="exemples-d-utilisation-du-module-dependencymanager">
+<h1>Exemples d’utilisation du module DependencyManager<a class="headerlink" href="#exemples-d-utilisation-du-module-dependencymanager" title="Link to this heading"></a></h1>
+<p>Cette page contient des exemples concrets d’utilisation du module <code class="docutils literal notranslate"><span class="pre">DependencyManager</span></code> pour gérer les dépendances entre les scripts, les modules et les workflows.</p>
+<section id="exemple-1-analyse-des-dependances-d-un-script">
+<h2>Exemple 1: Analyse des dépendances d’un script<a class="headerlink" href="#exemple-1-analyse-des-dependances-d-un-script" title="Link to this heading"></a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\DependencyManager.psm1&quot;</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser le gestionnaire de dépendances</span>
+<span class="nb">Initialize-DependencyManager</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span>
+
+<span class="c"># Analyser les dépendances d&#39;un script</span>
+<span class="nv">$dependencies</span> <span class="p">=</span> <span class="nb">Get-ScriptDependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts\main.ps1&quot;</span> <span class="n">-IncludeExternal</span>
+
+<span class="c"># Afficher les dépendances</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Dépendances du script </span><span class="p">$(</span><span class="nv">$dependencies</span><span class="p">.</span><span class="n">ScriptPath</span><span class="p">)</span><span class="s2">:&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$dep</span> <span class="k">in</span> <span class="nv">$dependencies</span><span class="p">.</span><span class="n">Dependencies</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;- $dep&quot;</span>
+<span class="p">}</span>
+
+<span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Dépendances externes:&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$extDep</span> <span class="k">in</span> <span class="nv">$dependencies</span><span class="p">.</span><span class="n">ExternalDependencies</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;- $extDep&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Exporter le graphe de dépendances</span>
+<span class="nb">Export-DependencyGraph</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts\main.ps1&quot;</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\main_dependencies.html&quot;</span> <span class="n">-Format</span> <span class="s2">&quot;HTML&quot;</span> <span class="n">-IncludeExternal</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-2-resolution-de-l-ordre-d-execution-des-scripts">
+<h2>Exemple 2: Résolution de l’ordre d’exécution des scripts<a class="headerlink" href="#exemple-2-resolution-de-l-ordre-d-execution-des-scripts" title="Link to this heading"></a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\DependencyManager.psm1&quot;</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser le gestionnaire de dépendances</span>
+<span class="nb">Initialize-DependencyManager</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span>
+
+<span class="c"># Résoudre l&#39;ordre d&#39;exécution des scripts</span>
+<span class="nv">$order</span> <span class="p">=</span> <span class="nb">Resolve-DependencyOrder</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\execution_order.json&quot;</span> <span class="n">-Format</span> <span class="s2">&quot;JSON&quot;</span>
+
+<span class="c"># Afficher l&#39;ordre d&#39;exécution</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Ordre d&#39;exécution des scripts:&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$script</span> <span class="k">in</span> <span class="nv">$order</span><span class="p">.</span><span class="n">ExecutionOrder</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;- $script&quot;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$order</span><span class="p">.</span><span class="n">CyclicDependencies</span><span class="p">.</span><span class="n">Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Attention: Dépendances cycliques détectées:&quot;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$cycle</span> <span class="k">in</span> <span class="nv">$order</span><span class="p">.</span><span class="n">CyclicDependencies</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$cycle</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Créer un script d&#39;exécution automatique</span>
+<span class="nv">$executionScript</span> <span class="p">=</span> <span class="sh">@&quot;</span>
+</pre></div>
+</div>
+<p># Script d’exécution automatique généré par DependencyManager
+# Date de génération: $(Get-Date -Format “yyyy-MM-dd HH:mm:ss”)</p>
+<p># Ordre d’exécution des scripts
+$($order.ExecutionOrder | ForEach-Object { “. ‘$_’” })
+“&#64;</p>
+<blockquote>
+<div><p>Set-Content -Path “.run_scripts.ps1” -Value $executionScript
+Write-Host “<a href="#id1"><span class="problematic" id="id2">`</span></a>nScript d’exécution automatique généré: .run_scripts.ps1”</p>
+</div></blockquote>
+</section>
+<section id="exemple-3-test-des-dependances-d-un-module-powershell">
+<h2>Exemple 3: Test des dépendances d’un module PowerShell<a class="headerlink" href="#exemple-3-test-des-dependances-d-un-module-powershell" title="Link to this heading"></a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\DependencyManager.psm1&quot;</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser le gestionnaire de dépendances</span>
+<span class="nb">Initialize-DependencyManager</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span>
+
+<span class="c"># Tester les dépendances d&#39;un module</span>
+<span class="nv">$moduleDeps</span> <span class="p">=</span> <span class="nb">Test-ModuleDependencies</span> <span class="n">-ModulePath</span> <span class="s2">&quot;.\modules\MyModule&quot;</span> <span class="n">-IncludeVersion</span> <span class="n">-CheckAvailability</span>
+
+<span class="c"># Afficher les dépendances</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Dépendances du module </span><span class="p">$(</span><span class="nv">$moduleDeps</span><span class="p">.</span><span class="n">ModuleName</span><span class="p">)</span><span class="s2">:&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$dep</span> <span class="k">in</span> <span class="nv">$moduleDeps</span><span class="p">.</span><span class="n">Dependencies</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$status</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$moduleDeps</span><span class="p">.</span><span class="n">MissingDependencies</span> <span class="o">-contains</span> <span class="nv">$dep</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;Manquant&quot;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="s2">&quot;Disponible&quot;</span> <span class="p">}</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$dep</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span><span class="s2"> </span><span class="p">$(</span><span class="k">if</span> <span class="p">(</span><span class="nv">$dep</span><span class="p">.</span><span class="n">Version</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;(</span><span class="p">$(</span><span class="nv">$dep</span><span class="p">.</span><span class="n">Version</span><span class="p">)</span><span class="s2">)&quot;</span> <span class="p">})</span><span class="s2"> - $status&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Installer les dépendances manquantes</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$moduleDeps</span><span class="p">.</span><span class="n">MissingDependencies</span><span class="p">.</span><span class="n">Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Installation des dépendances manquantes...&quot;</span>
+    <span class="nv">$installResult</span> <span class="p">=</span> <span class="nb">Install-Dependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\MyModule&quot;</span> <span class="n">-Scope</span> <span class="s2">&quot;CurrentUser&quot;</span>
+
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Résultat de l&#39;installation:&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Dépendances installées: </span><span class="p">$(</span><span class="nv">$installResult</span><span class="p">.</span><span class="n">InstalledDependencies</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Dépendances déjà installées: </span><span class="p">$(</span><span class="nv">$installResult</span><span class="p">.</span><span class="n">AlreadyInstalledDependencies</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Échecs d&#39;installation: </span><span class="p">$(</span><span class="nv">$installResult</span><span class="p">.</span><span class="n">FailedDependencies</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-4-generation-de-statistiques-sur-les-dependances">
+<h2>Exemple 4: Génération de statistiques sur les dépendances<a class="headerlink" href="#exemple-4-generation-de-statistiques-sur-les-dependances" title="Link to this heading"></a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\DependencyManager.psm1&quot;</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser le gestionnaire de dépendances</span>
+<span class="nb">Initialize-DependencyManager</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span>
+
+<span class="c"># Générer des statistiques sur les dépendances</span>
+<span class="nv">$stats</span> <span class="p">=</span> <span class="nb">Get-DependencyStatistics</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-IncludeExternal</span>
+
+<span class="c"># Afficher les statistiques</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Statistiques de dépendances:&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de scripts: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">ScriptCount</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre total de dépendances: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">TotalDependencies</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre moyen de dépendances par script: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">AverageDependenciesPerScript</span><span class="p">)</span><span class="s2">&quot;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">MaxDependencies</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Script avec le plus de dépendances: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">MaxDependencies</span><span class="p">.</span><span class="n">Script</span><span class="p">)</span><span class="s2"> (</span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">MaxDependencies</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> dépendances)&quot;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">MinDependencies</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Script avec le moins de dépendances: </span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">MinDependencies</span><span class="p">.</span><span class="n">Script</span><span class="p">)</span><span class="s2"> (</span><span class="p">$(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">MinDependencies</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> dépendances)&quot;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$stats</span><span class="p">.</span><span class="n">CyclicDependencies</span><span class="p">.</span><span class="n">Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Dépendances cycliques détectées:&quot;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$cycle</span> <span class="k">in</span> <span class="nv">$stats</span><span class="p">.</span><span class="n">CyclicDependencies</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$cycle</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># Exporter les statistiques au format JSON</span>
+<span class="nv">$stats</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Depth</span> <span class="n">5</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">-Path</span> <span class="s2">&quot;.\dependency_statistics.json&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Statistiques exportées: .\dependency_statistics.json&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-5-optimisation-des-dependances">
+<h2>Exemple 5: Optimisation des dépendances<a class="headerlink" href="#exemple-5-optimisation-des-dependances" title="Link to this heading"></a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer le module</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\DependencyManager.psm1&quot;</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser le gestionnaire de dépendances</span>
+<span class="nb">Initialize-DependencyManager</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span>
+
+<span class="c"># Analyser et obtenir des suggestions d&#39;optimisation</span>
+<span class="nv">$optimization</span> <span class="p">=</span> <span class="nb">Optimize-Dependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\optimization_report.json&quot;</span>
+
+<span class="c"># Afficher les suggestions d&#39;optimisation</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Nombre de scripts analysés: </span><span class="p">$(</span><span class="nv">$optimization</span><span class="p">.</span><span class="n">ScriptsAnalyzed</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nb">Write-Host</span> <span class="s2">&quot;Suggestions d&#39;optimisation:&quot;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$suggestion</span> <span class="k">in</span> <span class="nv">$optimization</span><span class="p">.</span><span class="n">OptimizationSuggestions</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$suggestion</span><span class="p">.</span><span class="n">Script</span><span class="p">)</span><span class="s2">: </span><span class="p">$(</span><span class="nv">$suggestion</span><span class="p">.</span><span class="n">Description</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+
+<span class="c"># Demander confirmation pour appliquer les changements</span>
+<span class="nv">$confirmation</span> <span class="p">=</span> <span class="nb">Read-Host</span> <span class="s2">&quot;Voulez-vous appliquer les changements recommandés? (O/N)&quot;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$confirmation</span> <span class="o">-eq</span> <span class="s2">&quot;O&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c"># Appliquer les changements recommandés</span>
+    <span class="nv">$appliedOptimization</span> <span class="p">=</span> <span class="nb">Optimize-Dependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-ApplyChanges</span>
+
+    <span class="c"># Afficher les changements appliqués</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Changements appliqués:&quot;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$change</span> <span class="k">in</span> <span class="nv">$appliedOptimization</span><span class="p">.</span><span class="n">AppliedChanges</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;- </span><span class="p">$(</span><span class="nv">$change</span><span class="p">.</span><span class="n">Script</span><span class="p">)</span><span class="s2">: </span><span class="p">$(</span><span class="nv">$change</span><span class="p">.</span><span class="n">Description</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="exemple-6-integration-avec-le-module-cycledetector">
+<h2>Exemple 6: Intégration avec le module CycleDetector<a class="headerlink" href="#exemple-6-integration-avec-le-module-cycledetector" title="Link to this heading"></a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Importer les modules</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\CycleDetector.psm1&quot;</span> <span class="n">-Force</span>
+<span class="nb">Import-Module</span> <span class="n">-Path</span> <span class="s2">&quot;.\modules\DependencyManager.psm1&quot;</span> <span class="n">-Force</span>
+
+<span class="c"># Initialiser les modules</span>
+<span class="nb">Initialize-CycleDetector</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span>
+<span class="nb">Initialize-DependencyManager</span> <span class="n">-Enabled</span> <span class="nv">$true</span> <span class="n">-CacheEnabled</span> <span class="nv">$true</span> <span class="n">-MaxDepth</span> <span class="n">100</span>
+
+<span class="c"># Analyser les dépendances dans un dossier de scripts</span>
+<span class="nv">$dependencies</span> <span class="p">=</span> <span class="nb">Get-ScriptDependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span>
+
+<span class="c"># Détecter les cycles dans le graphe de dépendances</span>
+<span class="nv">$cycleResult</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$dependencies</span><span class="p">.</span><span class="n">DependencyGraph</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$cycleResult</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Cycle détecté dans les dépendances: </span><span class="p">$(</span><span class="nv">$cycleResult</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+
+    <span class="c"># Résoudre l&#39;ordre d&#39;exécution en tenant compte des cycles</span>
+    <span class="nv">$order</span> <span class="p">=</span> <span class="nb">Resolve-DependencyOrder</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-OutputPath</span> <span class="s2">&quot;.\execution_order.json&quot;</span> <span class="n">-Format</span> <span class="s2">&quot;JSON&quot;</span>
+
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Ordre d&#39;exécution résolu:&quot;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$script</span> <span class="k">in</span> <span class="nv">$order</span><span class="p">.</span><span class="n">ExecutionOrder</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;- $script&quot;</span>
+    <span class="p">}</span>
+
+    <span class="c"># Optimiser les dépendances pour éliminer les cycles</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">Optimisation des dépendances pour éliminer les cycles...&quot;</span>
+    <span class="nv">$optimization</span> <span class="p">=</span> <span class="nb">Optimize-Dependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span> <span class="n">-ApplyChanges</span>
+
+    <span class="c"># Vérifier si les cycles ont été éliminés</span>
+    <span class="nv">$newDependencies</span> <span class="p">=</span> <span class="nb">Get-ScriptDependencies</span> <span class="n">-Path</span> <span class="s2">&quot;.\scripts&quot;</span> <span class="n">-Recursive</span>
+    <span class="nv">$newCycleResult</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$newDependencies</span><span class="p">.</span><span class="n">DependencyGraph</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$newCycleResult</span><span class="p">.</span><span class="n">HasCycle</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Les cycles ont été éliminés avec succès!&quot;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Host</span> <span class="s2">&quot;Des cycles persistent dans les dépendances: </span><span class="p">$(</span><span class="nv">$newCycleResult</span><span class="p">.</span><span class="n">CyclePath</span> <span class="n">-join</span> <span class="s1">&#39; -&gt; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Aucun cycle détecté dans les dépendances.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="CycleDetector_Examples.html" class="btn btn-neutral float-left" title="Exemples d’utilisation du module CycleDetector" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="MCPManager_Examples.html" class="btn btn-neutral float-right" title="Exemples d’utilisation du module MCPManager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

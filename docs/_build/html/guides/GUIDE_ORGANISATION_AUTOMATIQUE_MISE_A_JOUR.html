@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’organisation automatique (mise à jour) &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’organisation automatique (mise à jour)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_ORGANISATION_AUTOMATIQUE_MISE_A_JOUR.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-organisation-automatique-mise-a-jour">
+<h1>Guide d’organisation automatique (mise à jour)<a class="headerlink" href="#guide-d-organisation-automatique-mise-a-jour" title="Link to this heading"></a></h1>
+<p>Ce guide explique comment configurer l’organisation automatique du projet après les changements de chemins.</p>
+<section id="configuration-manuelle-des-taches-planifiees">
+<h2>Configuration manuelle des tâches planifiées<a class="headerlink" href="#configuration-manuelle-des-taches-planifiees" title="Link to this heading"></a></h2>
+<p>Puisque la configuration automatique nécessite des privilèges d’administrateur, voici comment configurer manuellement les tâches planifiées :</p>
+<section id="organiser-les-scripts-hebdomadaire">
+<h3>1. Organiser les scripts (hebdomadaire)<a class="headerlink" href="#organiser-les-scripts-hebdomadaire" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Ouvrez le Planificateur de tâches Windows (tapez “Planificateur de tâches” dans la recherche Windows)</p></li>
+<li><p>Cliquez sur “Créer une tâche de base…”</p></li>
+<li><p>Nom : “Organisation des scripts N8N”</p></li>
+<li><p>Description : “Organise les scripts du projet N8N”</p></li>
+<li><p>Déclencheur : Hebdomadaire (choisissez le jour qui vous convient)</p></li>
+<li><p>Action : Démarrer un programme</p></li>
+<li><p>Programme/script : <code class="docutils literal notranslate"><span class="pre">powershell.exe</span></code></p></li>
+<li><p>Arguments : <code class="docutils literal notranslate"><span class="pre">-ExecutionPolicy</span> <span class="pre">Bypass</span> <span class="pre">-File</span> <span class="pre">&quot;D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\automation\auto-organize-folders.ps1&quot;</span> <span class="pre">-FolderPath</span> <span class="pre">&quot;D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts&quot;</span> <span class="pre">-MaxFilesPerFolder</span> <span class="pre">15</span></code></p></li>
+</ol>
+</section>
+<section id="organiser-les-dossiers-quotidienne">
+<h3>2. Organiser les dossiers (quotidienne)<a class="headerlink" href="#organiser-les-dossiers-quotidienne" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Ouvrez le Planificateur de tâches Windows</p></li>
+<li><p>Cliquez sur “Créer une tâche de base…”</p></li>
+<li><p>Nom : “Organisation des dossiers N8N”</p></li>
+<li><p>Description : “Organise les dossiers du projet N8N”</p></li>
+<li><p>Déclencheur : Quotidienne</p></li>
+<li><p>Action : Démarrer un programme</p></li>
+<li><p>Programme/script : <code class="docutils literal notranslate"><span class="pre">powershell.exe</span></code></p></li>
+<li><p>Arguments : <code class="docutils literal notranslate"><span class="pre">-ExecutionPolicy</span> <span class="pre">Bypass</span> <span class="pre">-File</span> <span class="pre">&quot;D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\automation\auto-organize-folders.ps1&quot;</span> <span class="pre">-MaxFilesPerFolder</span> <span class="pre">15</span></code></p></li>
+</ol>
+</section>
+<section id="gerer-les-logs-quotidienne">
+<h3>3. Gérer les logs (quotidienne)<a class="headerlink" href="#gerer-les-logs-quotidienne" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Ouvrez le Planificateur de tâches Windows</p></li>
+<li><p>Cliquez sur “Créer une tâche de base…”</p></li>
+<li><p>Nom : “Gestion des logs N8N”</p></li>
+<li><p>Description : “Gère les logs du projet N8N”</p></li>
+<li><p>Déclencheur : Quotidienne</p></li>
+<li><p>Action : Démarrer un programme</p></li>
+<li><p>Programme/script : <code class="docutils literal notranslate"><span class="pre">powershell.exe</span></code></p></li>
+<li><p>Arguments : <code class="docutils literal notranslate"><span class="pre">-ExecutionPolicy</span> <span class="pre">Bypass</span> <span class="pre">-File</span> <span class="pre">&quot;D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\scripts\utils\automation\manage-logs.ps1&quot;</span> <span class="pre">-LogName</span> <span class="pre">&quot;n8n&quot;</span> <span class="pre">-Category</span> <span class="pre">&quot;daily&quot;</span></code></p></li>
+</ol>
+</section>
+</section>
+<section id="configuration-automatique-avec-privileges-administrateur">
+<h2>Configuration automatique (avec privilèges administrateur)<a class="headerlink" href="#configuration-automatique-avec-privileges-administrateur" title="Link to this heading"></a></h2>
+<p>Si vous préférez utiliser le script automatique, suivez ces étapes :</p>
+<ol>
+<li><p>Ouvrez PowerShell en tant qu’administrateur</p></li>
+<li><p>Naviguez vers le dossier du projet :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd </span><span class="s2">&quot;D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Exécutez le script de configuration :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">utils</span><span class="p">\</span><span class="n">automation</span><span class="p">\</span><span class="n">setup-auto-organization</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="verification-des-taches-planifiees">
+<h2>Vérification des tâches planifiées<a class="headerlink" href="#verification-des-taches-planifiees" title="Link to this heading"></a></h2>
+<p>Pour vérifier que les tâches ont été correctement créées :</p>
+<ol class="simple">
+<li><p>Ouvrez le Planificateur de tâches Windows</p></li>
+<li><p>Naviguez vers “Bibliothèque du Planificateur de tâches”</p></li>
+<li><p>Recherchez les tâches “Organisation des scripts N8N”, “Organisation des dossiers N8N” et “Gestion des logs N8N”</p></li>
+</ol>
+</section>
+<section id="principes-d-organisation">
+<h2>Principes d’organisation<a class="headerlink" href="#principes-d-organisation" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Limitation du nombre de fichiers</strong> : Maximum 15 fichiers par dossier</p></li>
+<li><p><strong>Organisation sémantique</strong> : Classement par type d’usage</p></li>
+<li><p><strong>Logs par unité de temps</strong> : Quotidien, hebdomadaire, mensuel</p></li>
+<li><p><strong>Archivage automatique</strong> : Compression des anciens logs</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

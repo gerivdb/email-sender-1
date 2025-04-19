@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Implémentations de référence pour la détection de cycles &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Implémentations de référence pour la détection de cycles</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/technical/ImplementationsReference.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="implementations-de-reference-pour-la-detection-de-cycles">
+<h1>Implémentations de référence pour la détection de cycles<a class="headerlink" href="#implementations-de-reference-pour-la-detection-de-cycles" title="Link to this heading"></a></h1>
+<p>Ce document présente une liste d’implémentations existantes de détection de cycles dans différents langages et frameworks, qui peuvent servir de référence pour notre implémentation du module <code class="docutils literal notranslate"><span class="pre">CycleDetector.psm1</span></code>.</p>
+<section id="bibliotheques-et-frameworks">
+<h2>Bibliothèques et frameworks<a class="headerlink" href="#bibliotheques-et-frameworks" title="Link to this heading"></a></h2>
+<section id="networkx-python">
+<h3>1. NetworkX (Python)<a class="headerlink" href="#networkx-python" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://networkx.org/">NetworkX</a> est une bibliothèque Python pour l’étude des graphes et des réseaux.</p>
+<section id="detection-de-cycles">
+<h4>Détection de cycles<a class="headerlink" href="#detection-de-cycles" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+
+<span class="c1"># Créer un graphe dirigé</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>  <span class="c1"># Cycle 1-&gt;2-&gt;3-&gt;1</span>
+
+<span class="c1"># Détecter les cycles</span>
+<span class="n">cycles</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">simple_cycles</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cycles</span><span class="p">)</span>  <span class="c1"># Affiche [[1, 2, 3]]</span>
+
+<span class="c1"># Vérifier si le graphe contient des cycles</span>
+<span class="n">has_cycle</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">has_cycle</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">has_cycle</span><span class="p">)</span>  <span class="c1"># Affiche True</span>
+</pre></div>
+</div>
+</section>
+<section id="points-forts">
+<h4>Points forts<a class="headerlink" href="#points-forts" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Implémentation robuste et bien testée</p></li>
+<li><p>Support pour différents types de graphes (dirigés, non dirigés)</p></li>
+<li><p>Nombreuses fonctionnalités d’analyse de graphes</p></li>
+</ul>
+</section>
+</section>
+<section id="jgrapht-java">
+<h3>2. JGraphT (Java)<a class="headerlink" href="#jgrapht-java" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://jgrapht.org/">JGraphT</a> est une bibliothèque Java avancée pour la manipulation et l’analyse de graphes.</p>
+<section id="id1">
+<h4>Détection de cycles<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.jgrapht.Graph</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.jgrapht.alg.cycle.CycleDetector</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.jgrapht.graph.DefaultDirectedGraph</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.jgrapht.graph.DefaultEdge</span><span class="p">;</span>
+
+<span class="c1">// Créer un graphe dirigé</span>
+<span class="n">Graph</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">DefaultEdge</span><span class="o">&gt;</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DefaultDirectedGraph</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">DefaultEdge</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="n">graph</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span>
+<span class="n">graph</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span>
+<span class="n">graph</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">);</span>
+<span class="n">graph</span><span class="p">.</span><span class="na">addEdge</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="p">);</span>
+<span class="n">graph</span><span class="p">.</span><span class="na">addEdge</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="p">);</span>
+<span class="n">graph</span><span class="p">.</span><span class="na">addEdge</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A&quot;</span><span class="p">);</span>
+
+<span class="c1">// Détecter les cycles</span>
+<span class="n">CycleDetector</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">DefaultEdge</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cycleDetector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CycleDetector</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+<span class="kt">boolean</span><span class="w"> </span><span class="n">hasCycle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cycleDetector</span><span class="p">.</span><span class="na">detectCycles</span><span class="p">();</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">verticesInCycles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cycleDetector</span><span class="p">.</span><span class="na">findCycles</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h4>Points forts<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Implémentations multiples d’algorithmes de détection de cycles</p></li>
+<li><p>Performance optimisée</p></li>
+<li><p>API bien documentée</p></li>
+</ul>
+</section>
+</section>
+<section id="boost-graph-library-c">
+<h3>3. Boost Graph Library (C++)<a class="headerlink" href="#boost-graph-library-c" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://www.boost.org/doc/libs/release/libs/graph/doc/">Boost Graph Library</a> est une bibliothèque C++ pour la manipulation de graphes.</p>
+<section id="id3">
+<h4>Détection de cycles<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;boost/graph/adjacency_list.hpp&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;boost/graph/cycle_detector.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">boost</span><span class="p">;</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="n">adjacency_list</span><span class="o">&lt;</span><span class="n">vecS</span><span class="p">,</span><span class="w"> </span><span class="n">vecS</span><span class="p">,</span><span class="w"> </span><span class="n">directedS</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Graph</span><span class="p">;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="n">graph_traits</span><span class="o">&lt;</span><span class="n">Graph</span><span class="o">&gt;::</span><span class="n">vertex_descriptor</span><span class="w"> </span><span class="n">Vertex</span><span class="p">;</span>
+
+<span class="c1">// Créer un graphe</span>
+<span class="n">Graph</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">);</span>
+<span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">);</span>
+<span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">);</span>
+
+<span class="c1">// Détecter les cycles</span>
+<span class="n">cycle_detector</span><span class="o">&lt;</span><span class="n">Graph</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vis</span><span class="p">(</span><span class="n">g</span><span class="p">);</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">has_cycle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">depth_first_search</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">visitor</span><span class="p">(</span><span class="n">vis</span><span class="p">));</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h4>Points forts<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Haute performance</p></li>
+<li><p>Nombreux algorithmes de théorie des graphes</p></li>
+<li><p>Flexibilité dans la représentation des graphes</p></li>
+</ul>
+</section>
+</section>
+<section id="igraph-r-python-c">
+<h3>4. igraph (R, Python, C)<a class="headerlink" href="#igraph-r-python-c" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://igraph.org/">igraph</a> est une bibliothèque pour l’analyse de réseaux disponible en R, Python et C.</p>
+<section id="detection-de-cycles-python">
+<h4>Détection de cycles (Python)<a class="headerlink" href="#detection-de-cycles-python" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">igraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+
+<span class="c1"># Créer un graphe dirigé</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">add_vertices</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">add_edges</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+
+<span class="c1"># Trouver les cycles</span>
+<span class="n">cycles</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_all_simple_paths</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cycles</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h4>Points forts<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Multi-plateforme</p></li>
+<li><p>Optimisé pour les grands graphes</p></li>
+<li><p>Visualisation intégrée</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="implementations-powershell-existantes">
+<h2>Implémentations PowerShell existantes<a class="headerlink" href="#implementations-powershell-existantes" title="Link to this heading"></a></h2>
+<section id="psgraph">
+<h3>1. PSGraph<a class="headerlink" href="#psgraph" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://github.com/KevinMarquette/PSGraph">PSGraph</a> est un module PowerShell pour la création et la manipulation de graphes.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Exemple d&#39;utilisation de PSGraph</span>
+<span class="nb">Import-Module</span> <span class="n">PSGraph</span>
+
+<span class="c"># Créer un graphe</span>
+<span class="nv">$graph</span> <span class="p">=</span> <span class="nb">New-PSGraph</span>
+<span class="nv">$graph</span> <span class="p">|</span> <span class="nb">Add-Edge</span> <span class="n">-From</span> <span class="s1">&#39;A&#39;</span> <span class="n">-To</span> <span class="s1">&#39;B&#39;</span>
+<span class="nv">$graph</span> <span class="p">|</span> <span class="nb">Add-Edge</span> <span class="n">-From</span> <span class="s1">&#39;B&#39;</span> <span class="n">-To</span> <span class="s1">&#39;C&#39;</span>
+<span class="nv">$graph</span> <span class="p">|</span> <span class="nb">Add-Edge</span> <span class="n">-From</span> <span class="s1">&#39;C&#39;</span> <span class="n">-To</span> <span class="s1">&#39;A&#39;</span>
+
+<span class="c"># Pas de fonction de détection de cycles intégrée</span>
+</pre></div>
+</div>
+<section id="id6">
+<h4>Points forts<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Syntaxe PowerShell native</p></li>
+<li><p>Intégration avec Graphviz pour la visualisation</p></li>
+<li><p>Facile à étendre</p></li>
+</ul>
+</section>
+</section>
+<section id="implementations-personnalisees">
+<h3>2. Implémentations personnalisées<a class="headerlink" href="#implementations-personnalisees" title="Link to this heading"></a></h3>
+<p>Plusieurs implémentations personnalisées existent dans des scripts PowerShell, généralement basées sur l’algorithme DFS.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Find-Cycle</span> <span class="p">{</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="no">[hashtable]</span><span class="nv">$Graph</span><span class="p">,</span>
+        <span class="no">[string]</span><span class="nv">$StartNode</span><span class="p">,</span>
+        <span class="no">[string[]]</span><span class="nv">$Visited</span> <span class="p">=</span> <span class="p">@(),</span>
+        <span class="no">[string[]]</span><span class="nv">$Path</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$Path</span> <span class="p">+=</span> <span class="nv">$StartNode</span>
+    
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$neighbor</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$StartNode</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$Path</span> <span class="o">-contains</span> <span class="nv">$neighbor</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c"># Cycle détecté</span>
+            <span class="k">return</span> <span class="nv">$true</span><span class="p">,</span> <span class="p">(</span><span class="nv">$Path</span> <span class="p">+</span> <span class="nv">$neighbor</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$Visited</span> <span class="o">-notcontains</span> <span class="nv">$neighbor</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$Visited</span> <span class="p">+=</span> <span class="nv">$neighbor</span>
+            <span class="nv">$result</span><span class="p">,</span> <span class="nv">$cyclePath</span> <span class="p">=</span> <span class="nb">Find-Cycle</span> <span class="n">-Graph</span> <span class="nv">$Graph</span> <span class="n">-StartNode</span> <span class="nv">$neighbor</span> <span class="n">-Visited</span> <span class="nv">$Visited</span> <span class="n">-Path</span> <span class="nv">$Path</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nv">$true</span><span class="p">,</span> <span class="nv">$cyclePath</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$false</span><span class="p">,</span> <span class="nv">$null</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="id7">
+<h4>Points forts<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Adaptées spécifiquement à PowerShell</p></li>
+<li><p>Souvent simples et faciles à comprendre</p></li>
+<li><p>Peuvent être personnalisées pour des besoins spécifiques</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="algorithmes-dans-les-systemes-de-gestion-de-versions">
+<h2>Algorithmes dans les systèmes de gestion de versions<a class="headerlink" href="#algorithmes-dans-les-systemes-de-gestion-de-versions" title="Link to this heading"></a></h2>
+<section id="git">
+<h3>1. Git<a class="headerlink" href="#git" title="Link to this heading"></a></h3>
+<p>Git utilise un algorithme de détection de cycles pour vérifier les dépendances circulaires lors des fusions et des rebases.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">merge</span><span class="o">-</span><span class="n">base</span> <span class="o">--</span><span class="ow">is</span><span class="o">-</span><span class="n">ancestor</span> <span class="o">&lt;</span><span class="n">commit1</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">commit2</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<section id="id8">
+<h4>Points forts<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Optimisé pour les grands graphes (historique de commits)</p></li>
+<li><p>Robuste et bien testé</p></li>
+<li><p>Gestion efficace des cas complexes</p></li>
+</ul>
+</section>
+</section>
+<section id="systemes-de-build-maven-gradle">
+<h3>2. Systèmes de build (Maven, Gradle)<a class="headerlink" href="#systemes-de-build-maven-gradle" title="Link to this heading"></a></h3>
+<p>Les systèmes de build comme Maven et Gradle utilisent des algorithmes de détection de cycles pour vérifier les dépendances circulaires entre les modules.</p>
+<section id="id9">
+<h4>Points forts<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Optimisés pour les graphes de dépendances</p></li>
+<li><p>Fournissent des informations détaillées sur les cycles</p></li>
+<li><p>Intégrés dans des outils largement utilisés</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Ces implémentations de référence offrent des insights précieux pour notre propre implémentation du module <code class="docutils literal notranslate"><span class="pre">CycleDetector.psm1</span></code>. L’algorithme DFS reste le plus couramment utilisé pour la détection de cycles en raison de sa simplicité et de son efficacité.</p>
+<p>Pour notre implémentation en PowerShell, nous pouvons nous inspirer de ces références tout en tenant compte des spécificités de PowerShell, notamment :</p>
+<ul class="simple">
+<li><p>Les limitations de la récursion</p></li>
+<li><p>La gestion des structures de données (hashtables)</p></li>
+<li><p>Les conventions de nommage PowerShell</p></li>
+</ul>
+<p>L’approche recommandée est d’adapter l’algorithme DFS avec une implémentation qui respecte les bonnes pratiques PowerShell tout en maintenant les performances optimales pour notre cas d’usage.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patterns d’erreurs PowerShell courants &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Patterns d’erreurs PowerShell courants</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/PATTERNS_ERREURS_POWERSHELL.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="patterns-d-erreurs-powershell-courants">
+<h1>Patterns d’erreurs PowerShell courants<a class="headerlink" href="#patterns-d-erreurs-powershell-courants" title="Link to this heading"></a></h1>
+<p>Ce document répertorie les patterns d’erreurs PowerShell courants identifiés dans nos scripts, leurs causes et les meilleures pratiques pour les éviter.</p>
+<section id="erreurs-de-syntaxe-powershell">
+<h2>Erreurs de syntaxe PowerShell<a class="headerlink" href="#erreurs-de-syntaxe-powershell" title="Link to this heading"></a></h2>
+<section id="psuseapprovedverbs">
+<h3>PSUseApprovedVerbs<a class="headerlink" href="#psuseapprovedverbs" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Utilisation d’un verbe non approuvé dans le nom d’une fonction PowerShell.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">Parse-Data</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Get-Data</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Toujours utiliser les verbes approuvés par PowerShell pour nommer les fonctions. Consultez la liste des verbes approuvés avec <code class="docutils literal notranslate"><span class="pre">Get-Verb</span></code>.</p>
+</section>
+<section id="pspossibleincorrectcomparisonwithnull">
+<h3>PSPossibleIncorrectComparisonWithNull<a class="headerlink" href="#pspossibleincorrectcomparisonwithnull" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Comparaison incorrecte avec $null où $null est placé à droite de l’opérateur de comparaison.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nv">$variable</span> <span class="o">-eq</span> <span class="nv">$null</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nv">$null</span> <span class="o">-eq</span> <span class="nv">$variable</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Toujours placer $null à gauche de l’opérateur de comparaison pour éviter les erreurs d’évaluation si $variable est un tableau.</p>
+</section>
+<section id="psavoiddefaultvalueswitchparameter">
+<h3>PSAvoidDefaultValueSwitchParameter<a class="headerlink" href="#psavoiddefaultvalueswitchparameter" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Paramètre switch avec une valeur par défaut explicite.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">param</span> <span class="p">(</span>
+    <span class="no">[switch]</span><span class="nv">$Force</span> <span class="p">=</span> <span class="nv">$true</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">param</span> <span class="p">(</span>
+    <span class="no">[switch]</span><span class="nv">$Force</span>
+<span class="p">)</span>
+
+<span class="c"># Définir la valeur par défaut si nécessaire</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$PSBoundParameters</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="s1">&#39;Force&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$Force</span> <span class="p">=</span> <span class="nv">$true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Ne pas définir de valeur par défaut pour les paramètres switch dans la déclaration param. Utiliser $PSBoundParameters pour vérifier si le paramètre a été fourni.</p>
+</section>
+<section id="psusedeclaredvarsmorethanassignments">
+<h3>PSUseDeclaredVarsMoreThanAssignments<a class="headerlink" href="#psusedeclaredvarsmorethanassignments" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Variable déclarée mais non utilisée ailleurs dans le script.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$result</span> <span class="p">=</span> <span class="nb">Get-Something</span>
+<span class="c"># $result n&#39;est jamais utilisé après cette ligne</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Option 1: Utiliser la variable</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="nb">Get-Something</span>
+<span class="nb">Write-Output</span> <span class="nv">$result</span>
+
+<span class="c"># Option 2: Utiliser [void] ou $null = pour supprimer l&#39;avertissement</span>
+<span class="no">[void]</span><span class="p">(</span><span class="nb">Get-Something</span><span class="p">)</span>
+<span class="c"># ou</span>
+<span class="nv">$null</span> <span class="p">=</span> <span class="nb">Get-Something</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Éviter de déclarer des variables qui ne sont pas utilisées. Si l’appel de fonction est nécessaire mais le résultat non, utiliser [void] ou $null =.</p>
+</section>
+</section>
+<section id="problemes-de-gestion-des-chemins">
+<h2>Problèmes de gestion des chemins<a class="headerlink" href="#problemes-de-gestion-des-chemins" title="Link to this heading"></a></h2>
+<section id="espaces-dans-les-noms-de-fichiers-dossiers">
+<h3>Espaces dans les noms de fichiers/dossiers<a class="headerlink" href="#espaces-dans-les-noms-de-fichiers-dossiers" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Problèmes avec les chemins contenant des espaces.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$path</span> <span class="p">=</span> <span class="n">D</span><span class="p">:\</span><span class="n">Mes</span> <span class="n">Documents</span><span class="p">\</span><span class="n">script</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$path</span> <span class="p">=</span> <span class="s2">&quot;D:\Mes Documents\script.ps1&quot;</span>
+<span class="c"># ou</span>
+<span class="nv">$path</span> <span class="p">=</span> <span class="s1">&#39;D:\Mes Documents\script.ps1&#39;</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Toujours mettre les chemins entre guillemets, surtout s’ils contiennent des espaces ou des caractères spéciaux.</p>
+</section>
+<section id="confusion-entre-chemins-relatifs-et-absolus">
+<h3>Confusion entre chemins relatifs et absolus<a class="headerlink" href="#confusion-entre-chemins-relatifs-et-absolus" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Utilisation incorrecte de chemins relatifs ou absolus.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$file</span> <span class="p">=</span> <span class="s2">&quot;.\data.txt&quot;</span>  <span class="c"># Relatif au répertoire courant</span>
+<span class="nb">Set-Location</span> <span class="s2">&quot;C:\Temp&quot;</span>
+<span class="nb">Get-Content</span> <span class="nv">$file</span>  <span class="c"># Erreur: le fichier n&#39;est plus dans le répertoire courant</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$file</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="n">-Path</span> <span class="nv">$PSScriptRoot</span> <span class="n">-ChildPath</span> <span class="s2">&quot;data.txt&quot;</span>  <span class="c"># Relatif au répertoire du script</span>
+<span class="nb">Set-Location</span> <span class="s2">&quot;C:\Temp&quot;</span>
+<span class="nb">Get-Content</span> <span class="nv">$file</span>  <span class="c"># Fonctionne car le chemin est absolu</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Utiliser $PSScriptRoot pour les chemins relatifs au script. Utiliser Join-Path pour construire des chemins de manière portable.</p>
+</section>
+</section>
+<section id="problemes-d-automatisation">
+<h2>Problèmes d’automatisation<a class="headerlink" href="#problemes-d-automatisation" title="Link to this heading"></a></h2>
+<section id="problemes-d-encodage-des-caracteres">
+<h3>Problèmes d’encodage des caractères<a class="headerlink" href="#problemes-d-encodage-des-caracteres" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Problèmes liés à l’encodage des fichiers, notamment avec les caractères accentués.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Content</span> <span class="n">-Path</span> <span class="s2">&quot;fichier.txt&quot;</span> <span class="n">-Value</span> <span class="s2">&quot;Contenu avec des caractères accentués: é à ç&quot;</span>
+<span class="c"># Le fichier peut être illisible dans certains éditeurs</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Content</span> <span class="n">-Path</span> <span class="s2">&quot;fichier.txt&quot;</span> <span class="n">-Value</span> <span class="s2">&quot;Contenu avec des caractères accentués: é à ç&quot;</span> <span class="n">-Encoding</span> <span class="n">UTF8</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Toujours spécifier l’encodage UTF8 lors de la lecture/écriture de fichiers contenant des caractères non-ASCII.</p>
+</section>
+<section id="difficultes-a-localiser-les-fichiers-exacts">
+<h3>Difficultés à localiser les fichiers exacts<a class="headerlink" href="#difficultes-a-localiser-les-fichiers-exacts" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Problèmes pour trouver les fichiers dans une structure de dossiers complexe.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$files</span> <span class="p">=</span> <span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="s2">&quot;C:\Project&quot;</span> <span class="n">-Filter</span> <span class="s2">&quot;*.ps1&quot;</span>
+<span class="c"># Peut manquer des fichiers dans les sous-dossiers</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$files</span> <span class="p">=</span> <span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="s2">&quot;C:\Project&quot;</span> <span class="n">-Filter</span> <span class="s2">&quot;*.ps1&quot;</span> <span class="n">-Recurse</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Utiliser -Recurse avec Get-ChildItem pour rechercher dans tous les sous-dossiers. Utiliser des filtres précis pour limiter les résultats.</p>
+</section>
+</section>
+<section id="lacunes-dans-la-coordination-des-scripts">
+<h2>Lacunes dans la coordination des scripts<a class="headerlink" href="#lacunes-dans-la-coordination-des-scripts" title="Link to this heading"></a></h2>
+<section id="duplication-de-fichiers-entre-dossiers">
+<h3>Duplication de fichiers entre dossiers<a class="headerlink" href="#duplication-de-fichiers-entre-dossiers" title="Link to this heading"></a></h3>
+<p><strong>Description</strong>: Mêmes fichiers présents dans plusieurs dossiers, causant des problèmes de synchronisation.</p>
+<p><strong>Exemple d’erreur</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Script1.ps1 dans le dossier parent</span>
+<span class="c"># Copie de Script1.ps1 dans un sous-dossier</span>
+<span class="c"># Les deux fichiers divergent au fil du temps</span>
+</pre></div>
+</div>
+<p><strong>Correction</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Garder une seule version du fichier</span>
+<span class="c"># Utiliser des liens symboliques si nécessaire</span>
+<span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">SymbolicLink</span> <span class="n">-Path</span> <span class="s2">&quot;Sous-dossier\Script1.ps1&quot;</span> <span class="n">-Target</span> <span class="s2">&quot;Script1.ps1&quot;</span>
+</pre></div>
+</div>
+<p><strong>Meilleure pratique</strong>: Éviter la duplication de fichiers. Utiliser des modules PowerShell pour partager du code entre scripts.</p>
+</section>
+</section>
+<section id="pistes-pour-un-systeme-d-apprentissage-des-erreurs">
+<h2>Pistes pour un système d’apprentissage des erreurs<a class="headerlink" href="#pistes-pour-un-systeme-d-apprentissage-des-erreurs" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Collecte automatique des erreurs</strong>:</p>
+<ul class="simple">
+<li><p>Développer un wrapper pour les commandes PowerShell qui capture les erreurs</p></li>
+<li><p>Stocker les erreurs dans une base de données structurée</p></li>
+</ul>
+</li>
+<li><p><strong>Analyse des patterns</strong>:</p>
+<ul class="simple">
+<li><p>Implémenter des algorithmes pour identifier les patterns récurrents</p></li>
+<li><p>Utiliser des techniques de clustering pour regrouper les erreurs similaires</p></li>
+</ul>
+</li>
+<li><p><strong>Suggestions proactives</strong>:</p>
+<ul class="simple">
+<li><p>Développer un système qui suggère des corrections basées sur l’historique</p></li>
+<li><p>Intégrer ce système avec les éditeurs de code</p></li>
+</ul>
+</li>
+<li><p><strong>Validation automatique</strong>:</p>
+<ul class="simple">
+<li><p>Créer des tests automatiques pour valider les corrections</p></li>
+<li><p>Mettre en place un système de feedback pour améliorer les suggestions</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

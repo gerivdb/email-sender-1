@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation du MCP Notion Server dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation du MCP Notion Server dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_MCP_NOTION_SERVER.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-du-mcp-notion-server-dans-n8n">
+<h1>Guide d’utilisation du MCP Notion Server dans n8n<a class="headerlink" href="#guide-d-utilisation-du-mcp-notion-server-dans-n8n" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Le MCP Notion Server (&#64;suekou/mcp-notion-server) est un serveur MCP (Model Context Protocol) qui permet d’interagir avec l’API Notion. Ce guide vous explique comment configurer et utiliser le MCP Notion Server dans vos workflows n8n.</p>
+</section>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>n8n version 1.0.0 ou ultérieure</p></li>
+<li><p>Node.js 16 ou ultérieur</p></li>
+<li><p>Un compte Notion avec une intégration configurée</p></li>
+</ul>
+</section>
+<section id="configuration-de-l-integration-notion">
+<h2>Configuration de l’intégration Notion<a class="headerlink" href="#configuration-de-l-integration-notion" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Créer une intégration Notion</strong> :</p>
+<ul class="simple">
+<li><p>Visitez la <a class="reference external" href="https://www.notion.so/my-integrations">page des intégrations Notion</a></p></li>
+<li><p>Cliquez sur “New integration”</p></li>
+<li><p>Nommez votre intégration et sélectionnez les permissions appropriées (ex: “Read content”, “Update content”)</p></li>
+<li><p>Cliquez sur “Submit” pour créer l’intégration</p></li>
+</ul>
+</li>
+<li><p><strong>Récupérer le token d’intégration</strong> :</p>
+<ul class="simple">
+<li><p>Copiez le “Internal Integration Token” de votre intégration</p></li>
+<li><p>Ce token sera utilisé pour l’authentification</p></li>
+</ul>
+</li>
+<li><p><strong>Ajouter l’intégration à votre espace de travail</strong> :</p>
+<ul class="simple">
+<li><p>Ouvrez la page ou la base de données à laquelle vous souhaitez que l’intégration accède</p></li>
+<li><p>Cliquez sur le bouton “…” dans le coin supérieur droit</p></li>
+<li><p>Cliquez sur “Add connections” et sélectionnez l’intégration que vous avez créée</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<ol>
+<li><p>Installez le package &#64;suekou/mcp-notion-server :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>install<span class="w"> </span>@suekou/mcp-notion-server
+</pre></div>
+</div>
+</li>
+<li><p>Définissez la variable d’environnement pour autoriser l’utilisation des outils :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Windows (PowerShell)</span>
+<span class="nv">$env</span>:N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;true&quot;</span>
+
+<span class="c1"># Linux/macOS</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE</span><span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</li>
+<li><p>Créez un fichier <code class="docutils literal notranslate"><span class="pre">.env</span></code> à la racine de votre projet n8n avec le contenu suivant :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE</span><span class="o">=</span><span class="n">true</span>
+<span class="n">NOTION_API_TOKEN</span><span class="o">=</span><span class="n">secret_</span><span class="o">...</span>
+</pre></div>
+</div>
+<p>Remplacez <code class="docutils literal notranslate"><span class="pre">secret_...</span></code> par votre token d’intégration Notion.</p>
+</li>
+</ol>
+</section>
+<section id="configuration-des-identifiants-mcp-dans-n8n">
+<h2>Configuration des identifiants MCP dans n8n<a class="headerlink" href="#configuration-des-identifiants-mcp-dans-n8n" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ouvrez n8n et accédez à “Credentials”</p></li>
+<li><p>Cliquez sur “Create New”</p></li>
+<li><p>Recherchez “MCP Client (STDIO) API” et sélectionnez-le</p></li>
+<li><p>Configurez les identifiants comme suit :</p>
+<ul class="simple">
+<li><p><strong>Nom</strong> : MCP Notion</p></li>
+<li><p><strong>Command</strong> : npx</p></li>
+<li><p><strong>Arguments</strong> : -y &#64;suekou/mcp-notion-server</p></li>
+<li><p><strong>Environments</strong> : NOTION_API_TOKEN=secret_…,N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="utilisation-du-mcp-notion-server-dans-un-workflow">
+<h2>Utilisation du MCP Notion Server dans un workflow<a class="headerlink" href="#utilisation-du-mcp-notion-server-dans-un-workflow" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ajoutez un nœud “MCP Client” à votre workflow</p></li>
+<li><p>Configurez le nœud comme suit :</p>
+<ul class="simple">
+<li><p><strong>Connection Type</strong> : Command Line (STDIO)</p></li>
+<li><p><strong>Credentials</strong> : Sélectionnez les identifiants MCP Notion que vous avez créés</p></li>
+<li><p><strong>Operation</strong> : Choisissez l’opération souhaitée (List Tools, Execute Tool, etc.)</p></li>
+</ul>
+</li>
+<li><p>Pour l’opération “Execute Tool” :</p>
+<ul class="simple">
+<li><p><strong>Tool Name</strong> : Nom de l’outil Notion à exécuter (ex: notion_search, notion_retrieve_page, etc.)</p></li>
+<li><p><strong>Parameters</strong> : Paramètres de l’outil au format JSON</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="outils-disponibles">
+<h2>Outils disponibles<a class="headerlink" href="#outils-disponibles" title="Link to this heading"></a></h2>
+<p>Le MCP Notion Server propose de nombreux outils pour interagir avec Notion :</p>
+<ol class="simple">
+<li><p><strong>notion_search</strong> : Rechercher des pages ou des bases de données par titre</p></li>
+<li><p><strong>notion_retrieve_page</strong> : Récupérer les informations d’une page spécifique</p></li>
+<li><p><strong>notion_retrieve_database</strong> : Récupérer les informations d’une base de données spécifique</p></li>
+<li><p><strong>notion_query_database</strong> : Interroger une base de données</p></li>
+<li><p><strong>notion_create_database_item</strong> : Créer un nouvel élément dans une base de données</p></li>
+<li><p><strong>notion_update_page_properties</strong> : Mettre à jour les propriétés d’une page</p></li>
+<li><p><strong>notion_retrieve_block</strong> : Récupérer les informations d’un bloc spécifique</p></li>
+<li><p><strong>notion_retrieve_block_children</strong> : Récupérer les enfants d’un bloc spécifique</p></li>
+<li><p><strong>notion_append_block_children</strong> : Ajouter des blocs enfants à un bloc parent</p></li>
+<li><p><strong>notion_delete_block</strong> : Supprimer un bloc spécifique</p></li>
+<li><p><strong>notion_create_database</strong> : Créer une nouvelle base de données</p></li>
+<li><p><strong>notion_update_database</strong> : Mettre à jour une base de données</p></li>
+<li><p><strong>notion_list_all_users</strong> : Lister tous les utilisateurs de l’espace de travail</p></li>
+<li><p><strong>notion_retrieve_user</strong> : Récupérer les informations d’un utilisateur spécifique</p></li>
+<li><p><strong>notion_retrieve_bot_user</strong> : Récupérer les informations du bot associé au token</p></li>
+<li><p><strong>notion_create_comment</strong> : Créer un commentaire</p></li>
+<li><p><strong>notion_retrieve_comments</strong> : Récupérer les commentaires d’un bloc ou d’une page</p></li>
+</ol>
+</section>
+<section id="exemple-d-utilisation">
+<h2>Exemple d’utilisation<a class="headerlink" href="#exemple-d-utilisation" title="Link to this heading"></a></h2>
+<section id="recherche-dans-notion">
+<h3>Recherche dans Notion<a class="headerlink" href="#recherche-dans-notion" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tool_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;notion_search&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Projet&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="recuperation-d-une-page">
+<h3>Récupération d’une page<a class="headerlink" href="#recuperation-d-une-page" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tool_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;notion_retrieve_page&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;page_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1c481449-f795-8095-a5cf-cc4418e7ddb7&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="interrogation-d-une-base-de-donnees">
+<h3>Interrogation d’une base de données<a class="headerlink" href="#interrogation-d-une-base-de-donnees" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tool_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;notion_query_database&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;database_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1c481449-f795-8095-a5cf-cc4418e7ddb7&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Status&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;equals&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;En cours&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;sorts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Date&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;direction&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;descending&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez des problèmes :</p>
+<ol class="simple">
+<li><p>Vérifiez que la variable d’environnement <code class="docutils literal notranslate"><span class="pre">N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE</span></code> est définie sur “true”</p></li>
+<li><p>Assurez-vous que le package &#64;suekou/mcp-notion-server est correctement installé</p></li>
+<li><p>Vérifiez que votre token d’intégration Notion est valide</p></li>
+<li><p>Assurez-vous que l’intégration a les permissions nécessaires et est ajoutée aux pages/bases de données concernées</p></li>
+<li><p>Redémarrez n8n après avoir effectué ces modifications</p></li>
+</ol>
+</section>
+<section id="conversion-markdown">
+<h2>Conversion Markdown<a class="headerlink" href="#conversion-markdown" title="Link to this heading"></a></h2>
+<p>Par défaut, toutes les réponses sont retournées au format JSON. Vous pouvez activer la conversion Markdown expérimentale pour réduire la consommation de tokens :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NOTION_MARKDOWN_CONVERSION</span><span class="o">=</span><span class="n">true</span>
+</pre></div>
+</div>
+<p>Ajoutez cette variable d’environnement à votre configuration MCP et utilisez le paramètre <code class="docutils literal notranslate"><span class="pre">format:</span> <span class="pre">&quot;markdown&quot;</span></code> dans vos appels d’outils pour obtenir des réponses plus lisibles.</p>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://modelcontextprotocol.io/docs/">Documentation officielle du MCP</a></p></li>
+<li><p><a class="reference external" href="https://developers.notion.com/reference/intro">Documentation de l’API Notion</a></p></li>
+<li><p><a class="reference external" href="https://github.com/suekou/mcp-notion-server">GitHub du MCP Notion Server</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

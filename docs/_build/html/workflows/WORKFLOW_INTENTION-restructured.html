@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflow N8N “Email Sender 1” - Gestion Automatisée de Booking de Concerts &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Workflow N8N “Email Sender 1” - Gestion Automatisée de Booking de Concerts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/workflows/WORKFLOW_INTENTION-restructured.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="workflow-n8n-email-sender-1-gestion-automatisee-de-booking-de-concerts">
+<h1>Workflow N8N “Email Sender 1” - Gestion Automatisée de Booking de Concerts<a class="headerlink" href="#workflow-n8n-email-sender-1-gestion-automatisee-de-booking-de-concerts" title="Link to this heading"></a></h1>
+<section id="table-des-matieres">
+<h2>Table des matières<a class="headerlink" href="#table-des-matieres" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><a class="reference external" href="#section-1">Workflow N8N “Email Sender 1” - Gestion Automatisée de Booking de Concerts</a>
+1.1. <a class="reference external" href="#section-2">Vision Globale</a>
+1.1.1. <a class="reference external" href="#section-3">. Gestion des Disponibilités</a>
+1.1.2. <a class="reference external" href="#section-4">. Prospection et Campagne d’Emailing</a>
+1.1.3. <a class="reference external" href="#section-5">. Suivi et Gestion des Réponses</a>
+1.1.4. <a class="reference external" href="#section-6">. Phase de Négociation</a>
+1.1.5. <a class="reference external" href="#section-7">. Confirmation et Planification (DEAL)</a>
+1.1.6. <a class="reference external" href="#section-8">. Logistique Pré-Concert</a>
+1.1.7. <a class="reference external" href="#section-9">. Rappels Concert</a>
+1.1.8. <a class="reference external" href="#section-10">. Suivi Post-Concert</a>
+1.1.9. <a class="reference external" href="#section-11">. Feedback et Analyse</a>
+1.2. <a class="reference external" href="#section-12">Architecture Technique</a>
+1.3. <a class="reference external" href="#section-13">Objectifs Futurs</a>
+1.4. <a class="reference external" href="#section-14">Points d’Amélioration Potentiels</a></p></li>
+</ol>
+</section>
+<section id="workflow-n8n-email-sender-1-gestion-automatisee-de-booking-de-concerts-a-name-section-1-a">
+<h2>1. Workflow N8N “Email Sender 1” - Gestion Automatisée de Booking de Concerts <a name='section-1'></a><a class="headerlink" href="#workflow-n8n-email-sender-1-gestion-automatisee-de-booking-de-concerts-a-name-section-1-a" title="Link to this heading"></a></h2>
+<section id="vision-globale-a-name-section-2-a">
+<h3>1.1. Vision Globale <a name='section-2'></a><a class="headerlink" href="#vision-globale-a-name-section-2-a" title="Link to this heading"></a></h3>
+<p>Ce workflow N8N vise à automatiser l’ensemble du processus de booking de concerts pour le groupe Gribitch, depuis la prospection initiale jusqu’au suivi post-concert. Il orchestre les interactions entre plusieurs plateformes (Notion, Google Agenda, Gmail, Signal) pour créer un système cohérent et efficace de gestion des concerts.</p>
+<section id="gestion-des-disponibilites-a-name-section-3-a">
+<h4>1.1.1. . Gestion des Disponibilités <a name='section-3'></a><a class="headerlink" href="#gestion-des-disponibilites-a-name-section-3-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Collecte des indisponibilités</strong> des musiciens depuis:</p>
+<ul>
+<li><p>Base Notion “Dispo Membres” (saisie manuelle)</p></li>
+<li><p>Google Agenda personnel des musiciens</p></li>
+</ul>
+</li>
+<li><p><strong>Synchronisation bidirectionnelle</strong> entre ces sources</p></li>
+<li><p><strong>Calcul automatique des plages disponibles</strong> (priorité aux vendredis/samedis)</p></li>
+<li><p><strong>Stockage centralisé</strong> des disponibilités pour référence future</p></li>
+</ul>
+</section>
+<section id="prospection-et-campagne-d-emailing-a-name-section-4-a">
+<h4>1.1.2. . Prospection et Campagne d’Emailing <a name='section-4'></a><a class="headerlink" href="#prospection-et-campagne-d-emailing-a-name-section-4-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Source de contacts</strong>: Base Notion “LOT1” (programmateurs/lieux)</p></li>
+<li><p><strong>Préparation des emails</strong>:</p>
+<ul>
+<li><p>Utilisation d’un template Gmail réutilisable</p></li>
+<li><p>Injection des plages disponibles calculées</p></li>
+<li><p>Personnalisation du contenu via DeepSeek (OpenRouter)</p></li>
+</ul>
+</li>
+<li><p><strong>Stratégie d’envoi</strong>:</p>
+<ul>
+<li><p>Délais variables entre envois (30-60 min)</p></li>
+<li><p>Variation des messages pour éviter la détection de spam</p></li>
+<li><p>Suivi des envois dans Notion (mise à jour des statuts)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="suivi-et-gestion-des-reponses-a-name-section-5-a">
+<h4>1.1.3. . Suivi et Gestion des Réponses <a name='section-5'></a><a class="headerlink" href="#suivi-et-gestion-des-reponses-a-name-section-5-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Surveillance automatique</strong> de la boîte de réception</p></li>
+<li><p><strong>Notifications</strong> par email et/ou Signal dès réception d’une réponse</p></li>
+<li><p><strong>Analyse du contenu</strong> des réponses via DeepSeek pour déterminer:</p>
+<ul>
+<li><p>Réponse favorable → statut “Négo”</p></li>
+<li><p>Réponse défavorable → statut “Refus”</p></li>
+<li><p>Réponse ambiguë → statut “À clarifier”</p></li>
+</ul>
+</li>
+<li><p><strong>Mise à jour automatique</strong> des statuts dans Notion</p></li>
+</ul>
+</section>
+<section id="phase-de-negociation-a-name-section-6-a">
+<h4>1.1.4. . Phase de Négociation <a name='section-6'></a><a class="headerlink" href="#phase-de-negociation-a-name-section-6-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Phase principalement manuelle (complexe à automatiser)</p></li>
+<li><p><strong>Critères à aligner</strong>:</p>
+<ul>
+<li><p>Exigences du groupe</p></li>
+<li><p>Contraintes du lieu</p></li>
+<li><p>Disponibilités confirmées</p></li>
+</ul>
+</li>
+<li><p><strong>Validation manuelle</strong> pour passage à l’étape suivante</p></li>
+</ul>
+</section>
+<section id="confirmation-et-planification-deal-a-name-section-7-a">
+<h4>1.1.5. . Confirmation et Planification (DEAL) <a name='section-7'></a><a class="headerlink" href="#confirmation-et-planification-deal-a-name-section-7-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Déclencheur</strong>: Validation manuelle du “bon pour accord”</p></li>
+<li><p><strong>Actions automatiques</strong>:</p>
+<ul>
+<li><p>Changement du statut dans Notion à “DEAL”</p></li>
+<li><p>Création d’un événement dans Google Agenda “BOOKING1”</p></li>
+<li><p>Création/mise à jour d’un enregistrement dans Notion Agenda</p></li>
+<li><p>Synchronisation entre Google Agenda et Notion</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="logistique-pre-concert-a-name-section-8-a">
+<h4>1.1.6. . Logistique Pré-Concert <a name='section-8'></a><a class="headerlink" href="#logistique-pre-concert-a-name-section-8-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Rappel J-10</strong> via Signal au manager pour initier le contact avec la régie</p></li>
+<li><p><strong>Gestion manuelle</strong> des détails logistiques:</p>
+<ul>
+<li><p>Hébergement</p></li>
+<li><p>Catering</p></li>
+<li><p>Backline</p></li>
+<li><p>Fiches techniques</p></li>
+</ul>
+</li>
+<li><p><strong>Validation manuelle</strong> de la finalisation logistique</p></li>
+</ul>
+</section>
+<section id="rappels-concert-a-name-section-9-a">
+<h4>1.1.7. . Rappels Concert <a name='section-9'></a><a class="headerlink" href="#rappels-concert-a-name-section-9-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Notifications automatiques</strong>:</p>
+<ul>
+<li><p>J-3 et J-1 (surtout pour concerts uniques ou débuts de tournée)</p></li>
+<li><p>Soir du concert: rappel à toute l’équipe avec adresse d’hébergement et heure de réveil</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="suivi-post-concert-a-name-section-10-a">
+<h4>1.1.8. . Suivi Post-Concert <a name='section-10'></a><a class="headerlink" href="#suivi-post-concert-a-name-section-10-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Email de remerciement automatique</strong> (J+1):</p>
+<ul>
+<li><p>Généré via DeepSeek</p></li>
+<li><p>Personnalisé avec image du groupe</p></li>
+<li><p>Inclusion des prénoms de l’équipe du lieu (depuis base Notion)</p></li>
+</ul>
+</li>
+<li><p><strong>Suivi du paiement</strong>:</p>
+<ul>
+<li><p>Mise à jour du statut dans Notion dès réception</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="feedback-et-analyse-a-name-section-11-a">
+<h4>1.1.9. . Feedback et Analyse <a name='section-11'></a><a class="headerlink" href="#feedback-et-analyse-a-name-section-11-a" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Évaluation</strong> du succès du concert et de la relation avec le lieu</p></li>
+<li><p><strong>Décision</strong> sur la pertinence d’une future collaboration</p></li>
+<li><p><strong>Archivage</strong> des informations pour référence future</p></li>
+</ul>
+</section>
+</section>
+<section id="architecture-technique-a-name-section-12-a">
+<h3>1.2. Architecture Technique <a name='section-12'></a><a class="headerlink" href="#architecture-technique-a-name-section-12-a" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>N8N</strong>: Orchestrateur central du workflow</p></li>
+<li><p><strong>Notion</strong>: Bases de données principales</p>
+<ul>
+<li><p>LOT1: Contacts programmateurs</p></li>
+<li><p>Dispo Membres: Disponibilités des musiciens</p></li>
+<li><p>bdd-Lieux: Informations sur les lieux de concert</p></li>
+</ul>
+</li>
+<li><p><strong>Google Agenda</strong>: Planification et rappels</p></li>
+<li><p><strong>Gmail</strong>: Communication avec les programmateurs</p></li>
+<li><p><strong>Signal</strong>: Notifications critiques</p></li>
+<li><p><strong>OpenRouter (DeepSeek)</strong>: Génération et analyse de contenu</p></li>
+</ul>
+</section>
+<section id="objectifs-futurs-a-name-section-13-a">
+<h3>1.3. Objectifs Futurs <a name='section-13'></a><a class="headerlink" href="#objectifs-futurs-a-name-section-13-a" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Réutilisation</strong> du workflow pour de nouvelles campagnes (LOT2, etc.)</p></li>
+<li><p><strong>Planification à long terme</strong> (2-4 ans à l’avance)</p></li>
+<li><p><strong>Visualisation</strong> de l’avancement via les vues dynamiques de Notion</p></li>
+<li><p><strong>Intégration future</strong> avec les réseaux sociaux (Facebook, Instagram)</p></li>
+</ul>
+</section>
+<section id="points-d-amelioration-potentiels-a-name-section-14-a">
+<h3>1.4. Points d’Amélioration Potentiels <a name='section-14'></a><a class="headerlink" href="#points-d-amelioration-potentiels-a-name-section-14-a" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Automatisation partielle de la phase de négociation</p></li>
+<li><p>Intégration de la publication sur réseaux sociaux (avec étape manuelle pour les images récentes)</p></li>
+<li><p>Système de feedback standardisé post-concert</p></li>
+<li><p>Automatisation de la mise à jour du statut “Payé”</p></li>
+</ul>
+<hr class="docutils" />
+<p>Ce workflow représente une solution complète de gestion de booking, conçue pour optimiser le temps et les ressources du groupe tout en maintenant une communication professionnelle et personnalisée avec les programmateurs.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

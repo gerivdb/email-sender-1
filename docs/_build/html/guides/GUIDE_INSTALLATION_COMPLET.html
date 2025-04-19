@@ -1,0 +1,228 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’installation complet pour les MCP dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’installation complet pour les MCP dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_INSTALLATION_COMPLET.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-installation-complet-pour-les-mcp-dans-n8n">
+<h1>Guide d’installation complet pour les MCP dans n8n<a class="headerlink" href="#guide-d-installation-complet-pour-les-mcp-dans-n8n" title="Link to this heading"></a></h1>
+<p>Ce guide vous explique comment résoudre les problèmes de toasts d’erreur au démarrage des MCP dans n8n.</p>
+<section id="etape-1-verifier-les-prerequis">
+<h2>Étape 1 : Vérifier les prérequis<a class="headerlink" href="#etape-1-verifier-les-prerequis" title="Link to this heading"></a></h2>
+<p>Assurez-vous que les éléments suivants sont installés et fonctionnels :</p>
+<ul class="simple">
+<li><p>Node.js (version 14 ou supérieure)</p></li>
+<li><p>n8n (version 1.0.0 ou supérieure)</p></li>
+<li><p>Les packages npm nécessaires (n8n-nodes-mcp, &#64;suekou/mcp-notion-server)</p></li>
+</ul>
+</section>
+<section id="etape-2-configurer-les-variables-d-environnement">
+<h2>Étape 2 : Configurer les variables d’environnement<a class="headerlink" href="#etape-2-configurer-les-variables-d-environnement" title="Link to this heading"></a></h2>
+<ol>
+<li><p>Ouvrez une invite de commande PowerShell en tant qu’administrateur</p></li>
+<li><p>Exécutez la commande suivante pour définir la variable d’environnement au niveau utilisateur :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="no">[Environment]</span><span class="p">::</span><span class="n">SetEnvironmentVariable</span><span class="p">(</span><span class="s1">&#39;N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="etape-3-utiliser-les-fichiers-batch-pour-les-mcp">
+<h2>Étape 3 : Utiliser les fichiers batch pour les MCP<a class="headerlink" href="#etape-3-utiliser-les-fichiers-batch-pour-les-mcp" title="Link to this heading"></a></h2>
+<p>Les fichiers batch suivants ont été créés pour faciliter l’utilisation des MCP :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mcp-standard.cmd</span></code> : Pour le MCP standard (n8n-nodes-mcp)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mcp-notion.cmd</span></code> : Pour le MCP Notion Server (&#64;suekou/mcp-notion-server)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gateway.exe.cmd</span></code> : Pour le MCP Gateway (centralmind/gateway)</p></li>
+</ul>
+<p>Ces fichiers définissent automatiquement les variables d’environnement nécessaires lors de l’exécution des MCP.</p>
+</section>
+<section id="etape-4-configurer-les-identifiants-mcp-dans-n8n">
+<h2>Étape 4 : Configurer les identifiants MCP dans n8n<a class="headerlink" href="#etape-4-configurer-les-identifiants-mcp-dans-n8n" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Démarrez n8n en utilisant le script <code class="docutils literal notranslate"><span class="pre">start-n8n.cmd</span></code> ou en exécutant la commande <code class="docutils literal notranslate"><span class="pre">npx</span> <span class="pre">n8n</span> <span class="pre">start</span></code></p></li>
+<li><p>Ouvrez l’interface web de n8n (généralement http://localhost:5678)</p></li>
+<li><p>Cliquez sur l’icône d’engrenage (⚙️) dans le coin supérieur droit</p></li>
+<li><p>Sélectionnez “Credentials” dans le menu déroulant</p></li>
+<li><p>Configurez les identifiants pour chaque MCP selon les instructions ci-dessous</p></li>
+</ol>
+<section id="mcp-standard">
+<h3>MCP Standard<a class="headerlink" href="#mcp-standard" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Cliquez sur “Create New”</p></li>
+<li><p>Recherchez “MCP Client (STDIO) API” et sélectionnez-le</p></li>
+<li><p>Configurez-le comme suit :</p>
+<ul class="simple">
+<li><p><strong>Credential Name</strong>: MCP Standard</p></li>
+<li><p><strong>Command</strong>: Chemin complet vers mcp-standard.cmd (ex: D:\chemin\vers\mcp-standard.cmd)</p></li>
+<li><p><strong>Arguments</strong>: (laissez vide)</p></li>
+<li><p><strong>Environments</strong>: N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true,OPENROUTER_API_KEY=sk-or-v1-…</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="mcp-notion-server">
+<h3>MCP Notion Server<a class="headerlink" href="#mcp-notion-server" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Cliquez sur “Create New”</p></li>
+<li><p>Recherchez “MCP Client (STDIO) API” et sélectionnez-le</p></li>
+<li><p>Configurez-le comme suit :</p>
+<ul class="simple">
+<li><p><strong>Credential Name</strong>: MCP Notion</p></li>
+<li><p><strong>Command</strong>: Chemin complet vers mcp-notion.cmd (ex: D:\chemin\vers\mcp-notion.cmd)</p></li>
+<li><p><strong>Arguments</strong>: (laissez vide)</p></li>
+<li><p><strong>Environments</strong>: N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true,NOTION_API_TOKEN=secret_…</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="mcp-gateway">
+<h3>MCP Gateway<a class="headerlink" href="#mcp-gateway" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Cliquez sur “Create New”</p></li>
+<li><p>Recherchez “MCP Client (STDIO) API” et sélectionnez-le</p></li>
+<li><p>Configurez-le comme suit :</p>
+<ul class="simple">
+<li><p><strong>Credential Name</strong>: MCP Gateway</p></li>
+<li><p><strong>Command</strong>: Chemin complet vers gateway.exe.cmd (ex: D:\chemin\vers\gateway.exe.cmd)</p></li>
+<li><p><strong>Arguments</strong>: start –config “D:\chemin\vers\gateway.yaml” mcp-stdio</p></li>
+<li><p><strong>Environments</strong>: N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="etape-5-redemarrer-n8n">
+<h2>Étape 5 : Redémarrer n8n<a class="headerlink" href="#etape-5-redemarrer-n8n" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Fermez n8n (Ctrl+C dans la console où n8n est en cours d’exécution)</p></li>
+<li><p>Redémarrez n8n en utilisant le script <code class="docutils literal notranslate"><span class="pre">start-n8n.cmd</span></code> ou en exécutant la commande <code class="docutils literal notranslate"><span class="pre">npx</span> <span class="pre">n8n</span> <span class="pre">start</span></code></p></li>
+</ol>
+</section>
+<section id="etape-6-verifier-que-les-mcp-fonctionnent-correctement">
+<h2>Étape 6 : Vérifier que les MCP fonctionnent correctement<a class="headerlink" href="#etape-6-verifier-que-les-mcp-fonctionnent-correctement" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Créez un nouveau workflow dans n8n</p></li>
+<li><p>Ajoutez un nœud “MCP Client”</p></li>
+<li><p>Sélectionnez l’un des identifiants MCP que vous avez configurés</p></li>
+<li><p>Sélectionnez l’opération “List Tools”</p></li>
+<li><p>Exécutez le nœud pour vérifier que le MCP fonctionne correctement</p></li>
+</ol>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez toujours des problèmes :</p>
+<ol class="simple">
+<li><p>Vérifiez les logs de n8n pour voir les erreurs éventuelles</p></li>
+<li><p>Assurez-vous que les chemins dans la configuration des identifiants MCP sont corrects et utilisent des chemins absolus</p></li>
+<li><p>Vérifiez que les fichiers batch sont exécutables et accessibles</p></li>
+<li><p>Assurez-vous que n8n a les permissions nécessaires pour exécuter les scripts et accéder aux fichiers</p></li>
+</ol>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.n8n.io/">Documentation officielle de n8n</a></p></li>
+<li><p><a class="reference external" href="https://modelcontextprotocol.io/docs/">Documentation du MCP</a></p></li>
+<li><p><a class="reference external" href="https://github.com/modelcontextprotocol/n8n-nodes-mcp">GitHub de n8n-nodes-mcp</a></p></li>
+<li><p><a class="reference external" href="https://github.com/suekou/mcp-notion-server">GitHub de &#64;suekou/mcp-notion-server</a></p></li>
+<li><p><a class="reference external" href="https://github.com/centralmind/gateway">GitHub de centralmind/gateway</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

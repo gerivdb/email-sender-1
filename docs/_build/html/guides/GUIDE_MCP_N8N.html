@@ -1,0 +1,216 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation du MCP (Model Context Protocol) dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation du MCP (Model Context Protocol) dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_MCP_N8N.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation-du-mcp-model-context-protocol-dans-n8n">
+<h1>Guide d’utilisation du MCP (Model Context Protocol) dans n8n<a class="headerlink" href="#guide-d-utilisation-du-mcp-model-context-protocol-dans-n8n" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Le MCP (Model Context Protocol) est un protocole qui permet aux modèles d’IA d’interagir avec des outils et des sources de données externes de manière standardisée. Ce guide vous explique comment configurer et utiliser le MCP dans vos workflows n8n.</p>
+</section>
+<section id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>n8n version 1.0.0 ou ultérieure</p></li>
+<li><p>Node.js 16 ou ultérieur</p></li>
+<li><p>Une clé API OpenRouter</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<ol>
+<li><p>Installez le package n8n-nodes-mcp :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>install<span class="w"> </span>n8n-nodes-mcp
+</pre></div>
+</div>
+</li>
+<li><p>Définissez la variable d’environnement pour autoriser l’utilisation des outils :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Windows (PowerShell)</span>
+<span class="nv">$env</span>:N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;true&quot;</span>
+
+<span class="c1"># Linux/macOS</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE</span><span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</li>
+<li><p>Créez un fichier <code class="docutils literal notranslate"><span class="pre">.env</span></code> à la racine de votre projet n8n avec le contenu suivant :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE</span><span class="o">=</span><span class="n">true</span>
+<span class="n">OPENROUTER_API_KEY</span><span class="o">=</span><span class="n">sk</span><span class="o">-</span><span class="ow">or</span><span class="o">-</span><span class="n">v1</span><span class="o">-...</span>
+</pre></div>
+</div>
+<p>Remplacez <code class="docutils literal notranslate"><span class="pre">sk-or-v1-...</span></code> par votre clé API OpenRouter.</p>
+</li>
+</ol>
+</section>
+<section id="configuration-des-identifiants-mcp-dans-n8n">
+<h2>Configuration des identifiants MCP dans n8n<a class="headerlink" href="#configuration-des-identifiants-mcp-dans-n8n" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ouvrez n8n et accédez à “Credentials”</p></li>
+<li><p>Cliquez sur “Create New”</p></li>
+<li><p>Recherchez “MCP Client (STDIO) API” et sélectionnez-le</p></li>
+<li><p>Configurez les identifiants comme suit :</p>
+<ul class="simple">
+<li><p><strong>Nom</strong> : MCP OpenAI</p></li>
+<li><p><strong>Command</strong> : node</p></li>
+<li><p><strong>Arguments</strong> : ./node_modules/n8n-nodes-mcp/dist/nodes/McpClient/McpClient.node.js</p></li>
+<li><p><strong>Environments</strong> : OPENROUTER_API_KEY=sk-or-v1-…,N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="utilisation-du-mcp-dans-un-workflow">
+<h2>Utilisation du MCP dans un workflow<a class="headerlink" href="#utilisation-du-mcp-dans-un-workflow" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Ajoutez un nœud “MCP Client” à votre workflow</p></li>
+<li><p>Configurez le nœud comme suit :</p>
+<ul class="simple">
+<li><p><strong>Connection Type</strong> : Command Line (STDIO)</p></li>
+<li><p><strong>Credentials</strong> : Sélectionnez les identifiants MCP que vous avez créés</p></li>
+<li><p><strong>Operation</strong> : Choisissez l’opération souhaitée (List Tools, Execute Tool, etc.)</p></li>
+</ul>
+</li>
+<li><p>Pour l’opération “Execute Tool” :</p>
+<ul class="simple">
+<li><p><strong>Tool Name</strong> : Nom de l’outil à exécuter</p></li>
+<li><p><strong>Parameters</strong> : Paramètres de l’outil au format JSON</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<p>Si vous rencontrez l’erreur “MCP error -1: Connection closed” :</p>
+<ol class="simple">
+<li><p>Vérifiez que la variable d’environnement <code class="docutils literal notranslate"><span class="pre">N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE</span></code> est définie sur “true”</p></li>
+<li><p>Assurez-vous que le package n8n-nodes-mcp est correctement installé</p></li>
+<li><p>Vérifiez que votre clé API OpenRouter est valide</p></li>
+<li><p>Redémarrez n8n après avoir effectué ces modifications</p></li>
+</ol>
+</section>
+<section id="exemple-d-utilisation-avec-openrouter">
+<h2>Exemple d’utilisation avec OpenRouter<a class="headerlink" href="#exemple-d-utilisation-avec-openrouter" title="Link to this heading"></a></h2>
+<p>Pour utiliser le MCP avec OpenRouter :</p>
+<ol>
+<li><p>Configurez les identifiants MCP comme indiqué ci-dessus</p></li>
+<li><p>Dans votre workflow, ajoutez un nœud MCP Client</p></li>
+<li><p>Sélectionnez l’opération “Execute Tool”</p></li>
+<li><p>Utilisez l’outil “chat” avec les paramètres suivants :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;system&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tu es un assistant utile.&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bonjour, comment puis-je utiliser le MCP?&quot;</span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deepseek-ai/deepseek-v3&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="ressources-supplementaires">
+<h2>Ressources supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://modelcontextprotocol.io/docs/">Documentation officielle du MCP</a></p></li>
+<li><p><a class="reference external" href="https://github.com/modelcontextprotocol/n8n-nodes-mcp">Documentation n8n-nodes-mcp</a></p></li>
+<li><p><a class="reference external" href="https://github.com/modelcontextprotocol/typescript-sdk">SDK TypeScript MCP</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

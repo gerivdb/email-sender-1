@@ -1,0 +1,653 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stratégie de gestion des erreurs pour le module CycleDetector &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Stratégie de gestion des erreurs pour le module CycleDetector</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/technical/ErrorHandlingStrategy.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="strategie-de-gestion-des-erreurs-pour-le-module-cycledetector">
+<h1>Stratégie de gestion des erreurs pour le module CycleDetector<a class="headerlink" href="#strategie-de-gestion-des-erreurs-pour-le-module-cycledetector" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Ce document définit la stratégie de gestion des erreurs pour le module <code class="docutils literal notranslate"><span class="pre">CycleDetector.psm1</span></code>. Une gestion efficace des erreurs est essentielle pour assurer la robustesse et la fiabilité du module, ainsi que pour fournir des informations utiles aux utilisateurs en cas de problème.</p>
+</section>
+<section id="principes-generaux">
+<h2>Principes généraux<a class="headerlink" href="#principes-generaux" title="Link to this heading"></a></h2>
+<p>La stratégie de gestion des erreurs du module <code class="docutils literal notranslate"><span class="pre">CycleDetector.psm1</span></code> repose sur les principes suivants :</p>
+<ol class="simple">
+<li><p><strong>Fail-fast</strong> : Détecter et signaler les erreurs le plus tôt possible.</p></li>
+<li><p><strong>Messages clairs</strong> : Fournir des messages d’erreur explicites et informatifs.</p></li>
+<li><p><strong>Récupération gracieuse</strong> : Permettre au module de continuer à fonctionner dans la mesure du possible.</p></li>
+<li><p><strong>Journalisation</strong> : Enregistrer les erreurs pour faciliter le débogage.</p></li>
+<li><p><strong>Respect des conventions PowerShell</strong> : Utiliser les mécanismes standard de PowerShell pour la gestion des erreurs.</p></li>
+</ol>
+</section>
+<section id="types-d-erreurs">
+<h2>Types d’erreurs<a class="headerlink" href="#types-d-erreurs" title="Link to this heading"></a></h2>
+<section id="erreurs-de-validation-des-parametres">
+<h3>1. Erreurs de validation des paramètres<a class="headerlink" href="#erreurs-de-validation-des-parametres" title="Link to this heading"></a></h3>
+<p>Ces erreurs se produisent lorsque les paramètres fournis aux fonctions du module sont invalides.</p>
+<section id="exemples">
+<h4>Exemples<a class="headerlink" href="#exemples" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Graphe null ou vide</p></li>
+<li><p>Chemin de fichier inexistant</p></li>
+<li><p>Profondeur maximale négative</p></li>
+</ul>
+</section>
+<section id="strategie">
+<h4>Stratégie<a class="headerlink" href="#strategie" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Utiliser les attributs de validation PowerShell (<code class="docutils literal notranslate"><span class="pre">[ValidateNotNull]</span></code>, <code class="docutils literal notranslate"><span class="pre">[ValidateNotNullOrEmpty]</span></code>, etc.)</p></li>
+<li><p>Effectuer des validations supplémentaires au début des fonctions</p></li>
+<li><p>Générer des erreurs de terminaison avec <code class="docutils literal notranslate"><span class="pre">Write-Error</span> <span class="pre">-ErrorAction</span> <span class="pre">Stop</span></code></p></li>
+</ul>
+</section>
+<section id="exemple-de-code">
+<h4>Exemple de code<a class="headerlink" href="#exemple-de-code" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">Detect-Cycle</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="p">[</span><span class="n">ValidateNotNull</span><span class="p">()]</span>
+        <span class="no">[hashtable]</span><span class="nv">$Graph</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="p">[</span><span class="k">ValidateRange</span><span class="p">(</span><span class="n">1</span><span class="p">,</span> <span class="no">[int]</span><span class="p">::</span><span class="n">MaxValue</span><span class="p">)]</span>
+        <span class="no">[int]</span><span class="nv">$MaxDepth</span> <span class="p">=</span> <span class="n">1000</span>
+    <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$Graph</span><span class="p">.</span><span class="n">Count</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;Le graphe ne peut pas être vide.&quot;</span> <span class="n">-ErrorAction</span> <span class="n">Stop</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Suite de la fonction...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="erreurs-d-execution">
+<h3>2. Erreurs d’exécution<a class="headerlink" href="#erreurs-d-execution" title="Link to this heading"></a></h3>
+<p>Ces erreurs se produisent pendant l’exécution des fonctions du module.</p>
+<section id="id1">
+<h4>Exemples<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Dépassement de la profondeur maximale</p></li>
+<li><p>Débordement de pile</p></li>
+<li><p>Erreur lors de la lecture d’un fichier</p></li>
+</ul>
+</section>
+<section id="id2">
+<h4>Stratégie<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Utiliser des blocs try/catch pour capturer les exceptions</p></li>
+<li><p>Journaliser les erreurs avec <code class="docutils literal notranslate"><span class="pre">Write-Verbose</span></code></p></li>
+<li><p>Retourner des résultats partiels ou par défaut si possible</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4>Exemple de code<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Find-DependencyCycles</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$Path</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[switch]</span><span class="nv">$Recursive</span>
+    <span class="p">)</span>
+    
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="c"># Vérifier si le chemin existe</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="n">-Path</span> <span class="nv">$Path</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;Le chemin &#39;$Path&#39; n&#39;existe pas.&quot;</span> <span class="n">-ErrorAction</span> <span class="n">Stop</span>
+        <span class="p">}</span>
+        
+        <span class="c"># Analyser les dépendances</span>
+        <span class="nv">$dependencies</span> <span class="p">=</span> <span class="p">@{}</span>
+        
+        <span class="c"># Traitement des fichiers...</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="no">[System.IO.FileNotFoundException]</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;Fichier non trouvé: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">FileName</span><span class="p">)</span><span class="s2">&quot;</span> <span class="n">-ErrorAction</span> <span class="k">Continue</span>
+        <span class="k">return</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">HasCycles</span> <span class="p">=</span> <span class="nv">$false</span>
+            <span class="n">Cycles</span> <span class="p">=</span> <span class="p">@()</span>
+            <span class="n">DependencyGraph</span> <span class="p">=</span> <span class="p">@{}</span>
+            <span class="n">NonCyclicScripts</span> <span class="p">=</span> <span class="p">@()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="no">[System.OutOfMemoryException]</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;Mémoire insuffisante pour analyser les dépendances.&quot;</span> <span class="n">-ErrorAction</span> <span class="k">Continue</span>
+        <span class="k">return</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">HasCycles</span> <span class="p">=</span> <span class="nv">$false</span>
+            <span class="n">Cycles</span> <span class="p">=</span> <span class="p">@()</span>
+            <span class="n">DependencyGraph</span> <span class="p">=</span> <span class="p">@{}</span>
+            <span class="n">NonCyclicScripts</span> <span class="p">=</span> <span class="p">@()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;Erreur lors de l&#39;analyse des dépendances: $_&quot;</span> <span class="n">-ErrorAction</span> <span class="k">Continue</span>
+        <span class="k">return</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">HasCycles</span> <span class="p">=</span> <span class="nv">$false</span>
+            <span class="n">Cycles</span> <span class="p">=</span> <span class="p">@()</span>
+            <span class="n">DependencyGraph</span> <span class="p">=</span> <span class="p">@{}</span>
+            <span class="n">NonCyclicScripts</span> <span class="p">=</span> <span class="p">@()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Suite de la fonction...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="erreurs-de-limite">
+<h3>3. Erreurs de limite<a class="headerlink" href="#erreurs-de-limite" title="Link to this heading"></a></h3>
+<p>Ces erreurs se produisent lorsque le module atteint ses limites de performance ou de capacité.</p>
+<section id="id4">
+<h4>Exemples<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Graphe trop grand</p></li>
+<li><p>Trop de cycles détectés</p></li>
+<li><p>Temps d’exécution trop long</p></li>
+</ul>
+</section>
+<section id="id5">
+<h4>Stratégie<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Implémenter des mécanismes de timeout</p></li>
+<li><p>Limiter la taille des résultats</p></li>
+<li><p>Fournir des avertissements avec <code class="docutils literal notranslate"><span class="pre">Write-Warning</span></code></p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>Exemple de code<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Find-GraphCycle</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[hashtable]</span><span class="nv">$Graph</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[int]</span><span class="nv">$MaxDepth</span> <span class="p">=</span> <span class="n">1000</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[int]</span><span class="nv">$Timeout</span> <span class="p">=</span> <span class="n">30</span> <span class="c"># secondes</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$startTime</span> <span class="p">=</span> <span class="nb">Get-Date</span>
+    <span class="nv">$timeoutReached</span> <span class="p">=</span> <span class="nv">$false</span>
+    
+    <span class="c"># Initialiser le résultat</span>
+    <span class="nv">$result</span> <span class="p">=</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+        <span class="n">HasCycle</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="n">CyclePath</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Traitement du graphe...</span>
+    
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$node</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">Keys</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c"># Vérifier le timeout</span>
+        <span class="k">if</span> <span class="p">((</span><span class="nb">New-TimeSpan</span> <span class="n">-Start</span> <span class="nv">$startTime</span> <span class="n">-End</span> <span class="p">(</span><span class="nb">Get-Date</span><span class="p">)).</span><span class="n">TotalSeconds</span> <span class="o">-gt</span> <span class="nv">$Timeout</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$timeoutReached</span> <span class="p">=</span> <span class="nv">$true</span>
+            <span class="nb">Write-Warning</span> <span class="s2">&quot;Timeout atteint après $Timeout secondes. L&#39;analyse est incomplète.&quot;</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
+        
+        <span class="c"># Traitement du nœud...</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$timeoutReached</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$result</span><span class="p">.</span><span class="n">HasCycle</span> <span class="p">=</span> <span class="nv">$null</span> <span class="c"># Indique un résultat incertain</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$result</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="erreurs-de-format">
+<h3>4. Erreurs de format<a class="headerlink" href="#erreurs-de-format" title="Link to this heading"></a></h3>
+<p>Ces erreurs se produisent lorsque les données d’entrée ne sont pas dans le format attendu.</p>
+<section id="id7">
+<h4>Exemples<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Format de fichier JSON invalide</p></li>
+<li><p>Structure de graphe incorrecte</p></li>
+<li><p>Encodage de fichier non supporté</p></li>
+</ul>
+</section>
+<section id="id8">
+<h4>Stratégie<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Valider le format des données avant traitement</p></li>
+<li><p>Fournir des messages d’erreur détaillés</p></li>
+<li><p>Suggérer des corrections si possible</p></li>
+</ul>
+</section>
+<section id="id9">
+<h4>Exemple de code<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Test-WorkflowCycles</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$WorkflowPath</span>
+    <span class="p">)</span>
+    
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="c"># Lire le fichier JSON</span>
+        <span class="nv">$workflowJson</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="nv">$WorkflowPath</span> <span class="n">-Raw</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span> <span class="n">-ErrorAction</span> <span class="n">Stop</span>
+        
+        <span class="c"># Valider la structure du workflow</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$workflowJson</span><span class="p">.</span><span class="n">nodes</span> <span class="o">-or</span> <span class="o">-not</span> <span class="nv">$workflowJson</span><span class="p">.</span><span class="n">connections</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;Format de workflow invalide. Les propriétés &#39;nodes&#39; et &#39;connections&#39; sont requises.&quot;</span> <span class="n">-ErrorAction</span> <span class="n">Stop</span>
+        <span class="p">}</span>
+        
+        <span class="c"># Traitement du workflow...</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="no">[System.ArgumentException]</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;Format JSON invalide: $_&quot;</span> <span class="n">-ErrorAction</span> <span class="k">Continue</span>
+        <span class="k">return</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">HasCycles</span> <span class="p">=</span> <span class="nv">$false</span>
+            <span class="n">Cycles</span> <span class="p">=</span> <span class="p">@()</span>
+            <span class="n">WorkflowName</span> <span class="p">=</span> <span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">GetFileNameWithoutExtension</span><span class="p">(</span><span class="nv">$WorkflowPath</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">{</span>
+        <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;Erreur lors de l&#39;analyse du workflow: $_&quot;</span> <span class="n">-ErrorAction</span> <span class="k">Continue</span>
+        <span class="k">return</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">HasCycles</span> <span class="p">=</span> <span class="nv">$false</span>
+            <span class="n">Cycles</span> <span class="p">=</span> <span class="p">@()</span>
+            <span class="n">WorkflowName</span> <span class="p">=</span> <span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">GetFileNameWithoutExtension</span><span class="p">(</span><span class="nv">$WorkflowPath</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Suite de la fonction...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="niveaux-de-gravite">
+<h2>Niveaux de gravité<a class="headerlink" href="#niveaux-de-gravite" title="Link to this heading"></a></h2>
+<p>Le module utilise les niveaux de gravité suivants pour les erreurs et avertissements :</p>
+<section id="erreurs-fatales-terminating-errors">
+<h3>1. Erreurs fatales (Terminating Errors)<a class="headerlink" href="#erreurs-fatales-terminating-errors" title="Link to this heading"></a></h3>
+<p>Ces erreurs arrêtent l’exécution de la fonction et sont générées avec <code class="docutils literal notranslate"><span class="pre">Write-Error</span> <span class="pre">-ErrorAction</span> <span class="pre">Stop</span></code>.</p>
+<section id="id10">
+<h4>Exemples<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Paramètres obligatoires manquants ou invalides</p></li>
+<li><p>Ressources essentielles inaccessibles</p></li>
+<li><p>Conditions préalables non remplies</p></li>
+</ul>
+</section>
+</section>
+<section id="erreurs-non-fatales-non-terminating-errors">
+<h3>2. Erreurs non fatales (Non-Terminating Errors)<a class="headerlink" href="#erreurs-non-fatales-non-terminating-errors" title="Link to this heading"></a></h3>
+<p>Ces erreurs sont signalées mais n’arrêtent pas l’exécution de la fonction. Elles sont générées avec <code class="docutils literal notranslate"><span class="pre">Write-Error</span> <span class="pre">-ErrorAction</span> <span class="pre">Continue</span></code>.</p>
+<section id="id11">
+<h4>Exemples<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Échec du traitement d’un fichier spécifique</p></li>
+<li><p>Timeout lors de l’analyse</p></li>
+<li><p>Erreurs récupérables</p></li>
+</ul>
+</section>
+</section>
+<section id="avertissements-warnings">
+<h3>3. Avertissements (Warnings)<a class="headerlink" href="#avertissements-warnings" title="Link to this heading"></a></h3>
+<p>Ces messages signalent des conditions potentiellement problématiques mais qui n’empêchent pas le fonctionnement du module. Ils sont générés avec <code class="docutils literal notranslate"><span class="pre">Write-Warning</span></code>.</p>
+<section id="id12">
+<h4>Exemples<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Performance dégradée</p></li>
+<li><p>Utilisation de fonctionnalités obsolètes</p></li>
+<li><p>Résultats potentiellement incomplets</p></li>
+</ul>
+</section>
+</section>
+<section id="informations-verboses-verbose">
+<h3>4. Informations verboses (Verbose)<a class="headerlink" href="#informations-verboses-verbose" title="Link to this heading"></a></h3>
+<p>Ces messages fournissent des informations détaillées sur le fonctionnement interne du module. Ils sont générés avec <code class="docutils literal notranslate"><span class="pre">Write-Verbose</span></code>.</p>
+<section id="id13">
+<h4>Exemples<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Progression de l’analyse</p></li>
+<li><p>Détails des calculs</p></li>
+<li><p>Informations de débogage</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="codes-d-erreur">
+<h2>Codes d’erreur<a class="headerlink" href="#codes-d-erreur" title="Link to this heading"></a></h2>
+<p>Le module utilise les codes d’erreur suivants pour faciliter l’identification des problèmes :</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CD001</td>
+<td>Paramètre invalide</td>
+<td>Erreur fatale</td>
+</tr>
+<tr>
+<td>CD002</td>
+<td>Ressource inaccessible</td>
+<td>Erreur fatale</td>
+</tr>
+<tr>
+<td>CD003</td>
+<td>Format invalide</td>
+<td>Erreur non fatale</td>
+</tr>
+<tr>
+<td>CD004</td>
+<td>Timeout</td>
+<td>Erreur non fatale</td>
+</tr>
+<tr>
+<td>CD005</td>
+<td>Mémoire insuffisante</td>
+<td>Erreur non fatale</td>
+</tr>
+<tr>
+<td>CD006</td>
+<td>Limite de profondeur atteinte</td>
+<td>Avertissement</td>
+</tr>
+<tr>
+<td>CD007</td>
+<td>Performance dégradée</td>
+<td>Avertissement</td>
+</tr>
+<tr>
+<td>CD008</td>
+<td>Résultat incomplet</td>
+<td>Avertissement</td>
+</tr>
+</tbody>
+</table></section>
+<section id="journalisation-des-erreurs">
+<h2>Journalisation des erreurs<a class="headerlink" href="#journalisation-des-erreurs" title="Link to this heading"></a></h2>
+<p>Le module journalise les erreurs pour faciliter le débogage et l’analyse des problèmes.</p>
+<section id="strategie-de-journalisation">
+<h3>Stratégie de journalisation<a class="headerlink" href="#strategie-de-journalisation" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p><strong>Journalisation interne</strong> : Les erreurs sont enregistrées dans une variable interne du module.</p></li>
+<li><p><strong>Journalisation dans le flux d’erreurs</strong> : Les erreurs sont écrites dans le flux d’erreurs de PowerShell.</p></li>
+<li><p><strong>Journalisation dans un fichier</strong> : Les erreurs peuvent être écrites dans un fichier de journal si configuré.</p></li>
+</ol>
+</section>
+<section id="id14">
+<h3>Exemple de code<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$script:ErrorLog</span> <span class="p">=</span> <span class="p">@()</span>
+
+<span class="k">function</span> <span class="nb">Write-CycleDetectorLog</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$Message</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="p">[</span><span class="k">ValidateSet</span><span class="p">(</span><span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;VERBOSE&quot;</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$Level</span> <span class="p">=</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$ErrorCode</span> <span class="p">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="s2">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>
+    <span class="nv">$logEntry</span> <span class="p">=</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+        <span class="n">Timestamp</span> <span class="p">=</span> <span class="nv">$timestamp</span>
+        <span class="n">Level</span> <span class="p">=</span> <span class="nv">$Level</span>
+        <span class="n">ErrorCode</span> <span class="p">=</span> <span class="nv">$ErrorCode</span>
+        <span class="n">Message</span> <span class="p">=</span> <span class="nv">$Message</span>
+    <span class="p">}</span>
+    
+    <span class="nv">$script:ErrorLog</span> <span class="p">+=</span> <span class="nv">$logEntry</span>
+    
+    <span class="k">switch</span> <span class="p">(</span><span class="nv">$Level</span><span class="p">)</span> <span class="p">{</span>
+        <span class="s2">&quot;ERROR&quot;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$ErrorCode</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="s2">&quot;[$ErrorCode] $Message&quot;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="nb">Write-Error</span> <span class="n">-Message</span> <span class="nv">$Message</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="s2">&quot;WARNING&quot;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$ErrorCode</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">Write-Warning</span> <span class="n">-Message</span> <span class="s2">&quot;[$ErrorCode] $Message&quot;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="nb">Write-Warning</span> <span class="n">-Message</span> <span class="nv">$Message</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="s2">&quot;INFO&quot;</span> <span class="p">{</span>
+            <span class="nb">Write-Host</span> <span class="nv">$Message</span>
+        <span class="p">}</span>
+        <span class="s2">&quot;VERBOSE&quot;</span> <span class="p">{</span>
+            <span class="nb">Write-Verbose</span> <span class="nv">$Message</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Si la journalisation dans un fichier est configurée</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$script:LogFilePath</span><span class="p">)</span> <span class="p">{</span>
+        <span class="s2">&quot;$timestamp [$Level] $ErrorCode $Message&quot;</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="n">-FilePath</span> <span class="nv">$script:LogFilePath</span> <span class="n">-Append</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nb">Get-CycleDetectorErrorLog</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">(</span>
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="p">[</span><span class="k">ValidateSet</span><span class="p">(</span><span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;VERBOSE&quot;</span><span class="p">)]</span>
+        <span class="no">[string[]]</span><span class="nv">$Levels</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;VERBOSE&quot;</span><span class="p">),</span>
+        
+        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">)]</span>
+        <span class="no">[int]</span><span class="nv">$Last</span> <span class="p">=</span> <span class="n">0</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$filteredLog</span> <span class="p">=</span> <span class="nv">$script:ErrorLog</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$Levels</span> <span class="o">-contains</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Level</span> <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$Last</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$filteredLog</span> <span class="p">=</span> <span class="nv">$filteredLog</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-Last</span> <span class="nv">$Last</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$filteredLog</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nb">Clear-CycleDetectorErrorLog</span> <span class="p">{</span>
+    <span class="p">[</span><span class="k">CmdletBinding</span><span class="p">()]</span>
+    <span class="k">param</span> <span class="p">()</span>
+    
+    <span class="nv">$script:ErrorLog</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cas-limites-et-leur-gestion">
+<h2>Cas limites et leur gestion<a class="headerlink" href="#cas-limites-et-leur-gestion" title="Link to this heading"></a></h2>
+<section id="graphes-vides">
+<h3>1. Graphes vides<a class="headerlink" href="#graphes-vides" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nv">$Graph</span><span class="p">.</span><span class="n">Count</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-CycleDetectorLog</span> <span class="n">-Message</span> <span class="s2">&quot;Le graphe est vide.&quot;</span> <span class="n">-Level</span> <span class="s2">&quot;WARNING&quot;</span> <span class="n">-ErrorCode</span> <span class="s2">&quot;CD001&quot;</span>
+    <span class="k">return</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+        <span class="n">HasCycle</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="n">CyclePath</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="graphes-deconnectes">
+<h3>2. Graphes déconnectés<a class="headerlink" href="#graphes-deconnectes" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$connectedComponents</span> <span class="p">=</span> <span class="n">0</span>
+<span class="nv">$visited</span> <span class="p">=</span> <span class="p">@{}</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$node</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">Keys</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$visited</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="nv">$node</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$connectedComponents</span><span class="p">++</span>
+        <span class="c"># Marquer tous les nœuds accessibles depuis ce nœud comme visités</span>
+        <span class="c"># ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$connectedComponents</span> <span class="o">-gt</span> <span class="n">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-CycleDetectorLog</span> <span class="n">-Message</span> <span class="s2">&quot;Le graphe contient $connectedComponents composantes connexes.&quot;</span> <span class="n">-Level</span> <span class="s2">&quot;VERBOSE&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="boucles-sur-un-seul-noeud">
+<h3>3. Boucles sur un seul nœud<a class="headerlink" href="#boucles-sur-un-seul-noeud" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$node</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">Keys</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$Graph</span><span class="p">[</span><span class="nv">$node</span><span class="p">]</span> <span class="o">-contains</span> <span class="nv">$node</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-CycleDetectorLog</span> <span class="n">-Message</span> <span class="s2">&quot;Boucle détectée sur le nœud &#39;$node&#39;.&quot;</span> <span class="n">-Level</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="k">return</span> <span class="no">[PSCustomObject]</span><span class="p">@{</span>
+            <span class="n">HasCycle</span> <span class="p">=</span> <span class="nv">$true</span>
+            <span class="n">CyclePath</span> <span class="p">=</span> <span class="p">@(</span><span class="nv">$node</span><span class="p">,</span> <span class="nv">$node</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="noeuds-manquants">
+<h3>4. Nœuds manquants<a class="headerlink" href="#noeuds-manquants" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$node</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">Keys</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$neighbor</span> <span class="k">in</span> <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$node</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$Graph</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="nv">$neighbor</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nb">Write-CycleDetectorLog</span> <span class="n">-Message</span> <span class="s2">&quot;Le nœud &#39;$neighbor&#39; est référencé mais n&#39;existe pas dans le graphe.&quot;</span> <span class="n">-Level</span> <span class="s2">&quot;WARNING&quot;</span> <span class="n">-ErrorCode</span> <span class="s2">&quot;CD003&quot;</span>
+            <span class="c"># Ajouter le nœud manquant au graphe</span>
+            <span class="nv">$Graph</span><span class="p">[</span><span class="nv">$neighbor</span><span class="p">]</span> <span class="p">=</span> <span class="p">@()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="graphes-tres-grands">
+<h3>5. Graphes très grands<a class="headerlink" href="#graphes-tres-grands" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nv">$Graph</span><span class="p">.</span><span class="n">Keys</span><span class="p">.</span><span class="n">Count</span> <span class="o">-gt</span> <span class="n">10000</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-CycleDetectorLog</span> <span class="n">-Message</span> <span class="s2">&quot;Le graphe est très grand (</span><span class="p">$(</span><span class="nv">$Graph</span><span class="p">.</span><span class="n">Keys</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> nœuds). L&#39;analyse peut prendre du temps.&quot;</span> <span class="n">-Level</span> <span class="s2">&quot;WARNING&quot;</span> <span class="n">-ErrorCode</span> <span class="s2">&quot;CD007&quot;</span>
+    
+    <span class="c"># Utiliser l&#39;implémentation itérative optimisée</span>
+    <span class="nv">$useIterative</span> <span class="p">=</span> <span class="nv">$true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Cette stratégie de gestion des erreurs fournit un cadre robuste pour détecter, signaler et gérer les erreurs dans le module <code class="docutils literal notranslate"><span class="pre">CycleDetector.psm1</span></code>. En suivant ces principes et en utilisant les mécanismes décrits, le module sera plus fiable, plus facile à déboguer et offrira une meilleure expérience utilisateur.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

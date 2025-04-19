@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tests des Composants &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tests des Composants</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/development/tests/components.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests-des-composants">
+<h1>Tests des Composants<a class="headerlink" href="#tests-des-composants" title="Link to this heading"></a></h1>
+<p>Cette page décrit les tests unitaires pour les composants Vue.js du système de journal de bord RAG.</p>
+<section id="configuration-des-tests">
+<h2>Configuration des tests<a class="headerlink" href="#configuration-des-tests" title="Link to this heading"></a></h2>
+<p>Les tests de composants utilisent Vue Test Utils pour monter les composants et interagir avec eux:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">shallowMount</span><span class="p">,</span><span class="w"> </span><span class="nx">createLocalVue</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@vue/test-utils&#39;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">Vuex</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;vuex&#39;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">Component</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/path/to/Component.vue&#39;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">localVue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createLocalVue</span><span class="p">()</span>
+<span class="nx">localVue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Vuex</span><span class="p">)</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Component.vue&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">store</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">actions</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="nx">beforeEach</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Mock store actions</span>
+<span class="w">    </span><span class="nx">actions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s1">&#39;namespace/action&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">()</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Create store</span>
+<span class="w">    </span><span class="nx">store</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Vuex</span><span class="p">.</span><span class="nx">Store</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">actions</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;renders correctly&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">wrapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">shallowMount</span><span class="p">(</span><span class="nx">Component</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">store</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">localVue</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Assertions</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">exists</span><span class="p">()).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="erpnextintegration">
+<h2>ERPNextIntegration<a class="headerlink" href="#erpnextintegration" title="Link to this heading"></a></h2>
+<p>Le fichier <code class="docutils literal notranslate"><span class="pre">tests/unit/components/integrations/ERPNextIntegration.spec.js</span></code> contient les tests pour le composant ERPNextIntegration.</p>
+<section id="fonctionnalites-testees">
+<h3>Fonctionnalités testées<a class="headerlink" href="#fonctionnalites-testees" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Chargement de la configuration</p></li>
+<li><p>Affichage/masquage du panneau de configuration</p></li>
+<li><p>Sauvegarde de la configuration</p></li>
+<li><p>Test de connexion</p></li>
+<li><p>Chargement des projets</p></li>
+<li><p>Sélection d’un projet et chargement de ses tâches</p></li>
+<li><p>Synchronisation ERPNext → Journal</p></li>
+<li><p>Synchronisation Journal → ERPNext</p></li>
+<li><p>Création d’une entrée de journal à partir d’une tâche</p></li>
+</ul>
+</section>
+<section id="exemple-de-test">
+<h3>Exemple de test<a class="headerlink" href="#exemple-de-test" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;loads configuration on creation&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">wrapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">shallowMount</span><span class="p">(</span><span class="nx">ERPNextIntegration</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">store</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">localVue</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Wait for promises to resolve</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">$nextTick</span><span class="p">()</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Assertions</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">ERPNextService</span><span class="p">.</span><span class="nx">getConfig</span><span class="p">).</span><span class="nx">toHaveBeenCalled</span><span class="p">()</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">config</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">enabled</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">api_url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;https://erpnext.example.com&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">api_key</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test-key&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">api_secret</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;test-secret&#39;</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">ERPNextService</span><span class="p">.</span><span class="nx">testConnection</span><span class="p">).</span><span class="nx">toHaveBeenCalled</span><span class="p">()</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="wordcloudvisualization">
+<h2>WordCloudVisualization<a class="headerlink" href="#wordcloudvisualization" title="Link to this heading"></a></h2>
+<p>Le fichier <code class="docutils literal notranslate"><span class="pre">tests/unit/components/analysis/WordCloudVisualization.spec.js</span></code> contient les tests pour le composant WordCloudVisualization.</p>
+<section id="id1">
+<h3>Fonctionnalités testées<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Chargement des données du nuage de mots</p></li>
+<li><p>Changement de période et rechargement des données</p></li>
+<li><p>Changement du nombre de mots et rechargement des données</p></li>
+<li><p>Sélection d’un mot et chargement des entrées associées</p></li>
+<li><p>Extraction d’extraits contenant le mot</p></li>
+<li><p>Mise en évidence du mot dans les extraits</p></li>
+<li><p>Calcul des classes CSS pour l’évolution</p></li>
+<li><p>Formatage des dates</p></li>
+<li><p>Debounce des appels de fonction</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Exemple de test<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;fetches word cloud data on mount&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">wrapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">shallowMount</span><span class="p">(</span><span class="nx">WordCloudVisualization</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">store</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">localVue</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">stubs</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;d3&#39;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Wait for promises to resolve</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">$nextTick</span><span class="p">()</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Assertions</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">actions</span><span class="p">[</span><span class="s1">&#39;analysis/fetchWordCloud&#39;</span><span class="p">]).</span><span class="nx">toHaveBeenCalledWith</span><span class="p">(</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">.</span><span class="nx">anything</span><span class="p">(),</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">period</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;month&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">maxWords</span><span class="o">:</span><span class="w"> </span><span class="mf">100</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="kc">undefined</span>
+<span class="w">  </span><span class="p">)</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">words</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">([</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;word1&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">frequency</span><span class="o">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="nx">evolution</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;word2&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="mf">8</span><span class="p">,</span><span class="w"> </span><span class="nx">frequency</span><span class="o">:</span><span class="w"> </span><span class="mf">0.04</span><span class="p">,</span><span class="w"> </span><span class="nx">evolution</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">5</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">])</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="mocking-des-dependances">
+<h2>Mocking des dépendances<a class="headerlink" href="#mocking-des-dependances" title="Link to this heading"></a></h2>
+<p>Les tests mockent les dépendances externes comme D3.js et d3-cloud:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Mock d3 and d3-cloud</span>
+<span class="nx">jest</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="s1">&#39;d3&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">({</span>
+<span class="w">  </span><span class="nx">scaleLinear</span><span class="o">:</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">().</span><span class="nx">mockReturnValue</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">domain</span><span class="o">:</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">().</span><span class="nx">mockReturnThis</span><span class="p">(),</span>
+<span class="w">    </span><span class="nx">range</span><span class="o">:</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">().</span><span class="nx">mockReturnThis</span><span class="p">()</span>
+<span class="w">  </span><span class="p">}),</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}))</span>
+
+<span class="nx">jest</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="s1">&#39;d3-cloud&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">().</span><span class="nx">mockImplementation</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">({</span>
+<span class="w">  </span><span class="nx">size</span><span class="o">:</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">().</span><span class="nx">mockReturnThis</span><span class="p">(),</span>
+<span class="w">  </span><span class="nx">words</span><span class="o">:</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">().</span><span class="nx">mockReturnThis</span><span class="p">(),</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">})))</span>
+</pre></div>
+</div>
+</section>
+<section id="tests-d-evenements">
+<h2>Tests d’événements<a class="headerlink" href="#tests-d-evenements" title="Link to this heading"></a></h2>
+<p>Les tests vérifient également la gestion des événements:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;toggles configuration panel&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">wrapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">shallowMount</span><span class="p">(</span><span class="nx">ERPNextIntegration</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">store</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">localVue</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Initial state</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">showConfig</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Toggle config</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">toggleConfig</span><span class="p">()</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">showConfig</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Toggle again</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">toggleConfig</span><span class="p">()</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">showConfig</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="tests-de-methodes-utilitaires">
+<h2>Tests de méthodes utilitaires<a class="headerlink" href="#tests-de-methodes-utilitaires" title="Link to this heading"></a></h2>
+<p>Les tests vérifient également les méthodes utilitaires:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;extracts excerpt containing the word&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">wrapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">shallowMount</span><span class="p">(</span><span class="nx">WordCloudVisualization</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">store</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">localVue</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">stubs</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;d3&#39;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Test with word in content</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;This is a test. Here is the word1 in a sentence. Another sentence.&#39;</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">excerpt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">getExcerpt</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;word1&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">excerpt</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="s1">&#39;Here is the word1 in a sentence.&#39;</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Test with word not in content</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">noMatchContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;This content does not contain the target word.&#39;</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">noMatchExcerpt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">getExcerpt</span><span class="p">(</span><span class="nx">noMatchContent</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;word1&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">noMatchExcerpt</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="s1">&#39;This content does not contain the target word...&#39;</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Test with null content</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">nullExcerpt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">getExcerpt</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;word1&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="nx">expect</span><span class="p">(</span><span class="nx">nullExcerpt</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes pratiques<a class="headerlink" href="#bonnes-pratiques" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Utiliser <code class="docutils literal notranslate"><span class="pre">shallowMount</span></code> pour les tests unitaires</p></li>
+<li><p>Mocker les dépendances externes</p></li>
+<li><p>Tester les méthodes du cycle de vie (created, mounted, etc.)</p></li>
+<li><p>Tester les méthodes de l’API publique</p></li>
+<li><p>Tester les méthodes utilitaires</p></li>
+<li><p>Tester les événements</p></li>
+<li><p>Tester les cas normaux et les cas d’erreur</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

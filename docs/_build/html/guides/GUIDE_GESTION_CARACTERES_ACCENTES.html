@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide de gestion des caractères accentués français dans n8n &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide de gestion des caractères accentués français dans n8n</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/GUIDE_GESTION_CARACTERES_ACCENTES.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-de-gestion-des-caracteres-accentues-francais-dans-n8n">
+<h1>Guide de gestion des caractères accentués français dans n8n<a class="headerlink" href="#guide-de-gestion-des-caracteres-accentues-francais-dans-n8n" title="Link to this heading"></a></h1>
+<p>Ce guide explique comment résoudre les problèmes d’encodage des caractères accentués français dans les workflows n8n.</p>
+<section id="problematique">
+<h2>Problématique<a class="headerlink" href="#problematique" title="Link to this heading"></a></h2>
+<p>Les workflows n8n peuvent rencontrer des problèmes avec les caractères accentués français (é, è, à, ê, etc.) lors de l’importation. Ces caractères sont souvent mal encodés et apparaissent comme des symboles incorrects (�) dans les noms des workflows et des nœuds, ainsi que dans le contenu des workflows.</p>
+</section>
+<section id="solutions">
+<h2>Solutions<a class="headerlink" href="#solutions" title="Link to this heading"></a></h2>
+<section id="correction-des-caracteres-accentues">
+<h3>1. Correction des caractères accentués<a class="headerlink" href="#correction-des-caracteres-accentues" title="Link to this heading"></a></h3>
+<p>Le script <code class="docutils literal notranslate"><span class="pre">fix_all_workflows.py</span></code> remplace les caractères accentués par leurs équivalents non accentués dans les fichiers JSON des workflows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>fix_all_workflows.py
+</pre></div>
+</div>
+<p>Ce script :</p>
+<ul class="simple">
+<li><p>Lit tous les fichiers JSON dans le répertoire “workflows”</p></li>
+<li><p>Remplace les caractères accentués par leurs équivalents non accentués</p></li>
+<li><p>Sauvegarde les fichiers corrigés dans le répertoire “workflows-fixed-all”</p></li>
+</ul>
+</section>
+<section id="importation-des-workflows-corriges">
+<h3>2. Importation des workflows corrigés<a class="headerlink" href="#importation-des-workflows-corriges" title="Link to this heading"></a></h3>
+<p>Le script <code class="docutils literal notranslate"><span class="pre">import-fixed-all-workflows.ps1</span></code> utilise l’API n8n pour importer les workflows avec les caractères corrigés.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="nb">import-fixed</span><span class="n">-all-workflows</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p>Ce script :</p>
+<ul class="simple">
+<li><p>Se connecte à l’API n8n</p></li>
+<li><p>Importe tous les workflows corrigés du répertoire “workflows-fixed-all”</p></li>
+<li><p>Affiche un rapport détaillé des importations réussies et échouées</p></li>
+</ul>
+</section>
+<section id="suppression-des-doublons-et-des-workflows-mal-encodes">
+<h3>3. Suppression des doublons et des workflows mal encodés<a class="headerlink" href="#suppression-des-doublons-et-des-workflows-mal-encodes" title="Link to this heading"></a></h3>
+<p>Le script <code class="docutils literal notranslate"><span class="pre">remove-duplicate-workflows.ps1</span></code> identifie et supprime les workflows en double ou mal encodés dans n8n.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="nb">remove-duplicate</span><span class="n">-workflows</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p>Ce script :</p>
+<ul class="simple">
+<li><p>Récupère tous les workflows existants dans n8n</p></li>
+<li><p>Identifie les doublons et les workflows avec des caractères mal encodés</p></li>
+<li><p>Demande confirmation avant de les supprimer</p></li>
+<li><p>Supprime les workflows sélectionnés</p></li>
+</ul>
+</section>
+</section>
+<section id="autres-scripts-utiles">
+<h2>Autres scripts utiles<a class="headerlink" href="#autres-scripts-utiles" title="Link to this heading"></a></h2>
+<section id="liste-des-workflows">
+<h3>Liste des workflows<a class="headerlink" href="#liste-des-workflows" title="Link to this heading"></a></h3>
+<p>Le script <code class="docutils literal notranslate"><span class="pre">list-workflows.ps1</span></code> liste les workflows existants dans n8n.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">list-workflows</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+<section id="suppression-de-tous-les-workflows">
+<h3>Suppression de tous les workflows<a class="headerlink" href="#suppression-de-tous-les-workflows" title="Link to this heading"></a></h3>
+<p>Le script <code class="docutils literal notranslate"><span class="pre">delete-all-workflows-auto.ps1</span></code> supprime tous les workflows existants sans confirmation.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">delete-all-workflows-auto</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p>⚠️ <strong>Attention</strong> : Ce script supprime tous les workflows sans confirmation. Utilisez-le avec précaution.</p>
+</section>
+</section>
+<section id="processus-recommande">
+<h2>Processus recommandé<a class="headerlink" href="#processus-recommande" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p>Sauvegardez vos workflows existants</p></li>
+<li><p>Exécutez <code class="docutils literal notranslate"><span class="pre">fix_all_workflows.py</span></code> pour corriger l’encodage des caractères</p></li>
+<li><p>Supprimez les workflows existants dans n8n (manuellement ou avec <code class="docutils literal notranslate"><span class="pre">delete-all-workflows-auto.ps1</span></code>)</p></li>
+<li><p>Importez les workflows corrigés avec <code class="docutils literal notranslate"><span class="pre">import-fixed-all-workflows.ps1</span></code></p></li>
+<li><p>Vérifiez que les workflows importés fonctionnent correctement</p></li>
+</ol>
+</section>
+<section id="limitations-connues">
+<h2>Limitations connues<a class="headerlink" href="#limitations-connues" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>L’API n8n ne gère pas correctement les caractères accentués lors de l’importation</p></li>
+<li><p>Certains fichiers JSON complexes peuvent nécessiter une correction manuelle avant l’importation</p></li>
+<li><p>L’importation via l’interface utilisateur peut être plus fiable pour les fichiers problématiques</p></li>
+</ul>
+</section>
+<section id="exemples-de-caracteres-problematiques-et-leurs-remplacements">
+<h2>Exemples de caractères problématiques et leurs remplacements<a class="headerlink" href="#exemples-de-caracteres-problematiques-et-leurs-remplacements" title="Link to this heading"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Caractère accentué</th>
+<th>Remplacement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>é</td>
+<td>e</td>
+</tr>
+<tr>
+<td>è</td>
+<td>e</td>
+</tr>
+<tr>
+<td>ê</td>
+<td>e</td>
+</tr>
+<tr>
+<td>ë</td>
+<td>e</td>
+</tr>
+<tr>
+<td>à</td>
+<td>a</td>
+</tr>
+<tr>
+<td>â</td>
+<td>a</td>
+</tr>
+<tr>
+<td>ä</td>
+<td>a</td>
+</tr>
+<tr>
+<td>ç</td>
+<td>c</td>
+</tr>
+<tr>
+<td>î</td>
+<td>i</td>
+</tr>
+<tr>
+<td>ï</td>
+<td>i</td>
+</tr>
+<tr>
+<td>ô</td>
+<td>o</td>
+</tr>
+<tr>
+<td>ö</td>
+<td>o</td>
+</tr>
+<tr>
+<td>ù</td>
+<td>u</td>
+</tr>
+<tr>
+<td>û</td>
+<td>u</td>
+</tr>
+<tr>
+<td>ü</td>
+<td>u</td>
+</tr>
+<tr>
+<td>ÿ</td>
+<td>y</td>
+</tr>
+</tbody>
+</table></section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="probleme-les-caracteres-accentues-sont-toujours-mal-encodes-apres-l-importation">
+<h3>Problème : Les caractères accentués sont toujours mal encodés après l’importation<a class="headerlink" href="#probleme-les-caracteres-accentues-sont-toujours-mal-encodes-apres-l-importation" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Essayez d’importer les workflows manuellement via l’interface utilisateur de n8n. L’API n8n peut avoir des limitations dans la gestion des caractères accentués.</p>
+</section>
+<section id="probleme-erreur-lors-de-l-importation-d-un-workflow">
+<h3>Problème : Erreur lors de l’importation d’un workflow<a class="headerlink" href="#probleme-erreur-lors-de-l-importation-d-un-workflow" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Vérifiez le format JSON du fichier. Certains fichiers JSON complexes peuvent nécessiter une correction manuelle avant l’importation.</p>
+</section>
+<section id="probleme-les-scripts-powershell-ne-fonctionnent-pas-correctement">
+<h3>Problème : Les scripts PowerShell ne fonctionnent pas correctement<a class="headerlink" href="#probleme-les-scripts-powershell-ne-fonctionnent-pas-correctement" title="Link to this heading"></a></h3>
+<p><strong>Solution</strong> : Assurez-vous que PowerShell est configuré pour utiliser l’encodage UTF-8. Vous pouvez définir l’encodage avec la commande suivante :</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$OutputEncoding</span> <span class="p">=</span> <span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span>
+<span class="no">[Console]</span><span class="p">::</span><span class="n">OutputEncoding</span> <span class="p">=</span> <span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ressources-additionnelles">
+<h2>Ressources additionnelles<a class="headerlink" href="#ressources-additionnelles" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.n8n.io/workflows/workflows/">Documentation n8n sur l’importation de workflows</a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/howto/unicode.html">Documentation Python sur l’encodage des caractères</a></p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding">Documentation PowerShell sur l’encodage des caractères</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

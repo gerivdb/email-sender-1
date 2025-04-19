@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visualisations Avancées &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Visualisations Avancées</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/visualizations/advanced_visualizations.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="visualisations-avancees">
+<h1>Visualisations Avancées<a class="headerlink" href="#visualisations-avancees" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Le système de journal de bord RAG inclut plusieurs visualisations avancées qui permettent d’explorer et d’analyser les données du journal de manière interactive. Ces visualisations utilisent D3.js pour créer des représentations graphiques riches et interactives.</p>
+</section>
+<section id="nuage-de-mots-interactif">
+<h2>Nuage de Mots Interactif<a class="headerlink" href="#nuage-de-mots-interactif" title="Link to this heading"></a></h2>
+<section id="description">
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>Le nuage de mots interactif affiche les termes les plus fréquents dans les entrées du journal, avec une taille proportionnelle à leur fréquence. Cette visualisation permet d’identifier rapidement les sujets principaux abordés dans le journal.</p>
+</section>
+<section id="fonctionnalites">
+<h3>Fonctionnalités<a class="headerlink" href="#fonctionnalites" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Interactivité</strong>: Cliquez sur un mot pour voir les détails et les entrées associées</p></li>
+<li><p><strong>Filtrage</strong>: Filtrez par période, tags, catégorie, et plus encore</p></li>
+<li><p><strong>Analyse d’évolution</strong>: Visualisez l’évolution de la fréquence des termes au fil du temps</p></li>
+<li><p><strong>Recherche contextuelle</strong>: Trouvez les entrées contenant un terme spécifique avec le contexte</p></li>
+</ul>
+</section>
+<section id="utilisation">
+<h3>Utilisation<a class="headerlink" href="#utilisation" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Accédez à la page d’analyse du journal</p></li>
+<li><p>Sélectionnez “Nuage de mots” dans les visualisations disponibles</p></li>
+<li><p>Utilisez les contrôles en haut pour ajuster la période et le nombre de mots</p></li>
+<li><p>Cliquez sur “Filtres avancés” pour accéder à des options de filtrage supplémentaires</p></li>
+<li><p>Cliquez sur un mot pour voir ses détails et les entrées associées</p></li>
+</ol>
+</section>
+<section id="options-de-configuration">
+<h3>Options de configuration<a class="headerlink" href="#options-de-configuration" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Période</strong>: Filtrez les données par période (Tout, Aujourd’hui, Cette semaine, Ce mois, Ce trimestre, Cette année)</p></li>
+<li><p><strong>Nombre de mots</strong>: Ajustez le nombre de mots affichés (50, 100, 200)</p></li>
+<li><p><strong>Filtres avancés</strong>:</p>
+<ul>
+<li><p>Tags: Filtrez par tags spécifiques</p></li>
+<li><p>Catégorie: Filtrez par catégorie</p></li>
+<li><p>Recherche: Filtrez par terme de recherche</p></li>
+<li><p>Plage de dates: Filtrez par dates spécifiques</p></li>
+<li><p>Limite: Ajustez le nombre maximum d’éléments</p></li>
+<li><p>Tri: Triez par date, pertinence ou ordre alphabétique</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="details-techniques">
+<h3>Détails techniques<a class="headerlink" href="#details-techniques" title="Link to this heading"></a></h3>
+<p>Le nuage de mots utilise la bibliothèque d3-cloud pour le placement des mots et D3.js pour l’interactivité. Les données sont récupérées via l’API <code class="docutils literal notranslate"><span class="pre">/api/analysis/word-cloud</span></code> avec les paramètres de filtrage appropriés.</p>
+</section>
+</section>
+<section id="analyse-de-sentiment">
+<h2>Analyse de Sentiment<a class="headerlink" href="#analyse-de-sentiment" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>L’analyse de sentiment visualise l’évolution du sentiment dans les entrées du journal au fil du temps. Elle permet d’identifier les tendances émotionnelles et les changements de ton dans le journal.</p>
+</section>
+<section id="id2">
+<h3>Fonctionnalités<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Évolution du sentiment</strong>: Visualisez l’évolution de la polarité et de la subjectivité au fil du temps</p></li>
+<li><p><strong>Analyse par section</strong>: Comparez le sentiment entre différentes sections des entrées</p></li>
+<li><p><strong>Statistiques de sentiment</strong>: Consultez des statistiques sur le sentiment moyen et les tendances récentes</p></li>
+<li><p><strong>Filtrage avancé</strong>: Filtrez les données par période, tags, catégorie, et plus encore</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Utilisation<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Accédez à la page d’analyse du journal</p></li>
+<li><p>Sélectionnez “Analyse de sentiment” dans les visualisations disponibles</p></li>
+<li><p>Basculez entre les vues “Évolution” et “Sections” pour différentes perspectives</p></li>
+<li><p>Utilisez les filtres avancés pour affiner les données affichées</p></li>
+</ol>
+</section>
+<section id="vues-disponibles">
+<h3>Vues disponibles<a class="headerlink" href="#vues-disponibles" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Évolution</strong>: Affiche l’évolution de la polarité (positif/négatif) et de la subjectivité (objectif/subjectif) au fil du temps</p></li>
+<li><p><strong>Sections</strong>: Affiche le sentiment moyen par section des entrées (Introduction, Développement, Conclusion, etc.)</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Détails techniques<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>L’analyse de sentiment utilise D3.js pour les visualisations et récupère les données via les API <code class="docutils literal notranslate"><span class="pre">/api/analysis/sentiment/evolution</span></code> et <code class="docutils literal notranslate"><span class="pre">/api/analysis/sentiment/sections</span></code>.</p>
+</section>
+</section>
+<section id="tendances-des-sujets">
+<h2>Tendances des Sujets<a class="headerlink" href="#tendances-des-sujets" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>Description<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>La visualisation des tendances des sujets montre l’évolution des sujets principaux identifiés dans le journal au fil du temps. Elle permet de suivre l’émergence, la croissance et le déclin de différents sujets.</p>
+</section>
+<section id="id6">
+<h3>Fonctionnalités<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Évolution des sujets</strong>: Visualisez l’évolution de la prévalence des sujets au fil du temps</p></li>
+<li><p><strong>Détails des sujets</strong>: Consultez les mots clés associés à chaque sujet</p></li>
+<li><p><strong>Entrées associées</strong>: Trouvez les entrées les plus représentatives de chaque sujet</p></li>
+<li><p><strong>Filtrage avancé</strong>: Filtrez les données par période, tags, catégorie, et plus encore</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>Utilisation<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Accédez à la page d’analyse du journal</p></li>
+<li><p>Sélectionnez “Tendances des sujets” dans les visualisations disponibles</p></li>
+<li><p>Sélectionnez un sujet dans la liste pour voir son évolution et les entrées associées</p></li>
+<li><p>Utilisez les filtres pour affiner les données affichées</p></li>
+</ol>
+</section>
+<section id="id8">
+<h3>Options de configuration<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Période</strong>: Filtrez les données par période (Tout, 6 derniers mois, Cette année)</p></li>
+<li><p><strong>Filtres avancés</strong>: Similaires aux filtres du nuage de mots</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>Détails techniques<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>La visualisation des tendances des sujets utilise D3.js pour les graphiques et récupère les données via l’API <code class="docutils literal notranslate"><span class="pre">/api/analysis/topics/trends</span></code>.</p>
+</section>
+</section>
+<section id="evolution-des-tags">
+<h2>Évolution des Tags<a class="headerlink" href="#evolution-des-tags" title="Link to this heading"></a></h2>
+<section id="id10">
+<h3>Description<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>La visualisation de l’évolution des tags montre comment l’utilisation des tags a évolué au fil du temps. Elle permet d’identifier les tendances dans la catégorisation des entrées.</p>
+</section>
+<section id="id11">
+<h3>Fonctionnalités<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Évolution des tags</strong>: Visualisez l’évolution de l’utilisation des tags au fil du temps</p></li>
+<li><p><strong>Comparaison de tags</strong>: Comparez l’utilisation de différents tags</p></li>
+<li><p><strong>Co-occurrence</strong>: Identifiez les tags qui apparaissent souvent ensemble</p></li>
+<li><p><strong>Filtrage avancé</strong>: Filtrez les données par période, tags spécifiques, et plus encore</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>Utilisation<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Accédez à la page d’analyse du journal</p></li>
+<li><p>Sélectionnez “Évolution des tags” dans les visualisations disponibles</p></li>
+<li><p>Sélectionnez les tags à comparer dans la liste</p></li>
+<li><p>Utilisez les filtres pour affiner les données affichées</p></li>
+</ol>
+</section>
+<section id="options-de-visualisation">
+<h3>Options de visualisation<a class="headerlink" href="#options-de-visualisation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Graphique linéaire</strong>: Affiche l’évolution de l’utilisation des tags au fil du temps</p></li>
+<li><p><strong>Graphique à barres</strong>: Compare l’utilisation des tags pour une période donnée</p></li>
+<li><p><strong>Graphique de co-occurrence</strong>: Montre quels tags apparaissent souvent ensemble</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>Détails techniques<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<p>La visualisation de l’évolution des tags utilise D3.js pour les graphiques et récupère les données via l’API <code class="docutils literal notranslate"><span class="pre">/api/analysis/tags/evolution</span></code>.</p>
+</section>
+</section>
+<section id="integration-des-visualisations">
+<h2>Intégration des Visualisations<a class="headerlink" href="#integration-des-visualisations" title="Link to this heading"></a></h2>
+<p>Les visualisations sont intégrées dans l’interface utilisateur du journal de bord et peuvent être accédées via la page d’analyse. Elles partagent un système de filtrage commun qui permet de filtrer les données de manière cohérente à travers les différentes visualisations.</p>
+<section id="composants-communs">
+<h3>Composants communs<a class="headerlink" href="#composants-communs" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Filtres avancés</strong>: Un panneau de filtrage commun à toutes les visualisations</p></li>
+<li><p><strong>Animations et transitions</strong>: Des animations fluides pour les changements d’état et les transitions entre les vues</p></li>
+<li><p><strong>Exportation</strong>: Des options pour exporter les visualisations en format PNG, SVG ou PDF</p></li>
+</ul>
+</section>
+</section>
+<section id="personnalisation-des-visualisations">
+<h2>Personnalisation des Visualisations<a class="headerlink" href="#personnalisation-des-visualisations" title="Link to this heading"></a></h2>
+<p>Les visualisations peuvent être personnalisées via les options de configuration disponibles dans l’interface utilisateur. Les utilisateurs avancés peuvent également personnaliser les visualisations en modifiant les fichiers de configuration ou en créant des plugins.</p>
+<section id="options-de-personnalisation">
+<h3>Options de personnalisation<a class="headerlink" href="#options-de-personnalisation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Thèmes</strong>: Changez l’apparence des visualisations avec différents thèmes</p></li>
+<li><p><strong>Couleurs</strong>: Personnalisez les palettes de couleurs utilisées dans les visualisations</p></li>
+<li><p><strong>Dimensions</strong>: Ajustez la taille des visualisations</p></li>
+<li><p><strong>Interactivité</strong>: Configurez les comportements interactifs des visualisations</p></li>
+</ul>
+</section>
+</section>
+<section id="exemples-d-utilisation">
+<h2>Exemples d’utilisation<a class="headerlink" href="#exemples-d-utilisation" title="Link to this heading"></a></h2>
+<section id="identifier-les-tendances-dans-le-journal">
+<h3>Identifier les tendances dans le journal<a class="headerlink" href="#identifier-les-tendances-dans-le-journal" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Utilisez le nuage de mots pour identifier les termes les plus fréquents</p></li>
+<li><p>Utilisez l’analyse de sentiment pour voir comment le ton a évolué au fil du temps</p></li>
+<li><p>Utilisez les tendances des sujets pour identifier les sujets émergents</p></li>
+<li><p>Utilisez l’évolution des tags pour voir comment la catégorisation a évolué</p></li>
+</ol>
+</section>
+<section id="analyser-une-periode-specifique">
+<h3>Analyser une période spécifique<a class="headerlink" href="#analyser-une-periode-specifique" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Utilisez les filtres de date pour sélectionner la période d’intérêt</p></li>
+<li><p>Comparez les visualisations avant et après la période</p></li>
+<li><p>Identifiez les changements significatifs dans les sujets, le sentiment ou les tags</p></li>
+</ol>
+</section>
+<section id="explorer-un-sujet-specifique">
+<h3>Explorer un sujet spécifique<a class="headerlink" href="#explorer-un-sujet-specifique" title="Link to this heading"></a></h3>
+<ol class="simple">
+<li><p>Utilisez les filtres de recherche pour trouver les entrées liées au sujet</p></li>
+<li><p>Utilisez le nuage de mots pour identifier les termes associés</p></li>
+<li><p>Utilisez l’analyse de sentiment pour comprendre le ton des entrées sur ce sujet</p></li>
+<li><p>Utilisez les tendances des sujets pour voir comment le sujet a évolué au fil du temps</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

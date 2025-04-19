@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changements de structure du projet &mdash; EMAIL_SENDER_1 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EMAIL_SENDER_1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Documentation des API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EMAIL_SENDER_1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Changements de structure du projet</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/CHANGEMENTS_STRUCTURE.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="changements-de-structure-du-projet">
+<h1>Changements de structure du projet<a class="headerlink" href="#changements-de-structure-du-projet" title="Link to this heading"></a></h1>
+<p>Ce document explique les changements de structure qui ont été apportés au projet Email Sender pour n8n.</p>
+<section id="ancienne-structure">
+<h2>Ancienne structure<a class="headerlink" href="#ancienne-structure" title="Link to this heading"></a></h2>
+<p>Auparavant, tous les fichiers étaient stockés à la racine du projet ou dans quelques dossiers épars, ce qui rendait difficile la navigation et la maintenance.</p>
+</section>
+<section id="nouvelle-structure">
+<h2>Nouvelle structure<a class="headerlink" href="#nouvelle-structure" title="Link to this heading"></a></h2>
+<p>Le projet a été réorganisé selon les bonnes pratiques GitHub avec une structure de dossiers claire et logique :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├── src/                  # Code source principal
+│   ├── workflows/        # Workflows n8n
+│   └── mcp/              # Fichiers MCP (Model Context Protocol)
+│       ├── batch/        # Fichiers batch pour MCP
+│       └── config/       # Configurations MCP
+├── scripts/              # Scripts utilitaires
+│   ├── setup/            # Scripts d&#39;installation
+│   └── maintenance/      # Scripts de maintenance
+├── config/               # Fichiers de configuration
+├── logs/                 # Fichiers de logs
+├── docs/                 # Documentation
+│   ├── guides/           # Guides d&#39;utilisation
+│   └── api/              # Documentation API
+├── tests/                # Tests
+├── tools/                # Outils divers
+└── assets/               # Ressources statiques
+</pre></div>
+</div>
+</section>
+<section id="changements-specifiques">
+<h2>Changements spécifiques<a class="headerlink" href="#changements-specifiques" title="Link to this heading"></a></h2>
+<section id="workflows-n8n">
+<h3>Workflows n8n<a class="headerlink" href="#workflows-n8n" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Tous les fichiers JSON des workflows ont été déplacés dans <code class="docutils literal notranslate"><span class="pre">src/workflows/</span></code></p></li>
+<li><p>Exemples : <code class="docutils literal notranslate"><span class="pre">EMAIL_SENDER_PHASE1.json</span></code>, <code class="docutils literal notranslate"><span class="pre">test-mcp-git-ingest-workflow.json</span></code></p></li>
+</ul>
+</section>
+<section id="fichiers-mcp">
+<h3>Fichiers MCP<a class="headerlink" href="#fichiers-mcp" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Les fichiers batch MCP ont été déplacés dans <code class="docutils literal notranslate"><span class="pre">src/mcp/batch/</span></code></p>
+<ul>
+<li><p>Exemples : <code class="docutils literal notranslate"><span class="pre">mcp-standard.cmd</span></code>, <code class="docutils literal notranslate"><span class="pre">mcp-notion.cmd</span></code>, <code class="docutils literal notranslate"><span class="pre">gateway.exe.cmd</span></code>, <code class="docutils literal notranslate"><span class="pre">mcp-git-ingest.cmd</span></code></p></li>
+</ul>
+</li>
+<li><p>Les fichiers de configuration MCP ont été déplacés dans <code class="docutils literal notranslate"><span class="pre">src/mcp/config/</span></code></p>
+<ul>
+<li><p>Exemples : <code class="docutils literal notranslate"><span class="pre">mcp-config.json</span></code>, <code class="docutils literal notranslate"><span class="pre">gateway.yaml</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="scripts">
+<h3>Scripts<a class="headerlink" href="#scripts" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Les scripts PowerShell ont été organisés dans <code class="docutils literal notranslate"><span class="pre">scripts/</span></code> et ses sous-dossiers</p>
+<ul>
+<li><p>Scripts d’installation et de configuration : <code class="docutils literal notranslate"><span class="pre">scripts/setup/</span></code></p></li>
+<li><p>Scripts de maintenance : <code class="docutils literal notranslate"><span class="pre">scripts/maintenance/</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Tous les fichiers de documentation ont été déplacés dans <code class="docutils literal notranslate"><span class="pre">docs/</span></code></p></li>
+<li><p>Les guides d’utilisation sont dans <code class="docutils literal notranslate"><span class="pre">docs/guides/</span></code></p>
+<ul>
+<li><p>Exemples : <code class="docutils literal notranslate"><span class="pre">GUIDE_FINAL_MCP.md</span></code>, <code class="docutils literal notranslate"><span class="pre">GUIDE_MCP_GATEWAY.md</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="outils">
+<h3>Outils<a class="headerlink" href="#outils" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Les scripts de démarrage ont été déplacés dans <code class="docutils literal notranslate"><span class="pre">tools/</span></code></p>
+<ul>
+<li><p>Exemples : <code class="docutils literal notranslate"><span class="pre">start-n8n.cmd</span></code>, <code class="docutils literal notranslate"><span class="pre">start-n8n-mcp.cmd</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="comment-utiliser-la-nouvelle-structure">
+<h2>Comment utiliser la nouvelle structure<a class="headerlink" href="#comment-utiliser-la-nouvelle-structure" title="Link to this heading"></a></h2>
+<section id="demarrer-n8n">
+<h3>Démarrer n8n<a class="headerlink" href="#demarrer-n8n" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span>\<span class="n">tools</span>\<span class="n">start</span><span class="o">-</span><span class="n">n8n</span><span class="o">-</span><span class="n">mcp</span><span class="o">.</span><span class="n">cmd</span>
+</pre></div>
+</div>
+</section>
+<section id="configurer-les-mcp">
+<h3>Configurer les MCP<a class="headerlink" href="#configurer-les-mcp" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span>\<span class="n">scripts</span>\<span class="n">setup</span>\<span class="n">configure</span><span class="o">-</span><span class="n">n8n</span><span class="o">-</span><span class="n">mcp</span><span class="o">.</span><span class="n">ps1</span>
+<span class="o">.</span>\<span class="n">scripts</span>\<span class="n">setup</span>\<span class="n">configure</span><span class="o">-</span><span class="n">mcp</span><span class="o">-</span><span class="n">git</span><span class="o">-</span><span class="n">ingest</span><span class="o">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+<section id="creer-de-nouveaux-fichiers">
+<h3>Créer de nouveaux fichiers<a class="headerlink" href="#creer-de-nouveaux-fichiers" title="Link to this heading"></a></h3>
+<p>Utilisez le script <code class="docutils literal notranslate"><span class="pre">new-file.ps1</span></code> pour créer de nouveaux fichiers dans les bons dossiers :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span>\<span class="n">scripts</span>\<span class="n">maintenance</span>\<span class="n">new</span><span class="o">-</span><span class="n">file</span><span class="o">.</span><span class="n">ps1</span> <span class="o">-</span><span class="n">Type</span> <span class="n">workflow</span> <span class="o">-</span><span class="n">Name</span> <span class="n">mon</span><span class="o">-</span><span class="n">workflow</span>
+</pre></div>
+</div>
+<p>Types disponibles :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">workflow</span></code> : Crée un nouveau workflow n8n</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">script</span></code> : Crée un nouveau script PowerShell</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">doc</span></code> : Crée un nouveau document Markdown</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code> : Crée un nouveau fichier de configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mcp</span></code> : Crée un nouveau fichier batch MCP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test</span></code> : Crée un nouveau script de test</p></li>
+</ul>
+</section>
+<section id="organisation-automatique">
+<h3>Organisation automatique<a class="headerlink" href="#organisation-automatique" title="Link to this heading"></a></h3>
+<p>Le script <code class="docutils literal notranslate"><span class="pre">auto-organize.ps1</span></code> peut être exécuté périodiquement pour organiser automatiquement les fichiers :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span>\<span class="n">scripts</span>\<span class="n">maintenance</span>\<span class="n">auto</span><span class="o">-</span><span class="n">organize</span><span class="o">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="avantages-de-la-nouvelle-structure">
+<h2>Avantages de la nouvelle structure<a class="headerlink" href="#avantages-de-la-nouvelle-structure" title="Link to this heading"></a></h2>
+<ol class="simple">
+<li><p><strong>Organisation claire</strong> : Chaque fichier a sa place logique</p></li>
+<li><p><strong>Facilité de maintenance</strong> : Les scripts sont regroupés par fonction</p></li>
+<li><p><strong>Évolutivité</strong> : La structure peut facilement accueillir de nouveaux composants</p></li>
+<li><p><strong>Conformité aux bonnes pratiques</strong> : Structure standard pour les projets GitHub</p></li>
+<li><p><strong>Auto-organisation</strong> : Les nouveaux fichiers sont automatiquement placés au bon endroit</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EMAIL_SENDER_1 Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
