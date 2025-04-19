@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualisation des cycles de dÃ©pendances</title>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        body, html { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #mynetwork { height: 80%; border: 1px solid lightgray; }
+        .controls { padding: 10px; background-color: #f0f0f0; }
+        .stats { margin-top: 10px; padding: 10px; background-color: #f8f9fa; border: 1px solid #ddd; }
+        .cyclic { background-color: #ffcccc; }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button onclick="zoomIn()">Zoom +</button>
+        <button onclick="zoomOut()">Zoom -</button>
+        <button onclick="resetView()">RÃ©initialiser</button>
+        <button onclick="highlightCycles()">Mettre en Ã©vidence les cycles</button>
+    </div>
+    <div id="mynetwork"></div>
+    <div class='stats'>
+    <h3>Statistiques</h3>
+    <p>Total des scripts: 6</p>
+    <p>Scripts impliquÃ©s dans des cycles: 3</p>
+    <p>Scripts sans cycles: 3</p>
+    <p>Moyenne des dÃ©pendances par script: 1</p>
+    <p>Script avec le plus de dÃ©pendances: ScriptA (2 dÃ©pendances)</p>
+    <h3>Cycles dÃ©tectÃ©s</h3>
+    <ul>
+        <li>ScriptA</li>
+        <li>ScriptC</li>
+        <li>ScriptE</li>
+    </ul>
+</div>
+
+    <script>
+        // DonnÃ©es du graphe
+        var nodes = new vis.DataSet([
+    {
+        "label":  "ScriptF",
+        "group":  "",
+        "id":  0
+    },
+    {
+        "label":  "ScriptC",
+        "group":  "cyclic",
+        "id":  1
+    },
+    {
+        "label":  "ScriptE",
+        "group":  "cyclic",
+        "id":  2
+    },
+    {
+        "label":  "ScriptA",
+        "group":  "cyclic",
+        "id":  3
+    },
+    {
+        "label":  "ScriptB",
+        "group":  "",
+        "id":  4
+    },
+    {
+        "label":  "ScriptD",
+        "group":  "",
+        "id":  5
+    }
+]);
+        var edges = new vis.DataSet([
+    {
+        "color":  "#ff0000",
+        "from":  1,
+        "to":  2,
+        "id":  0,
+        "arrows":  "to"
+    },
+    {
+        "color":  "#ff0000",
+        "from":  2,
+        "to":  3,
+        "id":  1,
+        "arrows":  "to"
+    },
+    {
+        "color":  "#848484",
+        "from":  3,
+        "to":  4,
+        "id":  2,
+        "arrows":  "to"
+    },
+    {
+        "color":  "#ff0000",
+        "from":  3,
+        "to":  1,
+        "id":  3,
+        "arrows":  "to"
+    },
+    {
+        "color":  "#848484",
+        "from":  4,
+        "to":  5,
+        "id":  4,
+        "arrows":  "to"
+    },
+    {
+        "color":  "#848484",
+        "from":  5,
+        "to":  0,
+        "id":  5,
+        "arrows":  "to"
+    }
+]);
+        var cyclicNodes = [
+    "ScriptA",
+    "ScriptC",
+    "ScriptE"
+];
+
+        // Configuration du graphe
+        var container = document.getElementById('mynetwork');
+        var data = { nodes: nodes, edges: edges };
+        var options = {
+            nodes: { shape: 'box', font: { size: 14 } },
+            edges: { width: 2 },
+            groups: { cyclic: { color: {background: '#ffcccc', border: '#ff0000'} } },
+            physics: { stabilization: true }
+        };
+
+        // CrÃ©er le graphe
+        var network = new vis.Network(container, data, options);
+
+        // Fonctions pour les contrÃ´les
+        function zoomIn() {
+            var scale = network.getScale() * 1.2;
+            network.moveTo({ scale: scale });
+        }
+
+        function zoomOut() {
+            var scale = network.getScale() * 0.8;
+            network.moveTo({ scale: scale });
+        }
+
+        function resetView() {
+            network.fit();
+        }
+
+        function highlightCycles() {
+            nodes.forEach(function(node) {
+                var isCyclic = cyclicNodes.includes(node.label);
+                nodes.update({
+                    id: node.id,
+                    group: isCyclic ? 'cyclic' : ''
+                });
+            });
+
+            edges.forEach(function(edge) {
+                var fromNode = nodes.get(edge.from);
+                var toNode = nodes.get(edge.to);
+                var isCyclicEdge = cyclicNodes.includes(fromNode.label) && cyclicNodes.includes(toNode.label);
+                edges.update({
+                    id: edge.id,
+                    color: isCyclicEdge ? '#ff0000' : '#848484'
+                });
+            });
+        }
+    </script>
+</body>
+</html>

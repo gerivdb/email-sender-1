@@ -144,108 +144,6 @@ function Find-Cycle {
     return $result
 }
 
-# Calcule un hash pour un graphe
-function Get-GraphHash {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [hashtable]$Graph
-    )
-
-    # Utiliser un algorithme de hachage plus rapide pour les grands graphes
-    if ($Graph.Count -gt 1000) {
-        return Get-FastGraphHash -Graph $Graph
-    }
-
-    # Réutiliser un StringBuilder statique pour réduire les allocations mémoire
-    if (-not $script:StringBuilder) {
-        $script:StringBuilder = New-Object System.Text.StringBuilder(1024 * 16) # 16KB initial capacity
-    } else {
-        $script:StringBuilder.Clear()
-    }
-
-    # Trier les clés une seule fois
-    $sortedKeys = $Graph.Keys | Sort-Object
-
-    foreach ($node in $sortedKeys) {
-        [void]$script:StringBuilder.Append($node)
-        [void]$script:StringBuilder.Append(":")
-
-        if ($null -ne $Graph[$node]) {
-            # Trier les voisins une seule fois
-            $sortedNeighbors = $Graph[$node] | Sort-Object
-
-            foreach ($neighbor in $sortedNeighbors) {
-                [void]$script:StringBuilder.Append($neighbor)
-                [void]$script:StringBuilder.Append(",")
-            }
-        }
-
-        [void]$script:StringBuilder.Append(";")
-    }
-
-    $graphString = $script:StringBuilder.ToString()
-
-    # Réutiliser l'instance SHA256 pour réduire les allocations mémoire
-    if (-not $script:SHA256) {
-        $script:SHA256 = [System.Security.Cryptography.SHA256]::Create()
-    }
-
-    $hash = $script:SHA256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($graphString))
-
-    return [System.Convert]::ToBase64String($hash)
-}
-
-# Version rapide du calcul de hash pour les grands graphes
-function Get-FastGraphHash {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [hashtable]$Graph
-    )
-
-    # Pour les grands graphes, utiliser un hash plus simple mais plus rapide
-    # basé sur les caractéristiques du graphe plutôt que sur son contenu exact
-
-    # Calculer des statistiques sur le graphe
-    $nodeCount = $Graph.Count
-    $edgeCount = 0
-    $maxOutDegree = 0
-    $minOutDegree = [int]::MaxValue
-    $sumOutDegree = 0
-
-    foreach ($node in $Graph.Keys) {
-        $outDegree = if ($null -ne $Graph[$node]) { $Graph[$node].Count } else { 0 }
-        $edgeCount += $outDegree
-        $maxOutDegree = [Math]::Max($maxOutDegree, $outDegree)
-        $minOutDegree = [Math]::Min($minOutDegree, $outDegree)
-        $sumOutDegree += $outDegree
-    }
-
-    $avgOutDegree = if ($nodeCount -gt 0) { $sumOutDegree / $nodeCount } else { 0 }
-
-    # Échantillonner quelques nœuds pour le hash
-    $sampleSize = [Math]::Min(100, $nodeCount)
-    $sampleNodes = $Graph.Keys | Sort-Object | Select-Object -First $sampleSize
-
-    # Créer une chaîne de caractères représentant les caractéristiques du graphe
-    $hashString = "N${nodeCount}E${edgeCount}Max${maxOutDegree}Min${minOutDegree}Avg${avgOutDegree}S"
-
-    foreach ($node in $sampleNodes) {
-        $outDegree = if ($null -ne $Graph[$node]) { $Graph[$node].Count } else { 0 }
-        $hashString += "${node}:${outDegree};"
-    }
-
-    # Calculer le hash de cette chaîne
-    if (-not $script:SHA256) {
-        $script:SHA256 = [System.Security.Cryptography.SHA256]::Create()
-    }
-
-    $hash = $script:SHA256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($hashString))
-
-    return [System.Convert]::ToBase64String($hash)
-}
-
 # Fonction interne qui implémente l'algorithme DFS pour détecter les cycles
 function Find-GraphCycle {
     [CmdletBinding()]
@@ -409,23 +307,7 @@ function Find-GraphCycleIterative {
         }
     }
 
-    # Détection rapide des boucles sur soi-même
-    foreach ($node in $Graph.Keys) {
-        if ($Graph[$node] -contains $node) {
-            return [PSCustomObject]@{
-                HasCycle  = $true
-                CyclePath = @($node, $node)
-            }
-        }
-    }
-
-    # Initialiser le résultat
-    $result = [PSCustomObject]@{
-        HasCycle  = $false
-        CyclePath = @()
-    }
-
-    # Réutiliser les structures de données pour réduire les allocations mémoire
+    # Initialiser les structures de données
     if (-not $script:VisitedNodes) {
         $script:VisitedNodes = @{}
     } else {
@@ -439,338 +321,95 @@ function Find-GraphCycleIterative {
     }
 
     if (-not $script:NodeStack) {
-        $script:NodeStack = New-Object System.Collections.Stack(1000)
+        $script:NodeStack = New-Object System.Collections.Generic.Stack[string]
     } else {
         $script:NodeStack.Clear()
     }
 
     if (-not $script:PathStack) {
-        $script:PathStack = New-Object System.Collections.Stack(1000)
+        $script:PathStack = New-Object System.Collections.Generic.Stack[string]
     } else {
         $script:PathStack.Clear()
     }
 
-    # Optimisation : commencer par les nœuds avec le plus de voisins
-    $nodesByDegree = $Graph.Keys | Sort-Object -Property { if ($null -ne $Graph[$_]) { $Graph[$_].Count } else { 0 } } -Descending
-
     # Parcourir tous les nœuds du graphe
-    foreach ($startNode in $nodesByDegree) {
-        # Si le nœud a déjà été visité, passer au suivant
-        if ($script:VisitedNodes.ContainsKey($startNode)) {
-            continue
-        }
+    foreach ($startNode in $Graph.Keys) {
+        # Si le nœud n'a pas été visité, commencer un parcours DFS à partir de ce nœud
+        if (-not $script:VisitedNodes.ContainsKey($startNode)) {
+            $script:NodeStack.Push($startNode)
+            $script:PathStack.Push($startNode)
+            $script:InStackNodes[$startNode] = $true
 
-        # Réinitialiser les structures pour le nouveau nœud de départ
-        $script:InStackNodes.Clear()
-        $script:NodeStack.Clear()
-        $script:PathStack.Clear()
+            $depth = 0
 
-        # Ajouter le nœud de départ à la pile
-        $script:NodeStack.Push(@{
-                Node      = $startNode
-                Neighbors = $Graph[$startNode]
-                Index     = 0
-                Depth     = 0
-            })
-        $script:InStackNodes[$startNode] = $true
-        $script:PathStack.Push($startNode)
-        $script:VisitedNodes[$startNode] = $true
+            while ($script:NodeStack.Count -gt 0 -and $depth -le $MaxDepth) {
+                $currentNode = $script:NodeStack.Peek()
 
-        while ($script:NodeStack.Count -gt 0) {
-            $current = $script:NodeStack.Peek()
+                # Marquer le nœud comme visité
+                $script:VisitedNodes[$currentNode] = $true
 
-            # Vérifier la profondeur maximale
-            if ($current.Depth -gt $MaxDepth) {
-                $script:NodeStack.Pop()
-                $script:InStackNodes[$current.Node] = $false
-                $script:PathStack.Pop()
-                continue
-            }
+                # Vérifier si le nœud a des voisins
+                $hasUnvisitedNeighbor = $false
 
-            # Si tous les voisins ont été visités, retirer le nœud de la pile
-            if ($null -eq $current.Neighbors -or $current.Index -ge $current.Neighbors.Count) {
-                $script:NodeStack.Pop()
-                $script:InStackNodes[$current.Node] = $false
-                $script:PathStack.Pop()
-                continue
-            }
+                if ($Graph.ContainsKey($currentNode) -and $null -ne $Graph[$currentNode]) {
+                    foreach ($neighbor in $Graph[$currentNode]) {
+                        # Si le voisin est déjà dans la pile, un cycle est détecté
+                        if ($script:InStackNodes.ContainsKey($neighbor) -and $script:InStackNodes[$neighbor]) {
+                            # Construire le chemin du cycle
+                            $cyclePath = @()
+                            $pathArray = $script:PathStack.ToArray()
+                            [array]::Reverse($pathArray)
 
-            # Obtenir le prochain voisin
-            $neighbor = $current.Neighbors[$current.Index]
-            $current.Index++
+                            $startIndex = [array]::IndexOf($pathArray, $neighbor)
+                            for ($i = $startIndex; $i -lt $pathArray.Length; $i++) {
+                                $cyclePath += $pathArray[$i]
+                            }
+                            $cyclePath += $neighbor
 
-            # Vérifier si le voisin est déjà dans la pile (cycle détecté)
-            if ($script:InStackNodes.ContainsKey($neighbor) -and $script:InStackNodes[$neighbor]) {
-                # Cycle détecté
-                $result.HasCycle = $true
+                            return [PSCustomObject]@{
+                                HasCycle  = $true
+                                CyclePath = $cyclePath
+                            }
+                        }
 
-                # Construire le chemin du cycle de manière efficace
-                $pathArray = $script:PathStack.ToArray()
-                [array]::Reverse($pathArray)
-
-                $cyclePath = @()
-                $inCycle = $false
-
-                foreach ($node in $pathArray) {
-                    if ($node -eq $neighbor) {
-                        $inCycle = $true
-                    }
-
-                    if ($inCycle) {
-                        $cyclePath += $node
+                        # Si le voisin n'a pas été visité, l'ajouter à la pile
+                        if (-not $script:VisitedNodes.ContainsKey($neighbor)) {
+                            $script:NodeStack.Push($neighbor)
+                            $script:PathStack.Push($neighbor)
+                            $script:InStackNodes[$neighbor] = $true
+                            $hasUnvisitedNeighbor = $true
+                            $depth++
+                            break
+                        }
                     }
                 }
 
-                $cyclePath += $neighbor
-                $result.CyclePath = $cyclePath
-                return $result
+                # Si tous les voisins ont été visités, retirer le nœud de la pile
+                if (-not $hasUnvisitedNeighbor) {
+                    $script:NodeStack.Pop()
+                    $poppedNode = $script:PathStack.Pop()
+                    $script:InStackNodes[$poppedNode] = $false
+                    $depth--
+                }
             }
 
-            # Si le voisin n'a pas été visité, l'ajouter à la pile
-            if (-not $script:VisitedNodes.ContainsKey($neighbor)) {
-                $script:VisitedNodes[$neighbor] = $true
-                $script:InStackNodes[$neighbor] = $true
-                $script:PathStack.Push($neighbor)
-
-                $script:NodeStack.Push(@{
-                        Node      = $neighbor
-                        Neighbors = $Graph[$neighbor]
-                        Index     = 0
-                        Depth     = $current.Depth + 1
-                    })
+            # Vider les piles si la profondeur maximale est atteinte
+            if ($depth -gt $MaxDepth) {
+                $script:NodeStack.Clear()
+                $script:PathStack.Clear()
+                $script:InStackNodes.Clear()
             }
         }
     }
 
-    return $result
-}
-
-# Analyse les dépendances entre les scripts PowerShell pour détecter les cycles
-function Find-DependencyCycles {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$Path,
-
-        [Parameter(Mandatory = $false)]
-        [switch]$Recursive,
-
-        [Parameter(Mandatory = $false)]
-        [string]$OutputPath
-    )
-
-    # Vérifier si le chemin existe
-    if (-not (Test-Path -Path $Path)) {
-        Write-Error "Le chemin '$Path' n'existe pas."
-        return [PSCustomObject]@{
-            HasCycles        = $false
-            Cycles           = @()
-            DependencyGraph  = @{}
-            NonCyclicScripts = @()
-        }
-    }
-
-    # Obtenir les fichiers PowerShell
-    $scriptFiles = if ($Recursive) {
-        Get-ChildItem -Path $Path -Filter "*.ps1" -Recurse
-    } else {
-        Get-ChildItem -Path $Path -Filter "*.ps1"
-    }
-
-    # Construire le graphe de dépendances
-    $dependencyGraph = @{}
-
-    foreach ($scriptFile in $scriptFiles) {
-        $scriptPath = $scriptFile.FullName
-        $relativePath = $scriptFile.Name
-
-        # Analyser le contenu du script pour trouver les dépendances
-        $content = Get-Content -Path $scriptPath -Raw
-        $dependencies = @()
-
-        # Rechercher les instructions dot-sourcing (. .\script.ps1)
-        $dotSourcePattern = '\.\s+(?:\.\\|\\|\$PSScriptRoot\\)?([^\\]+\.ps1)'
-        $dotSourceMatches = [regex]::Matches($content, $dotSourcePattern)
-
-        foreach ($match in $dotSourceMatches) {
-            $dependency = $match.Groups[1].Value
-            $dependencies += $dependency
-        }
-
-        # Rechercher les instructions Import-Module
-        $importModulePattern = 'Import-Module\s+(?:\.\\|\\|\$PSScriptRoot\\)?([^\\]+\.ps1)'
-        $importModuleMatches = [regex]::Matches($content, $importModulePattern)
-
-        foreach ($match in $importModuleMatches) {
-            $dependency = $match.Groups[1].Value
-            $dependencies += $dependency
-        }
-
-        # Ajouter au graphe de dépendances
-        $dependencyGraph[$relativePath] = $dependencies
-    }
-
-    # Détecter les cycles dans le graphe de dépendances
-    $result = Find-Cycle -Graph $dependencyGraph
-
-    # Construire le résultat
-    $cyclicScripts = @{}
-    $nonCyclicScripts = @()
-
-    if ($result.HasCycle) {
-        # Identifier les scripts impliqués dans des cycles
-        foreach ($node in $result.CyclePath) {
-            $cyclicScripts[$node] = $true
-        }
-
-        # Identifier les scripts sans cycles
-        foreach ($script in $dependencyGraph.Keys) {
-            if (-not $cyclicScripts.ContainsKey($script)) {
-                $nonCyclicScripts += $script
-            }
-        }
-    } else {
-        # Aucun cycle, tous les scripts sont sans cycles
-        $nonCyclicScripts = $dependencyGraph.Keys
-    }
-
-    # Créer l'objet résultat
-    $dependencyCyclesResult = [PSCustomObject]@{
-        HasCycles        = $result.HasCycle
-        Cycles           = @($result.CyclePath)
-        DependencyGraph  = $dependencyGraph
-        NonCyclicScripts = $nonCyclicScripts
-    }
-
-    # Exporter le résultat en JSON si un chemin de sortie est spécifié
-    if ($OutputPath) {
-        $dependencyCyclesResult | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
-    }
-
-    return $dependencyCyclesResult
-}
-
-# Analyse les workflows n8n pour détecter les cycles
-function Test-WorkflowCycles {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$WorkflowPath
-    )
-
-    # Vérifier si le fichier existe
-    if (-not (Test-Path -Path $WorkflowPath)) {
-        Write-Error "Le fichier de workflow '$WorkflowPath' n'existe pas."
-        return [PSCustomObject]@{
-            HasCycles    = $false
-            Cycles       = @()
-            WorkflowName = [System.IO.Path]::GetFileNameWithoutExtension($WorkflowPath)
-        }
-    }
-
-    try {
-        # Lire le fichier JSON
-        $workflowJson = Get-Content -Path $WorkflowPath -Raw | ConvertFrom-Json -ErrorAction Stop
-
-        # Vérifier la structure du workflow
-        if (-not $workflowJson.nodes -or -not $workflowJson.connections) {
-            Write-Error "Format de workflow invalide. Les propriétés 'nodes' et 'connections' sont requises."
-            return [PSCustomObject]@{
-                HasCycles    = $false
-                Cycles       = @()
-                WorkflowName = [System.IO.Path]::GetFileNameWithoutExtension($WorkflowPath)
-            }
-        }
-
-        # Construire le graphe du workflow
-        $workflowGraph = @{}
-
-        # Ajouter tous les nœuds au graphe
-        foreach ($node in $workflowJson.nodes) {
-            $workflowGraph[$node.id] = @()
-        }
-
-        # Ajouter les connexions
-        foreach ($sourceNode in $workflowJson.connections.PSObject.Properties) {
-            $sourceNodeId = $sourceNode.Name
-
-            foreach ($connection in $sourceNode.Value) {
-                $targetNodeId = $connection.node
-                $workflowGraph[$sourceNodeId] += $targetNodeId
-            }
-        }
-
-        # Détecter les cycles dans le graphe du workflow
-        $result = Find-Cycle -Graph $workflowGraph
-
-        # Créer l'objet résultat
-        $workflowCyclesResult = [PSCustomObject]@{
-            HasCycles    = $result.HasCycle
-            Cycles       = @($result.CyclePath)
-            WorkflowName = [System.IO.Path]::GetFileNameWithoutExtension($WorkflowPath)
-        }
-
-        return $workflowCyclesResult
-    } catch {
-        Write-Error "Erreur lors de l'analyse du workflow: $_"
-        return [PSCustomObject]@{
-            HasCycles    = $false
-            Cycles       = @()
-            WorkflowName = [System.IO.Path]::GetFileNameWithoutExtension($WorkflowPath)
-        }
+    # Aucun cycle détecté
+    return [PSCustomObject]@{
+        HasCycle  = $false
+        CyclePath = @()
     }
 }
 
-# Supprime un cycle d'un graphe en retirant une arête
-function Remove-Cycle {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [hashtable]$Graph,
-
-        [Parameter(Mandatory = $true)]
-        [string[]]$Cycle
-    )
-
-    # Cloner le graphe pour ne pas modifier l'original
-    $newGraph = @{}
-    foreach ($node in $Graph.Keys) {
-        $newGraph[$node] = @() + $Graph[$node]
-    }
-
-    # Si le cycle est une boucle sur un seul nœud
-    if ($Cycle.Count -eq 2 -and $Cycle[0] -eq $Cycle[1]) {
-        $node = $Cycle[0]
-        $newGraph[$node] = $newGraph[$node] | Where-Object { $_ -ne $node }
-        return $newGraph
-    }
-
-    # Trouver une arête à supprimer
-    for ($i = 0; $i -lt $Cycle.Count - 1; $i++) {
-        $source = $Cycle[$i]
-        $target = $Cycle[$i + 1]
-
-        # Vérifier si l'arête existe
-        if ($newGraph.ContainsKey($source) -and $newGraph[$source] -contains $target) {
-            # Supprimer l'arête
-            $newGraph[$source] = $newGraph[$source] | Where-Object { $_ -ne $target }
-            return $newGraph
-        }
-    }
-
-    # Vérifier l'arête entre le dernier et le premier nœud
-    $source = $Cycle[-1]
-    $target = $Cycle[0]
-
-    if ($newGraph.ContainsKey($source) -and $newGraph[$source] -contains $target) {
-        # Supprimer l'arête
-        $newGraph[$source] = $newGraph[$source] | Where-Object { $_ -ne $target }
-    }
-
-    return $newGraph
-}
-
-# Récupère les statistiques d'utilisation du détecteur de cycles
+# Retourne les statistiques d'utilisation du détecteur de cycles
 function Get-CycleDetectionStatistics {
     [CmdletBinding()]
     param ()
@@ -778,48 +417,632 @@ function Get-CycleDetectionStatistics {
     return $Global:CycleDetectorStats
 }
 
-# Efface le cache du détecteur de cycles
+# Vide le cache du détecteur de cycles
 function Clear-CycleDetectionCache {
+    [CmdletBinding()]
+    param ()
+
+    $Global:CycleDetectorCache.Clear()
+    Write-Host "Cache du détecteur de cycles vidé."
+}
+
+# Importer le module de visualisation des cycles
+$cycleVizPath = Join-Path -Path $PSScriptRoot -ChildPath "CycleViz.psm1"
+if (Test-Path -Path $cycleVizPath) {
+    Import-Module $cycleVizPath -Force
+} else {
+    Write-Warning "Le module de visualisation des cycles n'a pas ete trouve: $cycleVizPath"
+}
+
+# Calcule un hash pour un graphe
+function Get-GraphHash {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Graph
+    )
+
+    # Créer une représentation en chaîne du graphe
+    $graphString = ""
+
+    # Trier les clés pour assurer la cohérence
+    $sortedKeys = $Graph.Keys | Sort-Object
+
+    foreach ($node in $sortedKeys) {
+        $graphString += "${node}:"
+
+        if ($null -ne $Graph[$node]) {
+            # Trier les voisins pour assurer la cohérence
+            $sortedNeighbors = $Graph[$node] | Sort-Object
+
+            foreach ($neighbor in $sortedNeighbors) {
+                $graphString += "${neighbor},"
+            }
+        }
+
+        $graphString += ";"
+    }
+
+    # Calculer un hash simple basé sur la chaîne
+    $hashBytes = [System.Text.Encoding]::UTF8.GetBytes($graphString)
+    $hash = [System.Security.Cryptography.SHA256]::Create().ComputeHash($hashBytes)
+
+    return [System.Convert]::ToBase64String($hash)
+}
+
+# Fonctions d'intégration avec ScriptInventory
+
+# Détecte les cycles de dépendances dans les scripts PowerShell
+function Find-ScriptDependencyCycles {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [switch]$ResetStats
+        [string]$Path = $PWD.Path,
+
+        [Parameter(Mandatory = $false)]
+        [string[]]$Include = @("*.ps1", "*.psm1"),
+
+        [Parameter(Mandatory = $false)]
+        [string[]]$Exclude = @(),
+
+        [Parameter(Mandatory = $false)]
+        [switch]$SkipCache,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$GenerateGraph,
+
+        [Parameter(Mandatory = $false)]
+        [string]$GraphOutputPath
     )
 
-    # Vider le cache
-    if ($Global:CycleDetectorCache -is [hashtable]) {
-        $Global:CycleDetectorCache.Clear()
+    # Vérifier si le détecteur est activé
+    if (-not $Global:CycleDetectorEnabled) {
+        Write-Warning "Le détecteur de cycles est désactivé."
+        return [PSCustomObject]@{
+            HasCycles        = $false
+            Cycles           = @()
+            NonCyclicScripts = @()
+            DependencyGraph  = @{}
+            ScriptFiles      = @()
+        }
+    }
+
+    # Vérifier si le module ScriptInventory est disponible
+    if (-not (Get-Module -Name ScriptInventory)) {
+        try {
+            $scriptInventoryPath = Join-Path -Path $PSScriptRoot -ChildPath "ScriptInventory.psm1"
+            Import-Module $scriptInventoryPath -Force -ErrorAction Stop
+        } catch {
+            Write-Error "Le module ScriptInventory n'a pas été trouvé. Assurez-vous qu'il est installé et disponible."
+            return [PSCustomObject]@{
+                HasCycles        = $false
+                Cycles           = @()
+                NonCyclicScripts = @()
+                DependencyGraph  = @{}
+                ScriptFiles      = @()
+            }
+        }
+    }
+
+    # Récupérer les fichiers de script
+    $scriptFiles = Get-ScriptFiles -Path $Path -Include $Include -Exclude $Exclude
+    $scriptFilePaths = $scriptFiles | Select-Object -ExpandProperty FullName
+
+    # Construire le graphe de dépendances
+    $graph = @{}
+    $scriptFiles = @()
+
+    foreach ($scriptPath in $scriptFilePaths) {
+        $scriptName = Split-Path -Path $scriptPath -Leaf
+        $scriptFiles += $scriptName
+        $dependencies = Get-ScriptDependencies -ScriptPath $scriptPath -SkipCache:$SkipCache |
+            Where-Object { $_.Type -eq "Script" } |
+            Select-Object -ExpandProperty Name
+        $graph[$scriptName] = $dependencies
+    }
+
+    # Détecter les cycles dans le graphe
+    $result = Find-Cycle -Graph $graph -SkipCache:$SkipCache
+
+    # Préparer le résultat
+    $cycles = @()
+    $nonCyclicScripts = @()
+
+    if ($result.HasCycle) {
+        # Extraire les scripts impliqués dans le cycle
+        $cycles = $result.CyclePath
+
+        # Identifier les scripts qui ne sont pas dans le cycle
+        $nonCyclicScripts = $scriptFiles | Where-Object { $cycles -notcontains $_ }
     } else {
-        # Réinitialiser le cache si ce n'est pas un hashtable
-        Set-Variable -Name CycleDetectorCache -Value @{} -Scope Global
+        # Aucun cycle détecté, tous les scripts sont non cycliques
+        $nonCyclicScripts = $scriptFiles
     }
 
-    # Réinitialiser les statistiques si demandé
-    if ($ResetStats) {
-        $Global:CycleDetectorStats.TotalCalls = 0
-        $Global:CycleDetectorStats.TotalCycles = 0
-        $Global:CycleDetectorStats.AverageExecutionTime = 0
-        $Global:CycleDetectorStats.CacheHits = 0
-        $Global:CycleDetectorStats.CacheMisses = 0
+    # Générer le graphe si demandé
+    if ($GenerateGraph -and $GraphOutputPath) {
+        Export-CycleVisualization -Graph $graph -OutputPath $GraphOutputPath -Format "HTML"
     }
 
-    # Réinitialiser les structures de données statiques
-    if ($script:StringBuilder) { $script:StringBuilder.Clear() }
-    if ($script:PathList) { $script:PathList.Clear() }
-    if ($script:VisitedNodes) { $script:VisitedNodes.Clear() }
-    if ($script:InStackNodes) { $script:InStackNodes.Clear() }
-    if ($script:NodeStack) { $script:NodeStack.Clear() }
-    if ($script:PathStack) { $script:PathStack.Clear() }
-
-    # Forcer le garbage collector pour libérer la mémoire
-    [System.GC]::Collect()
-
-    # Retourner un objet pour indiquer que la fonction a été exécutée avec succès
+    # Retourner le résultat
     return [PSCustomObject]@{
-        CacheCleared = $true
-        StatsReset   = $ResetStats
+        HasCycles        = $result.HasCycle
+        Cycles           = $cycles
+        NonCyclicScripts = $nonCyclicScripts
+        DependencyGraph  = $graph
+        ScriptFiles      = $scriptFiles
+    }
+}
+
+# Teste les workflows n8n pour détecter les cycles
+function Test-WorkflowCycles {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$WorkflowPath,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$SkipCache
+    )
+
+    # Vérifier si le détecteur est activé
+    if (-not $Global:CycleDetectorEnabled) {
+        Write-Warning "Le détecteur de cycles est désactivé."
+        return @()
+    }
+
+    # Vérifier si le fichier existe
+    if (-not (Test-Path -Path $WorkflowPath -PathType Leaf)) {
+        Write-Error "Le fichier '$WorkflowPath' n'existe pas."
+        return @()
+    }
+
+    # Lire le contenu du workflow
+    $workflowContent = Get-Content -Path $WorkflowPath -Raw | ConvertFrom-Json
+
+    # Construire le graphe de dépendances
+    $graph = @{}
+    foreach ($node in $workflowContent.nodes) {
+        $nodeId = $node.id
+        $connections = @()
+
+        # Trouver toutes les connexions sortantes
+        foreach ($connection in $workflowContent.connections) {
+            if ($connection.source.node -eq $nodeId) {
+                $connections += $connection.target.node
+            }
+        }
+
+        $graph[$nodeId] = $connections
+    }
+
+    # Détecter les cycles dans le graphe
+    $result = Find-Cycle -Graph $graph -SkipCache:$SkipCache
+
+    if ($result.HasCycle) {
+        return [PSCustomObject]@{
+            HasCycle     = $true
+            WorkflowPath = $WorkflowPath
+            CyclePath    = $result.CyclePath
+        }
+    } else {
+        return [PSCustomObject]@{
+            HasCycle     = $false
+            WorkflowPath = $WorkflowPath
+            CyclePath    = @()
+        }
+    }
+}
+
+# Supprime un cycle détecté en supprimant une connexion
+function Remove-Cycle {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param (
+        [Parameter(Mandatory = $true)]
+        [object]$CycleResult,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$Force
+    )
+
+    # Vérifier si le résultat contient un cycle
+    if (-not $CycleResult.HasCycle) {
+        Write-Warning "Aucun cycle à supprimer."
+        return $false
+    }
+
+    # Déterminer le type de cycle
+    if ($CycleResult.Type -eq "Script") {
+        # Cycle dans des scripts PowerShell
+        Write-Warning "La suppression automatique des cycles dans les scripts PowerShell n'est pas encore implémentée."
+        Write-Host "Cycle détecté dans les scripts: $($CycleResult.CyclePath -join ' -> ')"
+        return $false
+    } elseif ($CycleResult.WorkflowPath) {
+        # Cycle dans un workflow n8n
+        $workflowPath = $CycleResult.WorkflowPath
+        $cyclePath = $CycleResult.CyclePath
+
+        # Trouver la connexion à supprimer (dernière connexion du cycle)
+        $sourceNode = $cyclePath[-2]
+        $targetNode = $cyclePath[-1]
+
+        if ($PSCmdlet.ShouldProcess("$workflowPath", "Supprimer la connexion de $sourceNode vers $targetNode")) {
+            # Lire le contenu du workflow
+            $workflowContent = Get-Content -Path $workflowPath -Raw | ConvertFrom-Json
+
+            # Trouver et supprimer la connexion
+            $newConnections = @()
+            foreach ($connection in $workflowContent.connections) {
+                if (-not ($connection.source.node -eq $sourceNode -and $connection.target.node -eq $targetNode)) {
+                    $newConnections += $connection
+                }
+            }
+
+            # Mettre à jour le workflow
+            $workflowContent.connections = $newConnections
+
+            # Enregistrer le workflow modifié
+            $workflowContent | ConvertTo-Json -Depth 10 | Set-Content -Path $workflowPath
+
+            Write-Host "Connexion supprimée: $sourceNode -> $targetNode"
+            return $true
+        }
+    } else {
+        # Type de cycle inconnu
+        Write-Warning "Type de cycle inconnu."
+        return $false
+    }
+
+    return $false
+}
+
+# Génère une visualisation des cycles détectés
+function Export-CycleVisualization {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Graph,
+
+        [Parameter(Mandatory = $true)]
+        [string]$OutputPath,
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("HTML", "DOT", "JSON")]
+        [string]$Format = "HTML"
+    )
+
+    # Vérifier si le détecteur est activé
+    if (-not $Global:CycleDetectorEnabled) {
+        Write-Warning "Le détecteur de cycles est désactivé."
+        return $false
+    }
+
+    # Détecter les cycles dans le graphe
+    $result = Find-Cycle -Graph $Graph
+
+    # Générer la visualisation selon le format demandé
+    switch ($Format) {
+        "HTML" {
+            # Générer une visualisation HTML interactive avec vis.js
+            $nodes = @()
+            $edges = @()
+            $nodeId = 1
+            $nodeMap = @{}
+
+            # Créer les nœuds
+            foreach ($node in $Graph.Keys) {
+                $color = if ($result.HasCycle -and $result.CyclePath -contains $node) { "#FF5733" } else { "#7DCEA0" }
+                $nodes += @{ id = $nodeId; label = $node; color = $color }
+                $nodeMap[$node] = $nodeId
+                $nodeId++
+            }
+
+            # Créer les arêtes
+            foreach ($source in $Graph.Keys) {
+                foreach ($target in $Graph[$source]) {
+                    if ($nodeMap.ContainsKey($target)) {
+                        $color = if ($result.HasCycle -and
+                            $result.CyclePath -contains $source -and
+                            $result.CyclePath -contains $target) {
+                            "#FF5733"
+                        } else {
+                            "#85C1E9"
+                        }
+                        $edges += @{ from = $nodeMap[$source]; to = $nodeMap[$target]; arrows = "to"; color = $color }
+                    }
+                }
+            }
+
+            # Convertir en JSON pour l'inclusion dans le HTML
+            $nodesJson = $nodes | ConvertTo-Json
+            $edgesJson = $edges | ConvertTo-Json
+
+            # Créer le HTML
+            $html = @"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualisation des cycles de dépendances</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style type="text/css">
+        #mynetwork {
+            width: 100%;
+            height: 800px;
+            border: 1px solid lightgray;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .info {
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualisation des dépendances</h1>
+    <div class="info">
+        <p><strong>Légende:</strong></p>
+        <p><span style="color: #FF5733;">&#9679;</span> Nœuds impliqués dans un cycle</p>
+        <p><span style="color: #7DCEA0;">&#9679;</span> Nœuds sans cycle</p>
+    </div>
+    <div id="mynetwork"></div>
+
+    <script type="text/javascript">
+        // Créer les données pour le réseau
+        var nodes = new vis.DataSet($nodesJson);
+        var edges = new vis.DataSet($edgesJson);
+
+        // Créer un réseau
+        var container = document.getElementById('mynetwork');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            nodes: {
+                shape: 'box',
+                font: {
+                    size: 14
+                },
+                margin: 10
+            },
+            edges: {
+                width: 2,
+                smooth: {
+                    type: 'continuous'
+                }
+            },
+            physics: {
+                stabilization: true,
+                barnesHut: {
+                    gravitationalConstant: -10000,
+                    springConstant: 0.002
+                }
+            },
+            layout: {
+                hierarchical: {
+                    direction: 'LR',
+                    sortMethod: 'directed',
+                    levelSeparation: 150
+                }
+            }
+        };
+        var network = new vis.Network(container, data, options);
+    </script>
+</body>
+</html>
+"@
+
+            # Enregistrer le HTML dans le fichier de sortie
+            Set-Content -Path $OutputPath -Value $html
+            Write-Host "Visualisation HTML générée dans $OutputPath"
+            return $true
+        }
+        "DOT" {
+            # Générer un fichier DOT pour Graphviz
+            $dot = "digraph DependencyGraph {`n"
+            $dot += "    rankdir=LR;`n"
+            $dot += "    node [shape=box, style=filled];`n"
+
+            # Définir les nœuds
+            foreach ($node in $Graph.Keys) {
+                $color = if ($result.HasCycle -and $result.CyclePath -contains $node) { "salmon" } else { "palegreen" }
+                $dot += "    `"$node`" [fillcolor=$color];`n"
+            }
+
+            # Définir les arêtes
+            foreach ($source in $Graph.Keys) {
+                foreach ($target in $Graph[$source]) {
+                    $color = if ($result.HasCycle -and
+                        $result.CyclePath -contains $source -and
+                        $result.CyclePath -contains $target) {
+                        "red"
+                    } else {
+                        "blue"
+                    }
+                    $dot += "    `"$source`" -> `"$target`" [color=$color];`n"
+                }
+            }
+
+            $dot += "}`n"
+
+            # Enregistrer le DOT dans le fichier de sortie
+            Set-Content -Path $OutputPath -Value $dot
+            Write-Host "Fichier DOT généré dans $OutputPath"
+            return $true
+        }
+        "JSON" {
+            # Générer un fichier JSON
+            $json = @{
+                nodes  = @()
+                edges  = @()
+                cycles = @()
+            }
+
+            # Ajouter les nœuds
+            foreach ($node in $Graph.Keys) {
+                $json.nodes += @{
+                    id      = $node
+                    inCycle = $result.HasCycle -and $result.CyclePath -contains $node
+                }
+            }
+
+            # Ajouter les arêtes
+            foreach ($source in $Graph.Keys) {
+                foreach ($target in $Graph[$source]) {
+                    $json.edges += @{
+                        source  = $source
+                        target  = $target
+                        inCycle = $result.HasCycle -and
+                        $result.CyclePath -contains $source -and
+                        $result.CyclePath -contains $target
+                    }
+                }
+            }
+
+            # Ajouter les cycles détectés
+            if ($result.HasCycle) {
+                $json.cycles += $result.CyclePath
+            }
+
+            # Enregistrer le JSON dans le fichier de sortie
+            $json | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
+            Write-Host "Fichier JSON généré dans $OutputPath"
+            return $true
+        }
+        default {
+            Write-Error "Format non pris en charge: $Format"
+            return $false
+        }
+    }
+}
+
+# Génère un rapport de dépendances pour les scripts PowerShell
+function Get-ScriptDependencyReport {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [string]$Path = $PWD.Path,
+
+        [Parameter(Mandatory = $false)]
+        [string[]]$Include = @("*.ps1", "*.psm1"),
+
+        [Parameter(Mandatory = $false)]
+        [string[]]$Exclude = @(),
+
+        [Parameter(Mandatory = $false)]
+        [switch]$SkipCache,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$GenerateGraph,
+
+        [Parameter(Mandatory = $false)]
+        [string]$GraphOutputPath
+    )
+
+    # Vérifier si le détecteur est activé
+    if (-not $Global:CycleDetectorEnabled) {
+        Write-Warning "Le détecteur de cycles est désactivé."
+        return $null
+    }
+
+    # Vérifier si le module ScriptInventory est disponible
+    if (-not (Get-Module -Name ScriptInventory)) {
+        try {
+            $scriptInventoryPath = Join-Path -Path $PSScriptRoot -ChildPath "ScriptInventory.psm1"
+            Import-Module $scriptInventoryPath -Force -ErrorAction Stop
+        } catch {
+            Write-Error "Le module ScriptInventory n'a pas été trouvé. Assurez-vous qu'il est installé et disponible."
+            return $null
+        }
+    }
+
+    # Récupérer les fichiers de script
+    $scriptFiles = Get-ScriptFiles -Path $Path -Include $Include -Exclude $Exclude
+    $scriptFilePaths = $scriptFiles | Select-Object -ExpandProperty FullName
+
+    # Construire le graphe de dépendances
+    $graph = @{}
+    $scriptFileNames = @()
+
+    foreach ($scriptPath in $scriptFilePaths) {
+        $scriptName = Split-Path -Path $scriptPath -Leaf
+        $scriptFileNames += $scriptName
+        $dependencies = Get-ScriptDependencies -ScriptPath $scriptPath -SkipCache:$SkipCache |
+            Where-Object { $_.Type -eq "Script" } |
+            Select-Object -ExpandProperty Name
+        $graph[$scriptName] = $dependencies
+    }
+
+    # Détecter les cycles dans le graphe
+    $result = Find-Cycle -Graph $graph -SkipCache:$SkipCache
+
+    # Préparer le résultat
+    $cycles = @()
+    $nonCyclicScripts = @()
+
+    if ($result.HasCycle) {
+        # Extraire les scripts impliqués dans le cycle
+        $cycles = $result.CyclePath
+
+        # Identifier les scripts qui ne sont pas dans le cycle
+        $nonCyclicScripts = $scriptFileNames | Where-Object { $cycles -notcontains $_ }
+    } else {
+        # Aucun cycle détecté, tous les scripts sont non cycliques
+        $nonCyclicScripts = $scriptFileNames
+    }
+
+    $cycleResult = [PSCustomObject]@{
+        HasCycles        = $result.HasCycle
+        Cycles           = $cycles
+        NonCyclicScripts = $nonCyclicScripts
+        DependencyGraph  = $graph
+        ScriptFiles      = $scriptFileNames
+    }
+
+    # Générer des statistiques
+    $stats = [PSCustomObject]@{
+        TotalScripts        = $cycleResult.ScriptFiles.Count
+        CyclicScripts       = $cycleResult.Cycles.Count
+        NonCyclicScripts    = $cycleResult.NonCyclicScripts.Count
+        AverageDependencies = if ($cycleResult.ScriptFiles.Count -gt 0) {
+            $totalDeps = 0
+            foreach ($script in $cycleResult.DependencyGraph.Keys) {
+                $totalDeps += $cycleResult.DependencyGraph[$script].Count
+            }
+            $totalDeps / $cycleResult.ScriptFiles.Count
+        } else { 0 }
+        MaxDependencies     = if ($cycleResult.ScriptFiles.Count -gt 0) {
+            $maxDeps = 0
+            $maxScript = ""
+            foreach ($script in $cycleResult.DependencyGraph.Keys) {
+                if ($cycleResult.DependencyGraph[$script].Count -gt $maxDeps) {
+                    $maxDeps = $cycleResult.DependencyGraph[$script].Count
+                    $maxScript = $script
+                }
+            }
+            [PSCustomObject]@{
+                Count  = $maxDeps
+                Script = $maxScript
+            }
+        } else { $null }
+    }
+
+    # Générer le graphe si demandé
+    if ($GenerateGraph -and $GraphOutputPath) {
+        Export-CycleVisualization -Graph $cycleResult.DependencyGraph -OutputPath $GraphOutputPath -Format "HTML"
+    }
+
+    # Retourner le rapport
+    return [PSCustomObject]@{
+        Result     = $cycleResult
+        Statistics = $stats
     }
 }
 
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Initialize-CycleDetector, Find-Cycle, Find-GraphCycle, Find-DependencyCycles, Test-WorkflowCycles, Remove-Cycle, Get-CycleDetectionStatistics, Clear-CycleDetectionCache
+Export-ModuleMember -Function Initialize-CycleDetector, Find-Cycle, Find-GraphCycle, Get-CycleDetectionStatistics, Clear-CycleDetectionCache, Get-GraphHash, Find-ScriptDependencyCycles, Test-WorkflowCycles, Remove-Cycle, Export-CycleVisualization, Get-ScriptDependencyReport

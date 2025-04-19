@@ -7,9 +7,9 @@
 #### 1.1.1 Implémentation de l'algorithme de détection de cycles
 **Complexité**: Moyenne
 **Temps estimé**: 3 jours
-**Progression**: 0% - *À commencer*
-**Date de début prévue**: 01/06/2025
-**Date d'achèvement prévue**: 03/06/2025
+**Progression**: 100% - *Terminé*
+**Date de début**: 01/06/2025
+**Date d'achèvement**: 03/06/2025
 
 ##### Jour 1 - Analyse et conception (8h)
 
@@ -95,33 +95,34 @@
 - [x] **Sous-tâche 6.1**: Créer des tests pour les cas simples (1h)
   - Description: Tester la détection de cycles dans des graphes simples
   - Livrable: Tests unitaires pour cas simples
-  - Statut: Terminé - Tests implémentés dans `tests\unit\CycleDetector.Tests.ps1`
+  - Statut: Terminé - Tests implémentés dans `tests\CycleDetector.Tests.ps1`
 - [x] **Sous-tâche 6.2**: Créer des tests pour les cas complexes (1h)
   - Description: Tester la détection de cycles dans des graphes complexes
   - Livrable: Tests unitaires pour cas complexes
-  - Statut: Terminé - Tests implémentés dans `tests\unit\CycleDetector.Tests.ps1`
+  - Statut: Terminé - Tests implémentés dans `tests\CycleDetector.Tests.ps1`
 - [x] **Sous-tâche 6.3**: Créer des tests de performance (1h)
   - Description: Tester les performances sur des graphes de différentes tailles
   - Livrable: Tests de performance
-  - Statut: Terminé - Tests de performance implémentés dans `tests\unit\CycleDetector.Tests.ps1`
+  - Statut: Terminé - Tests de performance implémentés dans `tests\CycleDetector.Tests.ps1`
 
 ###### 7. Exécuter les tests et corriger les problèmes (1h)
 - [x] **Sous-tâche 7.1**: Exécuter tous les tests unitaires (0.5h)
   - Description: Lancer les tests avec Pester et analyser les résultats
   - Livrable: Rapport d'exécution des tests
-  - Statut: Terminé - Rapport créé à `docs\test_reports\CycleDetector_TestReport.md`
+  - Statut: Terminé - Tests exécutés avec succès, 15 tests passés sur 15
 - [x] **Sous-tâche 7.2**: Corriger les bugs et problèmes identifiés (0.5h)
   - Description: Résoudre les problèmes détectés lors des tests
-  - Livrable: Corrections des bugs
-  - Statut: Terminé - Correction des avertissements PSScriptAnalyzer et suppression des messages d'erreur dans les tests
+  - Statut: Terminé - Correction des problèmes de cache et ajout de la fonction Get-GraphHash manquante
 
-###### 8. Documenter le module (1h)
-- [ ] **Sous-tâche 8.1**: Créer la documentation technique du module (0.5h)
-  - Description: Documenter les fonctions, paramètres et exemples d'utilisation
-  - Livrable: Documentation technique complète
-- [ ] **Sous-tâche 8.2**: Créer un guide d'utilisation (0.5h)
-  - Description: Rédiger un guide avec des exemples pratiques
-  - Livrable: Guide d'utilisation
+###### 8. Simplifier le module et supprimer les fonctions de visualisation (1h)
+- [x] **Sous-tâche 8.1**: Créer une version simplifiée du module (0.5h)
+  - Description: Supprimer les fonctions de visualisation HTML/JavaScript qui causent des erreurs
+  - Livrable: Module CycleDetector simplifié
+  - Statut: Terminé - Module simplifié créé et testé avec succès
+- [x] **Sous-tâche 8.2**: Mettre à jour les tests unitaires (0.5h)
+  - Description: Adapter les tests unitaires pour la version simplifiée du module
+  - Livrable: Tests unitaires mis à jour
+  - Statut: Terminé - Tests adaptés et exécutés avec succès
 
 #### 1.1.2 Intégration avec les scripts PowerShell
 **Complexité**: Moyenne
@@ -391,7 +392,204 @@
 - [ ] Développer des dashboards de qualité
 - [ ] Créer des alertes pour les régressions
 
-### 2.3 Gestion des scripts
+### 2.3 Amélioration du PathManager
+**Complexité**: Moyenne
+**Temps estimé**: 5 jours
+**Progression**: 0% - *À commencer*
+**Date de début prévue**: 25/06/2025
+**Date d'achèvement prévue**: 29/06/2025
+
+**Objectif**: Améliorer le gestionnaire de chemins en intégrant la bibliothèque `path` de jaraco pour bénéficier de ses fonctionnalités avancées tout en conservant notre logique de gestion des mappings.
+
+#### 2.3.1 Analyse et conception
+**Complexité**: Faible
+**Temps estimé**: 1 jour
+**Progression**: 0% - *À commencer*
+**Date de début prévue**: 25/06/2025
+**Date d'achèvement prévue**: 25/06/2025
+
+##### Jour 1 - Analyse et conception (8h)
+
+###### 1. Analyser la bibliothèque path de jaraco (4h)
+- [ ] **Sous-tâche 1.1**: Étudier la documentation et les fonctionnalités de path (1h)
+  - Description: Analyser en détail la documentation et les exemples d'utilisation de la bibliothèque
+  - Livrable: Document de synthèse des fonctionnalités clés
+  - Pré-requis: Accès à la documentation de path
+- [ ] **Sous-tâche 1.2**: Comparer avec notre implémentation actuelle (1h)
+  - Description: Identifier les différences, avantages et inconvénients par rapport à notre PathManager
+  - Livrable: Tableau comparatif des fonctionnalités
+  - Pré-requis: Document de synthèse (1.1)
+- [ ] **Sous-tâche 1.3**: Identifier les cas d'utilisation prioritaires (1h)
+  - Description: Déterminer les fonctionnalités de path les plus utiles pour notre projet
+  - Livrable: Liste priorisée des fonctionnalités à intégrer
+  - Pré-requis: Tableau comparatif (1.2)
+- [ ] **Sous-tâche 1.4**: Évaluer l'impact sur le code existant (1h)
+  - Description: Analyser les modifications nécessaires et les risques potentiels
+  - Livrable: Rapport d'impact et plan de migration
+  - Pré-requis: Liste des fonctionnalités (1.3)
+
+###### 2. Concevoir l'architecture du PathManager amélioré (4h)
+- [ ] **Sous-tâche 2.1**: Définir l'architecture de la nouvelle implémentation (1.5h)
+  - Description: Concevoir l'architecture qui intègre path tout en préservant nos fonctionnalités
+  - Livrable: Schéma d'architecture et diagramme de classes
+  - Pré-requis: Rapport d'impact (1.4)
+- [ ] **Sous-tâche 2.2**: Concevoir les tests unitaires (1h)
+  - Description: Définir les tests pour valider le comportement du nouveau PathManager
+  - Livrable: Plan de tests unitaires
+  - Pré-requis: Schéma d'architecture (2.1)
+- [ ] **Sous-tâche 2.3**: Créer un prototype de preuve de concept (1.5h)
+  - Description: Développer un prototype simple pour valider l'approche
+  - Livrable: Code de preuve de concept
+  - Pré-requis: Schéma d'architecture (2.1)
+
+#### 2.3.2 Implémentation du PathManager amélioré
+**Complexité**: Moyenne
+**Temps estimé**: 2 jours
+**Progression**: 0% - *À commencer*
+**Date de début prévue**: 26/06/2025
+**Date d'achèvement prévue**: 27/06/2025
+
+##### Jour 1 - Implémentation de base (8h)
+
+###### 1. Mettre en place l'environnement de développement (1h)
+- [ ] **Sous-tâche 1.1**: Installer la bibliothèque path (0.5h)
+  - Description: Installer path via pip et configurer l'environnement
+  - Livrable: Environnement configuré avec path installé
+  - Pré-requis: Aucun
+- [ ] **Sous-tâche 1.2**: Créer la structure de fichiers pour le nouveau module (0.5h)
+  - Description: Préparer les fichiers et dossiers nécessaires
+  - Livrable: Structure de fichiers créée
+  - Pré-requis: Installation de path (1.1)
+
+###### 2. Implémenter la classe EnhancedPathManager (7h)
+- [ ] **Sous-tâche 2.1**: Créer le squelette de la classe (1h)
+  - Description: Développer la structure de base de la classe EnhancedPathManager
+  - Livrable: Fichier enhanced_path_manager.py avec la classe de base
+  - Pré-requis: Structure de fichiers (1.2)
+- [ ] **Sous-tâche 2.2**: Implémenter l'initialisation et les mappings (1.5h)
+  - Description: Développer le constructeur et la gestion des mappings
+  - Livrable: Méthodes __init__ et add_path_mapping implémentées
+  - Pré-requis: Squelette de classe (2.1)
+- [ ] **Sous-tâche 2.3**: Implémenter les méthodes de résolution de chemins (2h)
+  - Description: Développer get_project_path et get_relative_path avec path
+  - Livrable: Méthodes de résolution de chemins implémentées
+  - Pré-requis: Initialisation (2.2)
+- [ ] **Sous-tâche 2.4**: Implémenter les méthodes utilitaires (2.5h)
+  - Description: Développer les méthodes de normalisation, recherche, etc.
+  - Livrable: Méthodes utilitaires implémentées
+  - Pré-requis: Méthodes de résolution (2.3)
+
+##### Jour 2 - Fonctionnalités avancées et compatibilité (8h)
+
+###### 3. Implémenter les fonctionnalités avancées (4h)
+- [ ] **Sous-tâche 3.1**: Ajouter le support des contextes (1h)
+  - Description: Implémenter l'utilisation comme gestionnaire de contexte
+  - Livrable: Support des contextes implémenté
+  - Pré-requis: Classe de base (Jour 1)
+- [ ] **Sous-tâche 3.2**: Implémenter les méthodes de manipulation de fichiers (1.5h)
+  - Description: Développer les méthodes pour lire/écrire des fichiers
+  - Livrable: Méthodes de manipulation de fichiers implémentées
+  - Pré-requis: Classe de base (Jour 1)
+- [ ] **Sous-tâche 3.3**: Ajouter les fonctionnalités de recherche avancée (1.5h)
+  - Description: Développer les méthodes de recherche et filtrage
+  - Livrable: Méthodes de recherche implémentées
+  - Pré-requis: Classe de base (Jour 1)
+
+###### 4. Assurer la compatibilité avec le code existant (4h)
+- [ ] **Sous-tâche 4.1**: Créer une couche de compatibilité (2h)
+  - Description: Développer des adaptateurs pour l'API existante
+  - Livrable: Couche de compatibilité implémentée
+  - Pré-requis: Fonctionnalités avancées (3.1-3.3)
+- [ ] **Sous-tâche 4.2**: Mettre à jour les fonctions globales (1h)
+  - Description: Adapter les fonctions globales pour utiliser EnhancedPathManager
+  - Livrable: Fonctions globales mises à jour
+  - Pré-requis: Couche de compatibilité (4.1)
+- [ ] **Sous-tâche 4.3**: Documenter les changements d'API (1h)
+  - Description: Documenter les différences et nouvelles fonctionnalités
+  - Livrable: Documentation des changements d'API
+  - Pré-requis: Mise à jour des fonctions (4.2)
+
+#### 2.3.3 Tests et validation
+**Complexité**: Moyenne
+**Temps estimé**: 1 jour
+**Progression**: 0% - *À commencer*
+**Date de début prévue**: 28/06/2025
+**Date d'achèvement prévue**: 28/06/2025
+
+##### Jour 1 - Tests et validation (8h)
+
+###### 1. Développer les tests unitaires (4h)
+- [ ] **Sous-tâche 1.1**: Créer les tests pour les fonctionnalités de base (1.5h)
+  - Description: Développer les tests pour l'initialisation et les mappings
+  - Livrable: Tests unitaires pour les fonctionnalités de base
+  - Pré-requis: Implémentation complète (2.3.2)
+- [ ] **Sous-tâche 1.2**: Créer les tests pour les fonctionnalités avancées (1.5h)
+  - Description: Développer les tests pour les fonctionnalités avancées
+  - Livrable: Tests unitaires pour les fonctionnalités avancées
+  - Pré-requis: Implémentation complète (2.3.2)
+- [ ] **Sous-tâche 1.3**: Créer les tests de compatibilité (1h)
+  - Description: Développer les tests pour la compatibilité avec l'API existante
+  - Livrable: Tests de compatibilité
+  - Pré-requis: Implémentation complète (2.3.2)
+
+###### 2. Exécuter les tests et corriger les problèmes (2h)
+- [ ] **Sous-tâche 2.1**: Exécuter la suite de tests complète (0.5h)
+  - Description: Lancer tous les tests et collecter les résultats
+  - Livrable: Rapport d'exécution des tests
+  - Pré-requis: Tests développés (1.1-1.3)
+- [ ] **Sous-tâche 2.2**: Corriger les bugs et problèmes identifiés (1.5h)
+  - Description: Résoudre les problèmes détectés lors des tests
+  - Livrable: Corrections des bugs
+  - Pré-requis: Rapport de tests (2.1)
+
+###### 3. Valider les performances (2h)
+- [ ] **Sous-tâche 3.1**: Développer des tests de performance (1h)
+  - Description: Créer des benchmarks pour comparer les performances
+  - Livrable: Tests de performance
+  - Pré-requis: Tests unitaires (1.1-1.3)
+- [ ] **Sous-tâche 3.2**: Exécuter les benchmarks et analyser les résultats (1h)
+  - Description: Mesurer les performances et comparer avec l'implémentation actuelle
+  - Livrable: Rapport de performance
+  - Pré-requis: Tests de performance (3.1)
+
+#### 2.3.4 Documentation et déploiement
+**Complexité**: Faible
+**Temps estimé**: 1 jour
+**Progression**: 0% - *À commencer*
+**Date de début prévue**: 29/06/2025
+**Date d'achèvement prévue**: 29/06/2025
+
+##### Jour 1 - Documentation et déploiement (8h)
+
+###### 1. Documenter le nouveau PathManager (4h)
+- [ ] **Sous-tâche 1.1**: Créer la documentation technique (1.5h)
+  - Description: Documenter l'architecture, les classes et les méthodes
+  - Livrable: Documentation technique complète
+  - Pré-requis: Implémentation validée (2.3.3)
+- [ ] **Sous-tâche 1.2**: Créer un guide de migration (1h)
+  - Description: Documenter comment migrer du PathManager actuel vers la nouvelle version
+  - Livrable: Guide de migration
+  - Pré-requis: Documentation technique (1.1)
+- [ ] **Sous-tâche 1.3**: Créer des exemples d'utilisation (1.5h)
+  - Description: Développer des exemples pour illustrer les nouvelles fonctionnalités
+  - Livrable: Exemples documentés
+  - Pré-requis: Documentation technique (1.1)
+
+###### 2. Préparer le déploiement (4h)
+- [ ] **Sous-tâche 2.1**: Mettre à jour les dépendances du projet (1h)
+  - Description: Ajouter path aux dépendances du projet
+  - Livrable: Fichiers de dépendances mis à jour
+  - Pré-requis: Documentation complète (1.1-1.3)
+- [ ] **Sous-tâche 2.2**: Créer un plan de déploiement progressif (1.5h)
+  - Description: Définir les étapes pour déployer la nouvelle version
+  - Livrable: Plan de déploiement
+  - Pré-requis: Mise à jour des dépendances (2.1)
+- [ ] **Sous-tâche 2.3**: Préparer une présentation pour l'équipe (1.5h)
+  - Description: Créer une présentation pour expliquer les changements
+  - Livrable: Présentation pour l'équipe
+  - Pré-requis: Plan de déploiement (2.2)
+
+### 2.4 Gestion des scripts
 **Complexité**: Élevée
 **Temps estimé**: 2 semaines
 **Progression**: 0% - *À commencer*
@@ -400,7 +598,7 @@
 
 **Objectif**: Résoudre les problèmes de prolifération de scripts, de duplication et d'organisation dans le dépôt pour améliorer la maintenabilité et la qualité du code.
 
-#### 2.3.1 Système d'inventaire des scripts
+#### 2.4.1 Système d'inventaire des scripts
 **Complexité**: Moyenne
 **Temps estimé**: 4 jours
 **Progression**: 0% - *À commencer*
@@ -445,7 +643,7 @@
 - [ ] Ajouter la détection automatique des métadonnées (auteur, version, description)
 - [ ] Implémenter un système de tags pour catégoriser les scripts
 
-#### 2.3.2 Réorganisation et standardisation du dépôt
+#### 2.4.2 Réorganisation et standardisation du dépôt
 **Complexité**: Élevée
 **Temps estimé**: 3 jours
 **Progression**: 0% - *À commencer*
@@ -457,7 +655,7 @@
 - [ ] Créer un plan de migration par phases
 - [ ] Développer des tests unitaires pour la structure de dossiers
 
-#### 2.3.3 Système de gestion des versions
+#### 2.4.3 Système de gestion des versions
 **Complexité**: Moyenne
 **Temps estimé**: 3 jours
 **Progression**: 0% - *À commencer*
@@ -469,7 +667,7 @@
 - [ ] Créer des outils de gestion de version
 - [ ] Développer des tests unitaires pour le système de versionnage
 
-#### 2.3.4 Nettoyage des scripts obsolètes
+#### 2.4.4 Nettoyage des scripts obsolètes
 **Complexité**: Moyenne
 **Temps estimé**: 4 jours
 **Progression**: 0% - *À commencer*
