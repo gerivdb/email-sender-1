@@ -619,15 +619,296 @@ function Invoke-MCPCommand {
             return $false
         }
     }
+}
 
-    if ($LASTEXITCODE -eq 0) {
-        Write-MCPLog "Exécution du MCP $MCP terminée avec succès." -Level "SUCCESS"
-        return $true
-    } else {
-        Write-MCPLog "Échec de l'exécution du MCP $MCP avec le code de sortie $LASTEXITCODE." -Level "ERROR"
-        return $false
+# Vérifier le résultat de l'exécution
+if ($LASTEXITCODE -eq 0) {
+    Write-MCPLog "Exécution du MCP $MCP terminée avec succès." -Level "SUCCESS"
+    return $true
+} else {
+    Write-MCPLog "Échec de l'exécution du MCP $MCP avec le code de sortie $LASTEXITCODE." -Level "ERROR"
+    return $false
+}
+
+# Importer le module MCPClient
+$mcpClientPath = Join-Path -Path $PSScriptRoot -ChildPath "MCPClient.psm1"
+if (Test-Path -Path $mcpClientPath) {
+    Import-Module -Name $mcpClientPath -Force -Global
+    Write-MCPLog "Module MCPClient importé avec succès" -Level "SUCCESS"
+} else {
+    Write-MCPLog "Module MCPClient introuvable à l'emplacement: $mcpClientPath" -Level "WARNING"
+}
+
+<#
+.SYNOPSIS
+    Démarre un serveur MCP et initialise la connexion.
+.DESCRIPTION
+    Cette fonction démarre un serveur MCP et initialise la connexion avec le client MCP.
+.PARAMETER ServerType
+    Le type de serveur MCP à démarrer (local, n8n, notion, gateway, git-ingest).
+.PARAMETER Port
+    Le port sur lequel démarrer le serveur MCP.
+.PARAMETER Wait
+    Indique s'il faut attendre que le serveur soit prêt avant de retourner.
+.EXAMPLE
+    Start-MCPServer -ServerType local -Port 8000
+    Démarre un serveur MCP local sur le port 8000.
+#>
+function Start-MCPServer {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("local", "n8n", "notion", "gateway", "git-ingest")]
+        [string]$ServerType,
+
+        [Parameter(Mandatory = $false)]
+        [int]$Port = 8000,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$Wait
+    )
+
+    Write-MCPLog "Démarrage du serveur MCP de type $ServerType sur le port $Port..." -Level "INFO"
+
+    # Démarrer le serveur MCP en fonction du type
+    switch ($ServerType) {
+        "local" {
+            # Démarrer le serveur MCP local
+            $serverScript = Join-Path -Path $script:ProjectRoot -ChildPath "scripts\mcp_project\server.py"
+
+            if (Test-Path -Path $serverScript) {
+                $process = Start-Process -FilePath "python" -ArgumentList "-m", "uvicorn", "server:app", "--host", "0.0.0.0", "--port", "$Port" -WorkingDirectory (Split-Path -Path $serverScript -Parent) -PassThru -NoNewWindow
+
+                Write-MCPLog "Serveur MCP local démarré avec le PID $($process.Id)" -Level "SUCCESS"
+
+                # Attendre que le serveur soit prêt
+                if ($Wait) {
+                    Write-MCPLog "Attente du démarrage du serveur..." -Level "INFO"
+                    Start-Sleep -Seconds 5
+                }
+
+                # Initialiser la connexion avec le client MCP
+                if (Get-Command -Name Initialize-MCPConnection -ErrorAction SilentlyContinue) {
+                    Initialize-MCPConnection -ServerUrl "http://localhost:$Port"
+                }
+
+                return $process
+            } else {
+                Write-MCPLog "Script du serveur MCP local introuvable: $serverScript" -Level "ERROR"
+                return $null
+            }
+        }
+        "n8n" {
+            # Démarrer le serveur n8n
+            $n8nPath = Join-Path -Path $script:ProjectRoot -ChildPath "scripts\mcp\n8n\start.cmd"
+
+            if (Test-Path -Path $n8nPath) {
+                $process = Start-Process -FilePath $n8nPath -PassThru -NoNewWindow
+
+                Write-MCPLog "Serveur n8n démarré avec le PID $($process.Id)" -Level "SUCCESS"
+
+                # Attendre que le serveur soit prêt
+                if ($Wait) {
+                    Write-MCPLog "Attente du démarrage du serveur..." -Level "INFO"
+                    Start-Sleep -Seconds 10
+                }
+
+                # Initialiser la connexion avec le client MCP
+                if (Get-Command -Name Initialize-MCPConnection -ErrorAction SilentlyContinue) {
+                    Initialize-MCPConnection -ServerUrl "http://localhost:5678"
+                }
+
+                return $process
+            } else {
+                Write-MCPLog "Script de démarrage n8n introuvable: $n8nPath" -Level "ERROR"
+                return $null
+            }
+        }
+        # Autres types de serveurs...
+        default {
+            Write-MCPLog "Type de serveur MCP non pris en charge: $ServerType" -Level "ERROR"
+            return $null
+        }
     }
 }
 
+<#
+.SYNOPSIS
+    Arrête un serveur MCP.
+.DESCRIPTION
+    Cette fonction arrête un serveur MCP en cours d'exécution.
+.PARAMETER Process
+    Le processus du serveur MCP à arrêter.
+.PARAMETER ServerType
+    Le type de serveur MCP à arrêter (local, n8n, notion, gateway, git-ingest).
+.PARAMETER Port
+    Le port sur lequel le serveur MCP est en cours d'exécution.
+.EXAMPLE
+    Stop-MCPServer -Process $process
+    Arrête le serveur MCP spécifié.
+.EXAMPLE
+    Stop-MCPServer -ServerType local -Port 8000
+    Arrête le serveur MCP local en cours d'exécution sur le port 8000.
+#>
+function Stop-MCPServer {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false, ParameterSetName = "Process")]
+        [System.Diagnostics.Process]$Process,
+
+        [Parameter(Mandatory = $true, ParameterSetName = "Type")]
+        [ValidateSet("local", "n8n", "notion", "gateway", "git-ingest")]
+        [string]$ServerType,
+
+        [Parameter(Mandatory = $false, ParameterSetName = "Type")]
+        [int]$Port = 8000
+    )
+
+    if ($PSCmdlet.ParameterSetName -eq "Process") {
+        if ($Process -and -not $Process.HasExited) {
+            Write-MCPLog "Arrêt du serveur MCP avec le PID $($Process.Id)..." -Level "INFO"
+
+            try {
+                $Process.Kill()
+                Write-MCPLog "Serveur MCP arrêté avec succès" -Level "SUCCESS"
+                return $true
+            } catch {
+                Write-MCPLog "Erreur lors de l'arrêt du serveur MCP: $_" -Level "ERROR"
+                return $false
+            }
+        } else {
+            Write-MCPLog "Le processus spécifié n'est pas en cours d'exécution" -Level "WARNING"
+            return $false
+        }
+    } else {
+        # Arrêter le serveur en fonction du type
+        switch ($ServerType) {
+            "local" {
+                # Trouver et arrêter le processus Python qui exécute le serveur
+                $processes = Get-Process -Name python* | Where-Object { $_.CommandLine -like "*server:app*--port $Port*" }
+
+                if ($processes) {
+                    foreach ($proc in $processes) {
+                        Write-MCPLog "Arrêt du serveur MCP local avec le PID $($proc.Id)..." -Level "INFO"
+
+                        try {
+                            $proc.Kill()
+                            Write-MCPLog "Serveur MCP local arrêté avec succès" -Level "SUCCESS"
+                        } catch {
+                            Write-MCPLog "Erreur lors de l'arrêt du serveur MCP local: $_" -Level "ERROR"
+                        }
+                    }
+
+                    return $true
+                } else {
+                    Write-MCPLog "Aucun serveur MCP local trouvé sur le port $Port" -Level "WARNING"
+                    return $false
+                }
+            }
+            "n8n" {
+                # Trouver et arrêter le processus n8n
+                $processes = Get-Process -Name node | Where-Object { $_.CommandLine -like "*n8n*" }
+
+                if ($processes) {
+                    foreach ($proc in $processes) {
+                        Write-MCPLog "Arrêt du serveur n8n avec le PID $($proc.Id)..." -Level "INFO"
+
+                        try {
+                            $proc.Kill()
+                            Write-MCPLog "Serveur n8n arrêté avec succès" -Level "SUCCESS"
+                        } catch {
+                            Write-MCPLog "Erreur lors de l'arrêt du serveur n8n: $_" -Level "ERROR"
+                        }
+                    }
+
+                    return $true
+                } else {
+                    Write-MCPLog "Aucun serveur n8n trouvé" -Level "WARNING"
+                    return $false
+                }
+            }
+            # Autres types de serveurs...
+            default {
+                Write-MCPLog "Type de serveur MCP non pris en charge: $ServerType" -Level "ERROR"
+                return $false
+            }
+        }
+    }
+}
+
+<#
+.SYNOPSIS
+    Installe les dépendances nécessaires pour les serveurs MCP.
+.DESCRIPTION
+    Cette fonction installe les dépendances nécessaires pour les serveurs MCP.
+.PARAMETER Force
+    Force la réinstallation des dépendances même si elles sont déjà installées.
+.EXAMPLE
+    Install-MCPDependencies
+    Installe les dépendances nécessaires pour les serveurs MCP.
+#>
+function Install-MCPDependencies {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [switch]$Force
+    )
+
+    Write-MCPLog "Installation des dépendances pour les serveurs MCP..." -Level "INFO"
+
+    # Vérifier si Python est installé
+    $pythonPath = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if (-not $pythonPath) {
+        Write-MCPLog "Python n'est pas installé ou n'est pas dans le PATH. Veuillez installer Python 3.11 ou supérieur." -Level "ERROR"
+        return $false
+    }
+
+    # Vérifier la version de Python
+    $pythonVersion = python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')"
+    if ([version]$pythonVersion -lt [version]"3.11") {
+        Write-MCPLog "Python 3.11 ou supérieur est requis. Version actuelle: $pythonVersion" -Level "ERROR"
+        return $false
+    }
+
+    # Installer les dépendances Python
+    Write-MCPLog "Installation des dépendances Python..." -Level "INFO"
+    $pythonDeps = @("fastapi", "uvicorn", "pydantic", "requests", "mcp")
+
+    foreach ($dep in $pythonDeps) {
+        # Tester si le module est déjà installé
+        python -c "import $dep" 2>&1 | Out-Null
+        if ($Force -or $LASTEXITCODE -ne 0) {
+            Write-MCPLog "Installation de $dep..." -Level "INFO"
+            python -m pip install $dep
+        } else {
+            Write-MCPLog "$dep est déjà installé" -Level "INFO"
+        }
+    }
+
+    # Vérifier si Node.js est installé
+    $nodePath = (Get-Command node -ErrorAction SilentlyContinue).Source
+    if (-not $nodePath) {
+        Write-MCPLog "Node.js n'est pas installé ou n'est pas dans le PATH. Certains serveurs MCP nécessitent Node.js." -Level "WARNING"
+    } else {
+        # Installer les dépendances Node.js
+        Write-MCPLog "Installation des dépendances Node.js..." -Level "INFO"
+        $nodeDeps = @("@modelcontextprotocol/server-filesystem", "@modelcontextprotocol/server-github", "n8n-nodes-mcp")
+
+        foreach ($dep in $nodeDeps) {
+            # Tester si le package est déjà installé
+            npm list -g $dep 2>&1 | Out-Null
+            if ($Force -or $LASTEXITCODE -ne 0) {
+                Write-MCPLog "Installation de $dep..." -Level "INFO"
+                npm install -g $dep
+            } else {
+                Write-MCPLog "$dep est déjà installé" -Level "INFO"
+            }
+        }
+    }
+
+    Write-MCPLog "Installation des dépendances terminée" -Level "SUCCESS"
+    return $true
+}
+
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Find-MCPServers, New-MCPConfiguration, Start-MCPManager, Invoke-MCPCommand
+Export-ModuleMember -Function Find-MCPServers, New-MCPConfiguration, Start-MCPManager, Invoke-MCPCommand, Start-MCPServer, Stop-MCPServer, Install-MCPDependencies
