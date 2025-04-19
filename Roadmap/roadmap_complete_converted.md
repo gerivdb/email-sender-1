@@ -1268,12 +1268,12 @@
 ## 4. Docs
 **Description**: Documentation technique, guides utilisateurs et ressources d'apprentissage.
 **Responsable**: Équipe Documentation
-**Statut global**: En cours - 25%
+**Statut global**: En cours - 40%
 
 ### 4.1 Documentation technique
 **Complexité**: Moyenne
 **Temps estimé total**: 10 jours
-**Progression globale**: 40%
+**Progression globale**: 60%
 **Dépendances**: Modules implémentés
 
 #### Outils et technologies
@@ -1300,7 +1300,7 @@
 #### 4.1.1 Documentation des modules principaux
 **Complexité**: Moyenne
 **Temps estimé**: 4 jours
-**Progression**: 75% - *En cours*
+**Progression**: 100% - *Terminé*
 **Date de début**: 01/02/2025
 **Date d'achèvement prévue**: 04/02/2025
 **Responsable**: Équipe Documentation
@@ -1309,15 +1309,15 @@
 - [x] **Phase 1**: Documentation du module CycleDetector
 - [x] **Phase 2**: Documentation du module DependencyManager
 - [x] **Phase 3**: Documentation du module MCPManager
-- [ ] **Phase 4**: Documentation du module InputSegmenter
+- [x] **Phase 4**: Documentation du module InputSegmenter
 
 ##### Fichiers à créer/modifier
 | Chemin | Description | Statut |
 |--------|-------------|--------|
 | `docs/technical/CycleDetector.md` | Documentation du module de détection de cycles | Terminé |
 | `docs/technical/DependencyManager.md` | Documentation du gestionnaire de dépendances | Terminé |
-| `docs/technical/MCPManager.md` | Documentation du module MCP | En cours |
-| `docs/technical/InputSegmenter.md` | Documentation du module de segmentation | À commencer |
+| `docs/technical/MCPManager.md` | Documentation du module MCP | Terminé |
+| `docs/technical/InputSegmenter.md` | Documentation du module de segmentation | Terminé |
 
 ##### Format de journalisation
 ```json
@@ -1328,8 +1328,8 @@
   "changes": [
     {"feature": "Documentation CycleDetector", "status": "Complété"},
     {"feature": "Documentation DependencyManager", "status": "Complété"},
-    {"feature": "Documentation MCPManager", "status": "En cours"},
-    {"feature": "Documentation InputSegmenter", "status": "À commencer"}
+    {"feature": "Documentation MCPManager", "status": "Complété"},
+    {"feature": "Documentation InputSegmenter", "status": "Complété"}
   ]
 }
 ```
@@ -1412,31 +1412,31 @@
   - **Outils**: PlantUML
   - **Statut**: Non commencé
 
-##### [ ] Jour 4 - Documentation du module InputSegmenter (8h)
-- [ ] **Sous-tâche 4.1**: Analyser le code source du module (2h)
+##### [x] Jour 4 - Documentation du module InputSegmenter (8h)
+- [x] **Sous-tâche 4.1**: Analyser le code source du module (2h)
   - **Description**: Étudier le code pour comprendre les fonctionnalités et l'architecture
   - **Livrable**: Notes d'analyse
   - **Fichier**: `docs/notes/InputSegmenter_Analysis.md`
   - **Outils**: VS Code, PowerShell, Python
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 4.2**: Créer la structure de la documentation (1h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 4.2**: Créer la structure de la documentation (1h)
   - **Description**: Définir les sections et sous-sections du document
   - **Livrable**: Structure de la documentation
   - **Fichier**: `docs/technical/InputSegmenter.md`
   - **Outils**: VS Code, Markdown
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 4.3**: Rédiger la documentation technique (4h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 4.3**: Rédiger la documentation technique (4h)
   - **Description**: Rédiger le contenu technique avec exemples
   - **Livrable**: Documentation technique
   - **Fichier**: `docs/technical/InputSegmenter.md`
   - **Outils**: VS Code, Markdown
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 4.4**: Créer les diagrammes (1h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 4.4**: Créer les diagrammes (1h)
   - **Description**: Créer des diagrammes pour illustrer l'architecture et les flux
   - **Livrable**: Diagrammes
   - **Fichier**: `docs/technical/diagrams/InputSegmenter.puml`
   - **Outils**: PlantUML
-  - **Statut**: Non commencé
+  - **Statut**: Terminé
 
 #### 4.1.2 Documentation des API
 **Complexité**: Moyenne

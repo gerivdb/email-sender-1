@@ -1,0 +1,67 @@
+@startuml InputSegmenter Flow
+
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam monochrome false
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam roundCorner 8
+skinparam dpi 300
+skinparam arrowColor #2C3E50
+skinparam activityBackgroundColor #3498DB
+skinparam activityBorderColor #2C3E50
+skinparam activityDiamondBackgroundColor #E74C3C
+skinparam activityDiamondBorderColor #C0392B
+skinparam noteBackgroundColor #FEF9E7
+skinparam noteBorderColor #F39C12
+
+title "Flux de segmentation des entrées"
+
+start
+
+:Initialiser le module;
+note right: Initialize-InputSegmentation
+
+:Recevoir une entrée à traiter;
+
+:Mesurer la taille de l'entrée;
+note right: Measure-InputSize
+
+if (Taille > MaxInputSizeKB?) then (oui)
+  :Déterminer le type d'entrée;
+  
+  if (Type d'entrée?) then (Texte)
+    :Segmenter le texte;
+    note right: Split-TextInput
+  elseif (Type d'entrée?) then (JSON)
+    :Segmenter le JSON;
+    note right: Split-JsonInput
+  elseif (Type d'entrée?) then (Fichier)
+    :Segmenter le fichier;
+    note right: Split-FileInput
+  else (Autre)
+    :Segmenter l'objet générique;
+    note right: Split-Input
+  endif
+  
+  :Sauvegarder l'état initial;
+  note right: Save-SegmentationState
+  
+  repeat
+    :Traiter le segment courant;
+    
+    :Sauvegarder l'état de progression;
+    note right: Save-SegmentationState
+    
+  repeat while (Plus de segments?) is (oui)
+  
+else (non)
+  :Traiter l'entrée directement;
+endif
+
+:Retourner les résultats;
+
+stop
+
+@enduml
