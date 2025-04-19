@@ -844,7 +844,7 @@
   - **Livrable**: Fonctions de visualisation implémentées
   - **Fichier**: `modules/DependencyCycleResolver.psm1`
   - **Outils**: VS Code, PowerShell
-  - **Statut**: Non commencé
+  - **Statut**: Terminé
 
 ##### [x] Jour 3 - Résolution automatique et finalisation (8h)
 - [x] **Sous-tâche 3.1**: Implémenter la résolution automatique des cycles (4h)
@@ -888,7 +888,7 @@
 | `tests/integration/DependencyCycle.Tests.ps1` | Tests d'intégration | Terminé |
 | `tests/unit/DependencyCycleIntegrationTests.ps1` | Tests d'intégration simplifiés | Terminé |
 | `tests/unit/RunAllTests.ps1` | Script d'exécution des tests | Terminé |
-| `tests/performance/DependencyManager.Performance.Tests.ps1` | Tests de performance | À créer |
+| `tests/performance/DependencyManager.Performance.Tests.ps1` | Tests de performance | En cours |
 | `docs/test_reports/DependencyManager_TestReport.md` | Rapport de tests | Terminé |
 
 ##### Format de journalisation
@@ -900,8 +900,8 @@
   "changes": [
     {"feature": "Tests unitaires", "status": "Terminé"},
     {"feature": "Tests d'intégration", "status": "Terminé"},
-    {"feature": "Tests de performance", "status": "Non commencé"},
-    {"feature": "Documentation des résultats", "status": "Non commencé"}
+    {"feature": "Tests de performance", "status": "En cours"},
+    {"feature": "Documentation des résultats", "status": "Terminé"}
   ]
 }
 ```
