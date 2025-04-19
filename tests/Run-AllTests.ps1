@@ -27,16 +27,16 @@
 param (
     [Parameter(Mandatory = $false)]
     [string]$TestsPath = ".\tests",
-    
+
     [Parameter(Mandatory = $false)]
     [string]$OutputPath = ".\reports\tests",
-    
+
     [Parameter(Mandatory = $false)]
     [string]$CoveragePath = ".\reports\coverage",
-    
+
     [Parameter(Mandatory = $false)]
     [string[]]$Tags = @(),
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$Parallel
 )
@@ -47,12 +47,12 @@ function Write-Log {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Message,
-        
+
         [Parameter(Mandatory = $false)]
         [ValidateSet("INFO", "WARNING", "ERROR", "SUCCESS", "TITLE")]
         [string]$Level = "INFO"
     )
-    
+
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $color = switch ($Level) {
         "INFO" { "White" }
@@ -61,7 +61,7 @@ function Write-Log {
         "SUCCESS" { "Green" }
         "TITLE" { "Cyan" }
     }
-    
+
     Write-Host "[$timestamp] " -NoNewline
     Write-Host "[$Level] " -NoNewline -ForegroundColor $color
     Write-Host $Message
@@ -105,6 +105,7 @@ $pesterConfig.TestResult.OutputFormat = "NUnitXml"
 # Configurer les modules à couvrir
 $modulesToCover = @(
     ".\modules\CycleDetector.psm1"
+    ".\modules\DependencyCycleResolver.psm1"
     ".\modules\InputSegmentation.psm1"
     ".\modules\PredictiveCache.psm1"
     ".\scripts\performance\Optimize-ParallelExecution.ps1"
@@ -122,14 +123,13 @@ if ($Parallel) {
     $pesterConfig.Run.EnableExit = $false
     $pesterConfig.Run.Exit = $false
     $pesterConfig.Run.Throw = $false
-    
+
     # Déterminer le nombre de threads à utiliser
     $maxThreads = [Environment]::ProcessorCount
     $pesterConfig.Run.Container.MaxConcurrency = $maxThreads
-    
+
     Write-Log "Exécution des tests en parallèle avec $maxThreads threads..." -Level "INFO"
-}
-else {
+} else {
     Write-Log "Exécution des tests en séquentiel..." -Level "INFO"
 }
 
@@ -267,7 +267,7 @@ $htmlReport = @"
 </head>
 <body>
     <h1>Rapport de tests unitaires</h1>
-    
+
     <div class="summary">
         <h2>Résumé</h2>
         <p>Tests exécutés: <strong>$($testResults.TotalCount)</strong></p>
@@ -276,19 +276,19 @@ $htmlReport = @"
         <p>Tests ignorés: <strong>$($testResults.SkippedCount)</strong></p>
         <p>Tests non exécutés: <strong>$($testResults.NotRunCount)</strong></p>
         <p>Durée totale: <strong>$($testResults.Duration.TotalSeconds) secondes</strong></p>
-        
+
         <div class="progress-bar">
             <div class="progress" style="width: $([Math]::Round(($testResults.PassedCount / [Math]::Max(1, $testResults.TotalCount)) * 100))%">
                 $([Math]::Round(($testResults.PassedCount / [Math]::Max(1, $testResults.TotalCount)) * 100))%
             </div>
         </div>
     </div>
-    
+
     <div class="coverage-summary">
         <h2>Couverture de code</h2>
         <p>Rapport de couverture disponible: <a href="$($pesterConfig.CodeCoverage.OutputPath)">$($pesterConfig.CodeCoverage.OutputPath)</a></p>
     </div>
-    
+
     <h2>Détails des tests</h2>
     <div class="test-container">
 "@
@@ -299,21 +299,23 @@ foreach ($container in $testResults.Containers) {
     $passedCount = ($container.Tests | Where-Object { $_.Result -eq "Passed" }).Count
     $failedCount = ($container.Tests | Where-Object { $_.Result -eq "Failed" }).Count
     $skippedCount = ($container.Tests | Where-Object { $_.Result -eq "Skipped" }).Count
-    
+
     $status = if ($failedCount -gt 0) {
         "failed"
     } elseif ($passedCount -eq $container.Tests.Count) {
         "passed"
+    } elseif ($skippedCount -gt 0) {
+        "mixed"
     } else {
         "mixed"
     }
-    
+
     $statusText = switch ($status) {
         "passed" { "Réussi" }
         "failed" { "Échoué" }
         "mixed" { "Mixte" }
     }
-    
+
     $htmlReport += @"
         <div class="test-file">
             <div class="test-file-header">
@@ -322,8 +324,10 @@ foreach ($container in $testResults.Containers) {
             </div>
             <p>Chemin: $($container.Item.FullName)</p>
             <p>Tests réussis: $passedCount / $($container.Tests.Count)</p>
+            <p>Tests échoués: $failedCount</p>
+            <p>Tests ignorés: $skippedCount</p>
 "@
-    
+
     # Ajouter les blocs de test
     foreach ($block in $container.Blocks) {
         $htmlReport += @"
@@ -331,13 +335,13 @@ foreach ($container in $testResults.Containers) {
                 <div class="test-describe">
                     <h4>$($block.Name)</h4>
 "@
-        
+
         foreach ($childBlock in $block.Blocks) {
             $htmlReport += @"
                     <div class="test-context">
                         <h5>$($childBlock.Name)</h5>
 "@
-            
+
             foreach ($test in $childBlock.Tests) {
                 $testClass = switch ($test.Result) {
                     "Passed" { "" }
@@ -345,34 +349,34 @@ foreach ($container in $testResults.Containers) {
                     "Skipped" { "skipped" }
                     default { "" }
                 }
-                
+
                 $htmlReport += @"
                         <div class="test-it $testClass">
                             <p>$($test.Name) - <strong>$($test.Result)</strong></p>
 "@
-                
+
                 if ($test.Result -eq "Failed") {
                     $htmlReport += @"
                             <p>Erreur: $($test.ErrorRecord.Exception.Message)</p>
 "@
                 }
-                
+
                 $htmlReport += @"
                         </div>
 "@
             }
-            
+
             $htmlReport += @"
                     </div>
 "@
         }
-        
+
         $htmlReport += @"
                 </div>
             </div>
 "@
     }
-    
+
     $htmlReport += @"
         </div>
 "@
@@ -380,7 +384,7 @@ foreach ($container in $testResults.Containers) {
 
 $htmlReport += @"
     </div>
-    
+
     <p class="timestamp">Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
 </body>
 </html>
