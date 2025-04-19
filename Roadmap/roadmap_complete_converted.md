@@ -1404,13 +1404,13 @@
   - **Livrable**: Documentation technique
   - **Fichier**: `docs/technical/MCPManager.md`
   - **Outils**: VS Code, Markdown
-  - **Statut**: En cours
-- [ ] **Sous-tâche 3.4**: Créer les diagrammes (1h)
+  - **Statut**: Terminé
+- [x] **Sous-tâche 3.4**: Créer les diagrammes (1h)
   - **Description**: Créer des diagrammes pour illustrer l'architecture et les flux
   - **Livrable**: Diagrammes
   - **Fichier**: `docs/technical/diagrams/MCPManager.puml`
   - **Outils**: PlantUML
-  - **Statut**: Non commencé
+  - **Statut**: Terminé
 
 ##### [x] Jour 4 - Documentation du module InputSegmenter (8h)
 - [x] **Sous-tâche 4.1**: Analyser le code source du module (2h)
