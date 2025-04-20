@@ -53,8 +53,7 @@ function Move-CompletedTasksToArchive {
     # Créer ou lire le fichier d'archive
     if (Test-Path -Path $ArchivePath) {
         $archiveContent = Get-Content -Path $ArchivePath -Encoding UTF8
-    }
-    else {
+    } else {
         $archiveContent = @(
             "# Archive des tâches terminées",
             "",
@@ -73,47 +72,50 @@ function Move-CompletedTasksToArchive {
     # Identifier les tâches terminées
     for ($i = 0; $i -lt $content.Count; $i++) {
         $line = $content[$i]
-        
+
         # Détecter les tâches
+        Write-Host "Ligne: $line"
         if ($line -match '^#### (\d+\.\d+\.\d+) (.+)$') {
             $taskId = $matches[1]
             $taskName = $matches[2]
-            
+
             # Vérifier si la tâche est terminée
             $isCompleted = $false
             for ($j = $i + 1; $j -lt $content.Count; $j++) {
+                Write-Host "Vérification ligne: $($content[$j])"
                 if ($content[$j] -match '^\*\*Progression\*\*: 100% - \*Terminé\*$') {
                     $isCompleted = $true
+                    Write-Host "Tâche terminée trouvée: $taskId $taskName"
                     break
                 }
-                
+
                 # Arrêter la recherche si on atteint une autre tâche
                 if ($content[$j] -match '^#### ') {
                     break
                 }
             }
-            
+
             if ($isCompleted) {
                 $completedTasks += @{
-                    id = $taskId
-                    name = $taskName
+                    id         = $taskId
+                    name       = $taskName
                     startIndex = $i
-                    endIndex = $i
+                    endIndex   = $i
                 }
-                
+
                 # Trouver la fin de la tâche
                 for ($j = $i + 1; $j -lt $content.Count; $j++) {
-                    if ($j -eq $content.Count - 1 || $content[$j + 1] -match '^#### ') {
+                    if (($j -eq $content.Count - 1) -or ($content[$j + 1] -match '^#### ')) {
                         $completedTasks[-1].endIndex = $j
                         break
                     }
                 }
-                
+
                 # Extraire le contenu de la tâche
                 $taskContent[$taskId] = $content[$i..$completedTasks[-1].endIndex]
                 $taskIndices[$taskId] = @{
                     start = $i
-                    end = $completedTasks[-1].endIndex
+                    end   = $completedTasks[-1].endIndex
                 }
             }
         }
@@ -156,8 +158,7 @@ function Move-CompletedTasksToArchive {
                     break
                 }
             }
-        }
-        else {
+        } else {
             $newContent += $content[$i]
         }
     }
@@ -165,10 +166,10 @@ function Move-CompletedTasksToArchive {
     # Enregistrer les modifications
     $archiveContent | Out-File -FilePath $ArchivePath -Encoding UTF8
     $newContent | Out-File -FilePath $MarkdownPath -Encoding UTF8
-    
+
     return @{
         archivedTasks = $completedTasks
-        archivePath = $ArchivePath
+        archivePath   = $ArchivePath
     }
 }
 
@@ -178,12 +179,12 @@ try {
     if (-not $ArchivePath) {
         $ArchivePath = Join-Path -Path (Split-Path -Parent $MarkdownPath) -ChildPath "completed_tasks.md"
     }
-    
+
     $result = Move-CompletedTasksToArchive -MarkdownPath $MarkdownPath -ArchivePath $ArchivePath
-    
+
     Write-Host "Archivage des tâches terminées réussi."
     Write-Host "$($result.archivedTasks.Count) tâches archivées dans '$($result.archivePath)'."
-    
+
     # Afficher les tâches archivées
     if ($result.archivedTasks.Count -gt 0) {
         Write-Host "`nTâches archivées:"
@@ -191,7 +192,6 @@ try {
             Write-Host "  $($task.id) $($task.name)"
         }
     }
-}
-catch {
+} catch {
     Write-Error "Erreur lors de l'archivage des tâches terminées: $_"
 }

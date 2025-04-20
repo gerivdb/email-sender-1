@@ -1,0 +1,15 @@
+{
+  "port": 4000,
+  "services": {
+    "augment": {
+      "url": "http://localhost:3000",
+      "healthCheck": "/api/health"
+    },
+    "cline": {
+      "url": "http://localhost:5000",
+      "healthCheck": "/health"
+    }
+  },
+  "activeService": "augment",
+  "fallbackTimeout": 500
+}

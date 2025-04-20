@@ -1,0 +1,47 @@
+{
+  "server": {
+    "port": 4000,
+    "host": "localhost"
+  },
+  "proxy": {
+    "defaultTarget": "augment",
+    "targets": {
+      "augment": {
+        "url": "http://localhost:3000",
+        "priority": 1,
+        "healthEndpoint": "/health"
+      },
+      "cline": {
+        "url": "http://localhost:5000",
+        "priority": 2,
+        "healthEndpoint": "/health"
+      }
+    },
+    "standardEndpoints": {
+      "health": "/health",
+      "config": "/config"
+    },
+    "failoverThreshold": 3,
+    "healthCheckInterval": 10000
+  },
+  "logging": {
+    "level": "info",
+    "format": "combined",
+    "directory": "../logs"
+  },
+  "auth": {
+    "enabled": true,
+    "session": {
+      "secret": "mcp-proxy-secret-key",
+      "maxAge": 3600000
+    },
+    "apiToken": "mcp-api-token-for-secure-access",
+    "publicPaths": ["/login", "/health"]
+  },
+  "cache": {
+    "enabled": true,
+    "ttl": 60,
+    "maxSize": 100
+  },
+  "lockFile": "../config/active_system.lock"
+}

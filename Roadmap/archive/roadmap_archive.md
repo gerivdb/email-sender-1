@@ -1,4 +1,4 @@
-# Roadmap Archive
+﻿# Roadmap Archive
 ## Table des matières
 
 ## Introduction
@@ -2165,4 +2165,149 @@ Chaque entrée inclut :
   - **Statut**: Non commencé
 
 **Archived Date**: 2025-04-19
+
+
+## TÃ¢ches archivÃ©es le 2025-04-20
+
+#### 5.1.1 Collecte et analyse des métriques de performance
+**Complexité**: Élevée
+**Temps estimé**: 4 jours
+**Progression**: 100% - *Terminé* - Tests unitaires complétés
+**Date de début prévue**: 01/07/2025
+**Date d'achèvement prévue**: 04/07/2025
+**Responsable**: Équipe Performance
+**Tags**: #performance #analyse #métriques
+
+- [x] **Phase 1**: Analyse et conception
+- [x] **Phase 2**: Implémentation du collecteur de métriques
+- [x] **Phase 3**: Implémentation de l'analyseur de performances
+- [ ] **Phase 4**: Visualisation, tests et documentation
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `modules/PerformanceAnalyzer.psm1` | Module principal | Modifié |
+| `modules/PredictiveModel.py` | Module Python pour les modèles prédictifs | Créé |
+| `tests/unit/PerformanceAnalyzer.Tests.ps1` | Tests unitaires | Modifié |
+| `tests/unit/PerformanceAnalyzer.Predictive.Tests.ps1` | Tests unitaires pour l'analyse prédictive | Créé |
+| `tests/unit/PredictiveModel.Tests.ps1` | Tests unitaires Python | Créé |
+
+##### Format de journalisation
+```json
+{
+  "module": "PerformanceAnalyzer",
+  "version": "1.0.0",
+  "date": "2023-07-04",
+  "changes": [
+    {"feature": "Collecte de métriques", "status": "Complété"},
+    {"feature": "Analyse prédictive", "status": "Complété"},
+    {"feature": "Visualisation des données", "status": "En cours"},
+    {"feature": "Tests unitaires", "status": "Complété"}
+  ]
+}
+```
+
+##### [x] Jour 1 - Analyse et conception (8h)
+- [x] **Sous-tâche 1.1**: Analyser les besoins en métriques de performance (2h)
+  - **Description**: Identifier les métriques clés à collecter et analyser
+  - **Livrable**: Document d'analyse des besoins
+  - **Fichier**: `docs/technical/PerformanceMetricsRequirements.md`
+  - **Outils**: MCP, Augment
+  - **Statut**: Complété
+- [x] **Sous-tâche 1.2**: Concevoir l'architecture du module (3h)
+  - **Description**: Définir les composants, interfaces et flux de données
+  - **Livrable**: Schéma d'architecture
+  - **Fichier**: `docs/technical/PerformanceAnalyzerArchitecture.md`
+  - **Outils**: MCP, Augment
+  - **Statut**: Complété
+- [x] **Sous-tâche 1.3**: Créer les tests unitaires initiaux (TDD) (3h)
+  - **Description**: Développer les tests pour les fonctionnalités de base
+  - **Livrable**: Tests unitaires initiaux
+  - **Fichier**: `tests/unit/PerformanceAnalyzer.Tests.ps1`
+  - **Outils**: Pester, PowerShell
+  - **Statut**: Complété
+
+##### [ ] Jour 2 - Implémentation du collecteur de métriques (8h)
+- [ ] **Sous-tâche 2.1**: Implémenter la collecte de métriques CPU (2h)
+  - **Description**: Développer les fonctions qui collectent les métriques CPU
+  - **Livrable**: Fonctions de collecte CPU implémentées
+  - **Fichier**: `modules/MetricsCollector.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+- [ ] **Sous-tâche 2.2**: Implémenter la collecte de métriques mémoire (2h)
+  - **Description**: Développer les fonctions qui collectent les métriques mémoire
+  - **Livrable**: Fonctions de collecte mémoire implémentées
+  - **Fichier**: `modules/MetricsCollector.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+- [ ] **Sous-tâche 2.3**: Implémenter la collecte de métriques disque (2h)
+  - **Description**: Développer les fonctions qui collectent les métriques disque
+  - **Livrable**: Fonctions de collecte disque implémentées
+  - **Fichier**: `modules/MetricsCollector.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+- [ ] **Sous-tâche 2.4**: Implémenter la collecte de métriques réseau (2h)
+  - **Description**: Développer les fonctions qui collectent les métriques réseau
+  - **Livrable**: Fonctions de collecte réseau implémentées
+  - **Fichier**: `modules/MetricsCollector.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+
+##### [ ] Jour 3 - Implémentation de l'analyseur de performances (8h)
+- [ ] **Sous-tâche 3.1**: Implémenter l'analyse des métriques CPU (2h)
+  - **Description**: Développer les fonctions qui analysent les métriques CPU
+  - **Livrable**: Fonctions d'analyse CPU implémentées
+  - **Fichier**: `modules/PerformanceAnalyzer.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+- [ ] **Sous-tâche 3.2**: Implémenter l'analyse des métriques mémoire (2h)
+  - **Description**: Développer les fonctions qui analysent les métriques mémoire
+  - **Livrable**: Fonctions d'analyse mémoire implémentées
+  - **Fichier**: `modules/PerformanceAnalyzer.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+- [ ] **Sous-tâche 3.3**: Implémenter l'analyse des métriques disque (2h)
+  - **Description**: Développer les fonctions qui analysent les métriques disque
+  - **Livrable**: Fonctions d'analyse disque implémentées
+  - **Fichier**: `modules/PerformanceAnalyzer.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+- [ ] **Sous-tâche 3.4**: Implémenter l'analyse des métriques réseau (2h)
+  - **Description**: Développer les fonctions qui analysent les métriques réseau
+  - **Livrable**: Fonctions d'analyse réseau implémentées
+  - **Fichier**: `modules/PerformanceAnalyzer.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+
+##### [ ] Jour 4 - Visualisation, tests et documentation (8h)
+- [ ] **Sous-tâche 4.1**: Implémenter la visualisation des métriques (3h)
+  - **Description**: Développer les fonctions qui visualisent les métriques
+  - **Livrable**: Fonctions de visualisation implémentées
+  - **Fichier**: `modules/PerformanceAnalyzer.psm1`
+  - **Outils**: VS Code, PowerShell
+  - **Statut**: Non commencé
+- [ ] **Sous-tâche 4.2**: Compléter les tests unitaires (2h)
+  - **Description**: Développer des tests pour toutes les fonctionnalités
+  - **Livrable**: Tests unitaires complets
+  - **Fichier**: `tests/unit/PerformanceAnalyzer.Tests.ps1`
+  - **Outils**: Pester, PowerShell
+  - **Statut**: Non commencé
+- [ ] **Sous-tâche 4.3**: Documenter le module (3h)
+  - **Description**: Créer la documentation technique et le guide d'utilisation
+  - **Livrable**: Documentation complète
+  - **Fichier**: `docs/technical/PerformanceAnalyzerAPI.md`
+  - **Outils**: Markdown, PowerShell
+  - **Statut**: Non commencé
+
+## 6. Security
+**Description**: Modules de sécurité, d'authentification et de protection des données.
+**Responsable**: Équipe Sécurité
+**Statut global**: Planifié - 5%
+
+### 6.1 Gestion des secrets
+**Complexité**: Élevée
+**Temps estimé total**: 10 jours
+**Progression globale**: 0%
+**Dépendances**: Aucune
+
 
