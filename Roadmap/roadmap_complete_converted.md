@@ -1,5 +1,309 @@
-﻿## ## ## ## ## ## ## ## ## ## # Roadmap EMAIL_SENDER_1
+## ## ## ## ## ## ## ## ## ## # Roadmap EMAIL_SENDER_1
 
+
+## 4. Réorganisation et intégration n8n
+**Description**: Réorganisation des dossiers n8n et amélioration des intégrations avec Augment et l'IDE.
+**Responsable**: Équipe Intégration
+**Statut global**: En cours - 70%
+
+### 4.1 Unification de la structure n8n
+**Complexité**: Moyenne
+**Temps estimé total**: 5 jours
+**Progression globale**: 100% - *Terminé*
+**Dépendances**: Docker, n8n fonctionnel
+
+#### Outils et technologies
+- **Langages**: PowerShell 5.1/7, Batch, JavaScript
+- **Frameworks**: Docker, n8n API
+- **Outils d'intégration**: MCP, Augment, VS Code
+- **Environnement**: Docker, VS Code
+
+#### Fichiers principaux
+| Chemin | Description |
+|--------|-------------|
+| n8n-unified/docker/docker-compose.yml | Configuration Docker pour n8n |
+| n8n-unified/scripts/start-n8n-docker.cmd | Script de démarrage principal |
+| n8n-unified/integrations/augment/augment-n8n-bridge.cmd | Pont d'intégration Augment-n8n |
+
+#### Guidelines
+- **Structure**: Maintenir une séparation claire entre configuration, données et scripts
+- **Docker**: Utiliser des volumes pour persister les données
+- **Intégration**: Créer des API RESTful pour les intégrations
+- **Documentation**: Documenter toutes les intégrations et points d'API
+- **Sécurité**: Sécuriser les communications entre les composants
+
+#### 4.1.1 Création de la structure unifiée
+**Complexité**: Faible
+**Temps estimé**: 1 jour
+**Progression**: 100% - *Terminé*
+**Date de début réelle**: 21/04/2023
+**Date d'achèvement réelle**: 21/04/2023
+**Responsable**: Équipe Intégration
+**Tags**: #n8n #docker #structure
+
+- [x] **Phase 1**: Analyse de l'existant
+- [x] **Phase 2**: Création de la nouvelle structure
+- [x] **Phase 3**: Migration des fichiers essentiels
+- [x] **Phase 4**: Documentation
+
+##### Fichiers créés/modifiés
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `n8n-unified/` | Dossier principal | Créé |
+| `n8n-unified/docker/` | Dossier Docker | Créé |
+| `n8n-unified/config/` | Dossier de configuration | Créé |
+| `n8n-unified/data/` | Dossier de données | Créé |
+| `n8n-unified/scripts/` | Dossier de scripts | Créé |
+| `n8n-unified/integrations/` | Dossier d'intégrations | Créé |
+| `n8n-unified/docs/` | Documentation | Créé |
+| `n8n-unified/tests/` | Tests unitaires | Créé |
+| `n8n-unified/logs/` | Journaux | Créé |
+
+##### Format de journalisation
+```json
+{
+  "module": "n8n-structure",
+  "version": "1.0.0",
+  "date": "2023-04-21",
+  "changes": [
+    {"feature": "Structure unifiée", "status": "Terminé"},
+    {"feature": "Migration Docker", "status": "Terminé"},
+    {"feature": "Documentation", "status": "Terminé"}
+  ]
+}
+```
+
+#### 4.1.2 Migration de la configuration Docker
+**Complexité**: Moyenne
+**Temps estimé**: 1 jour
+**Progression**: 100% - *Terminé*
+**Date de début réelle**: 21/04/2023
+**Date d'achèvement réelle**: 21/04/2023
+**Responsable**: Équipe Intégration
+**Tags**: #n8n #docker #configuration
+
+- [x] **Phase 1**: Analyse de la configuration Docker existante
+- [x] **Phase 2**: Création du fichier docker-compose.yml optimisé
+- [x] **Phase 3**: Configuration des volumes et variables d'environnement
+- [x] **Phase 4**: Tests et validation
+
+##### Fichiers créés/modifiés
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `n8n-unified/docker/docker-compose.yml` | Configuration Docker | Créé |
+| `n8n-unified/docker/.env` | Variables d'environnement | Créé |
+| `n8n-unified/scripts/start-n8n-docker.cmd` | Script de démarrage | Créé |
+| `n8n-unified/scripts/stop-n8n-docker.cmd` | Script d'arrêt | Créé |
+
+##### Format de journalisation
+```json
+{
+  "module": "n8n-docker",
+  "version": "1.0.0",
+  "date": "2023-04-21",
+  "changes": [
+    {"feature": "Configuration Docker", "status": "Terminé"},
+    {"feature": "Scripts de gestion", "status": "Terminé"},
+    {"feature": "Tests", "status": "Terminé"}
+  ]
+}
+```
+
+#### 4.1.3 Préservation et migration des workflows
+**Complexité**: Moyenne
+**Temps estimé**: 1 jour
+**Progression**: 100% - *Terminé*
+**Date de début réelle**: 21/04/2023
+**Date d'achèvement réelle**: 21/04/2023
+**Responsable**: Équipe Intégration
+**Tags**: #n8n #workflows #migration
+
+- [x] **Phase 1**: Identification des workflows existants
+- [x] **Phase 2**: Migration des workflows vers la nouvelle structure
+- [x] **Phase 3**: Vérification de l'intégrité des workflows
+- [x] **Phase 4**: Création d'un système de sauvegarde automatique
+
+##### Fichiers créés/modifiés
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `n8n-unified/data/workflows/` | Dossier des workflows | Créé |
+| `n8n-unified/scripts/backup-workflows.cmd` | Script de sauvegarde | Créé |
+| `n8n-unified/scripts/restore-workflows.cmd` | Script de restauration | Créé |
+
+##### Format de journalisation
+```json
+{
+  "module": "n8n-workflows",
+  "version": "1.0.0",
+  "date": "2023-04-21",
+  "changes": [
+    {"feature": "Migration des workflows", "status": "Terminé"},
+    {"feature": "Système de sauvegarde", "status": "Terminé"},
+    {"feature": "Vérification d'intégrité", "status": "Terminé"}
+  ]
+}
+```
+
+### 4.2 Intégrations avancées
+**Complexité**: Élevée
+**Temps estimé total**: 7 jours
+**Progression globale**: 100% - *Terminé*
+**Dépendances**: Structure n8n unifiée (4.1)
+
+#### 4.2.1 Intégration avec Augment
+**Complexité**: Élevée
+**Temps estimé**: 2 jours
+**Progression**: 100% - *Terminé*
+**Date de début réelle**: 21/04/2023
+**Date d'achèvement réelle**: 21/04/2023
+**Responsable**: Équipe Intégration
+**Tags**: #n8n #augment #integration
+
+- [x] **Phase 1**: Analyse des besoins d'intégration
+- [x] **Phase 2**: Développement des API d'intégration
+- [x] **Phase 3**: Création des scripts de pont
+- [x] **Phase 4**: Tests et documentation
+
+##### Fichiers créés/modifiés
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `n8n-unified/integrations/augment/AugmentN8nIntegration.ps1` | Script principal | Créé |
+| `n8n-unified/integrations/augment/setup-augment-integration.ps1` | Script de configuration | Créé |
+| `n8n-unified/integrations/augment/create-workflow-from-augment.ps1` | Script de création de workflow | Créé |
+| `n8n-unified/integrations/augment/execute-workflow-from-augment.ps1` | Script d'exécution de workflow | Créé |
+| `n8n-unified/integrations/augment/sync-workflows-with-augment.ps1` | Script de synchronisation | Créé |
+| `n8n-unified/integrations/augment/templates/augment-workflow.json` | Modèle de workflow | Créé |
+| `n8n-unified/tests/AugmentIntegration.Tests.ps1` | Tests unitaires | Créé |
+
+##### Format de journalisation
+```json
+{
+  "module": "augment-n8n-integration",
+  "version": "1.0.0",
+  "date": "2023-04-21",
+  "changes": [
+    {"feature": "API d'intégration", "status": "Terminé"},
+    {"feature": "Scripts de pont", "status": "Terminé"},
+    {"feature": "Documentation", "status": "Terminé"}
+  ]
+}
+```
+
+#### 4.2.2 Intégration avec l'IDE
+**Complexité**: Élevée
+**Temps estimé**: 2 jours
+**Progression**: 100% - *Terminé*
+**Date de début réelle**: 21/04/2023
+**Date d'achèvement réelle**: 21/04/2023
+**Responsable**: Équipe Intégration
+**Tags**: #n8n #ide #vscode #integration
+
+- [x] **Phase 1**: Analyse des besoins de synchronisation
+- [x] **Phase 2**: Développement des scripts de synchronisation
+- [x] **Phase 3**: Création d'extensions VS Code
+- [x] **Phase 4**: Tests et documentation
+
+##### Fichiers créés/modifiés
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `n8n-unified/integrations/ide/IdeN8nIntegration.ps1` | Script principal | Créé |
+| `n8n-unified/integrations/ide/setup-ide-integration.ps1` | Script de configuration | Créé |
+| `n8n-unified/integrations/ide/new-workflow.ps1` | Script de création de workflow | Créé |
+| `n8n-unified/integrations/ide/execute-workflow.ps1` | Script d'exécution de workflow | Créé |
+| `n8n-unified/integrations/ide/sync-workflows.ps1` | Script de synchronisation | Créé |
+| `n8n-unified/integrations/ide/templates/` | Modèles de workflows | Créé |
+| `n8n-unified/docs/ide-integration.md` | Documentation | Créé |
+
+##### Format de journalisation
+```json
+{
+  "module": "ide-n8n-integration",
+  "version": "1.0.0",
+  "date": "2023-04-21",
+  "changes": [
+    {"feature": "Synchronisation IDE-n8n", "status": "Terminé"},
+    {"feature": "Scripts de gestion", "status": "Terminé"},
+    {"feature": "Tests unitaires", "status": "Terminé"},
+    {"feature": "Documentation", "status": "Terminé"}
+  ]
+}
+```
+
+#### 4.2.3 Intégration avec MCP
+**Complexité**: Élevée
+**Temps estimé**: 2 jours
+**Progression**: 100% - *Terminé*
+**Date de début réelle**: 21/04/2023
+**Date d'achèvement réelle**: 21/04/2023
+**Responsable**: Équipe Intégration
+**Tags**: #n8n #mcp #integration
+
+- [x] **Phase 1**: Analyse des intégrations MCP existantes
+- [x] **Phase 2**: Migration des scripts MCP liés à n8n
+- [x] **Phase 3**: Amélioration des intégrations
+- [x] **Phase 4**: Tests et documentation
+
+##### Fichiers créés/modifiés
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `n8n-unified/integrations/mcp/McpN8nIntegration.ps1` | Script principal | Créé |
+| `n8n-unified/integrations/mcp/setup-mcp-integration.ps1` | Script de configuration | Créé |
+| `n8n-unified/integrations/mcp/configure-n8n-mcp.ps1` | Script de configuration MCP | Créé |
+| `n8n-unified/integrations/mcp/sync-workflows-with-mcp.ps1` | Script de synchronisation | Créé |
+| `n8n-unified/integrations/mcp/start-n8n-with-mcp.cmd` | Script de démarrage | Créé |
+| `n8n-unified/integrations/mcp/stop-n8n-with-mcp.cmd` | Script d'arrêt | Créé |
+| `n8n-unified/docs/mcp-integration.md` | Documentation | Créé |
+
+##### Format de journalisation
+```json
+{
+  "module": "mcp-n8n-integration",
+  "version": "1.0.0",
+  "date": "2023-04-21",
+  "changes": [
+    {"feature": "Migration MCP", "status": "Terminé"},
+    {"feature": "Intégration avec n8n", "status": "Terminé"},
+    {"feature": "Tests unitaires", "status": "Terminé"},
+    {"feature": "Documentation", "status": "Terminé"}
+  ]
+}
+```
+
+#### 4.2.4 Système d'intégration unifié
+**Complexité**: Élevée
+**Temps estimé**: 1 jour
+**Progression**: 100% - *Terminé*
+**Date de début réelle**: 21/04/2023
+**Date d'achèvement réelle**: 21/04/2023
+**Responsable**: Équipe Intégration
+**Tags**: #n8n #integration #unified
+
+- [x] **Phase 1**: Conception du système d'intégration unifié
+- [x] **Phase 2**: Développement du script maître
+- [x] **Phase 3**: Implémentation du tableau de bord de statut
+- [x] **Phase 4**: Tests et documentation
+
+##### Fichiers créés/modifiés
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `n8n-unified/start-n8n-unified.ps1` | Script maître | Créé |
+| `n8n-unified/stop-n8n-unified.ps1` | Script d'arrêt | Créé |
+| `n8n-unified/README.md` | Documentation unifiée | Créé |
+| `n8n-unified/tests/UnifiedIntegration.Tests.ps1` | Tests unitaires | Créé |
+
+##### Format de journalisation
+```json
+{
+  "module": "unified-integration",
+  "version": "1.0.0",
+  "date": "2023-04-21",
+  "changes": [
+    {"feature": "Script maître", "status": "Terminé"},
+    {"feature": "Tests unitaires", "status": "Terminé"},
+    {"feature": "Documentation", "status": "Terminé"}
+  ]
+}
+```
 
 ## 5. Proactive Optimization
 **Description**: Modules d'optimisation proactive et d'amélioration continue des performances.
@@ -38,86 +342,8 @@
 **Note**: Cette tâche a été archivée. Voir [Archive des tâches](archive/roadmap_archive.md) pour les détails.
 
 #### 5.1.2 Implémentation des modèles prédictifs
-**Complexité**: Élevée
-**Temps estimé**: 4 jours
-**Progression**: 0% - *À commencer*
-**Date de début prévue**: 05/07/2025
-**Date d'achèvement prévue**: 08/07/2025
-**Responsable**: Équipe Performance
-**Tags**: #performance #analyse #prédiction
-
-- [ ] **Phase 1**: Analyse et conception
-- [ ] **Phase 2**: Implémentation des modèles de base
-- [ ] **Phase 3**: Implémentation des modèles avancés
-- [ ] **Phase 4**: Intégration, tests et documentation
-
-##### Fichiers à créer/modifier
-| Chemin | Description | Statut |
-|--------|-------------|--------|
-| `modules/PredictiveModel.py` | Module principal | À créer |
-| `modules/PerformancePredictor.psm1` | Interface PowerShell | À créer |
-| `tests/unit/PredictiveModel.Tests.py` | Tests unitaires | À créer |
-
-##### Format de journalisation
-```json
-{
-  "module": "PredictiveModel",
-  "version": "1.0.0",
-  "date": "2025-07-08",
-  "changes": [
-    {"feature": "Modèles de base", "status": "À commencer"},
-    {"feature": "Modèles avancés", "status": "À commencer"},
-    {"feature": "Intégration PowerShell", "status": "À commencer"},
-    {"feature": "Tests unitaires", "status": "À commencer"}
-  ]
-}
-```
-
-##### [ ] Jour 1 - Analyse et conception (8h)
-- [ ] **Sous-tâche 1.1**: Analyser les besoins en modèles prédictifs (2h)
-  - **Description**: Identifier les modèles prédictifs adaptés aux métriques collectées
-  - **Livrable**: Document d'analyse des besoins
-  - **Fichier**: `docs/technical/PredictiveModelRequirements.md`
-  - **Outils**: MCP, Augment
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 1.2**: Concevoir l'architecture des modèles (3h)
-  - **Description**: Définir les composants, interfaces et flux de données
-  - **Livrable**: Schéma d'architecture
-  - **Fichier**: `docs/technical/PredictiveModelArchitecture.md`
-  - **Outils**: MCP, Augment
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 1.3**: Créer les tests unitaires initiaux (TDD) (3h)
-  - **Description**: Développer les tests pour les fonctionnalités de base
-  - **Livrable**: Tests unitaires initiaux
-  - **Fichier**: `tests/unit/PredictiveModel.Tests.py`
-  - **Outils**: pytest, Python
-  - **Statut**: Non commencé
-
-##### [ ] Jour 2 - Implémentation des modèles de base (8h)
-- [ ] **Sous-tâche 2.1**: Implémenter les modèles de régression linéaire (2h)
-  - **Description**: Développer les fonctions qui implémentent les modèles de régression linéaire
-  - **Livrable**: Fonctions de régression linéaire implémentées
-  - **Fichier**: `modules/PredictiveModel.py`
-  - **Outils**: VS Code, Python, scikit-learn
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 2.2**: Implémenter les modèles de séries temporelles (2h)
-  - **Description**: Développer les fonctions qui implémentent les modèles de séries temporelles
-  - **Livrable**: Fonctions de séries temporelles implémentées
-  - **Fichier**: `modules/PredictiveModel.py`
-  - **Outils**: VS Code, Python, pandas
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 2.3**: Implémenter les modèles de classification (2h)
-  - **Description**: Développer les fonctions qui implémentent les modèles de classification
-  - **Livrable**: Fonctions de classification implémentées
-  - **Fichier**: `modules/PredictiveModel.py`
-  - **Outils**: VS Code, Python, scikit-learn
-  - **Statut**: Non commencé
-- [ ] **Sous-tâche 2.4**: Implémenter l'interface PowerShell (2h)
-  - **Description**: Développer l'interface PowerShell pour les modèles de base
-  - **Livrable**: Interface PowerShell implémentée
-  - **Fichier**: `modules/PerformancePredictor.psm1`
-  - **Outils**: VS Code, PowerShell
-  - **Statut**: Non commencé
+**Progression**: 100% - *Terminé*
+**Note**: Cette tâche a été archivée. Voir [Archive des tâches](archive/roadmap_archive.md) pour les détails.
 
 #### 5.1.3 Optimisation automatique des performances
 **Complexité**: Élevée
