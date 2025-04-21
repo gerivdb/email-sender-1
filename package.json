@@ -19,6 +19,8 @@
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@magarcia/gitingest": "^1.1.0",
+    "n8n": "^1.88.0"
+  }
 }

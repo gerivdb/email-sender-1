@@ -1,0 +1,5 @@
+flask>=2.0.0
+flask-sqlalchemy>=3.0.0
+flask-jwt-extended>=4.0.0
+pymcpfy[flask]
+python-dateutil>=2.8.0

@@ -1,0 +1,20 @@
+# Utiliser une image Node.js officielle comme base
+FROM node:18-alpine
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers de dépendances
+COPY package*.json ./
+
+# Installer les dépendances de développement
+RUN npm install
+
+# Exposer le port sur lequel l'application s'exécute
+EXPOSE 4000
+
+# Définir les variables d'environnement
+ENV NODE_ENV=development
+
+# Commande pour démarrer l'application en mode développement
+CMD ["npm", "run", "dev"]

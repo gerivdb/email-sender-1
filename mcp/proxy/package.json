@@ -1,0 +1,37 @@
+{
+  "name": "mcp-unified-proxy",
+  "version": "1.0.0",
+  "description": "Proxy unifié pour les systèmes MCP (Augment et Cline)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "proxy",
+    "mcp",
+    "augment",
+    "cline"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "fs-extra": "^11.1.1",
+    "http-proxy-middleware": "^2.0.6",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.7.2",
+    "winston": "^3.11.0",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
+  }
+}

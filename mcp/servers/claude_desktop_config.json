@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "powershell_server": {
+      "command": "python",
+      "args": ["scripts/python/mcp_powershell_server.py"]
+    }
+  }
+}
