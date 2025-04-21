@@ -1,6 +1,0 @@
-{
-    "dependencies": {
-        "@suekou/mcp-notion-server": "^1.1.1",
-        "n8n-nodes-mcp": "^0.1.14"
-    }
-}
