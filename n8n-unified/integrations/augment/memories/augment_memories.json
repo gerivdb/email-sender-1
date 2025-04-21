@@ -1,0 +1,37 @@
+[
+  {
+    "id": "mem_001",
+    "type": "augment_memory",
+    "description": "Workflow pour envoyer un email quotidien",
+    "content": "Créer un workflow n8n pour envoyer un email quotidien à 8h00 avec un résumé des tâches du jour.",
+    "createdAt": "2025-04-21T01:00:00.000Z"
+  },
+  {
+    "id": "mem_002",
+    "type": "augment_memory",
+    "description": "Workflow pour surveiller un site web",
+    "content": "Créer un workflow n8n pour surveiller un site web toutes les heures et envoyer une alerte si le site est indisponible.",
+    "createdAt": "2025-04-21T01:30:00.000Z"
+  },
+  {
+    "id": "mem_003",
+    "type": "augment_memory",
+    "description": "Workflow pour sauvegarder des données",
+    "content": "Créer un workflow n8n pour sauvegarder automatiquement les données importantes chaque semaine et les stocker dans un dossier sécurisé.",
+    "createdAt": "2025-04-21T02:00:00.000Z"
+  },
+  {
+    "id": "mem_004",
+    "type": "augment_memory",
+    "description": "Workflow pour synchroniser des contacts",
+    "content": "Créer un workflow n8n pour synchroniser les contacts entre différentes plateformes (Gmail, Outlook, etc.) une fois par jour.",
+    "createdAt": "2025-04-21T02:30:00.000Z"
+  },
+  {
+    "id": "mem_005",
+    "type": "augment_memory",
+    "description": "Workflow pour générer des rapports",
+    "content": "Créer un workflow n8n pour générer automatiquement des rapports hebdomadaires à partir de données stockées dans une base de données et les envoyer par email.",
+    "createdAt": "2025-04-21T03:00:00.000Z"
+  }
+]

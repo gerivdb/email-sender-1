@@ -1,0 +1,221 @@
+{
+  "name": "Augment Workflow Creator",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "minutesInterval": 1,
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "filePath": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n-unified/integrations/augment/memories/augment_memories.json"
+      },
+      "id": "2",
+      "name": "Read Memories File",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.fileContent }}",
+        "rules": {
+          "rules": [
+            {
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Check If File Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "No Augment memories found. Please create a file at D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n-unified/integrations/augment/memories/augment_memories.json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4",
+      "name": "No Memories Found",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        850,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -File \"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n-unified/integrations/augment/AugmentN8nIntegration.ps1\" -Action Import"
+      },
+      "id": "5",
+      "name": "Import Memories",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        850,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -File \"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n-unified/integrations/augment/AugmentN8nIntegration.ps1\" -Action Sync"
+      },
+      "id": "6",
+      "name": "Sync Workflows",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1050,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "filePath": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n-unified/integrations/augment/logs/augment-n8n-integration.log"
+      },
+      "id": "7",
+      "name": "Read Log File",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "=## Augment Workflow Creator\n\nLa création de workflows n8n à partir des mémoires Augment a été effectuée le {{ $now.format(\"DD/MM/YYYY HH:mm:ss\") }}.\n\n### Dernières entrées du journal :\n\n```\n{{ $json.fileContent.slice(-1000) }}\n```",
+        "options": {}
+      },
+      "id": "8",
+      "name": "Create Report",
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        1450,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Memories File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Memories File": {
+      "main": [
+        [
+          {
+            "node": "Check If File Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If File Exists": {
+      "main": [
+        [
+          {
+            "node": "No Memories Found",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Import Memories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Memories Found": {
+      "main": [
+        [
+          {
+            "node": "Read Log File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import Memories": {
+      "main": [
+        [
+          {
+            "node": "Sync Workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sync Workflows": {
+      "main": [
+        [
+          {
+            "node": "Read Log File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Log File": {
+      "main": [
+        [
+          {
+            "node": "Create Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
