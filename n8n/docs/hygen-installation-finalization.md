@@ -84,7 +84,7 @@ Vous pouvez également utiliser le script de commande pour faciliter l'exécutio
 La structure de dossiers suivante est nécessaire pour Hygen :
 
 ```
-_templates/
+n8n/_templates/
   n8n-script/
     new/
       hello.ejs.t

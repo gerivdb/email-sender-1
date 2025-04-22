@@ -24,7 +24,7 @@ Import-Module Pester -Force
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = (Get-Item $scriptPath).Parent.Parent.Parent.FullName
 $n8nRoot = Join-Path -Path $projectRoot -ChildPath "n8n"
-$templatesRoot = Join-Path -Path $projectRoot -ChildPath "_templates"
+$templatesRoot = Join-Path -Path $projectRoot -ChildPath "n8n/_templates"
 
 # Fonction pour créer un dossier temporaire pour les tests
 function New-TestFolder {
@@ -36,10 +36,10 @@ function New-TestFolder {
 # Fonction pour supprimer un dossier temporaire
 function Remove-TestFolder {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Path
     )
-    
+
     if (Test-Path -Path $Path) {
         Remove-Item -Path $Path -Recurse -Force
     }
@@ -47,7 +47,7 @@ function Remove-TestFolder {
 
 Describe "Hygen Implementation Tests" {
     Context "Template Structure Tests" {
-        It "Should have the _templates directory" {
+        It "Should have the n8n/_templates directory" {
             Test-Path -Path $templatesRoot | Should -Be $true
         }
 
@@ -214,7 +214,7 @@ Describe "Hygen Implementation Tests" {
         BeforeAll {
             # Créer un dossier temporaire pour les tests
             $script:tempFolder = New-TestFolder
-            
+
             # Copier le script ensure-hygen-structure.ps1 dans le dossier temporaire
             $sourcePath = Join-Path -Path $n8nRoot -ChildPath "scripts/setup/ensure-hygen-structure.ps1"
             $destPath = Join-Path -Path $script:tempFolder -ChildPath "ensure-hygen-structure.ps1"
@@ -230,21 +230,21 @@ Describe "Hygen Implementation Tests" {
             # Exécuter le script dans le dossier temporaire
             $currentLocation = Get-Location
             Set-Location -Path $script:tempFolder
-            
+
             # Modifier le script pour qu'il crée les dossiers dans le dossier temporaire
             $scriptContent = Get-Content -Path "ensure-hygen-structure.ps1" -Raw
             $scriptContent = $scriptContent -replace "n8n/", "$script:tempFolder/n8n/"
             Set-Content -Path "ensure-hygen-structure-modified.ps1" -Value $scriptContent
-            
+
             # Exécuter le script modifié
             & "$script:tempFolder/ensure-hygen-structure-modified.ps1"
-            
+
             # Vérifier que les dossiers ont été créés
             Test-Path -Path "$script:tempFolder/n8n/automation" | Should -Be $true
             Test-Path -Path "$script:tempFolder/n8n/core/workflows/local" | Should -Be $true
             Test-Path -Path "$script:tempFolder/n8n/integrations/mcp" | Should -Be $true
             Test-Path -Path "$script:tempFolder/n8n/docs/architecture" | Should -Be $true
-            
+
             # Revenir à l'emplacement d'origine
             Set-Location -Path $currentLocation
         }

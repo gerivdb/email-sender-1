@@ -136,7 +136,7 @@ Ce rapport contient les résultats des tests pour chaque template et le résulta
 Si vous rencontrez des erreurs lors de la génération des templates, vérifiez les points suivants :
 
 - Assurez-vous que Hygen est correctement installé
-- Assurez-vous que les templates sont présents dans le dossier `_templates`
+- Assurez-vous que les templates sont présents dans le dossier `n8n/_templates`
 - Assurez-vous que les templates contiennent les fichiers nécessaires (hello.ejs.t et prompt.js)
 
 ### Erreurs lors de la validation des templates

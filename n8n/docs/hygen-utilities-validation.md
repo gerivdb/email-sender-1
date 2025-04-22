@@ -133,7 +133,7 @@ Si vous rencontrez des erreurs lors de l'exécution des scripts, vérifiez les p
 - Assurez-vous que PowerShell est configuré pour exécuter des scripts
 - Assurez-vous que Node.js et npm sont installés et accessibles
 - Assurez-vous que Hygen est correctement installé
-- Assurez-vous que les templates sont présents dans le dossier `_templates`
+- Assurez-vous que les templates sont présents dans le dossier `n8n/_templates`
 
 ### Erreurs lors des tests de performance
 

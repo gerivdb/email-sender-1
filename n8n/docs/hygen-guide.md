@@ -117,7 +117,7 @@ Vous serez invité à fournir :
 Hygen utilise la structure de dossiers suivante :
 
 ```
-_templates/
+n8n/_templates/
   n8n-script/
     new/
       hello.ejs.t
@@ -209,11 +209,11 @@ Vous pouvez également utiliser directement le script PowerShell :
 
 ## Structure des templates
 
-Les templates sont stockés dans le dossier `_templates` à la racine du projet. Chaque générateur a son propre dossier avec des templates spécifiques.
+Les templates sont stockés dans le dossier `n8n/_templates`. Chaque générateur a son propre dossier avec des templates spécifiques.
 
 ## Personnalisation des templates
 
-Si vous souhaitez personnaliser les templates existants ou en créer de nouveaux, vous pouvez modifier les fichiers dans le dossier `_templates`.
+Si vous souhaitez personnaliser les templates existants ou en créer de nouveaux, vous pouvez modifier les fichiers dans le dossier `n8n/_templates`.
 
 Pour créer un nouveau générateur :
 
@@ -378,7 +378,7 @@ Si la structure de dossiers est incomplète, exécutez :
 Si vous rencontrez des erreurs lors de la génération de composants, vérifiez :
 
 - Que Hygen est correctement installé
-- Que les templates sont présents dans le dossier `_templates`
+- Que les templates sont présents dans le dossier `n8n/_templates`
 - Que les dossiers de destination existent
 
 ### Erreurs lors de l'exécution des tests

@@ -18,7 +18,7 @@
     Date de création: 2023-05-08
 #>
 
-[CmdletBinding(SupportsShouldProcess=$true)]
+[CmdletBinding(SupportsShouldProcess = $true)]
 param ()
 
 # Définir les couleurs pour les messages
@@ -30,40 +30,40 @@ $warningColor = "Yellow"
 # Fonction pour afficher un message de succès
 function Write-Success {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "✓ $Message" -ForegroundColor $successColor
 }
 
 # Fonction pour afficher un message d'erreur
 function Write-Error {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "✗ $Message" -ForegroundColor $errorColor
 }
 
 # Fonction pour afficher un message d'information
 function Write-Info {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "ℹ $Message" -ForegroundColor $infoColor
 }
 
 # Fonction pour afficher un message d'avertissement
 function Write-Warning {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "⚠ $Message" -ForegroundColor $warningColor
 }
 
@@ -78,8 +78,7 @@ function Test-HygenInstallation {
             Write-Error "Hygen n'est pas installé ou n'est pas accessible"
             return $false
         }
-    }
-    catch {
+    } catch {
         Write-Error "Erreur lors de la vérification de l'installation de Hygen: $_"
         return $false
     }
@@ -90,14 +89,14 @@ function Test-FolderStructure {
     $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
     $projectRoot = (Get-Item $scriptPath).Parent.Parent.Parent.FullName
     $n8nRoot = Join-Path -Path $projectRoot -ChildPath "n8n"
-    $templatesRoot = Join-Path -Path $projectRoot -ChildPath "_templates"
-    
+    $templatesRoot = Join-Path -Path $projectRoot -ChildPath "n8n/_templates"
+
     $success = $true
-    
+
     # Vérifier si le dossier _templates existe
     if (Test-Path -Path $templatesRoot) {
         Write-Success "Le dossier _templates existe"
-        
+
         # Vérifier si les dossiers de templates existent
         $templateFolders = @(
             "n8n-script",
@@ -105,7 +104,7 @@ function Test-FolderStructure {
             "n8n-doc",
             "n8n-integration"
         )
-        
+
         foreach ($folder in $templateFolders) {
             $folderPath = Join-Path -Path $templatesRoot -ChildPath $folder
             if (Test-Path -Path $folderPath) {
@@ -119,11 +118,11 @@ function Test-FolderStructure {
         Write-Error "Le dossier _templates n'existe pas"
         $success = $false
     }
-    
+
     # Vérifier si le dossier n8n existe
     if (Test-Path -Path $n8nRoot) {
         Write-Success "Le dossier n8n existe"
-        
+
         # Vérifier si les dossiers nécessaires existent
         $n8nFolders = @(
             "automation",
@@ -135,7 +134,7 @@ function Test-FolderStructure {
             "cmd/utils",
             "tests/unit"
         )
-        
+
         foreach ($folder in $n8nFolders) {
             $folderPath = Join-Path -Path $n8nRoot -ChildPath $folder
             if (Test-Path -Path $folderPath) {
@@ -149,7 +148,7 @@ function Test-FolderStructure {
         Write-Error "Le dossier n8n n'existe pas"
         $success = $false
     }
-    
+
     return $success
 }
 
@@ -158,9 +157,9 @@ function Test-RequiredScripts {
     $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
     $projectRoot = (Get-Item $scriptPath).Parent.Parent.Parent.FullName
     $n8nRoot = Join-Path -Path $projectRoot -ChildPath "n8n"
-    
+
     $success = $true
-    
+
     # Liste des scripts nécessaires
     $requiredScripts = @(
         "scripts/setup/install-hygen.ps1",
@@ -170,7 +169,7 @@ function Test-RequiredScripts {
         "cmd/utils/install-hygen.cmd",
         "tests/Run-HygenTests.ps1"
     )
-    
+
     foreach ($script in $requiredScripts) {
         $scriptPath = Join-Path -Path $n8nRoot -ChildPath $script
         if (Test-Path -Path $scriptPath) {
@@ -180,7 +179,7 @@ function Test-RequiredScripts {
             $success = $false
         }
     }
-    
+
     return $success
 }
 
@@ -188,13 +187,13 @@ function Test-RequiredScripts {
 function Start-Verification {
     Write-Info "Vérification de l'installation de Hygen..."
     $hygenInstalled = Test-HygenInstallation
-    
+
     Write-Info "Vérification de la structure de dossiers..."
     $folderStructureValid = Test-FolderStructure
-    
+
     Write-Info "Vérification des scripts nécessaires..."
     $scriptsValid = Test-RequiredScripts
-    
+
     # Afficher le résultat global
     Write-Host "`nRésultat de la vérification:" -ForegroundColor $infoColor
     if ($hygenInstalled -and $folderStructureValid -and $scriptsValid) {
@@ -202,7 +201,7 @@ function Start-Verification {
         return $true
     } else {
         Write-Error "L'installation de Hygen est incomplète ou invalide"
-        
+
         # Afficher les recommandations
         Write-Info "`nRecommandations:"
         if (-not $hygenInstalled) {
@@ -214,7 +213,7 @@ function Start-Verification {
         if (-not $scriptsValid) {
             Write-Info "- Exécutez 'n8n\scripts\setup\install-hygen.ps1' pour installer tous les scripts nécessaires"
         }
-        
+
         return $false
     }
 }

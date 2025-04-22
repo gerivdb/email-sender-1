@@ -23,7 +23,7 @@ Import-Module Pester -Force
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = (Get-Item $scriptPath).Parent.Parent.Parent.FullName
 $n8nRoot = Join-Path -Path $projectRoot -ChildPath "n8n"
-$templatesRoot = Join-Path -Path $projectRoot -ChildPath "_templates"
+$templatesRoot = Join-Path -Path $projectRoot -ChildPath "n8n/_templates"
 
 # Fonction pour créer un dossier temporaire pour les tests
 function New-TestFolder {
@@ -35,10 +35,10 @@ function New-TestFolder {
 # Fonction pour supprimer un dossier temporaire
 function Remove-TestFolder {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Path
     )
-    
+
     if (Test-Path -Path $Path) {
         Remove-Item -Path $Path -Recurse -Force
     }
@@ -47,50 +47,50 @@ function Remove-TestFolder {
 # Fonction pour simuler la génération d'un fichier à partir d'un template
 function Test-TemplateGeneration {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$TemplatePath,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$OutputPath,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [hashtable]$Variables
     )
-    
+
     # Lire le contenu du template
     $templateContent = Get-Content -Path $TemplatePath -Raw
-    
+
     # Extraire le chemin de destination du template
     if ($templateContent -match "---\s*to:\s*([^\s]+)\s*---") {
         $destinationPath = $Matches[1]
-        
+
         # Remplacer les variables dans le chemin de destination
         foreach ($key in $Variables.Keys) {
             $destinationPath = $destinationPath -replace "<%= $key %>", $Variables[$key]
         }
-        
+
         # Créer le chemin complet de destination
         $fullDestinationPath = Join-Path -Path $OutputPath -ChildPath $destinationPath
-        
+
         # Créer le dossier parent si nécessaire
         $parentFolder = Split-Path -Parent $fullDestinationPath
         if (-not (Test-Path -Path $parentFolder)) {
             New-Item -Path $parentFolder -ItemType Directory -Force | Out-Null
         }
-        
+
         # Extraire le contenu du template (après le deuxième ---)
         $contentStart = $templateContent.IndexOf("---", $templateContent.IndexOf("---") + 3) + 3
         $content = $templateContent.Substring($contentStart)
-        
+
         # Remplacer les variables dans le contenu
         foreach ($key in $Variables.Keys) {
             $content = $content -replace "<%= $key %>", $Variables[$key]
         }
-        
+
         # Écrire le contenu dans le fichier de destination
         Set-Content -Path $fullDestinationPath -Value $content
-        
+
         return $fullDestinationPath
     }
-    
+
     return $null
 }
 
@@ -109,13 +109,13 @@ Describe "Hygen Generators Tests" {
         BeforeAll {
             # Définir les variables pour le template
             $script:scriptVariables = @{
-                name = "test-script"
-                category = "deployment"
+                name        = "test-script"
+                category    = "deployment"
                 description = "Script de test pour les tests unitaires"
-                author = "Équipe de test"
-                "h.now()" = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+                author      = "Équipe de test"
+                "h.now()"   = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
             }
-            
+
             # Générer le fichier à partir du template
             $templatePath = Join-Path -Path $templatesRoot -ChildPath "n8n-script/new/hello.ejs.t"
             $script:generatedScriptPath = Test-TemplateGeneration -TemplatePath $templatePath -OutputPath $script:tempFolder -Variables $script:scriptVariables
@@ -155,13 +155,13 @@ Describe "Hygen Generators Tests" {
         BeforeAll {
             # Définir les variables pour le template
             $script:workflowVariables = @{
-                name = "test-workflow"
-                environment = "local"
-                "JSON.stringify(tags)" = '["email", "test"]'
-                "h.uuid()" = [guid]::NewGuid().ToString()
+                name                       = "test-workflow"
+                environment                = "local"
+                "JSON.stringify(tags)"     = '["email", "test"]'
+                "h.uuid()"                 = [guid]::NewGuid().ToString()
                 "new Date().toISOString()" = (Get-Date).ToUniversalTime().ToString("o")
             }
-            
+
             # Générer le fichier à partir du template
             $templatePath = Join-Path -Path $templatesRoot -ChildPath "n8n-workflow/new/hello.ejs.t"
             $script:generatedWorkflowPath = Test-TemplateGeneration -TemplatePath $templatePath -OutputPath $script:tempFolder -Variables $script:workflowVariables
@@ -195,14 +195,14 @@ Describe "Hygen Generators Tests" {
         BeforeAll {
             # Définir les variables pour le template
             $script:docVariables = @{
-                name = "test-doc"
-                category = "architecture"
-                description = "Documentation de test pour les tests unitaires"
-                author = "Équipe de test"
+                name                       = "test-doc"
+                category                   = "architecture"
+                description                = "Documentation de test pour les tests unitaires"
+                author                     = "Équipe de test"
                 "h.changeCase.title(name)" = "Test Doc"
-                "h.now()" = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+                "h.now()"                  = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
             }
-            
+
             # Générer le fichier à partir du template
             $templatePath = Join-Path -Path $templatesRoot -ChildPath "n8n-doc/new/hello.ejs.t"
             $script:generatedDocPath = Test-TemplateGeneration -TemplatePath $templatePath -OutputPath $script:tempFolder -Variables $script:docVariables
@@ -248,13 +248,13 @@ Describe "Hygen Generators Tests" {
         BeforeAll {
             # Définir les variables pour le template
             $script:integrationVariables = @{
-                name = "test-integration"
-                system = "mcp"
+                name        = "test-integration"
+                system      = "mcp"
                 description = "Intégration de test pour les tests unitaires"
-                author = "Équipe de test"
-                "h.now()" = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+                author      = "Équipe de test"
+                "h.now()"   = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
             }
-            
+
             # Générer le fichier à partir du template
             $templatePath = Join-Path -Path $templatesRoot -ChildPath "n8n-integration/new/hello.ejs.t"
             $script:generatedIntegrationPath = Test-TemplateGeneration -TemplatePath $templatePath -OutputPath $script:tempFolder -Variables $script:integrationVariables
