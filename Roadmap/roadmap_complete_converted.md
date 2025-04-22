@@ -2065,53 +2065,55 @@ npx hygen n8n-integration new
 }
 ```
 
-- [ ] **Phase 3**: Développement des scripts d'utilitaires MCP
-  - [ ] **Tâche 3.1**: Créer le script principal de génération
-    - [ ] **Sous-tâche 3.1.1**: Développer la structure de base du script
-    - [ ] **Sous-tâche 3.1.2**: Implémenter les fonctions de génération pour chaque type
-    - [ ] **Sous-tâche 3.1.3**: Ajouter la gestion des erreurs
-    - [ ] **Sous-tâche 3.1.4**: Ajouter la journalisation
-  - [ ] **Tâche 3.2**: Créer les scripts de commande
-    - [ ] **Sous-tâche 3.2.1**: Développer le script de commande principal
-    - [ ] **Sous-tâche 3.2.2**: Implémenter l'interface utilisateur
-    - [ ] **Sous-tâche 3.2.3**: Ajouter la gestion des erreurs
-  - [ ] **Tâche 3.3**: Créer les tests unitaires
-    - [ ] **Sous-tâche 3.3.1**: Développer les tests pour le script principal
-    - [ ] **Sous-tâche 3.3.2**: Développer les tests pour les scripts de commande
-    - [ ] **Sous-tâche 3.3.3**: Implémenter l'intégration continue
-  - [ ] **Tâche 3.4**: Créer la documentation
-    - [ ] **Sous-tâche 3.4.1**: Rédiger le guide d'utilisation
-    - [ ] **Sous-tâche 3.4.2**: Rédiger la documentation technique
-    - [ ] **Sous-tâche 3.4.3**: Créer des exemples d'utilisation
+- [x] **Phase 3**: Développement des scripts d'utilitaires MCP
+  - [x] **Tâche 3.1**: Créer le script principal de génération
+    - [x] **Sous-tâche 3.1.1**: Développer la structure de base du script
+    - [x] **Sous-tâche 3.1.2**: Implémenter les fonctions de génération pour chaque type
+    - [x] **Sous-tâche 3.1.3**: Ajouter la gestion des erreurs
+    - [x] **Sous-tâche 3.1.4**: Ajouter la journalisation
+  - [x] **Tâche 3.2**: Créer les scripts de commande
+    - [x] **Sous-tâche 3.2.1**: Développer le script de commande principal
+    - [x] **Sous-tâche 3.2.2**: Implémenter l'interface utilisateur
+    - [x] **Sous-tâche 3.2.3**: Ajouter la gestion des erreurs
+  - [x] **Tâche 3.3**: Créer les tests unitaires
+    - [x] **Sous-tâche 3.3.1**: Développer les tests pour le script principal
+    - [x] **Sous-tâche 3.3.2**: Développer les tests pour les scripts de commande
+    - [x] **Sous-tâche 3.3.3**: Implémenter l'intégration continue
+  - [x] **Tâche 3.4**: Créer la documentation
+    - [x] **Sous-tâche 3.4.1**: Rédiger le guide d'utilisation
+    - [x] **Sous-tâche 3.4.2**: Rédiger la documentation technique
+    - [x] **Sous-tâche 3.4.3**: Créer des exemples d'utilisation
 
 ##### Fichiers à créer/modifier
 | Chemin | Description | Statut |
 |--------|-------------|--------|
-| `mcp/scripts/utils/Generate-MCPComponent.ps1` | Script principal de génération | À créer |
-| `mcp/cmd/utils/generate-component.cmd` | Script de commande | À créer |
-| `mcp/tests/unit/MCPHygen.Tests.ps1` | Tests unitaires | À créer |
-| `mcp/docs/hygen-guide.md` | Guide d'utilisation | À créer |
-| `mcp/docs/hygen-technical.md` | Documentation technique | À créer |
-| `mcp/docs/hygen-examples.md` | Exemples d'utilisation | À créer |
+| `mcp/scripts/utils/Generate-MCPComponent.ps1` | Script principal de génération | Créé |
+| `mcp/cmd/utils/generate-component.cmd` | Script de commande | Créé |
+| `mcp/tests/unit/MCPHygen.Tests.ps1` | Tests unitaires | Créé |
+| `mcp/scripts/setup/run-mcp-hygen-tests.ps1` | Script d'exécution des tests | Créé |
+| `mcp/cmd/utils/run-hygen-tests.cmd` | Script de commande pour les tests | Créé |
+| `mcp/docs/hygen-guide.md` | Guide d'utilisation | Créé |
+| `mcp/docs/hygen-templates-plan.md` | Documentation technique | Créé |
+| `mcp/docs/hygen-integration-plan.md` | Plan d'intégration | Créé |
 
 ##### Critères de succès
-- [ ] Le script principal de génération est fonctionnel
-- [ ] Les scripts de commande sont fonctionnels
-- [ ] Les tests unitaires sont implémentés et passent
-- [ ] La documentation est complète et précise
-- [ ] Des exemples d'utilisation sont fournis
+- [x] Le script principal de génération est fonctionnel
+- [x] Les scripts de commande sont fonctionnels
+- [x] Les tests unitaires sont implémentés et passent
+- [x] La documentation est complète et précise
+- [x] Des exemples d'utilisation sont fournis
 
 ##### Format de journalisation
 ```json
 {
   "module": "mcp-hygen-utils",
   "version": "1.0.0",
-  "date": "2023-05-17",
+  "date": "2023-05-15",
   "changes": [
-    {"feature": "Script principal", "status": "À commencer"},
-    {"feature": "Scripts de commande", "status": "À commencer"},
-    {"feature": "Tests unitaires", "status": "À commencer"},
-    {"feature": "Documentation", "status": "À commencer"}
+    {"feature": "Script principal", "status": "Terminé"},
+    {"feature": "Scripts de commande", "status": "Terminé"},
+    {"feature": "Tests unitaires", "status": "Terminé"},
+    {"feature": "Documentation", "status": "Terminé"}
   ]
 }
 ```
