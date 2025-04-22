@@ -2004,63 +2004,63 @@ npx hygen n8n-integration new
 }
 ```
 
-- [ ] **Phase 2**: Création des templates MCP
-  - [ ] **Tâche 2.1**: Créer la structure de base des templates
-    - [ ] **Sous-tâche 2.1.1**: Créer le dossier `mcp/_templates`
-    - [ ] **Sous-tâche 2.1.2**: Créer les sous-dossiers pour chaque type de générateur
-    - [ ] **Sous-tâche 2.1.3**: Configurer les fichiers de base (prompt.js, etc.)
-  - [ ] **Tâche 2.2**: Développer le template pour les scripts serveur
-    - [ ] **Sous-tâche 2.2.1**: Créer le template de base
-    - [ ] **Sous-tâche 2.2.2**: Implémenter les paramètres et variables
-    - [ ] **Sous-tâche 2.2.3**: Ajouter la documentation intégrée
-    - [ ] **Sous-tâche 2.2.4**: Tester le template
-  - [ ] **Tâche 2.3**: Développer le template pour les scripts client
-    - [ ] **Sous-tâche 2.3.1**: Créer le template de base
-    - [ ] **Sous-tâche 2.3.2**: Implémenter les paramètres et variables
-    - [ ] **Sous-tâche 2.3.3**: Ajouter la documentation intégrée
-    - [ ] **Sous-tâche 2.3.4**: Tester le template
-  - [ ] **Tâche 2.4**: Développer le template pour les modules réutilisables
-    - [ ] **Sous-tâche 2.4.1**: Créer le template de base
-    - [ ] **Sous-tâche 2.4.2**: Implémenter les paramètres et variables
-    - [ ] **Sous-tâche 2.4.3**: Ajouter la documentation intégrée
-    - [ ] **Sous-tâche 2.4.4**: Tester le template
-  - [ ] **Tâche 2.5**: Développer le template pour la documentation
-    - [ ] **Sous-tâche 2.5.1**: Créer le template de base
-    - [ ] **Sous-tâche 2.5.2**: Implémenter les paramètres et variables
-    - [ ] **Sous-tâche 2.5.3**: Tester le template
+- [x] **Phase 2**: Création des templates MCP
+  - [x] **Tâche 2.1**: Créer la structure de base des templates
+    - [x] **Sous-tâche 2.1.1**: Créer le dossier `mcp/_templates`
+    - [x] **Sous-tâche 2.1.2**: Créer les sous-dossiers pour chaque type de générateur
+    - [x] **Sous-tâche 2.1.3**: Configurer les fichiers de base (prompt.js, etc.)
+  - [x] **Tâche 2.2**: Développer le template pour les scripts serveur
+    - [x] **Sous-tâche 2.2.1**: Créer le template de base
+    - [x] **Sous-tâche 2.2.2**: Implémenter les paramètres et variables
+    - [x] **Sous-tâche 2.2.3**: Ajouter la documentation intégrée
+    - [x] **Sous-tâche 2.2.4**: Tester le template
+  - [x] **Tâche 2.3**: Développer le template pour les scripts client
+    - [x] **Sous-tâche 2.3.1**: Créer le template de base
+    - [x] **Sous-tâche 2.3.2**: Implémenter les paramètres et variables
+    - [x] **Sous-tâche 2.3.3**: Ajouter la documentation intégrée
+    - [x] **Sous-tâche 2.3.4**: Tester le template
+  - [x] **Tâche 2.4**: Développer le template pour les modules réutilisables
+    - [x] **Sous-tâche 2.4.1**: Créer le template de base
+    - [x] **Sous-tâche 2.4.2**: Implémenter les paramètres et variables
+    - [x] **Sous-tâche 2.4.3**: Ajouter la documentation intégrée
+    - [x] **Sous-tâche 2.4.4**: Tester le template
+  - [x] **Tâche 2.5**: Développer le template pour la documentation
+    - [x] **Sous-tâche 2.5.1**: Créer le template de base
+    - [x] **Sous-tâche 2.5.2**: Implémenter les paramètres et variables
+    - [x] **Sous-tâche 2.5.3**: Tester le template
 
-##### Fichiers à créer/modifier
+##### Fichiers créés/modifiés
 | Chemin | Description | Statut |
 |--------|-------------|--------|
-| `mcp/_templates/mcp-server/new/hello.ejs.t` | Template pour scripts serveur | À créer |
-| `mcp/_templates/mcp-server/new/prompt.js` | Prompt pour scripts serveur | À créer |
-| `mcp/_templates/mcp-client/new/hello.ejs.t` | Template pour scripts client | À créer |
-| `mcp/_templates/mcp-client/new/prompt.js` | Prompt pour scripts client | À créer |
-| `mcp/_templates/mcp-module/new/hello.ejs.t` | Template pour modules | À créer |
-| `mcp/_templates/mcp-module/new/prompt.js` | Prompt pour modules | À créer |
-| `mcp/_templates/mcp-doc/new/hello.ejs.t` | Template pour documentation | À créer |
-| `mcp/_templates/mcp-doc/new/prompt.js` | Prompt pour documentation | À créer |
+| `mcp/_templates/mcp-server/new/hello.ejs.t` | Template pour scripts serveur | Créé |
+| `mcp/_templates/mcp-server/new/prompt.js` | Prompt pour scripts serveur | Créé |
+| `mcp/_templates/mcp-client/new/hello.ejs.t` | Template pour scripts client | Créé |
+| `mcp/_templates/mcp-client/new/prompt.js` | Prompt pour scripts client | Créé |
+| `mcp/_templates/mcp-module/new/hello.ejs.t` | Template pour modules | Créé |
+| `mcp/_templates/mcp-module/new/prompt.js` | Prompt pour modules | Créé |
+| `mcp/_templates/mcp-doc/new/hello.ejs.t` | Template pour documentation | Créé |
+| `mcp/_templates/mcp-doc/new/prompt.js` | Prompt pour documentation | Créé |
 
 ##### Critères de succès
-- [ ] La structure de base des templates est créée
-- [ ] Les templates pour les scripts serveur sont fonctionnels
-- [ ] Les templates pour les scripts client sont fonctionnels
-- [ ] Les templates pour les modules réutilisables sont fonctionnels
-- [ ] Les templates pour la documentation sont fonctionnels
-- [ ] Tous les templates sont testés et validés
+- [x] La structure de base des templates est créée
+- [x] Les templates pour les scripts serveur sont fonctionnels
+- [x] Les templates pour les scripts client sont fonctionnels
+- [x] Les templates pour les modules réutilisables sont fonctionnels
+- [x] Les templates pour la documentation sont fonctionnels
+- [x] Tous les templates sont testés et validés
 
 ##### Format de journalisation
 ```json
 {
   "module": "mcp-hygen-templates",
   "version": "1.0.0",
-  "date": "2023-05-16",
+  "date": "2023-05-15",
   "changes": [
-    {"feature": "Structure de base", "status": "À commencer"},
-    {"feature": "Templates scripts serveur", "status": "À commencer"},
-    {"feature": "Templates scripts client", "status": "À commencer"},
-    {"feature": "Templates modules", "status": "À commencer"},
-    {"feature": "Templates documentation", "status": "À commencer"}
+    {"feature": "Structure de base", "status": "Terminé"},
+    {"feature": "Templates scripts serveur", "status": "Terminé"},
+    {"feature": "Templates scripts client", "status": "Terminé"},
+    {"feature": "Templates modules", "status": "Terminé"},
+    {"feature": "Templates documentation", "status": "Terminé"}
   ]
 }
 ```
