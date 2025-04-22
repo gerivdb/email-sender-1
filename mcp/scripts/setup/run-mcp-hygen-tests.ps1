@@ -22,9 +22,9 @@
     Date de création: 2023-05-15
 #>
 
-[CmdletBinding(SupportsShouldProcess=$true)]
+[CmdletBinding(SupportsShouldProcess = $true)]
 param (
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory = $false)]
     [string]$OutputPath = ""
 )
 
@@ -37,40 +37,40 @@ $warningColor = "Yellow"
 # Fonction pour afficher un message de succès
 function Write-Success {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "✓ $Message" -ForegroundColor $successColor
 }
 
 # Fonction pour afficher un message d'erreur
 function Write-Error {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "✗ $Message" -ForegroundColor $errorColor
 }
 
 # Fonction pour afficher un message d'information
 function Write-Info {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "ℹ $Message" -ForegroundColor $infoColor
 }
 
 # Fonction pour afficher un message d'avertissement
 function Write-Warning {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "⚠ $Message" -ForegroundColor $warningColor
 }
 
@@ -82,42 +82,43 @@ function Get-ProjectPath {
 }
 
 # Fonction pour exécuter les tests unitaires
-function Run-Tests {
+function Invoke-Tests {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$TestPath
     )
-    
+
     # Vérifier si Pester est installé
     if (-not (Get-Module -Name Pester -ListAvailable)) {
         Write-Warning "Pester n'est pas installé. Installation en cours..."
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
-    
+
     # Importer Pester
     Import-Module -Name Pester -Force
-    
+
     # Configurer Pester
     $pesterConfig = New-PesterConfiguration
     $pesterConfig.Run.Path = $TestPath
     $pesterConfig.Output.Verbosity = "Detailed"
-    
+
     # Exécuter les tests
     $testResults = Invoke-Pester -Configuration $pesterConfig -PassThru
-    
+
     return $testResults
 }
 
 # Fonction pour générer un rapport de tests
-function Generate-TestReport {
+function New-TestReport {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [object]$TestResults,
-        
-        [Parameter(Mandatory=$true)]
+
+        [Parameter(Mandatory = $true)]
         [string]$OutputPath
     )
-    
+
     if ($PSCmdlet.ShouldProcess($OutputPath, "Générer le rapport")) {
         $report = @"
 # Rapport de tests unitaires pour les templates Hygen MCP
@@ -136,39 +137,39 @@ $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 ## Détails des tests
 
 "@
-        
+
         foreach ($container in $TestResults.Containers) {
             $report += "`n### $($container.Item)`n"
-            
+
             foreach ($block in $container.Blocks) {
                 $report += "`n#### $($block.Name)`n"
-                
+
                 foreach ($test in $block.Tests) {
                     $status = if ($test.Result -eq "Passed") { "✓" } else { "✗" }
                     $report += "`n- $status $($test.Name)"
-                    
+
                     if ($test.Result -eq "Failed") {
                         $report += "`n  - Erreur: $($test.ErrorRecord.Exception.Message)"
                     }
                 }
             }
         }
-        
+
         $report += @"
 
 ## Conclusion
 
 "@
-        
+
         if ($TestResults.FailedCount -eq 0) {
             $report += "`nTous les tests ont réussi. Les templates Hygen MCP sont correctement installés et fonctionnent comme prévu."
         } else {
             $report += "`nCertains tests ont échoué. Veuillez consulter les détails des tests pour plus d'informations."
         }
-        
+
         Set-Content -Path $OutputPath -Value $report
         Write-Success "Rapport de tests généré: $OutputPath"
-        
+
         return $OutputPath
     } else {
         return $null
@@ -178,46 +179,46 @@ $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 # Fonction principale
 function Start-TestExecution {
     Write-Info "Exécution des tests unitaires pour les templates Hygen MCP..."
-    
+
     # Déterminer le chemin de sortie
     $projectRoot = Get-ProjectPath
     $mcpRoot = Join-Path -Path $projectRoot -ChildPath "mcp"
     $docsFolder = Join-Path -Path $mcpRoot -ChildPath "docs"
-    
+
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $OutputPath = Join-Path -Path $docsFolder -ChildPath "hygen-test-report.md"
     }
-    
+
     # Déterminer le chemin des tests
     $testPath = Join-Path -Path $mcpRoot -ChildPath "tests\unit\MCPHygen.Tests.ps1"
-    
+
     # Vérifier si le fichier de test existe
     if (-not (Test-Path -Path $testPath)) {
         Write-Error "Le fichier de test n'existe pas: $testPath"
         return $false
     }
-    
+
     # Exécuter les tests
     Write-Info "Exécution des tests: $testPath"
-    $testResults = Run-Tests -TestPath $testPath
-    
+    $testResults = Invoke-Tests -TestPath $testPath
+
     # Afficher les résultats
     Write-Info "Tests exécutés: $($testResults.TotalCount)"
     Write-Info "Tests réussis: $($testResults.PassedCount)"
     Write-Info "Tests échoués: $($testResults.FailedCount)"
     Write-Info "Tests ignorés: $($testResults.SkippedCount)"
     Write-Info "Durée totale: $($testResults.Duration.TotalSeconds.ToString("0.00")) secondes"
-    
+
     # Générer le rapport
-    $reportPath = Generate-TestReport -TestResults $testResults -OutputPath $OutputPath
-    
+    $reportPath = New-TestReport -TestResults $testResults -OutputPath $OutputPath
+
     # Afficher le résultat
     if ($reportPath) {
         Write-Success "Rapport de tests généré: $reportPath"
     } else {
         Write-Error "Impossible de générer le rapport de tests"
     }
-    
+
     return $testResults.FailedCount -eq 0
 }
 
