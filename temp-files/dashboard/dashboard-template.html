@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord n8n</title>
+    <link rel="icon" href="https://n8n.io/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #ff6d5a;
+            --secondary-color: #41b883;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-dot.online {
+            background-color: var(--success-color);
+        }
+
+        .status-dot.offline {
+            background-color: var(--danger-color);
+        }
+
+        .status-dot.warning {
+            background-color: var(--warning-color);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .card-refresh {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-refresh:hover {
+            color: var(--primary-color);
+        }
+
+        .card-content {
+            margin-bottom: 15px;
+        }
+
+        .metric {
+            margin-bottom: 15px;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .metric-name {
+            font-weight: bold;
+        }
+
+        .metric-value {
+            font-weight: bold;
+        }
+
+        .metric-value.success {
+            color: var(--success-color);
+        }
+
+        .metric-value.warning {
+            color: var(--warning-color);
+        }
+
+        .metric-value.danger {
+            color: var(--danger-color);
+        }
+
+        .metric-description {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .chart-container {
+            height: 200px;
+            margin-top: 15px;
+        }
+
+        .workflow-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .workflow-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .workflow-item:last-child {
+            border-bottom: none;
+        }
+
+        .workflow-name {
+            font-weight: bold;
+        }
+
+        .workflow-status {
+            font-size: 0.85rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .workflow-status.active {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .workflow-status.inactive {
+            background-color: #888;
+            color: white;
+        }
+
+        .workflow-status.error {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .event-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .event-item {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-time {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .event-description {
+            margin-top: 3px;
+        }
+
+        .event-type {
+            font-size: 0.85rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-right: 5px;
+        }
+
+        .event-type.info {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        .event-type.warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .event-type.error {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .event-type.success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .refresh-info {
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                margin-bottom: 10px;
+            }
+
+            footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                margin-top: 10px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="https://n8n.io/favicon.ico" alt="n8n Logo">
+                <h1>Tableau de bord n8n</h1>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot {{SERVICE_STATUS_CLASS}}"></div>
+                <span>{{SERVICE_STATUS_TEXT}}</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard-grid">
+            <!-- Carte d'état du service -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">État du service</h2>
+                    <button class="card-refresh" onclick="refreshCard('service-status')">
+                        <span>Actualiser</span>
+                    </button>
+                </div>
+                <div class="card-content" id="service-status">
+                    {{SERVICE_STATUS_METRICS}}
+                </div>
+            </div>
+
+            <!-- Carte de performance -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Performance</h2>
+                    <button class="card-refresh" onclick="refreshCard('performance')">
+                        <span>Actualiser</span>
+                    </button>
+                </div>
+                <div class="card-content" id="performance">
+                    {{PERFORMANCE_METRICS}}
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte des workflows -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Workflows</h2>
+                    <button class="card-refresh" onclick="refreshCard('workflows')">
+                        <span>Actualiser</span>
+                    </button>
+                </div>
+                <div class="card-content" id="workflows">
+                    {{WORKFLOW_METRICS}}
+                    <div class="chart-container">
+                        <canvas id="workflowsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte d'historique -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Historique</h2>
+                    <button class="card-refresh" onclick="refreshCard('history')">
+                        <span>Actualiser</span>
+                    </button>
+                </div>
+                <div class="card-content" id="history">
+                    {{HISTORY_METRICS}}
+                </div>
+            </div>
+
+            <!-- Carte des endpoints -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Endpoints API</h2>
+                    <button class="card-refresh" onclick="refreshCard('endpoints')">
+                        <span>Actualiser</span>
+                    </button>
+                </div>
+                <div class="card-content" id="endpoints">
+                    {{ENDPOINT_METRICS}}
+                </div>
+            </div>
+
+            <!-- Carte des événements récents -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Événements récents</h2>
+                    <button class="card-refresh" onclick="refreshCard('events')">
+                        <span>Actualiser</span>
+                    </button>
+                </div>
+                <div class="card-content" id="events">
+                    <div class="event-list">
+                        {{RECENT_EVENTS}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="refresh-info">
+            Dernière actualisation: {{LAST_REFRESH}} | Actualisation automatique: {{AUTO_REFRESH}}
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div>
+                <p>&copy; 2025 Système de remédiation n8n</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://docs.n8n.io/" target="_blank">Documentation n8n</a>
+                <a href="https://community.n8n.io/" target="_blank">Communauté n8n</a>
+                <a href="https://n8n.io/" target="_blank">Site officiel n8n</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration des graphiques
+        const performanceChartConfig = {
+            type: 'line',
+            data: {
+                labels: {{PERFORMANCE_CHART_LABELS}},
+                datasets: [
+                    {
+                        label: 'Temps de réponse (ms)',
+                        data: {{RESPONSE_TIME_DATA}},
+                        borderColor: '#ff6d5a',
+                        backgroundColor: 'rgba(255, 109, 90, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Utilisation mémoire (MB)',
+                        data: {{MEMORY_USAGE_DATA}},
+                        borderColor: '#41b883',
+                        backgroundColor: 'rgba(65, 184, 131, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        hidden: true
+                    },
+                    {
+                        label: 'Utilisation CPU (%)',
+                        data: {{CPU_USAGE_DATA}},
+                        borderColor: '#17a2b8',
+                        backgroundColor: 'rgba(23, 162, 184, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        hidden: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        const workflowsChartConfig = {
+            type: 'doughnut',
+            data: {
+                labels: ['Actifs', 'Inactifs', 'Avec erreurs'],
+                datasets: [{
+                    data: {{WORKFLOWS_CHART_DATA}},
+                    backgroundColor: [
+                        '#28a745',
+                        '#6c757d',
+                        '#dc3545'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        };
+
+        // Initialisation des graphiques
+        window.addEventListener('load', function() {
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            const workflowsCtx = document.getElementById('workflowsChart').getContext('2d');
+            
+            new Chart(performanceCtx, performanceChartConfig);
+            new Chart(workflowsCtx, workflowsChartConfig);
+        });
+
+        // Fonction pour actualiser une carte
+        function refreshCard(cardId) {
+            // Cette fonction sera implémentée pour l'actualisation AJAX
+            console.log(`Actualisation de la carte: ${cardId}`);
+            // Dans une implémentation réelle, nous ferions une requête AJAX ici
+            // pour récupérer les nouvelles données et mettre à jour la carte
+        }
+
+        // Actualisation automatique
+        {{AUTO_REFRESH_SCRIPT}}
+    </script>
+</body>
+</html>

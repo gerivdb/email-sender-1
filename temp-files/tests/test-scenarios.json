@@ -1,0 +1,238 @@
+[
+  {
+    "id": "lifecycle-basic",
+    "name": "Cycle de vie basique",
+    "description": "Teste le cycle de vie basique de n8n (démarrage, vérification, arrêt)",
+    "priority": "high",
+    "steps": [
+      {
+        "id": "stop-if-running",
+        "description": "Arrêter n8n s'il est en cours d'exécution",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\stop-n8n.ps1\"",
+        "expectedResult": null,
+        "continueOnFailure": true
+      },
+      {
+        "id": "start-n8n",
+        "description": "Démarrer n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\start-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "check-running",
+        "description": "Vérifier que n8n est en cours d'exécution",
+        "command": "Test-Path -Path \"n8n/data/n8n.pid\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "check-status",
+        "description": "Vérifier l'état de n8n",
+        "command": "$result = & \"$PSScriptRoot\\..\\monitoring\\check-n8n-status-main.ps1\" -NoInteractive; $result.OverallSuccess",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "stop-n8n",
+        "description": "Arrêter n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\stop-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "check-stopped",
+        "description": "Vérifier que n8n est arrêté",
+        "command": "if (Test-Path -Path \"n8n/data/n8n.pid\") { $pid = Get-Content -Path \"n8n/data/n8n.pid\"; $process = Get-Process -Id $pid -ErrorAction SilentlyContinue; $null -eq $process } else { $true }",
+        "expectedResult": true,
+        "continueOnFailure": false
+      }
+    ]
+  },
+  {
+    "id": "lifecycle-advanced",
+    "name": "Cycle de vie avancé",
+    "description": "Teste le cycle de vie avancé de n8n (démarrage, redémarrage, arrêt)",
+    "priority": "medium",
+    "steps": [
+      {
+        "id": "stop-if-running",
+        "description": "Arrêter n8n s'il est en cours d'exécution",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\stop-n8n.ps1\"",
+        "expectedResult": null,
+        "continueOnFailure": true
+      },
+      {
+        "id": "start-n8n",
+        "description": "Démarrer n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\start-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "check-running",
+        "description": "Vérifier que n8n est en cours d'exécution",
+        "command": "Test-Path -Path \"n8n/data/n8n.pid\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "restart-n8n",
+        "description": "Redémarrer n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\restart-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "check-running-after-restart",
+        "description": "Vérifier que n8n est en cours d'exécution après redémarrage",
+        "command": "Test-Path -Path \"n8n/data/n8n.pid\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "check-status-after-restart",
+        "description": "Vérifier l'état de n8n après redémarrage",
+        "command": "$result = & \"$PSScriptRoot\\..\\monitoring\\check-n8n-status-main.ps1\" -NoInteractive; $result.OverallSuccess",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "stop-n8n",
+        "description": "Arrêter n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\stop-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      }
+    ]
+  },
+  {
+    "id": "workflow-management",
+    "name": "Gestion des workflows",
+    "description": "Teste la gestion des workflows (importation, vérification)",
+    "priority": "high",
+    "steps": [
+      {
+        "id": "stop-if-running",
+        "description": "Arrêter n8n s'il est en cours d'exécution",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\stop-n8n.ps1\"",
+        "expectedResult": null,
+        "continueOnFailure": true
+      },
+      {
+        "id": "start-n8n",
+        "description": "Démarrer n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\start-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "import-workflows",
+        "description": "Importer des workflows",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\import-workflows-auto-main.ps1\" -NoInteractive",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "verify-workflows",
+        "description": "Vérifier la présence des workflows",
+        "command": "$result = & \"$PSScriptRoot\\..\\monitoring\\verify-workflows.ps1\" -NoInteractive; $result.MissingCount -eq 0",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "stop-n8n",
+        "description": "Arrêter n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\stop-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      }
+    ]
+  },
+  {
+    "id": "structure-test",
+    "name": "Test de structure",
+    "description": "Teste la structure du système n8n",
+    "priority": "medium",
+    "steps": [
+      {
+        "id": "test-structure",
+        "description": "Tester la structure",
+        "command": "$result = & \"$PSScriptRoot\\..\\diagnostics\\test-structure.ps1\" -NoInteractive; $result.Summary.SuccessRate -ge 90",
+        "expectedResult": true,
+        "continueOnFailure": false
+      }
+    ]
+  },
+  {
+    "id": "end-to-end",
+    "name": "Test de bout en bout",
+    "description": "Teste le système n8n de bout en bout",
+    "priority": "high",
+    "steps": [
+      {
+        "id": "stop-if-running",
+        "description": "Arrêter n8n s'il est en cours d'exécution",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\stop-n8n.ps1\"",
+        "expectedResult": null,
+        "continueOnFailure": true
+      },
+      {
+        "id": "test-structure",
+        "description": "Tester la structure",
+        "command": "$result = & \"$PSScriptRoot\\..\\diagnostics\\test-structure.ps1\" -NoInteractive; $result.Summary.SuccessRate -ge 90",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "start-n8n",
+        "description": "Démarrer n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\start-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "check-status",
+        "description": "Vérifier l'état de n8n",
+        "command": "$result = & \"$PSScriptRoot\\..\\monitoring\\check-n8n-status-main.ps1\" -NoInteractive; $result.OverallSuccess",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "import-workflows",
+        "description": "Importer des workflows",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\import-workflows-auto-main.ps1\" -NoInteractive",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "verify-workflows",
+        "description": "Vérifier la présence des workflows",
+        "command": "$result = & \"$PSScriptRoot\\..\\monitoring\\verify-workflows.ps1\" -NoInteractive; $result.MissingCount -eq 0",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "restart-n8n",
+        "description": "Redémarrer n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\restart-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "check-status-after-restart",
+        "description": "Vérifier l'état de n8n après redémarrage",
+        "command": "$result = & \"$PSScriptRoot\\..\\monitoring\\check-n8n-status-main.ps1\" -NoInteractive; $result.OverallSuccess",
+        "expectedResult": true,
+        "continueOnFailure": false
+      },
+      {
+        "id": "stop-n8n",
+        "description": "Arrêter n8n",
+        "command": "& \"$PSScriptRoot\\..\\deployment\\stop-n8n.ps1\"",
+        "expectedResult": true,
+        "continueOnFailure": false
+      }
+    ]
+  }
+]
