@@ -1,0 +1,92 @@
+﻿{
+  "name": "Email Sender - Configuration Globale",
+  "description": "Fichier de configuration pour les paramètres partagés entre les phases",
+  "version": "1.0.0",
+  "config": {
+    "notion": {
+      "databases": {
+        "contacts": {
+          "id": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "name": "LOT1"
+        },
+        "disponibilites": {
+          "id": "1c581449-f795-8088-b362-d4399dc7d9f3",
+          "name": "Disponibilités Membres"
+        }
+      },
+      "statuses": {
+        "nouveau": "Nouveau",
+        "emailEnvoye": "Email Envoyé",
+        "interesse": "Intéressé",
+        "negociation": "Négociation",
+        "confirmation": "Confirmation",
+        "confirmeGCal": "Confirmé GCal",
+        "termine": "Terminé",
+        "refus": "Refus"
+      }
+    },
+    "googleCalendar": {
+      "calendars": {
+        "booking": {
+          "id": "f4641f7364224dbdba9151649dca276cce21ac806f327b8c9056b35ba41be559@group.calendar.google.com",
+          "name": "BOOKING1"
+        }
+      }
+    },
+    "gmail": {
+      "templates": {
+        "prospection": {
+          "id": "18c4e4d9c8c9c8c9",
+          "subject": "Proposition – Groupe en tournée (automatisé)"
+        },
+        "remerciement": {
+          "subject": "Merci pour le concert !"
+        }
+      }
+    },
+    "ai": {
+      "models": {
+        "deepseek": {
+          "name": "deepseek-ai/deepseek-v3",
+          "provider": "openrouter"
+        }
+      }
+    },
+    "phases": {
+      "phase1": {
+        "id": "1",
+        "name": "Gestion des Disponibilités",
+        "cronSchedule": "0 0 * * 1",
+        "description": "Tous les lundis à minuit"
+      },
+      "phase2": {
+        "id": "2",
+        "name": "Génération & Envoi des Emails",
+        "trigger": "phase1"
+      },
+      "phase3": {
+        "id": "3",
+        "name": "Traitement des Réponses",
+        "trigger": "gmail"
+      },
+      "phase4": {
+        "id": "4",
+        "name": "Gestion des Concerts Confirmés",
+        "cronSchedule": "0 */30 * * * *",
+        "description": "Toutes les 30 minutes"
+      },
+      "phase5": {
+        "id": "5",
+        "name": "Suivi Post-Concert",
+        "cronSchedule": "0 0 * * *",
+        "description": "Tous les jours à minuit"
+      },
+      "phase6": {
+        "id": "6",
+        "name": "Évaluation et Planification Future",
+        "cronSchedule": "0 0 * * 1",
+        "description": "Tous les lundis à minuit"
+      }
+    }
+  }
+}

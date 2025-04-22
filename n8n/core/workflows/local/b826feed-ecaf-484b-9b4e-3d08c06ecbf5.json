@@ -1,0 +1,24 @@
+﻿{
+    "id":  "b826feed-ecaf-484b-9b4e-3d08c06ecbf5",
+    "name":  null,
+    "nodes":  null,
+    "connections":  null,
+    "active":  false,
+    "settings":  {
+                     "saveManualExecutions":  true,
+                     "executionOrder":  "v1",
+                     "callerPolicy":  "workflowsFromSameOwner",
+                     "errorWorkflow":  ""
+                 },
+    "staticData":  null,
+    "versionId":  "46396896-cee2-4390-ad48-2bdbd242371e",
+    "createdAt":  "2025-04-21T03:13:17.553Z",
+    "updatedAt":  "2025-04-21T03:13:17.559Z",
+    "pinData":  {
+
+                },
+    "triggerCount":  0,
+    "tags":  [
+
+             ]
+}

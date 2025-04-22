@@ -1,0 +1,221 @@
+﻿{
+    "id":  "7ad5bb9e-5711-4fac-a333-d83e6e680342",
+    "name":  "Email Sender - Phase 3 (Traitement des Réponses)",
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "resource":  "message",
+                                         "operation":  "getAll",
+                                         "limit":  10,
+                                         "filters":  {
+                                                         "subject":  "Re: Proposition – Groupe en tournée (automatisé)"
+                                                     },
+                                         "options":  {
+                                                         "onlyWithAttachments":  false
+                                                     }
+                                     },
+                      "id":  "8d417011-1f73-4706-abeb-be21c52f1195",
+                      "name":  "Trigger Gmail Réponse",
+                      "type":  "n8n-nodes-base.gmail",
+                      "typeVersion":  2.1,
+                      "position":  [
+                                       580,
+                                       300
+                                   ],
+                      "credentials":  {
+                                          "gmailOAuth2":  {
+                                                              "id":  "xKa629oVYYGTlvnn",
+                                                              "name":  "Gmail account 2"
+                                                          }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "resource":  "databasePage",
+                                         "operation":  "getAll",
+                                         "databaseId":  {
+                                                            "__rl":  true,
+                                                            "value":  "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+                                                            "mode":  "list",
+                                                            "cachedResultName":  "LOT1",
+                                                            "cachedResultUrl":  "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+                                                        },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "c51a167d-b1de-4f76-a30e-ceca5b8c8742",
+                      "name":  "Cherche Email Notion",
+                      "type":  "n8n-nodes-base.notion",
+                      "typeVersion":  1,
+                      "position":  [
+                                       800,
+                                       300
+                                   ],
+                      "credentials":  {
+                                          "notionApi":  {
+                                                            "id":  "gFvw0ObPabSVTQIp",
+                                                            "name":  "Notion account"
+                                                        }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Analyse des réponses aux emails\nconst emailContent = $json.body || $json.content || \u0027\u0027;\n\n// Mots-clés pour détecter l\u0027intention\nconst keywords = {\n  interest: [\u0027intéressé\u0027, \u0027intéressant\u0027, \u0027possible\u0027, \u0027pourquoi pas\u0027],\n  negotiation: [\u0027tarif\u0027, \u0027prix\u0027, \u0027cachet\u0027, \u0027budget\u0027, \u0027coût\u0027],\n  confirmation: [\u0027confirm\u0027, \u0027réserv\u0027, \u0027valid\u0027, \u0027accord\u0027, \u0027ok pour\u0027],\n  rejection: [\u0027désolé\u0027, \u0027malheureusement\u0027, \u0027pas possible\u0027, \u0027complet\u0027]\n};\n\n// Détection des mots-clés\nlet isInterested = false;\nlet isNegotiating = false;\nlet isConfirming = false;\nlet isRejecting = false;\n\n// Vérification pour chaque catégorie\nfor (const keyword of keywords.interest) {\n  if (emailContent.toLowerCase().includes(keyword.toLowerCase())) {\n    isInterested = true;\n    break;\n  }\n}\n\nfor (const keyword of keywords.negotiation) {\n  if (emailContent.toLowerCase().includes(keyword.toLowerCase())) {\n    isNegotiating = true;\n    break;\n  }\n}\n\nfor (const keyword of keywords.confirmation) {\n  if (emailContent.toLowerCase().includes(keyword.toLowerCase())) {\n    isConfirming = true;\n    break;\n  }\n}\n\nfor (const keyword of keywords.rejection) {\n  if (emailContent.toLowerCase().includes(keyword.toLowerCase())) {\n    isRejecting = true;\n    break;\n  }\n}\n\n// Détermination du statut global\nlet status = \u0027Indéterminé\u0027;\nif (isConfirming) {\n  status = \u0027Confirmation\u0027;\n} else if (isNegotiating) {\n  status = \u0027Négociation\u0027;\n} else if (isInterested) {\n  status = \u0027Intéressé\u0027;\n} else if (isRejecting) {\n  status = \u0027Refus\u0027;\n}\n\n// Retourne les données enrichies\nreturn [{\n  json: {\n    ...($json || {}),\n    emailContent,\n    intention: {\n      isInterested,\n      isNegotiating,\n      isConfirming,\n      isRejecting\n    },\n    status,\n    analysisTimestamp: new Date().toISOString()\n  }\n}];"
+                                     },
+                      "id":  "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+                      "name":  "Analyse IA Réponse",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       1020,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "resource":  "databasePage",
+                                         "operation":  "update",
+                                         "databaseId":  {
+                                                            "__rl":  true,
+                                                            "value":  "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+                                                            "mode":  "list",
+                                                            "cachedResultName":  "LOT1",
+                                                            "cachedResultUrl":  "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+                                                        },
+                                         "pageId":  "={{ $json.id }}",
+                                         "properties":  {
+                                                            "Status":  {
+                                                                           "status":  {
+                                                                                          "name":  "={{ $json.status }}"
+                                                                                      }
+                                                                       },
+                                                            "Réponse":  {
+                                                                            "rich_text":  [
+                                                                                              {
+                                                                                                  "text":  {
+                                                                                                               "content":  "={{ $json.emailContent.substring(0, 2000) }}"
+                                                                                                           }
+                                                                                              }
+                                                                                          ]
+                                                                        }
+                                                        }
+                                     },
+                      "id":  "8a8459bc-d38a-43ef-92b3-5517ba97a1a1",
+                      "name":  "Update Notion Répondu",
+                      "type":  "n8n-nodes-base.notion",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1240,
+                                       300
+                                   ],
+                      "credentials":  {
+                                          "notionApi":  {
+                                                            "id":  "gFvw0ObPabSVTQIp",
+                                                            "name":  "Notion account"
+                                                        }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "string":  [
+                                                                           {
+                                                                               "value1":  "={{ $json.status }}",
+                                                                               "operation":  "equals",
+                                                                               "value2":  "Confirmation"
+                                                                           }
+                                                                       ]
+                                                        }
+                                     },
+                      "id":  "47f136ed-17fc-4e0d-b8e2-c1c48c52d589",
+                      "name":  "Check DEAL",
+                      "type":  "n8n-nodes-base.if",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1460,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "content":  "## ✅ Phase 3: Traitement des Réponses\n\nDéclencheur: Trigger Gmail Réponse\nObjectif: Analyser les réponses reçues et mettre à jour Notion",
+                                         "height":  280,
+                                         "width":  1220,
+                                         "color":  2
+                                     },
+                      "type":  "n8n-nodes-base.stickyNote",
+                      "typeVersion":  1,
+                      "position":  [
+                                       560,
+                                       180
+                                   ],
+                      "id":  "429a26dc-88cf-45c5-98c4-65528ad50da3",
+                      "name":  "Sticky Note Phase 3"
+                  }
+              ],
+    "connections":  {
+                        "8d417011-1f73-4706-abeb-be21c52f1195":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "c51a167d-b1de-4f76-a30e-ceca5b8c8742",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 },
+                        "c51a167d-b1de-4f76-a30e-ceca5b8c8742":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 },
+                        "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "8a8459bc-d38a-43ef-92b3-5517ba97a1a1",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 },
+                        "8a8459bc-d38a-43ef-92b3-5517ba97a1a1":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "47f136ed-17fc-4e0d-b8e2-c1c48c52d589",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 }
+                    },
+    "active":  false,
+    "settings":  {
+                     "saveManualExecutions":  true,
+                     "executionOrder":  "v1",
+                     "callerPolicy":  "workflowsFromSameOwner",
+                     "errorWorkflow":  ""
+                 },
+    "versionId":  "a893ce6c-1a5e-4b55-857e-426622a61a4f",
+    "createdAt":  "2025-04-21T05:56:18.614Z",
+    "updatedAt":  "2025-04-21T05:56:18.614Z",
+    "pinData":  {
+
+                },
+    "triggerCount":  0,
+    "tags":  [
+
+             ],
+    "staticData":  null
+}

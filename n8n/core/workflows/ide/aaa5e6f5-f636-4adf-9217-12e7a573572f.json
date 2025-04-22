@@ -1,0 +1,110 @@
+﻿{
+    "id":  "aaa5e6f5-f636-4adf-9217-12e7a573572f",
+    "name":  "Test MCP Git Ingest",
+    "nodes":  [
+                  {
+                      "parameters":  {
+
+                                     },
+                      "name":  "Start",
+                      "type":  "n8n-nodes-base.start",
+                      "typeVersion":  1,
+                      "position":  [
+                                       240,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "executeTool",
+                                         "credentials":  {
+                                                             "name":  "MCP Git Ingest"
+                                                         },
+                                         "tool":  "github_directory_structure",
+                                         "parameters":  {
+                                                            "repo_url":  "https://github.com/adhikasp/mcp-git-ingest"
+                                                        }
+                                     },
+                      "name":  "MCP Client - Directory Structure",
+                      "type":  "n8n-nodes-base.mcpClient",
+                      "typeVersion":  1,
+                      "position":  [
+                                       460,
+                                       200
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "executeTool",
+                                         "credentials":  {
+                                                             "name":  "MCP Git Ingest"
+                                                         },
+                                         "tool":  "github_read_important_files",
+                                         "parameters":  {
+                                                            "repo_url":  "https://github.com/adhikasp/mcp-git-ingest",
+                                                            "file_paths":  [
+                                                                               "README.md",
+                                                                               "pyproject.toml"
+                                                                           ]
+                                                        }
+                                     },
+                      "name":  "MCP Client - Read Files",
+                      "type":  "n8n-nodes-base.mcpClient",
+                      "typeVersion":  1,
+                      "position":  [
+                                       460,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "content":  "=== Structure du dÃ©pÃ´t ===\n\n{{$node[\"MCP Client - Directory Structure\"].json[\"result\"]}}\n\n=== Contenu des fichiers importants ===\n\n{{$node[\"MCP Client - Read Files\"].json[\"result\"][\"README.md\"]}}\n\n=== Configuration du projet ===\n\n{{$node[\"MCP Client - Read Files\"].json[\"result\"][\"pyproject.toml\"]}}",
+                                         "height":  600,
+                                         "width":  600
+                                     },
+                      "name":  "Sticky Note",
+                      "type":  "n8n-nodes-base.stickyNote",
+                      "typeVersion":  1,
+                      "position":  [
+                                       700,
+                                       300
+                                   ]
+                  }
+              ],
+    "connections":  {
+                        "Start":  {
+                                      "main":  [
+                                                   [
+                                                       {
+                                                           "node":  "MCP Client - Directory Structure",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       },
+                                                       {
+                                                           "node":  "MCP Client - Read Files",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ]
+                                               ]
+                                  }
+                    },
+    "active":  false,
+    "settings":  {
+                     "saveManualExecutions":  true,
+                     "executionOrder":  "v1",
+                     "callerPolicy":  "workflowsFromSameOwner",
+                     "errorWorkflow":  ""
+                 },
+    "versionId":  "ab870129-4b11-4161-9c0f-d450af1d9946",
+    "createdAt":  "2025-04-21T05:56:18.693Z",
+    "updatedAt":  "2025-04-21T05:56:18.694Z",
+    "pinData":  {
+
+                },
+    "triggerCount":  0,
+    "tags":  [
+
+             ],
+    "staticData":  null
+}

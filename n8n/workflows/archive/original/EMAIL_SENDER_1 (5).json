@@ -1,0 +1,1650 @@
+{
+  "name": "EMAIL SENDER 1",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "8a8459bc-d38a-43ef-92b3-5517ba97a1a1",
+      "name": "Set Intention Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        6180,
+        6260
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// On récupère les données de chaque input\nconst iaOutput = $input.all()[0][0].json; // message IA\nconst contacts = $input.all()[1]; // liste de contacts\n\n// On génère un message personnalisé pour chaque contact\nconst results = contacts.map(contact => {\n  const nomProg = contact.json[\"Nom Prog\"] || contact.json[\"Name\"] || \"Bonjour\";\n  const ville = contact.json[\"Ville\"] || \"\";\n  const lieu = contact.json[\"bdd-Lieux\"] || \"\";\n\n  const message = `Bonjour ${nomProg},\n\n${iaOutput.choices[0].message.content}\n\n📍 Lieu : ${lieu}\n📍 Ville : ${ville}\n\nBien à vous,`;\n\n  return {\n    json: {\n      to: contact.json[\"Email\"],\n      nomContact: nomProg,\n      ville,\n      message\n    }\n  };\n});\n\nreturn results;\n"
+      },
+      "id": "f8aa20be-3218-4144-9b82-23592378def7",
+      "name": "Personnalisation Message",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        9960,
+        7160
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "options": {}
+      },
+      "id": "671105b1-2405-4f83-8f16-3c4ad34a22a6",
+      "name": "Update Notion Status",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        10860,
+        5920
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "id": "8d417011-1f73-4706-abeb-be21c52f1195",
+      "name": "Trigger Gmail Réponse",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1,
+      "position": [
+        11320,
+        5960
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "options": {}
+      },
+      "id": "c51a167d-b1de-4f76-a30e-ceca5b8c8742",
+      "name": "Cherche Email Notion",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        11660,
+        6260
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyse des réponses aux emails\nconst emailContent = $json.body || $json.content || '';\n\n// Mots-clés pour détecter l'intention\nconst keywords = {\n  interest: ['intéressé', 'intéressant', 'possible', 'pourquoi pas'],\n  negotiation: ['tarif', 'prix', 'cachet', 'budget', 'coût'],\n  confirmation: ['confirm', 'réserv', 'valid', 'accord', 'ok pour'],\n  rejection: ['désolé', 'malheureusement', 'pas possible', 'complet']\n};\n\n// Détection des mots-clés\nlet isInterested = false;\nlet isNegotiating = false;\nlet isConfirming = false;\nlet isRejecting = false;\n\n// Vérification pour chaque catégorie\nfor (const keyword of keywords.interest) {\n  if (emailContent.toLowerCase().includes(keyword.toLowerCase())) {\n    isInterested = true;\n    break;\n  }\n}\n\nfor (const keyword of keywords.negotiation) {\n  if (emailContent.toLowerCase().includes(keyword.toLowerCase())) {\n    isNegotiating = true;\n    break;\n  }\n}\n\nfor (const keyword of keywords.confirmation) {\n  if (emailContent.toLowerCase().includes(keyword.toLowerCase())) {\n    isConfirming = true;\n    break;\n  }\n}\n\nfor (const keyword of keywords.rejection) {\n  if (emailContent.toLowerCase().includes(keyword.toLowerCase())) {\n    isRejecting = true;\n    break;\n  }\n}\n\n// Détermination du statut global\nlet status = 'Indéterminé';\nif (isConfirming) {\n  status = 'Confirmation';\n} else if (isNegotiating) {\n  status = 'Négociation';\n} else if (isInterested) {\n  status = 'Intéressé';\n} else if (isRejecting) {\n  status = 'Refus';\n}\n\n// Retourne les données enrichies\nreturn [{\n  json: {\n    ...($json || {}),\n    emailContent,\n    intention: {\n      isInterested,\n      isNegotiating,\n      isConfirming,\n      isRejecting\n    },\n    status,\n    analysisTimestamp: new Date().toISOString()\n  }\n}];"\n      },\n      "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",\n      "name": "Analyse IA Réponse",\n      "type": "n8n-nodes-base.code",\n      "typeVersion": 2,\n      "position": [\n        11540,\n        6420\n      ]\n    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "options": {}
+      },
+      "id": "a825d3c5-3e08-4f5d-bc86-873f3575349f",
+      "name": "Update Notion Répondu",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        11420,
+        6580
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.emailContent }}",
+              "operation": "contains",
+              "value2": "intéressé"
+            }
+          ]
+        }
+      },
+      "id": "4cbf49bc-5e74-4de1-94f8-1b9521dd5270",
+      "name": "Check Piste",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        11640,
+        6700
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "options": {}
+      },
+      "id": "8ecc501d-e8b5-48aa-9d8c-abac233bf03d",
+      "name": "Set Piste",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        11420,
+        6940
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.emailContent }}",
+              "operation": "contains",
+              "value2": "tarif"
+            }
+          ]
+        }
+      },
+      "id": "4d4a2278-30ab-4420-8273-5d2ca72c69d7",
+      "name": "Check Nego",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        11660,
+        7060
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "options": {}
+      },
+      "id": "c940c939-48a7-45a7-897a-669770e0e96c",
+      "name": "Set Nego",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        11740,
+        7360
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.emailContent }}",
+              "operation": "contains",
+              "value2": "confirm"
+            }
+          ]
+        }
+      },
+      "id": "47f136ed-17fc-4e0d-b8e2-c1c48c52d589",
+      "name": "Check DEAL",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        12000,
+        6160
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "f4641f7364224dbdba9151649dca276cce21ac806f327b8c9056b35ba41be559@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "BOOKING1"
+        },
+        "additionalFields": {}
+      },
+      "id": "6a335ea7-a5aa-4af4-b9e2-405d16c2172b",
+      "name": "Create GCal Event",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1,
+      "position": [
+        12080,
+        6440
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "oO79tp1wawPKDEpg",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "options": {}
+      },
+      "id": "eb7f44cf-b9c9-4bef-b75c-24d13d070606",
+      "name": "Update Notion with Date",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        12200,
+        6720
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3802bc6c-c156-479d-81a7-24a1235f0d18",
+      "name": "Préparer Logistique",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        12380,
+        6920
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "3b7319d1-e905-4843-8f1e-30793b97e403",
+      "name": "Concert → Timer J+3",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        12700,
+        5940
+      ],
+      "webhookId": "856881c8-cccd-4869-96af-c7c3afe1d2e6"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "id": "94fae03b-e4d8-4644-9e0b-6163f717dc6e",
+      "name": "Send Thanks Mail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        12780,
+        6340
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "options": {}
+      },
+      "id": "8553d648-934a-4e37-9794-1eaf1d6a0449",
+      "name": "Update Notion Feedback",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        12960,
+        6680
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "cc9d92dc-5516-4a92-b4c4-88a18e68d146",
+      "name": "Trigger Internal Review",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        12960,
+        7100
+      ]
+    },
+    {
+      "parameters": {
+        "path": "3b16dfba-29b4-43fe-af9b-233a91be52a9",
+        "formFields": {
+          "values": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "19feb474-82f7-4bfe-9588-dd5d70c6b8e9",
+      "name": "Group Vote Review",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 1,
+      "position": [
+        13480,
+        5960
+      ],
+      "webhookId": "3b16dfba-29b4-43fe-af9b-233a91be52a9"
+    },
+    {
+      "parameters": {},
+      "id": "f367220b-a403-4288-87ce-d1e3899a2ea6",
+      "name": "Check Programmateur Feedback",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        13600,
+        6220
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "options": {}
+      },
+      "id": "b032b895-269e-490f-acb3-e7c48b7771b8",
+      "name": "Create New Prospect Task",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        13560,
+        6580
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "83745350-c37c-4f6d-8397-675f912421db",
+      "name": "End Workflow Global",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        13780,
+        6900
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Init",
+        "height": 920,
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6080,
+        5900
+      ],
+      "id": "f2b081ee-acac-4a5b-ba2b-4c520665f055",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 1: Gestion des Disponibilités\n\nDéclencheur: Start Phase 1\nObjectif: Consolider les indisponibilités Notion & Google Calendar",
+        "height": 1040,
+        "width": 2260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6480,
+        5900
+      ],
+      "id": "3dd5fa33-8615-4f0d-a535-858a1b0b88ca",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 2: Génération & Envoi des Emails\n\nDéclencheur: Calculer Plages Libres\nObjectif: Générer des emails personnalisés avec l'IA et les envoyer",
+        "height": 860,
+        "width": 700,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        8020,
+        5960
+      ],
+      "id": "b59a6337-cc99-4396-940b-3f17a585b003",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "f4641f7364224dbdba9151649dca276cce21ac806f327b8c9056b35ba41be559@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "BOOKING1"
+        },
+        "returnAll": true,
+        "timeMin": "={{ new Date().toISOString() }}",
+        "timeMax": "={{ new Date(Date.now() + 180*86400000).toISOString() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        6700,
+        6080
+      ],
+      "id": "2aef6729-c046-417c-9dfc-8b475b9a1313",
+      "name": "Google Calendar",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "oO79tp1wawPKDEpg",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c581449-f795-8088-b362-d4399dc7d9f3",
+          "mode": "list",
+          "cachedResultName": "Dispo Membres",
+          "cachedResultUrl": "https://www.notion.so/1c581449f7958088b362d4399dc7d9f3"
+        },
+        "options": {}
+      },
+      "id": "fca56be8-017d-4f64-a02a-2db95909701b",
+      "name": "Lecture Dispo des Groupes sur Notion",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        6660,
+        6480
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "fb17c164-0d0a-42a6-8373-f2402238ae6f",
+      "name": "Get Gmail Template",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        9980,
+        6720
+      ],
+      "webhookId": "2ce04916-264b-426d-ba5c-caaf7fc8b0d1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xKa629oVYYGTlvnn",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "const template = $json.payload.parts[0].body.data;\nconst decoded = Buffer.from(template, 'base64').toString('utf-8');\nconst injected = decoded.replace('<INJECT_MESSAGE>', $node[\"Personnalisation Message\"].json.message || '');\nreturn [{ json: { html: injected, to: $node[\"Personnalisation Message\"].json.to } }];"
+      },
+      "id": "3f5b2bd1-4485-4c55-8e51-339033be453b",
+      "name": "Inject Message into HTML",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        9960,
+        6500
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "Proposition – Groupe en tournée (automatisé)",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "f0ef9b9c-0eba-4238-b366-3d28a84429d0",
+      "name": "Create Final Gmail Draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        9980,
+        6240
+      ],
+      "webhookId": "7d821565-6395-4077-be41-c91c0b07c30a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xKa629oVYYGTlvnn",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "minutesMin",
+              "value": 30
+            },
+            {
+              "name": "minutesMax",
+              "value": 60
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2649c986-4f25-4ae5-baef-dbed32b8cc7e",
+      "name": "Set Delay Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        10360,
+        6820
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const min = $json.minutesMin || 30;\nconst max = $json.minutesMax || 60;\nconst delay = Math.floor(Math.random() * (max - min + 1)) + min;\nreturn [{ json: { waitDuration: delay } }];"
+      },
+      "id": "0777b823-c2f0-47d6-9f7f-2efe01efb5ee",
+      "name": "Calc Random Delay",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        10380,
+        6560
+      ]
+    },
+    {
+      "parameters": {
+        "unit": "minutes"
+      },
+      "id": "80570037-507c-4767-a947-c009e69a5e8b",
+      "name": "Wait Anti-Spam",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        10400,
+        6380
+      ],
+      "webhookId": "c4b6021a-103f-4210-90c7-b43a583ace84"
+    },
+    {
+      "parameters": {
+        "content": "utilisation du template GMAIL",
+        "height": 1720,
+        "width": 620,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        10580,
+        5860
+      ],
+      "id": "961a0805-6b9c-4014-8e97-00d76062a3f6",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "délai entre les envois",
+        "height": 920,
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        10280,
+        6220
+      ],
+      "id": "3b9052d3-12e9-4179-8103-34ec25e3a428",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pages = [];\n\nconst notionDatabaseId = \"1c581449f7958088b362d4399dc7d9f3\"; // ← Copié depuis Set Global Config\n\nfor (const item of items) {\n  const member = item.json.member || \"Membre inconnu\";\n  const status = item.json.status || \"unknown\";\n  const date = item.json.date || \"inconnue\";\n\n  pages.push({\n    json: {\n      parent: {\n        database_id: notionDatabaseId\n      },\n      properties: {\n        Name: {\n          title: [\n            {\n              text: {\n                content: `${member} indisponible`\n              }\n            }\n          ]\n        },\n        Date: {\n          date: {\n            start: date\n          }\n        },\n        Dispo: {\n          status: {\n            name: status === \"unavailable\" ? \"Pas dispo\" : \"Dispo\"\n          }\n        }\n      }\n    }\n  });\n}\n\nreturn pages;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5660,
+        6680
+      ],
+      "id": "2d466a34-fe8e-4ae9-950b-037df613f9d4",
+      "name": "Créer page Notion",
+      "disabled": true
+    },
+
+
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      prompt: `Voici une liste de créneaux disponibles générés par IA. Merci de valider si l'un d'eux est cohérent et de proposer une action ou correction.`,\n      data: items.map(item => item.json)\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7360,
+        6080
+      ],
+      "id": "033fc06e-f2b4-41c2-a902-29b28a3fc2b6",
+      "name": "Superviseur IA (DeepSeek v3)  (envoie erreur + code au modèle)"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        7500,
+        6640
+      ],
+      "id": "3faccf85-c7bd-4d20-8ce0-abf8ebedb14c",
+      "name": "Appel API",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "openRouterApi": {
+          "id": "GWgrj7r9bN07NdOc",
+          "name": "OpenRouter account gerivonderbitsh@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      model: \"deepseek/deepseek-chat-v3-0324:free\", // Garde-le si ça fonctionne\n      messages: [\n        {\n          role: \"system\",\n          content: \"Tu es un assistant commercial chargé de rédiger un email professionnel pour proposer des rendez-vous.\"\n        },\n        {\n          role: \"user\",\n          content:\n            \"Voici les créneaux disponibles :\\n\\n\" +\n            $json.data.map(obj => `- ${obj.date}`).join('\\n') +\n            \"\\n\\n\" +\n            $json.prompt\n        }\n      ],\n      temperature: 0.7\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7420,
+        6400
+      ],
+      "id": "a0143ff5-d39f-446c-b1f9-dd148ae80ce1",
+      "name": "Prep DeepSeek Cal",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e4389a98-70de-46bb-889e-4bd917cc7224",
+              "name": "deepseek_message",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        7620,
+        6100
+      ],
+      "id": "8c5bdd98-92f0-4b2c-9d8c-d9b9dc76752b",
+      "name": "extraction du content"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4868bf93-7add-4de2-8647-50167048ceb8",
+              "name": "email_content",
+              "value": "=<h2>🎯 Créneaux proposés</h2>\n<pre style=\"white-space:pre-wrap; font-family:monospace;\">\n{{ $json.enrichedMessage }}\n</pre>\n\n<hr/>\n\n<h3>🎸 Groupe de musique [Nom du groupe]</h3>\n<img src=\"https://cdn.site.com/groupe.jpg\" width=\"100%\" />\n\n<p>\n  📺 <a href=\"https://youtube.com/clip\">Voir le clip</a><br/>\n  🌐 <a href=\"https://linktr.ee/groupe\">Linktree</a>\n</p>\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        7700,
+        6300
+      ],
+      "id": "9e41aa7f-8fb7-43b5-ad77-04172596a52f",
+      "name": "Injection HTML IA"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      intentMessage: \"Proposer un créneau de concert\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7760,
+        6620
+      ],
+      "id": "0b562a88-11fd-448e-a06f-766731fd2384",
+      "name": "Set intention Message"
+    },
+    {
+      "parameters": {
+        "content": "Mise au point du mail ",
+        "height": 1660,
+        "width": 380,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        9820,
+        5900
+      ],
+      "id": "c6a91901-0632-4efc-a854-41959ac49f65",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "894f9cd2-f4f7-4ecd-a5b1-7fe91fb87260",
+      "name": "Get Notion Contacts LOT1",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        8200,
+        6440
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 3: Traitement des Réponses\n\nDéclencheur: Trigger Gmail Réponse\nObjectif: Analyser les réponses reçues et mettre à jour Notion",
+        "height": 1720,
+        "width": 620,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        11260,
+        5860
+      ],
+      "id": "429a26dc-88cf-45c5-98c4-65528ad50da3",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 4: Gestion des Concerts Confirmés\n\nDéclencheur: Check DEAL\nObjectif: Créer événements GCal et préparer la logistique",
+        "height": 1720,
+        "width": 620,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        11940,
+        5860
+      ],
+      "id": "26ddcbba-c26e-41c4-8c71-89d048a9269c",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 5: Suivi Post-Concert\n\nDéclencheur: Concert → Timer J+3\nObjectif: Envoyer remerciements et collecter feedback",
+        "height": 1720,
+        "width": 620,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        12620,
+        5860
+      ],
+      "id": "d8679572-aef3-4d0d-bb2c-e6dd340a5deb",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 6: Évaluation et Planification Future\n\nDéclencheur: Group Vote Review\nObjectif: Analyser feedback et planifier prochaines actions",
+        "height": 1720,
+        "width": 620,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        13340,
+        5860
+      ],
+      "id": "68317e2a-7f6c-4f8f-baa2-86be28d19dad",
+      "name": "Sticky Note10"
+    },
+
+
+
+    {
+      "parameters": {},
+      "id": "d81114a9-5c7c-4ad6-a74d-a7fab78788af",
+      "name": "Start Phase 1",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        6140,
+        6000
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Assuming the input comes from 'Consolider Indisponibilités'\nconst inputItem = items[0];\nconst busyDatesArray = inputItem?.json?.busyDates || [];\nconst busyDates = new Set(busyDatesArray);\n\nconst availableSlots = [];\nconst today = new Date();\ntoday.setHours(12, 0, 0, 0); // Set to midday Paris time\n\nconst numberOfDaysToCheck = 180; // Check the next 180 days\n\nfor (let i = 0; i < numberOfDaysToCheck; i++) {\n    const currentDate = new Date(today);\n    currentDate.setDate(today.getDate() + i);\n    currentDate.setHours(12, 0, 0, 0);\n\n    const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD\n\n    const dayOfWeek = currentDate.getDay(); // 0 = Sunday, 6 = Saturday\n    if (!busyDates.has(formattedDate) && (dayOfWeek === 5 || dayOfWeek === 6)) { // 5 = Friday, 6 = Saturday\n        availableSlots.push({ json: { date: formattedDate, status: 'available' } });\n    }\n}\n\nif (availableSlots.length === 0) {\n  return [];\n}\n\nreturn availableSlots;"
+      },
+      "id": "520ec725-b015-4e5b-a721-25808d38833d",
+      "name": "Calculer Plages Libres",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        7100,
+        6240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const googleEvents = $input.all(0); // Items from Google Calendar\nconst notionPages = $input.all(1); // Items from Notion Dispo Membres\n\nconst busyDatesSet = new Set();\n\n// -----------------------------------------------------------------------\n// PARTIE 1 : Traitement des événements Google Calendar\n// -----------------------------------------------------------------------\ngoogleEvents.forEach(item => {\n    const startDate = item.json.start?.date || item.json.start?.dateTime?.split('T')[0];\n    const endDate = item.json.end?.date || item.json.end?.dateTime?.split('T')[0];\n\n    if (startDate) {\n        let current = new Date(startDate);\n        const end = new Date(endDate || startDate);\n        let endTarget = new Date(end);\n        if (item.json.start?.date && endDate) {\n             endTarget.setDate(endTarget.getDate() - 1);\n        }\n\n        while (current <= endTarget) {\n             busyDatesSet.add(current.toISOString().split('T')[0]);\n             current.setDate(current.getDate() + 1);\n        }\n    }\n});\n\n// -----------------------------------------------------------------------\n// PARTIE 2 : Traitement des pages Notion (Indisponibilités Membres) - MODIFIÉE\n// -----------------------------------------------------------------------\nnotionPages.forEach(item => {\n    // !!! RAPPEL TRÈS IMPORTANT: Remplace 'VRAI_NOM_PROPRIETE_DATE_NOTION' par le nom EXACT de ta propriété Date dans Notion !!!\n    //     Va dans Notion, regarde le nom de ta colonne \"Date\" dans \"Dispo Membres\" et copie-le ici.\n    //     Exemple : si dans Notion c'est \"Date d'indisponibilité\", mets 'Date d\\'indisponibilité' (avec les apostrophes !)\n    const propertyName = 'date'; // <--- À MODIFIER ICI !!!\n\n    // Vérification ROBUSTE : on s'assure que l'item, les propriétés et la propriété spécifique existent\n    if (item?.json?.properties && item.json.properties[propertyName]) {\n        const dateProp = item.json.properties[propertyName].date;\n\n        // Vérification : on s'assure que dateProp et dateProp.start existent avant de les lire\n        if (dateProp && dateProp.start) {\n            busyDatesSet.add(dateProp.start);\n\n            // Gestion des plages de dates Notion (si ta propriété Date Notion est une plage)\n            if (dateProp.end) {\n                let current = new Date(dateProp.start);\n                const end = new Date(dateProp.end);\n                current.setDate(current.getDate() + 1);\n                while (current <= end) {\n                    busyDatesSet.add(current.toISOString().split('T')[0]);\n                    current.setDate(current.getDate() + 1);\n                }\n            }\n        }\n    }\n    // Si la propriété n'existe pas pour cet item Notion, on l'ignore simplement et on continue.\n});\n\n// -----------------------------------------------------------------------\n// PARTIE 3 : Retour du résultat\n// -----------------------------------------------------------------------\n// Retourne un seul item avec le tableau des dates occupées uniques, triées pour la lisibilité\nreturn [{ json: { busyDates: Array.from(busyDatesSet).sort() } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6860,
+        6240
+      ],
+      "id": "7369eac8-c3e9-4d33-999e-837400f50cf3",
+      "name": "Consolider Indisponibilités",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "content": "🛑 Anciens nœuds obsolètes suite à la refonte Phase 1\nLes flux de disponibilité sont désormais consolidés dans \"Consolider Indisponibilités\"\n",
+        "height": 780,
+        "width": 420,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        5580,
+        6260
+      ],
+      "id": "2762f8bc-34de-4f11-b040-46d91af64a8a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 1 — Consolidation Disponibilités\n🔁 GCal + Notion → dates libres communes (vendredi/samedi)",
+        "height": 860,
+        "width": 770,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6500,
+        5960
+      ],
+      "id": "a7f37086-c41f-49ef-99c4-94d6ca276491",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 2 – Génération & Personnalisation du message IA :\nInjecter les dates calculées dans un prompt d’IA (DeepSeek via OpenRouter)\net fusionner ensuite le message avec les contacts LOT1 pour mailing",
+        "height": 860,
+        "width": 660,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        7320,
+        5960
+      ],
+      "id": "2ce8ef44-2ebc-4270-9248-8b57ce3869a4",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 🔎 Extraction du contenu généré par l'IA depuis OpenRouter\n// On suppose que l'input provient directement du nœud HTTP \"Appel API\"\n\nconst aiMessage = $json.choices?.[0]?.message?.content || '⚠️ Message IA non trouvé';\n\nreturn [\n  {\n    json: {\n      aiMessage\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8200,
+        6060
+      ],
+      "id": "dfc2c041-b282-400c-bf81-dc66de625552",
+      "name": "Set Message Généré IA"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Inversion des entrées\nconst aiMessageItem = $input.all(0)[0]; // IA est en entrée 0\nconst contacts = $input.all(1);         // Notion contacts est en entrée 1\n\nconst aiMessage = aiMessageItem?.json?.aiMessage || '⚠️ Message IA manquant';\n\nreturn contacts.map(contact => {\n  const json = contact.json || {};\n\n  return {\n    json: {\n      notionPageId: json.id || null,\n      contactEmail: json.properties?.[\"E-mail\"]?.email || null,\n      contactName: json.properties?.[\"Prénom\"]?.title?.[0]?.plain_text || \"Nom inconnu\",\n      venueName: json.properties?.[\"Structure\"]?.title?.[0]?.plain_text || \"Structure inconnue\",\n      aiMessage\n    }\n  };\n});\nconsole.log(\"AI input:\", $input.all(0));\nconsole.log(\"Contacts input:\", $input.all(1));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        9220,
+        6340
+      ],
+      "id": "84ff84d6-4b23-4169-aae4-2dfd77d22cc8",
+      "name": "Fusion IA + Contacts"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "11181449-f795-81e2-9759-fe7851484f69",
+          "mode": "list",
+          "cachedResultName": "bdd-Lieux",
+          "cachedResultUrl": "https://www.notion.so/11181449f79581e29759fe7851484f69"
+        },
+        "returnAll": true,
+        "simple": false,
+        "filterType": "",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        8720,
+        6740
+      ],
+      "id": "1ea0b133-410e-4b50-a612-7f7fd9706b9c",
+      "name": "Get Lieux Details",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const contact = $input.all(0)[0]; // Contact en entrée 0\nconst lieux = $input.all(1); // Tous les lieux de bdd-Lieux\n\nconst contactJson = contact.json;\nconst lieuIds = contactJson[\"bdd-Lieux\"] || [];\n\nconst matchedLieu = lieux\n  .map(lieu => lieu.json)\n  .find(lieu => lieuIds.includes(lieu.id)); // Cherche le lieu correspondant\n\nreturn [{\n  json: {\n    ...contactJson,\n    lieuEmail: matchedLieu?.properties?.[\"E-mail\"]?.email || null,\n    lieuStructure: matchedLieu?.properties?.[\"Structure\"]?.title?.[0]?.plain_text || \"Structure inconnue\",\n    lieuVille: matchedLieu?.properties?.[\"Ville\"]?.rich_text?.[0]?.plain_text || \"Ville inconnue\"\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8900,
+        6460
+      ],
+      "id": "7db07d3b-ca21-4e21-af2c-7d6fccd01896",
+      "name": "Fusion LOT1 + Lieux"
+    },
+
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"emailContact\": \"{{ $json['E-mail'][0] || '⚠️ Email manquant' }}\",\n  \"contactName\": \"{{ $json['Name'] || 'Nom inconnu' }}\",\n  \"structure\": \"{{ $json['bdd-Lieux'][0] || 'Structure inconnue' }}\",\n  \"ville\": \"{{ $json['Ville'][0] || 'Ville inconnue' }}\",\n  \"etatDuMail\": \"{{ $json['Etat du mail'][0] || 'État non renseigné' }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        8400,
+        6580
+      ],
+      "id": "df75c3b2-ad3a-477e-9480-c253ec4a0858",
+      "name": "Set Email Contact",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {
+    "Start Phase 1": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "connections": {
+    "Set Intention Message": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personnalisation Message": {
+      "main": [
+        [
+          {
+            "node": "Get Gmail Template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Notion Status": {
+      "main": [
+        []
+      ]
+    },
+    "Trigger Gmail Réponse": {
+      "main": [
+        [
+          {
+            "node": "Cherche Email Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cherche Email Notion": {
+      "main": [
+        [
+          {
+            "node": "Analyse IA Réponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyse IA Réponse": {
+      "main": [
+        [
+          {
+            "node": "Update Notion Répondu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Notion Répondu": {
+      "main": [
+        [
+          {
+            "node": "Check Piste",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Piste": {
+      "main": [
+        [
+          {
+            "node": "Set Piste",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Piste": {
+      "main": [
+        [
+          {
+            "node": "Check Nego",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Nego": {
+      "main": [
+        [
+          {
+            "node": "Set Nego",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Nego": {
+      "main": [
+        [
+          {
+            "node": "Check DEAL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check DEAL": {
+      "main": [
+        [
+          {
+            "node": "Create GCal Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create GCal Event": {
+      "main": [
+        [
+          {
+            "node": "Update Notion with Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Notion with Date": {
+      "main": [
+        [
+          {
+            "node": "Préparer Logistique",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Préparer Logistique": {
+      "main": [
+        [
+          {
+            "node": "Concert → Timer J+3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Concert → Timer J+3": {
+      "main": [
+        [
+          {
+            "node": "Send Thanks Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Thanks Mail": {
+      "main": [
+        [
+          {
+            "node": "Update Notion Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Notion Feedback": {
+      "main": [
+        [
+          {
+            "node": "Trigger Internal Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Group Vote Review": {
+      "main": [
+        [
+          {
+            "node": "Check Programmateur Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Programmateur Feedback": {
+      "main": [
+        [
+          {
+            "node": "Create New Prospect Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create New Prospect Task": {
+      "main": [
+        [
+          {
+            "node": "End Workflow Global",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "main": [
+        [
+          {
+            "node": "Consolider Indisponibilités",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lecture Dispo des Groupes sur Notion": {
+      "main": [
+        [
+          {
+            "node": "Consolider Indisponibilités",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Gmail Template": {
+      "main": [
+        [
+          {
+            "node": "Inject Message into HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inject Message into HTML": {
+      "main": [
+        [
+          {
+            "node": "Create Final Gmail Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Final Gmail Draft": {
+      "main": [
+        [
+          {
+            "node": "Set Delay Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Delay Config": {
+      "main": [
+        [
+          {
+            "node": "Calc Random Delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calc Random Delay": {
+      "main": [
+        [
+          {
+            "node": "Wait Anti-Spam",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Créer page Notion": {
+      "main": [
+        []
+      ]
+    },
+    "Analyse et sync Notion + Google1": {
+      "main": [
+        []
+      ]
+    },
+    "créer event Google": {
+      "main": [
+        []
+      ]
+    },
+    "Superviseur IA (DeepSeek v3)  (envoie erreur + code au modèle)": {
+      "main": [
+        [
+          {
+            "node": "Prep DeepSeek Cal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep DeepSeek Cal": {
+      "main": [
+        [
+          {
+            "node": "Appel API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Appel API": {
+      "main": [
+        [
+          {
+            "node": "extraction du content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Message Généré IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraction du content": {
+      "main": [
+        [
+          {
+            "node": "Injection HTML IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Injection HTML IA": {
+      "main": [
+        [
+          {
+            "node": "Set intention Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set intention Message": {
+      "main": [
+        []
+      ]
+    },
+    "Get Notion Contacts LOT1": {
+      "main": [
+        [
+          {
+            "node": "Fusion LOT1 + Lieux",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Email Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait Anti-Spam": {
+      "main": [
+        [
+          {
+            "node": "Update Notion Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+
+
+
+    "Start Phase 1": {
+      "main": [
+        [
+          {
+            "node": "Set Intention Message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Lecture Dispo des Groupes sur Notion",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Notion Contacts LOT1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculer Plages Libres": {
+      "main": [
+        [
+          {
+            "node": "Superviseur IA (DeepSeek v3)  (envoie erreur + code au modèle)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolider Indisponibilités": {
+      "main": [
+        [
+          {
+            "node": "Calculer Plages Libres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Message Généré IA": {
+      "main": [
+        [
+          {
+            "node": "Fusion IA + Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion IA + Contacts": {
+      "main": [
+        []
+      ]
+    },
+    "Get Lieux Details": {
+      "main": [
+        [
+          {
+            "node": "Fusion LOT1 + Lieux",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion LOT1 + Lieux": {
+      "main": [
+        [
+          {
+            "node": "Fusion IA + Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Email Contact": {
+      "main": [
+        [
+          {
+            "node": "Get Lieux Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "2b82a412-1bc2-485f-85d1-b2e705487fa3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d13e503b3cbf5fefda6ae06a9383bb7219443a180483b51e0a815b36d3363952"
+  },
+  "id": "uNAkKqDyUcFaPkkh",
+  "tags": []
+}
