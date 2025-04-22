@@ -1,5 +1,7 @@
 @echo off
 cd /d "%~dp0"
 
-echo Redirection vers le script de démarrage n8n...
-call n8n-unified\scripts\start-n8n-docker.cmd
+echo Démarrage de n8n avec synchronisation IDE...
+echo.
+
+call "n8n\cmd\start\start-n8n-with-ide-sync.cmd"

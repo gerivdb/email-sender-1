@@ -1,5 +1,5 @@
 @echo off
+echo Arret de n8n...
+echo.
 cd /d "%~dp0"
-
-echo Redirection vers le script d'arrêt n8n...
-call n8n-unified\scripts\stop-n8n-docker.cmd
+call n8n\automation\deployment\stop-n8n.cmd %*
