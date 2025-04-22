@@ -20,6 +20,21 @@ Le Memory Bank répond à un problème fondamental des assistants IA : leur inca
 
 ![Cycle de vie d'une session](https://docs.cline.bot/~gitbook/image?url=https%3A%2F%2F3321249260-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Ff8Oh1Lcy6yWYq1caYESV%252Fuploads%252FJnxDKnHwFc180rVhBIu9%252Fimage.png%3Falt%3Dmedia%26token%3D3fa2f84e-e158-48b1-9548-20be5e191c41&width=768&dpr=4&quality=100&sign=fbd52a9b&sv=2)
 
+```
++---------------+     +--------------------+     +----------------+     +-------------------+     +----------------------+     +-------------+
+|               |     |                    |     |                |     |                   |     |                      |     |             |
+| Session Starts| --> | Read Memory Bank  | --> | Rebuild Context| --> | Continue Work    | --> | Update Documentation | --> | Session Ends|
+|               |     | Files              |     |                |     |                   |     |                      |     |             |
++---------------+     +--------------------+     +----------------+     +-------------------+     +----------------------+     +-------------+
+                                                                                                                                    |
+                                                                                                                                    |
+                                                                                                                                    v
+                                                                                                                                    +
+                                                                                                                                    |
+                                                                                                                                    |
+                                                                                                                                    |
+```
+
 Le Memory Bank n'est pas une fonctionnalité spécifique à Cline, mais une méthodologie pour gérer le contexte de l'IA via une documentation structurée. Le cycle de fonctionnement est le suivant :
 
 1. **Session Starts** - Début d'une nouvelle session de travail
@@ -34,6 +49,39 @@ Quand l'utilisateur demande à l'IA de "suivre les instructions personnalisées"
 ## Structure des Fichiers
 
 ![Hiérarchie des fichiers](https://docs.cline.bot/~gitbook/image?url=https%3A%2F%2F3321249260-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Ff8Oh1Lcy6yWYq1caYESV%252Fuploads%252Flh2tPJtrViHchynBAsU8%252Fimage.png%3Falt%3Dmedia%26token%3D59ca7fe6-d38a-4017-9aec-616851468f28&width=768&dpr=4&quality=100&sign=8479ab96&sv=2)
+
+```
+                                  +------------------+
+                                  |                  |
+                                  | projectbrief.md  |
+                                  |                  |
+                                  +------------------+
+                                           |
+                      +----------------------+----------------------+
+                      |                      |                      |
+                      v                      v                      v
+        +------------------+      +------------------+     +------------------+
+        |                  |      |                  |     |                  |
+        | productContext.md|      | systemPatterns.md|     | techContext.md   |
+        |                  |      |                  |     |                  |
+        +------------------+      +------------------+     +------------------+
+                      |                      |                      |
+                      +----------------------+----------------------+
+                                           |
+                                           v
+                                  +------------------+
+                                  |                  |
+                                  | activeContext.md |
+                                  |                  |
+                                  +------------------+
+                                           |
+                                           v
+                                  +------------------+
+                                  |                  |
+                                  |   progress.md    |
+                                  |                  |
+                                  +------------------+
+```
 
 Les fichiers du Memory Bank sont de simples fichiers markdown organisés dans une structure hiérarchique qui construit une image complète du projet. Cette hiérarchie montre comment l'information circule et s'enrichit à travers les différents fichiers, avec le brief du projet comme source primaire et le fichier de progression comme destination finale.
 
@@ -92,6 +140,43 @@ Des fichiers/dossiers supplémentaires peuvent être créés dans memory-bank/ p
 ## Mise en Place et Initialisation
 
 ![Processus d'initialisation](https://docs.cline.bot/~gitbook/image?url=https%3A%2F%2F3321249260-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Ff8Oh1Lcy6yWYq1caYESV%252Fuploads%252FxlhgVZQOGiCV0TZdTQuj%252Fimage.png%3Falt%3Dmedia%26token%3D5be4a8d1-5add-44c2-8098-164d532a3155&width=768&dpr=4&quality=100&sign=cb3718cb&sv=2)
+
+```
++-------------------------+
+|                         |
+| Create memory-bank/     |
+| folder                  |
+|                         |
++-------------------------+
+             |
+             v
++-------------------------+
+|                         |
+| Prepare Project Brief   |
+|                         |
++-------------------------+
+             |
+             v
++-------------------------+
+|                         |
+| Ask Cline to initialize |
+|                         |
++-------------------------+
+             |
+             v
++-------------------------+
+|                         |
+| Review Initial Files    |
+|                         |
++-------------------------+
+             |
+             v
++-------------------------+
+|                         |
+| Start Working with Cline|
+|                         |
++-------------------------+
+```
 
 Le processus d'initialisation du Memory Bank comprend les étapes suivantes :
 
