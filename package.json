@@ -22,5 +22,8 @@
   "dependencies": {
     "@magarcia/gitingest": "^1.1.0",
     "n8n": "^1.88.0"
+  },
+  "devDependencies": {
+    "hygen": "^6.2.11"
   }
 }
