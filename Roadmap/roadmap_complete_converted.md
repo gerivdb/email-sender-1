@@ -1842,6 +1842,533 @@ npx hygen n8n-integration new
 }
 ```
 
+### 5.3 Extension de Hygen à d'autres parties du repository
+**Complexité**: Élevée
+**Temps estimé total**: 10 jours
+**Progression globale**: 0% - *À commencer*
+**Date de début prévue**: 15/05/2023
+**Date d'achèvement prévue**: 26/05/2023
+**Responsable**: Équipe Développement
+**Tags**: #hygen #extension #standardisation
+
+#### Outils et technologies
+- **Langages**: PowerShell 5.1/7, JavaScript, EJS
+- **Frameworks**: Hygen
+- **Outils d'intégration**: MCP, VS Code
+- **Environnement**: VS Code
+
+#### Fichiers principaux
+| Chemin | Description |
+|--------|-------------|
+| mcp/_templates/ | Templates Hygen pour MCP |
+| scripts/_templates/ | Templates Hygen pour scripts |
+| mcp/scripts/utils/Generate-MCPComponent.ps1 | Script de génération de composants MCP |
+| scripts/utils/Generate-ScriptComponent.ps1 | Script de génération de composants scripts |
+
+#### Guidelines
+- **Structure**: Maintenir une séparation claire entre les différents types de templates
+- **Intégration**: Assurer la compatibilité avec les structures existantes
+- **Documentation**: Documenter clairement chaque template et son utilisation
+- **Tests**: Créer des tests unitaires pour chaque générateur
+
+#### 5.3.1 Extension de Hygen au dossier MCP
+**Complexité**: Élevée
+**Temps estimé**: 4 jours
+**Progression**: 0% - *À commencer*
+**Date de début prévue**: 15/05/2023
+**Date d'achèvement prévue**: 18/05/2023
+**Responsable**: Équipe Développement
+**Tags**: #hygen #mcp #templates
+
+- [ ] **Phase 1**: Analyse de la structure MCP et définition des besoins
+  - [ ] **Tâche 1.1**: Analyser la structure du dossier MCP
+    - [ ] **Sous-tâche 1.1.1**: Inventorier les types de fichiers existants
+    - [ ] **Sous-tâche 1.1.2**: Identifier les patterns récurrents
+    - [ ] **Sous-tâche 1.1.3**: Documenter la structure actuelle
+  - [ ] **Tâche 1.2**: Définir les types de composants à générer
+    - [ ] **Sous-tâche 1.2.1**: Identifier les scripts serveur
+    - [ ] **Sous-tâche 1.2.2**: Identifier les scripts client
+    - [ ] **Sous-tâche 1.2.3**: Identifier les modules réutilisables
+    - [ ] **Sous-tâche 1.2.4**: Identifier les types de documentation
+  - [ ] **Tâche 1.3**: Définir les templates nécessaires
+    - [ ] **Sous-tâche 1.3.1**: Créer la liste des templates à développer
+    - [ ] **Sous-tâche 1.3.2**: Définir les paramètres de chaque template
+    - [ ] **Sous-tâche 1.3.3**: Établir les conventions de nommage
+  - [ ] **Tâche 1.4**: Planifier l'intégration avec la structure existante
+    - [ ] **Sous-tâche 1.4.1**: Identifier les points d'intégration
+    - [ ] **Sous-tâche 1.4.2**: Définir la stratégie de déploiement
+    - [ ] **Sous-tâche 1.4.3**: Documenter le plan d'intégration
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `mcp/docs/hygen-analysis.md` | Analyse de la structure MCP | À créer |
+| `mcp/docs/hygen-templates-plan.md` | Plan des templates à développer | À créer |
+| `mcp/docs/hygen-integration-plan.md` | Plan d'intégration | À créer |
+
+##### Critères de succès
+- [ ] L'analyse complète de la structure MCP est documentée
+- [ ] Les types de composants à générer sont clairement définis
+- [ ] La liste des templates nécessaires est établie
+- [ ] Le plan d'intégration est documenté et validé
+
+##### Format de journalisation
+```json
+{
+  "module": "mcp-hygen-analysis",
+  "version": "1.0.0",
+  "date": "2023-05-15",
+  "changes": [
+    {"feature": "Analyse de structure", "status": "À commencer"},
+    {"feature": "Définition des composants", "status": "À commencer"},
+    {"feature": "Planification des templates", "status": "À commencer"},
+    {"feature": "Plan d'intégration", "status": "À commencer"}
+  ]
+}
+```
+
+- [ ] **Phase 2**: Création des templates MCP
+  - [ ] **Tâche 2.1**: Créer la structure de base des templates
+    - [ ] **Sous-tâche 2.1.1**: Créer le dossier `mcp/_templates`
+    - [ ] **Sous-tâche 2.1.2**: Créer les sous-dossiers pour chaque type de générateur
+    - [ ] **Sous-tâche 2.1.3**: Configurer les fichiers de base (prompt.js, etc.)
+  - [ ] **Tâche 2.2**: Développer le template pour les scripts serveur
+    - [ ] **Sous-tâche 2.2.1**: Créer le template de base
+    - [ ] **Sous-tâche 2.2.2**: Implémenter les paramètres et variables
+    - [ ] **Sous-tâche 2.2.3**: Ajouter la documentation intégrée
+    - [ ] **Sous-tâche 2.2.4**: Tester le template
+  - [ ] **Tâche 2.3**: Développer le template pour les scripts client
+    - [ ] **Sous-tâche 2.3.1**: Créer le template de base
+    - [ ] **Sous-tâche 2.3.2**: Implémenter les paramètres et variables
+    - [ ] **Sous-tâche 2.3.3**: Ajouter la documentation intégrée
+    - [ ] **Sous-tâche 2.3.4**: Tester le template
+  - [ ] **Tâche 2.4**: Développer le template pour les modules réutilisables
+    - [ ] **Sous-tâche 2.4.1**: Créer le template de base
+    - [ ] **Sous-tâche 2.4.2**: Implémenter les paramètres et variables
+    - [ ] **Sous-tâche 2.4.3**: Ajouter la documentation intégrée
+    - [ ] **Sous-tâche 2.4.4**: Tester le template
+  - [ ] **Tâche 2.5**: Développer le template pour la documentation
+    - [ ] **Sous-tâche 2.5.1**: Créer le template de base
+    - [ ] **Sous-tâche 2.5.2**: Implémenter les paramètres et variables
+    - [ ] **Sous-tâche 2.5.3**: Tester le template
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `mcp/_templates/mcp-server/new/hello.ejs.t` | Template pour scripts serveur | À créer |
+| `mcp/_templates/mcp-server/new/prompt.js` | Prompt pour scripts serveur | À créer |
+| `mcp/_templates/mcp-client/new/hello.ejs.t` | Template pour scripts client | À créer |
+| `mcp/_templates/mcp-client/new/prompt.js` | Prompt pour scripts client | À créer |
+| `mcp/_templates/mcp-module/new/hello.ejs.t` | Template pour modules | À créer |
+| `mcp/_templates/mcp-module/new/prompt.js` | Prompt pour modules | À créer |
+| `mcp/_templates/mcp-doc/new/hello.ejs.t` | Template pour documentation | À créer |
+| `mcp/_templates/mcp-doc/new/prompt.js` | Prompt pour documentation | À créer |
+
+##### Critères de succès
+- [ ] La structure de base des templates est créée
+- [ ] Les templates pour les scripts serveur sont fonctionnels
+- [ ] Les templates pour les scripts client sont fonctionnels
+- [ ] Les templates pour les modules réutilisables sont fonctionnels
+- [ ] Les templates pour la documentation sont fonctionnels
+- [ ] Tous les templates sont testés et validés
+
+##### Format de journalisation
+```json
+{
+  "module": "mcp-hygen-templates",
+  "version": "1.0.0",
+  "date": "2023-05-16",
+  "changes": [
+    {"feature": "Structure de base", "status": "À commencer"},
+    {"feature": "Templates scripts serveur", "status": "À commencer"},
+    {"feature": "Templates scripts client", "status": "À commencer"},
+    {"feature": "Templates modules", "status": "À commencer"},
+    {"feature": "Templates documentation", "status": "À commencer"}
+  ]
+}
+```
+
+- [ ] **Phase 3**: Développement des scripts d'utilitaires MCP
+  - [ ] **Tâche 3.1**: Créer le script principal de génération
+    - [ ] **Sous-tâche 3.1.1**: Développer la structure de base du script
+    - [ ] **Sous-tâche 3.1.2**: Implémenter les fonctions de génération pour chaque type
+    - [ ] **Sous-tâche 3.1.3**: Ajouter la gestion des erreurs
+    - [ ] **Sous-tâche 3.1.4**: Ajouter la journalisation
+  - [ ] **Tâche 3.2**: Créer les scripts de commande
+    - [ ] **Sous-tâche 3.2.1**: Développer le script de commande principal
+    - [ ] **Sous-tâche 3.2.2**: Implémenter l'interface utilisateur
+    - [ ] **Sous-tâche 3.2.3**: Ajouter la gestion des erreurs
+  - [ ] **Tâche 3.3**: Créer les tests unitaires
+    - [ ] **Sous-tâche 3.3.1**: Développer les tests pour le script principal
+    - [ ] **Sous-tâche 3.3.2**: Développer les tests pour les scripts de commande
+    - [ ] **Sous-tâche 3.3.3**: Implémenter l'intégration continue
+  - [ ] **Tâche 3.4**: Créer la documentation
+    - [ ] **Sous-tâche 3.4.1**: Rédiger le guide d'utilisation
+    - [ ] **Sous-tâche 3.4.2**: Rédiger la documentation technique
+    - [ ] **Sous-tâche 3.4.3**: Créer des exemples d'utilisation
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `mcp/scripts/utils/Generate-MCPComponent.ps1` | Script principal de génération | À créer |
+| `mcp/cmd/utils/generate-component.cmd` | Script de commande | À créer |
+| `mcp/tests/unit/MCPHygen.Tests.ps1` | Tests unitaires | À créer |
+| `mcp/docs/hygen-guide.md` | Guide d'utilisation | À créer |
+| `mcp/docs/hygen-technical.md` | Documentation technique | À créer |
+| `mcp/docs/hygen-examples.md` | Exemples d'utilisation | À créer |
+
+##### Critères de succès
+- [ ] Le script principal de génération est fonctionnel
+- [ ] Les scripts de commande sont fonctionnels
+- [ ] Les tests unitaires sont implémentés et passent
+- [ ] La documentation est complète et précise
+- [ ] Des exemples d'utilisation sont fournis
+
+##### Format de journalisation
+```json
+{
+  "module": "mcp-hygen-utils",
+  "version": "1.0.0",
+  "date": "2023-05-17",
+  "changes": [
+    {"feature": "Script principal", "status": "À commencer"},
+    {"feature": "Scripts de commande", "status": "À commencer"},
+    {"feature": "Tests unitaires", "status": "À commencer"},
+    {"feature": "Documentation", "status": "À commencer"}
+  ]
+}
+```
+
+- [ ] **Phase 4**: Intégration et validation
+  - [ ] **Tâche 4.1**: Intégrer Hygen dans le workflow MCP
+    - [ ] **Sous-tâche 4.1.1**: Configurer l'environnement de développement
+    - [ ] **Sous-tâche 4.1.2**: Intégrer les scripts dans le processus de développement
+    - [ ] **Sous-tâche 4.1.3**: Former les développeurs à l'utilisation
+  - [ ] **Tâche 4.2**: Valider l'intégration avec des cas réels
+    - [ ] **Sous-tâche 4.2.1**: Créer un script serveur avec Hygen
+    - [ ] **Sous-tâche 4.2.2**: Créer un script client avec Hygen
+    - [ ] **Sous-tâche 4.2.3**: Créer un module réutilisable avec Hygen
+    - [ ] **Sous-tâche 4.2.4**: Créer de la documentation avec Hygen
+  - [ ] **Tâche 4.3**: Mesurer les bénéfices
+    - [ ] **Sous-tâche 4.3.1**: Mesurer le gain de temps
+    - [ ] **Sous-tâche 4.3.2**: Évaluer la standardisation du code
+    - [ ] **Sous-tâche 4.3.3**: Évaluer l'organisation des fichiers
+    - [ ] **Sous-tâche 4.3.4**: Collecter les retours des utilisateurs
+  - [ ] **Tâche 4.4**: Finaliser la documentation et les procédures
+    - [ ] **Sous-tâche 4.4.1**: Mettre à jour la documentation
+    - [ ] **Sous-tâche 4.4.2**: Créer des procédures d'utilisation
+    - [ ] **Sous-tâche 4.4.3**: Intégrer dans la documentation globale
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `mcp/docs/hygen-integration.md` | Documentation d'intégration | À créer |
+| `mcp/docs/hygen-benefits-report.md` | Rapport des bénéfices | À créer |
+| `mcp/docs/hygen-user-feedback-report.md` | Rapport des retours utilisateurs | À créer |
+| `mcp/docs/hygen-procedures.md` | Procédures d'utilisation | À créer |
+
+##### Critères de succès
+- [ ] Hygen est intégré dans le workflow MCP
+- [ ] Des composants réels ont été créés avec Hygen
+- [ ] Les bénéfices sont mesurés et documentés
+- [ ] La documentation et les procédures sont finalisées
+- [ ] Les développeurs sont formés à l'utilisation de Hygen
+
+##### Format de journalisation
+```json
+{
+  "module": "mcp-hygen-integration",
+  "version": "1.0.0",
+  "date": "2023-05-18",
+  "changes": [
+    {"feature": "Intégration workflow", "status": "À commencer"},
+    {"feature": "Validation cas réels", "status": "À commencer"},
+    {"feature": "Mesure des bénéfices", "status": "À commencer"},
+    {"feature": "Documentation finale", "status": "À commencer"}
+  ]
+}
+```
+
+#### 5.3.2 Extension de Hygen au dossier scripts
+**Complexité**: Élevée
+**Temps estimé**: 4 jours
+**Progression**: 0% - *À commencer*
+**Date de début prévue**: 19/05/2023
+**Date d'achèvement prévue**: 24/05/2023
+**Responsable**: Équipe Développement
+**Tags**: #hygen #scripts #templates
+
+- [ ] **Phase 1**: Analyse de la structure scripts et définition des besoins
+  - [ ] **Tâche 1.1**: Analyser la structure du dossier scripts
+    - [ ] **Sous-tâche 1.1.1**: Inventorier les types de scripts existants
+    - [ ] **Sous-tâche 1.1.2**: Identifier les patterns récurrents
+    - [ ] **Sous-tâche 1.1.3**: Documenter la structure actuelle
+  - [ ] **Tâche 1.2**: Définir les types de scripts à générer
+    - [ ] **Sous-tâche 1.2.1**: Identifier les scripts d'automatisation
+    - [ ] **Sous-tâche 1.2.2**: Identifier les scripts d'analyse
+    - [ ] **Sous-tâche 1.2.3**: Identifier les scripts de test
+    - [ ] **Sous-tâche 1.2.4**: Identifier les scripts d'intégration
+  - [ ] **Tâche 1.3**: Définir les templates nécessaires
+    - [ ] **Sous-tâche 1.3.1**: Créer la liste des templates à développer
+    - [ ] **Sous-tâche 1.3.2**: Définir les paramètres de chaque template
+    - [ ] **Sous-tâche 1.3.3**: Établir les conventions de nommage
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `scripts/docs/hygen-analysis.md` | Analyse de la structure scripts | À créer |
+| `scripts/docs/hygen-templates-plan.md` | Plan des templates à développer | À créer |
+
+##### Critères de succès
+- [ ] L'analyse complète de la structure scripts est documentée
+- [ ] Les types de scripts à générer sont clairement définis
+- [ ] La liste des templates nécessaires est établie
+
+##### Format de journalisation
+```json
+{
+  "module": "scripts-hygen-analysis",
+  "version": "1.0.0",
+  "date": "2023-05-19",
+  "changes": [
+    {"feature": "Analyse de structure", "status": "À commencer"},
+    {"feature": "Définition des scripts", "status": "À commencer"},
+    {"feature": "Planification des templates", "status": "À commencer"}
+  ]
+}
+```
+
+- [ ] **Phase 2**: Création des templates scripts
+  - [ ] **Tâche 2.1**: Créer la structure de base des templates
+    - [ ] **Sous-tâche 2.1.1**: Créer le dossier `scripts/_templates`
+    - [ ] **Sous-tâche 2.1.2**: Créer les sous-dossiers pour chaque type de générateur
+  - [ ] **Tâche 2.2**: Développer le template pour les scripts d'automatisation
+    - [ ] **Sous-tâche 2.2.1**: Créer le template de base
+    - [ ] **Sous-tâche 2.2.2**: Implémenter les paramètres et variables
+  - [ ] **Tâche 2.3**: Développer le template pour les scripts d'analyse
+    - [ ] **Sous-tâche 2.3.1**: Créer le template de base
+    - [ ] **Sous-tâche 2.3.2**: Implémenter les paramètres et variables
+  - [ ] **Tâche 2.4**: Développer le template pour les scripts de test
+    - [ ] **Sous-tâche 2.4.1**: Créer le template de base
+    - [ ] **Sous-tâche 2.4.2**: Implémenter les paramètres et variables
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `scripts/_templates/script-auto/new/hello.ejs.t` | Template pour scripts d'automatisation | À créer |
+| `scripts/_templates/script-analysis/new/hello.ejs.t` | Template pour scripts d'analyse | À créer |
+| `scripts/_templates/script-test/new/hello.ejs.t` | Template pour scripts de test | À créer |
+| `scripts/_templates/script-integration/new/hello.ejs.t` | Template pour scripts d'intégration | À créer |
+
+##### Critères de succès
+- [ ] La structure de base des templates est créée
+- [ ] Les templates pour les différents types de scripts sont fonctionnels
+- [ ] Tous les templates sont testés et validés
+
+##### Format de journalisation
+```json
+{
+  "module": "scripts-hygen-templates",
+  "version": "1.0.0",
+  "date": "2023-05-22",
+  "changes": [
+    {"feature": "Structure de base", "status": "À commencer"},
+    {"feature": "Templates automatisation", "status": "À commencer"},
+    {"feature": "Templates analyse", "status": "À commencer"},
+    {"feature": "Templates test", "status": "À commencer"}
+  ]
+}
+```
+
+- [ ] **Phase 3**: Développement des scripts d'utilitaires
+  - [ ] **Tâche 3.1**: Créer le script principal de génération
+    - [ ] **Sous-tâche 3.1.1**: Développer la structure de base du script
+    - [ ] **Sous-tâche 3.1.2**: Implémenter les fonctions de génération pour chaque type
+    - [ ] **Sous-tâche 3.1.3**: Ajouter la gestion des erreurs
+  - [ ] **Tâche 3.2**: Créer les scripts de commande
+    - [ ] **Sous-tâche 3.2.1**: Développer le script de commande principal
+    - [ ] **Sous-tâche 3.2.2**: Implémenter l'interface utilisateur
+  - [ ] **Tâche 3.3**: Créer les tests unitaires
+    - [ ] **Sous-tâche 3.3.1**: Développer les tests pour le script principal
+    - [ ] **Sous-tâche 3.3.2**: Développer les tests pour les scripts de commande
+  - [ ] **Tâche 3.4**: Créer la documentation
+    - [ ] **Sous-tâche 3.4.1**: Rédiger le guide d'utilisation
+    - [ ] **Sous-tâche 3.4.2**: Rédiger la documentation technique
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `scripts/utils/Generate-ScriptComponent.ps1` | Script principal de génération | À créer |
+| `scripts/cmd/utils/generate-script.cmd` | Script de commande | À créer |
+| `scripts/tests/unit/ScriptHygen.Tests.ps1` | Tests unitaires | À créer |
+| `scripts/docs/hygen-guide.md` | Guide d'utilisation | À créer |
+| `scripts/docs/hygen-technical.md` | Documentation technique | À créer |
+
+##### Critères de succès
+- [ ] Le script principal de génération est fonctionnel
+- [ ] Les scripts de commande sont fonctionnels
+- [ ] Les tests unitaires sont implémentés et passent
+- [ ] La documentation est complète et précise
+
+##### Format de journalisation
+```json
+{
+  "module": "scripts-hygen-utils",
+  "version": "1.0.0",
+  "date": "2023-05-23",
+  "changes": [
+    {"feature": "Script principal", "status": "À commencer"},
+    {"feature": "Scripts de commande", "status": "À commencer"},
+    {"feature": "Tests unitaires", "status": "À commencer"},
+    {"feature": "Documentation", "status": "À commencer"}
+  ]
+}
+```
+
+- [ ] **Phase 4**: Intégration et validation
+  - [ ] **Tâche 4.1**: Intégrer Hygen dans le workflow scripts
+    - [ ] **Sous-tâche 4.1.1**: Configurer l'environnement de développement
+    - [ ] **Sous-tâche 4.1.2**: Intégrer les scripts dans le processus de développement
+  - [ ] **Tâche 4.2**: Valider l'intégration avec des cas réels
+    - [ ] **Sous-tâche 4.2.1**: Créer un script d'automatisation avec Hygen
+    - [ ] **Sous-tâche 4.2.2**: Créer un script d'analyse avec Hygen
+    - [ ] **Sous-tâche 4.2.3**: Créer un script de test avec Hygen
+  - [ ] **Tâche 4.3**: Mesurer les bénéfices
+    - [ ] **Sous-tâche 4.3.1**: Mesurer le gain de temps
+    - [ ] **Sous-tâche 4.3.2**: Évaluer la standardisation du code
+    - [ ] **Sous-tâche 4.3.3**: Collecter les retours des utilisateurs
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `scripts/docs/hygen-integration.md` | Documentation d'intégration | À créer |
+| `scripts/docs/hygen-benefits-report.md` | Rapport des bénéfices | À créer |
+
+##### Critères de succès
+- [ ] Hygen est intégré dans le workflow scripts
+- [ ] Des scripts réels ont été créés avec Hygen
+- [ ] Les bénéfices sont mesurés et documentés
+
+##### Format de journalisation
+```json
+{
+  "module": "scripts-hygen-integration",
+  "version": "1.0.0",
+  "date": "2023-05-24",
+  "changes": [
+    {"feature": "Intégration workflow", "status": "À commencer"},
+    {"feature": "Validation cas réels", "status": "À commencer"},
+    {"feature": "Mesure des bénéfices", "status": "À commencer"}
+  ]
+}
+```
+
+#### 5.3.3 Coordination et finalisation de l'extension de Hygen
+**Complexité**: Moyenne
+**Temps estimé**: 2 jours
+**Progression**: 0% - *À commencer*
+**Date de début prévue**: 25/05/2023
+**Date d'achèvement prévue**: 26/05/2023
+**Responsable**: Équipe Développement
+**Tags**: #hygen #coordination #finalisation
+
+- [ ] **Phase 1**: Coordination des extensions Hygen
+  - [ ] **Tâche 1.1**: Harmoniser les templates entre les différentes parties
+    - [ ] **Sous-tâche 1.1.1**: Comparer les templates n8n, MCP et scripts
+    - [ ] **Sous-tâche 1.1.2**: Identifier les éléments communs
+    - [ ] **Sous-tâche 1.1.3**: Standardiser les conventions de nommage
+  - [ ] **Tâche 1.2**: Créer des scripts de coordination
+    - [ ] **Sous-tâche 1.2.1**: Développer un script de génération global
+    - [ ] **Sous-tâche 1.2.2**: Implémenter une interface utilisateur unifiée
+    - [ ] **Sous-tâche 1.2.3**: Ajouter la gestion des erreurs
+  - [ ] **Tâche 1.3**: Créer une documentation globale
+    - [ ] **Sous-tâche 1.3.1**: Rédiger un guide d'utilisation global
+    - [ ] **Sous-tâche 1.3.2**: Créer des exemples d'utilisation
+    - [ ] **Sous-tâche 1.3.3**: Documenter les bonnes pratiques
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `scripts/utils/Generate-GlobalComponent.ps1` | Script de génération global | À créer |
+| `scripts/cmd/utils/generate-global.cmd` | Script de commande global | À créer |
+| `docs/hygen-global-guide.md` | Guide d'utilisation global | À créer |
+| `docs/hygen-best-practices.md` | Bonnes pratiques | À créer |
+
+##### Critères de succès
+- [ ] Les templates sont harmonisés entre les différentes parties
+- [ ] Les scripts de coordination sont fonctionnels
+- [ ] La documentation globale est complète et précise
+
+##### Format de journalisation
+```json
+{
+  "module": "hygen-coordination",
+  "version": "1.0.0",
+  "date": "2023-05-25",
+  "changes": [
+    {"feature": "Harmonisation des templates", "status": "À commencer"},
+    {"feature": "Scripts de coordination", "status": "À commencer"},
+    {"feature": "Documentation globale", "status": "À commencer"}
+  ]
+}
+```
+
+- [ ] **Phase 2**: Finalisation et validation globale
+  - [ ] **Tâche 2.1**: Tester l'intégration globale
+    - [ ] **Sous-tâche 2.1.1**: Tester la génération de composants n8n
+    - [ ] **Sous-tâche 2.1.2**: Tester la génération de composants MCP
+    - [ ] **Sous-tâche 2.1.3**: Tester la génération de scripts
+    - [ ] **Sous-tâche 2.1.4**: Tester la génération globale
+  - [ ] **Tâche 2.2**: Mesurer les bénéfices globaux
+    - [ ] **Sous-tâche 2.2.1**: Mesurer le gain de temps global
+    - [ ] **Sous-tâche 2.2.2**: Évaluer la standardisation globale
+    - [ ] **Sous-tâche 2.2.3**: Collecter les retours des utilisateurs
+  - [ ] **Tâche 2.3**: Présenter les résultats
+    - [ ] **Sous-tâche 2.3.1**: Créer une présentation des résultats
+    - [ ] **Sous-tâche 2.3.2**: Présenter à l'équipe
+    - [ ] **Sous-tâche 2.3.3**: Recueillir les retours et ajuster
+
+##### Fichiers à créer/modifier
+| Chemin | Description | Statut |
+|--------|-------------|--------|
+| `docs/hygen-global-benefits-report.md` | Rapport des bénéfices globaux | À créer |
+| `docs/hygen-global-user-feedback-report.md` | Rapport des retours utilisateurs | À créer |
+| `docs/hygen-presentation.md` | Présentation des résultats | À créer |
+
+##### Critères de succès
+- [ ] L'intégration globale est testée et validée
+- [ ] Les bénéfices globaux sont mesurés et documentés
+- [ ] Les résultats sont présentés à l'équipe
+- [ ] Les retours sont recueillis et pris en compte
+
+##### Format de journalisation
+```json
+{
+  "module": "hygen-finalization",
+  "version": "1.0.0",
+  "date": "2023-05-26",
+  "changes": [
+    {"feature": "Tests d'intégration globale", "status": "À commencer"},
+    {"feature": "Mesure des bénéfices globaux", "status": "À commencer"},
+    {"feature": "Présentation des résultats", "status": "À commencer"}
+  ]
+}
+```
+
+#### Format de journalisation global
+```json
+{
+  "module": "hygen-extension",
+  "version": "1.0.0",
+  "date": "2023-05-26",
+  "changes": [
+    {"feature": "Extension MCP", "status": "À commencer"},
+    {"feature": "Extension scripts", "status": "À commencer"},
+    {"feature": "Coordination et finalisation", "status": "À commencer"}
+  ]
+}
+```
+
 ## 6. Security
 **Description**: Modules de sécurité, d'authentification et de protection des données.
 **Responsable**: Équipe Sécurité
