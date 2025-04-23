@@ -2375,61 +2375,193 @@
 #### 1.1 Analyse et Conception (1 jour)
 - **1.1.1** Étude des modèles prédictifs
   - **1.1.1.1** Analyser les différents algorithmes de prédiction
+    - **1.1.1.1.1** Étudier les algorithmes de régression linéaire et polynomiale
+    - **1.1.1.1.2** Analyser les modèles d'apprentissage par arbre de décision
+    - **1.1.1.1.3** Comprendre les réseaux de neurones pour la prédiction
+    - **1.1.1.1.4** Étudier les méthodes d'ensemble (random forest, gradient boosting)
   - **1.1.1.2** Identifier les facteurs influant sur le temps d'implémentation
+    - **1.1.1.2.1** Analyser l'impact de la complexité algorithmique
+    - **1.1.1.2.2** Étudier l'influence des dépendances entre tâches
+    - **1.1.1.2.3** Comprendre l'effet de l'expérience des développeurs
+    - **1.1.1.2.4** Analyser l'impact des contraintes techniques
   - **1.1.1.3** Déterminer les métriques de précision
+    - **1.1.1.3.1** Définir les métriques d'erreur (MAE, RMSE, etc.)
+    - **1.1.1.3.2** Établir les métriques de calibration
+    - **1.1.1.3.3** Définir les métriques de robustesse
+    - **1.1.1.3.4** Établir les seuils d'acceptabilité des prédictions
 
 - **1.1.2** Conception de l'architecture du système
   - **1.1.2.1** Définir l'architecture du modèle prédictif
+    - **1.1.2.1.1** Concevoir l'architecture modulaire du modèle
+    - **1.1.2.1.2** Définir les interfaces entre composants
+    - **1.1.2.1.3** Établir les flux de données et de contrôle
+    - **1.1.2.1.4** Concevoir les mécanismes d'extensibilité
   - **1.1.2.2** Concevoir le pipeline de données
+    - **1.1.2.2.1** Définir les étapes d'extraction de données
+    - **1.1.2.2.2** Concevoir les processus de transformation
+    - **1.1.2.2.3** Établir les mécanismes de chargement
+    - **1.1.2.2.4** Concevoir les stratégies de mise en cache
   - **1.1.2.3** Planifier les mécanismes d'ajustement
+    - **1.1.2.3.1** Définir les stratégies de réentraînement
+    - **1.1.2.3.2** Concevoir les mécanismes de validation croisée
+    - **1.1.2.3.3** Établir les processus d'optimisation des hyperparamètres
+    - **1.1.2.3.4** Concevoir les mécanismes de détection de dérive
 
 - **1.1.3** Définition des sources de données
   - **1.1.3.1** Identifier les données historiques pertinentes
+    - **1.1.3.1.1** Analyser les logs de développement passés
+    - **1.1.3.1.2** Étudier les archives de commits et pull requests
+    - **1.1.3.1.3** Identifier les données de suivi de projet existantes
+    - **1.1.3.1.4** Analyser les rapports de temps passé sur les tâches
   - **1.1.3.2** Déterminer les métadonnées des tâches
+    - **1.1.3.2.1** Définir les attributs de complexité des tâches
+    - **1.1.3.2.2** Établir les catégories de tâches
+    - **1.1.3.2.3** Identifier les attributs de dépendance
+    - **1.1.3.2.4** Définir les métadonnées de contexte
   - **1.1.3.3** Planifier la collecte de données en temps réel
+    - **1.1.3.3.1** Concevoir les mécanismes de capture d'événements
+    - **1.1.3.3.2** Définir les stratégies d'échantillonnage
+    - **1.1.3.3.3** Établir les protocoles de synchronisation
+    - **1.1.3.3.4** Concevoir les mécanismes de gestion des interruptions
 
 #### 1.2 Implémentation du Collecteur de Données (1 jour)
 - **1.2.1** Développement des extracteurs de données historiques
   - **1.2.1.1** Implémenter l'extraction des temps d'implémentation passés
+    - **1.2.1.1.1** Développer les connecteurs pour les systèmes de suivi de temps
+    - **1.2.1.1.2** Implémenter l'analyse des logs de commits
+    - **1.2.1.1.3** Créer les mécanismes d'agrégation de temps
+    - **1.2.1.1.4** Développer les filtres de données aberrantes
   - **1.2.1.2** Développer l'extraction des caractéristiques des tâches
+    - **1.2.1.2.1** Implémenter l'extraction des descriptions de tâches
+    - **1.2.1.2.2** Développer l'analyse des mots-clés et catégories
+    - **1.2.1.2.3** Créer les mécanismes d'extraction de structure
+    - **1.2.1.2.4** Implémenter l'analyse des dépendances entre tâches
   - **1.2.1.3** Créer l'extraction des métadonnées de complexité
+    - **1.2.1.3.1** Développer l'analyse de complexité algorithmique
+    - **1.2.1.3.2** Implémenter l'extraction des métriques de code
+    - **1.2.1.3.3** Créer les mécanismes d'analyse de dépendances externes
+    - **1.2.1.3.4** Développer les indicateurs de complexité composés
 
 - **1.2.2** Développement des transformateurs de données
   - **1.2.2.1** Implémenter le nettoyage des données
+    - **1.2.2.1.1** Développer les filtres de valeurs manquantes
+    - **1.2.2.1.2** Implémenter la détection et correction des valeurs aberrantes
+    - **1.2.2.1.3** Créer les mécanismes de déduplication
+    - **1.2.2.1.4** Développer les validateurs de cohérence
   - **1.2.2.2** Développer la normalisation des données
+    - **1.2.2.2.1** Implémenter la normalisation min-max
+    - **1.2.2.2.2** Développer la standardisation (z-score)
+    - **1.2.2.2.3** Créer les transformations logarithmiques
+    - **1.2.2.2.4** Implémenter les encodeurs de variables catégorielles
   - **1.2.2.3** Créer l'enrichissement des données
+    - **1.2.2.3.1** Développer la génération de caractéristiques dérivées
+    - **1.2.2.3.2** Implémenter l'intégration de données externes
+    - **1.2.2.3.3** Créer les mécanismes d'augmentation de données
+    - **1.2.2.3.4** Développer les transformations basées sur le domaine
 
 - **1.2.3** Développement du système de stockage
   - **1.2.3.1** Implémenter la base de données d'apprentissage
+    - **1.2.3.1.1** Développer le schéma de la base de données
+    - **1.2.3.1.2** Implémenter les mécanismes d'indexation
+    - **1.2.3.1.3** Créer les procédures de stockage optimisées
+    - **1.2.3.1.4** Développer les interfaces d'accès aux données
   - **1.2.3.2** Développer les mécanismes de mise à jour
+    - **1.2.3.2.1** Implémenter les procédures d'insertion incrémentale
+    - **1.2.3.2.2** Développer les mécanismes de mise à jour atomique
+    - **1.2.3.2.3** Créer les stratégies de gestion des conflits
+    - **1.2.3.2.4** Implémenter les journaux de modifications
   - **1.2.3.3** Créer les sauvegardes et la rotation des données
+    - **1.2.3.3.1** Développer les mécanismes de sauvegarde automatique
+    - **1.2.3.3.2** Implémenter les stratégies de rotation des données
+    - **1.2.3.3.3** Créer les procédures d'archivage
+    - **1.2.3.3.4** Développer les mécanismes de restauration
 
 #### 1.3 Implémentation du Modèle Prédictif (2 jours)
 - **1.3.1** Développement du modèle de base
   - **1.3.1.1** Implémenter l'algorithme de régression
+    - **1.3.1.1.1** Développer l'algorithme de régression linéaire
+    - **1.3.1.1.2** Implémenter la régression polynomiale
+    - **1.3.1.1.3** Créer les mécanismes de régularisation
+    - **1.3.1.1.4** Développer les métriques d'évaluation de régression
   - **1.3.1.2** Développer le modèle d'apprentissage supervisé
+    - **1.3.1.2.1** Implémenter les algorithmes d'arbres de décision
+    - **1.3.1.2.2** Développer les méthodes d'ensemble (random forest)
+    - **1.3.1.2.3** Créer les mécanismes de validation croisée
+    - **1.3.1.2.4** Implémenter les métriques d'évaluation de modèle
   - **1.3.1.3** Créer les fonctions de prédiction
+    - **1.3.1.3.1** Développer l'interface de prédiction
+    - **1.3.1.3.2** Implémenter les mécanismes de sélection de modèle
+    - **1.3.1.3.3** Créer les fonctions d'intervalle de confiance
+    - **1.3.1.3.4** Développer les mécanismes de prédiction par lot
 
 - **1.3.2** Développement des fonctionnalités avancées
   - **1.3.2.1** Implémenter la détection des valeurs aberrantes
+    - **1.3.2.1.1** Développer les algorithmes de détection statistique
+    - **1.3.2.1.2** Implémenter les méthodes basées sur la distance
+    - **1.3.2.1.3** Créer les mécanismes de détection par modèle
+    - **1.3.2.1.4** Développer les stratégies de traitement des aberrations
   - **1.3.2.2** Développer l'analyse de sensibilité
+    - **1.3.2.2.1** Implémenter l'analyse de sensibilité locale
+    - **1.3.2.2.2** Développer l'analyse de sensibilité globale
+    - **1.3.2.2.3** Créer les visualisations de sensibilité
+    - **1.3.2.2.4** Implémenter les rapports d'importance des variables
   - **1.3.2.3** Créer les intervalles de confiance
+    - **1.3.2.3.1** Développer les méthodes paramétriques
+    - **1.3.2.3.2** Implémenter les méthodes de bootstrap
+    - **1.3.2.3.3** Créer les intervalles de prédiction
+    - **1.3.2.3.4** Développer les visualisations d'incertitude
 
 - **1.3.3** Développement du système d'ajustement
   - **1.3.3.1** Implémenter l'apprentissage continu
+    - **1.3.3.1.1** Développer les mécanismes d'apprentissage incrémental
+    - **1.3.3.1.2** Implémenter les stratégies de mise à jour du modèle
+    - **1.3.3.1.3** Créer les mécanismes de détection de dérive conceptuelle
+    - **1.3.3.1.4** Développer les stratégies d'oubli sélectif
   - **1.3.3.2** Développer l'ajustement basé sur les retours
+    - **1.3.3.2.1** Implémenter les mécanismes de collecte de feedback
+    - **1.3.3.2.2** Développer les stratégies d'apprentissage par renforcement
+    - **1.3.3.2.3** Créer les mécanismes de pondération des retours
+    - **1.3.3.2.4** Implémenter les algorithmes d'optimisation basés sur les retours
   - **1.3.3.3** Créer les mécanismes de calibration
+    - **1.3.3.3.1** Développer les méthodes de calibration de probabilité
+    - **1.3.3.3.2** Implémenter les techniques de calibration de Platt
+    - **1.3.3.3.3** Créer les mécanismes d'isotonic regression
+    - **1.3.3.3.4** Développer les métriques d'évaluation de calibration
 
 #### 1.4 Tests et Validation (1 jour)
 - **1.4.1** Création des tests unitaires
   - **1.4.1.1** Développer des tests pour le collecteur de données
+    - **1.4.1.1.1** Créer des tests pour les extracteurs de données
+    - **1.4.1.1.2** Développer des tests pour les transformateurs
+    - **1.4.1.1.3** Implémenter des tests pour le système de stockage
+    - **1.4.1.1.4** Créer des tests de performance pour la collecte
   - **1.4.1.2** Créer des tests pour le modèle prédictif
+    - **1.4.1.2.1** Développer des tests pour le modèle de base
+    - **1.4.1.2.2** Implémenter des tests pour les fonctionnalités avancées
+    - **1.4.1.2.3** Créer des tests pour les fonctions de prédiction
+    - **1.4.1.2.4** Développer des tests de robustesse du modèle
   - **1.4.1.3** Implémenter des tests pour le système d'ajustement
+    - **1.4.1.3.1** Créer des tests pour l'apprentissage continu
+    - **1.4.1.3.2** Développer des tests pour l'ajustement basé sur les retours
+    - **1.4.1.3.3** Implémenter des tests pour les mécanismes de calibration
+    - **1.4.1.3.4** Créer des tests de détection de dérive
 
 - **1.4.2** Évaluation du modèle
   - **1.4.2.1** Mesurer la précision des prédictions
+    - **1.4.2.1.1** Développer les tests de validation croisée
+    - **1.4.2.1.2** Implémenter les métriques d'erreur (MAE, RMSE)
+    - **1.4.2.1.3** Créer les tests sur des données de validation
+    - **1.4.2.1.4** Développer les comparaisons avec les estimations manuelles
   - **1.4.2.2** Évaluer la robustesse du modèle
+    - **1.4.2.2.1** Implémenter les tests de sensibilité aux données aberrantes
+    - **1.4.2.2.2** Développer les tests de stabilité temporelle
+    - **1.4.2.2.3** Créer les tests de robustesse aux données manquantes
+    - **1.4.2.2.4** Implémenter les tests de sensibilité aux paramètres
   - **1.4.2.3** Analyser les cas d'échec
+    - **1.4.2.3.1** Développer les mécanismes d'identification des échecs
+    - **1.4.2.3.2** Implémenter l'analyse des causes d'échec
+    - **1.4.2.3.3** Créer les rapports détaillés d'échec
+    - **1.4.2.3.4** Développer les stratégies d'amélioration basées sur les échecs
 
 ### 2. Système de Recommandation (5 jours)
 
