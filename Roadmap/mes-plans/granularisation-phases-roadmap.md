@@ -2886,51 +2886,159 @@
 #### 4.1 Analyse et Conception (1 jour)
 - **4.1.1** Étude des approches de granularisation
   - **4.1.1.1** Analyser les différentes stratégies de décomposition de tâches
+    - **4.1.1.1.1** Étudier les méthodes de décomposition hiérarchique
+    - **4.1.1.1.2** Analyser les approches de décomposition fonctionnelle
+    - **4.1.1.1.3** Comprendre les techniques de décomposition basées sur les dépendances
+    - **4.1.1.1.4** Étudier les méthodes de décomposition temporelle
   - **4.1.1.2** Identifier les critères de granularité optimale
+    - **4.1.1.2.1** Analyser les critères de complexité et taille
+    - **4.1.1.2.2** Étudier les critères de cohésion et couplage
+    - **4.1.1.2.3** Comprendre les critères d'autonomie des tâches
+    - **4.1.1.2.4** Analyser les critères de testabilité et validation
   - **4.1.1.3** Déterminer les métriques d'évaluation
+    - **4.1.1.3.1** Définir les métriques de qualité de granularisation
+    - **4.1.1.3.2** Établir les métriques d'efficacité de décomposition
+    - **4.1.1.3.3** Définir les métriques d'impact sur la productivité
+    - **4.1.1.3.4** Établir les métriques de satisfaction utilisateur
 
 - **4.1.2** Conception de l'architecture de l'assistant
   - **4.1.2.1** Définir l'architecture du moteur de granularisation
+    - **4.1.2.1.1** Concevoir l'architecture modulaire du moteur
+    - **4.1.2.1.2** Définir les interfaces entre composants
+    - **4.1.2.1.3** Établir les flux de données et de contrôle
+    - **4.1.2.1.4** Concevoir les mécanismes d'extensibilité
   - **4.1.2.2** Concevoir l'interface utilisateur
+    - **4.1.2.2.1** Définir les interfaces de saisie et visualisation
+    - **4.1.2.2.2** Concevoir les mécanismes d'interaction
+    - **4.1.2.2.3** Établir les principes d'expérience utilisateur
+    - **4.1.2.2.4** Concevoir les mécanismes de feedback et aide
   - **4.1.2.3** Planifier les intégrations avec les autres systèmes
+    - **4.1.2.3.1** Définir les intégrations avec le système de roadmap
+    - **4.1.2.3.2** Concevoir les intégrations avec le système prédictif
+    - **4.1.2.3.3** Établir les intégrations avec le système de recommandation
+    - **4.1.2.3.4** Concevoir les intégrations avec les outils externes
 
 #### 4.2 Implémentation du Moteur de Granularisation (2 jours)
 - **4.2.1** Développement de l'analyseur de tâches
   - **4.2.1.1** Implémenter l'analyse sémantique des descriptions
+    - **4.2.1.1.1** Développer les algorithmes d'analyse de texte
+    - **4.2.1.1.2** Implémenter l'extraction de mots-clés et concepts
+    - **4.2.1.1.3** Créer les mécanismes de classification sémantique
+    - **4.2.1.1.4** Développer les méthodes d'analyse de contexte
   - **4.2.1.2** Développer l'estimation de complexité
+    - **4.2.1.2.1** Implémenter les métriques de complexité linguistique
+    - **4.2.1.2.2** Développer les algorithmes d'estimation de temps
+    - **4.2.1.2.3** Créer les mécanismes d'analyse de difficulté technique
+    - **4.2.1.2.4** Implémenter les méthodes de calibration d'estimation
   - **4.2.1.3** Créer la détection des dépendances implicites
+    - **4.2.1.3.1** Développer les algorithmes d'analyse de relations
+    - **4.2.1.3.2** Implémenter la détection de prérequis
+    - **4.2.1.3.3** Créer les mécanismes d'identification de ressources partagées
+    - **4.2.1.3.4** Développer les méthodes de validation de dépendances
 
 - **4.2.2** Développement de l'algorithme de décomposition
   - **4.2.2.1** Implémenter la décomposition hiérarchique
+    - **4.2.2.1.1** Développer les algorithmes de décomposition par niveaux
+    - **4.2.2.1.2** Implémenter les mécanismes de structuration arborescente
+    - **4.2.2.1.3** Créer les méthodes de gestion de profondeur
+    - **4.2.2.1.4** Développer les stratégies d'équilibrage d'arbre
   - **4.2.2.2** Développer la génération de sous-tâches
+    - **4.2.2.2.1** Implémenter les algorithmes de génération de descriptions
+    - **4.2.2.2.2** Développer les mécanismes de spécialisation de tâches
+    - **4.2.2.2.3** Créer les méthodes de décomposition fonctionnelle
+    - **4.2.2.2.4** Implémenter les stratégies de décomposition temporelle
   - **4.2.2.3** Créer l'optimisation de la granularité
+    - **4.2.2.3.1** Développer les algorithmes d'ajustement de taille
+    - **4.2.2.3.2** Implémenter les mécanismes de fusion/division
+    - **4.2.2.3.3** Créer les méthodes d'équilibrage de charge
+    - **4.2.2.3.4** Développer les stratégies d'optimisation multi-critères
 
 - **4.2.3** Développement du générateur de structure
   - **4.2.3.1** Implémenter la génération de la hiérarchie
+    - **4.2.3.1.1** Développer les algorithmes de construction d'arbre
+    - **4.2.3.1.2** Implémenter les mécanismes de liaison parent-enfant
+    - **4.2.3.1.3** Créer les méthodes de réorganisation hiérarchique
+    - **4.2.3.1.4** Développer les stratégies de visualisation hiérarchique
   - **4.2.3.2** Développer la création des identifiants
+    - **4.2.3.2.1** Implémenter les algorithmes de génération d'identifiants
+    - **4.2.3.2.2** Développer les mécanismes de numérotation hiérarchique
+    - **4.2.3.2.3** Créer les méthodes de gestion d'unicité
+    - **4.2.3.2.4** Implémenter les stratégies de rénumérotation
   - **4.2.3.3** Créer la génération des descriptions
+    - **4.2.3.3.1** Développer les algorithmes de génération de texte
+    - **4.2.3.3.2** Implémenter les mécanismes de spécialisation de description
+    - **4.2.3.3.3** Créer les méthodes d'enrichissement de contexte
+    - **4.2.3.3.4** Développer les stratégies de normalisation de descriptions
 
 #### 4.3 Implémentation de l'Interface Utilisateur (1.5 jour)
 - **4.3.1** Développement de l'interface interactive
   - **4.3.1.1** Implémenter l'interface de saisie des tâches
+    - **4.3.1.1.1** Développer les formulaires de saisie de tâches
+    - **4.3.1.1.2** Implémenter les mécanismes de validation de saisie
+    - **4.3.1.1.3** Créer les fonctionnalités d'auto-complétion
+    - **4.3.1.1.4** Développer les mécanismes d'import de tâches existantes
   - **4.3.1.2** Développer la visualisation de la décomposition
+    - **4.3.1.2.1** Implémenter les vues arborescentes
+    - **4.3.1.2.2** Développer les visualisations de graphes
+    - **4.3.1.2.3** Créer les mécanismes de zoom et navigation
+    - **4.3.1.2.4** Implémenter les options de filtrage et tri
   - **4.3.1.3** Créer les mécanismes d'ajustement manuel
+    - **4.3.1.3.1** Développer les fonctionnalités de glisser-déposer
+    - **4.3.1.3.2** Implémenter les contrôles de fusion et division
+    - **4.3.1.3.3** Créer les mécanismes d'édition de descriptions
+    - **4.3.1.3.4** Développer les fonctionnalités d'annulation et rétablissement
 
 - **4.3.2** Développement des fonctionnalités avancées
   - **4.3.2.1** Implémenter les suggestions en temps réel
+    - **4.3.2.1.1** Développer les mécanismes de suggestion pendant la saisie
+    - **4.3.2.1.2** Implémenter les recommandations de décomposition
+    - **4.3.2.1.3** Créer les suggestions de niveau de granularité
+    - **4.3.2.1.4** Développer les mécanismes de prévisualisation
   - **4.3.2.2** Développer l'apprentissage des préférences
+    - **4.3.2.2.1** Implémenter le suivi des actions utilisateur
+    - **4.3.2.2.2** Développer les mécanismes d'analyse de préférences
+    - **4.3.2.2.3** Créer les profils utilisateur adaptatifs
+    - **4.3.2.2.4** Implémenter les stratégies de personnalisation
   - **4.3.2.3** Créer les templates de granularisation
+    - **4.3.2.3.1** Développer les templates prédéfinis par domaine
+    - **4.3.2.3.2** Implémenter les mécanismes de création de templates
+    - **4.3.2.3.3** Créer les fonctionnalités de partage de templates
+    - **4.3.2.3.4** Développer les mécanismes d'application de templates
 
 #### 4.4 Tests et Validation (0.5 jour)
 - **4.4.1** Création des tests unitaires
   - **4.4.1.1** Développer des tests pour le moteur de granularisation
+    - **4.4.1.1.1** Créer des tests pour l'analyseur de tâches
+    - **4.4.1.1.2** Développer des tests pour l'algorithme de décomposition
+    - **4.4.1.1.3** Implémenter des tests pour le générateur de structure
+    - **4.4.1.1.4** Créer des tests de performance du moteur
   - **4.4.1.2** Créer des tests pour l'interface utilisateur
+    - **4.4.1.2.1** Développer des tests pour l'interface de saisie
+    - **4.4.1.2.2** Implémenter des tests pour la visualisation
+    - **4.4.1.2.3** Créer des tests pour les mécanismes d'ajustement
+    - **4.4.1.2.4** Développer des tests pour les fonctionnalités avancées
   - **4.4.1.3** Implémenter des tests pour les intégrations
+    - **4.4.1.3.1** Créer des tests d'intégration avec le système de roadmap
+    - **4.4.1.3.2** Développer des tests d'intégration avec le système prédictif
+    - **4.4.1.3.3** Implémenter des tests d'intégration avec le système de recommandation
+    - **4.4.1.3.4** Créer des tests d'intégration avec les outils externes
 
 - **4.4.2** Évaluation de la qualité de granularisation
   - **4.4.2.1** Mesurer l'efficacité de la décomposition
+    - **4.4.2.1.1** Développer les métriques d'équilibre de décomposition
+    - **4.4.2.1.2** Implémenter les tests de cohérence hiérarchique
+    - **4.4.2.1.3** Créer les mécanismes d'évaluation de complétude
+    - **4.4.2.1.4** Développer les métriques de qualité structurelle
   - **4.4.2.2** Évaluer la pertinence des sous-tâches
+    - **4.4.2.2.1** Implémenter les mécanismes d'évaluation sémantique
+    - **4.4.2.2.2** Développer les tests de cohérence fonctionnelle
+    - **4.4.2.2.3** Créer les méthodes d'évaluation par experts
+    - **4.4.2.2.4** Implémenter les métriques de clarté et précision
   - **4.4.2.3** Analyser l'impact sur la productivité
+    - **4.4.2.3.1** Développer les métriques de temps d'implémentation
+    - **4.4.2.3.2** Implémenter les mécanismes de suivi de progression
+    - **4.4.2.3.3** Créer les méthodes d'analyse comparative
+    - **4.4.2.3.4** Développer les rapports d'impact sur la productivité
 
 ### 5. Intégration et Tests Système (2 jours)
 
