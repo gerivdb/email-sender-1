@@ -1900,80 +1900,248 @@
 #### 2.3 Implémentation des Validateurs de Tâches (1 jour)
 - **2.3.1** Développement du validateur de complétude
   - **2.3.1.1** Implémenter la vérification des critères d'acceptation
+    - **2.3.1.1.1** Développer le parser de critères d'acceptation
+    - **2.3.1.1.2** Implémenter la validation automatique des critères
+    - **2.3.1.1.3** Créer le système de suivi de progression des critères
+    - **2.3.1.1.4** Développer les rapports de validation des critères
   - **2.3.1.2** Développer la validation des fonctionnalités requises
+    - **2.3.1.2.1** Implémenter la détection des fonctionnalités implémentées
+    - **2.3.1.2.2** Développer la vérification des signatures de fonctions
+    - **2.3.1.2.3** Créer la validation des interfaces publiques
+    - **2.3.1.2.4** Implémenter la vérification des comportements attendus
   - **2.3.1.3** Créer la vérification de couverture des tests
+    - **2.3.1.3.1** Développer l'intégration avec les rapports de couverture
+    - **2.3.1.3.2** Implémenter la vérification des seuils de couverture
+    - **2.3.1.3.3** Créer l'analyse de couverture par fonctionnalité
+    - **2.3.1.3.4** Développer les alertes de couverture insuffisante
 
 - **2.3.2** Développement du validateur de cohérence
   - **2.3.2.1** Implémenter la vérification de cohérence avec la roadmap
+    - **2.3.2.1.1** Développer la comparaison avec les spécifications de la roadmap
+    - **2.3.2.1.2** Implémenter la vérification des identifiants de tâches
+    - **2.3.2.1.3** Créer la validation de conformité aux objectifs
+    - **2.3.2.1.4** Développer la détection des déviations par rapport à la roadmap
   - **2.3.2.2** Développer la validation des dépendances
+    - **2.3.2.2.1** Implémenter la vérification des dépendances directes
+    - **2.3.2.2.2** Développer la validation des dépendances transitives
+    - **2.3.2.2.3** Créer la détection des dépendances manquantes
+    - **2.3.2.2.4** Implémenter la vérification des versions de dépendances
   - **2.3.2.3** Créer la vérification d'intégration
+    - **2.3.2.3.1** Développer la validation des interfaces entre composants
+    - **2.3.2.3.2** Implémenter la vérification des flux de données
+    - **2.3.2.3.3** Créer la validation des protocoles de communication
+    - **2.3.2.3.4** Développer la détection des incompatibilités d'intégration
 
 #### 2.4 Tests et Validation (0.5 jour)
 - **2.4.1** Création des tests unitaires
   - **2.4.1.1** Développer des tests pour les validateurs de code
+    - **2.4.1.1.1** Créer des tests pour le validateur de syntaxe
+    - **2.4.1.1.2** Développer des tests pour le validateur de style
+    - **2.4.1.1.3** Implémenter des tests pour le validateur de qualité
+    - **2.4.1.1.4** Créer des tests pour les rapports d'erreurs
   - **2.4.1.2** Créer des tests pour les validateurs de tâches
+    - **2.4.1.2.1** Développer des tests pour le validateur de complétude
+    - **2.4.1.2.2** Implémenter des tests pour le validateur de cohérence
+    - **2.4.1.2.3** Créer des tests pour la vérification d'intégration
+    - **2.4.1.2.4** Développer des tests pour les scénarios complexes
   - **2.4.1.3** Implémenter des tests pour les mécanismes d'extension
+    - **2.4.1.3.1** Créer des tests pour le système de plugins
+    - **2.4.1.3.2** Développer des tests pour les points d'extension
+    - **2.4.1.3.3** Implémenter des tests pour le chargement dynamique
+    - **2.4.1.3.4** Créer des tests pour la compatibilité des extensions
 
 - **2.4.2** Tests d'intégration
   - **2.4.2.1** Tester l'intégration avec les pipelines CI/CD
+    - **2.4.2.1.1** Développer des tests d'intégration avec GitHub Actions
+    - **2.4.2.1.2** Implémenter des tests de workflow complet
+    - **2.4.2.1.3** Créer des tests de notification et reporting
+    - **2.4.2.1.4** Développer des tests de déclenchement automatique
   - **2.4.2.2** Valider le fonctionnement avec différents types de tâches
+    - **2.4.2.2.1** Tester avec des tâches de développement
+    - **2.4.2.2.2** Valider avec des tâches de documentation
+    - **2.4.2.2.3** Tester avec des tâches de test
+    - **2.4.2.2.4** Valider avec des tâches d'intégration
   - **2.4.2.3** Vérifier la fiabilité des validations
+    - **2.4.2.3.1** Tester la cohérence des résultats
+    - **2.4.2.3.2** Valider la robustesse face aux cas limites
+    - **2.4.2.3.3** Tester la résistance aux erreurs
+    - **2.4.2.3.4** Valider la précision des rapports d'erreur
 
 ### 3. Système de Métriques (3 jours)
 
 #### 3.1 Analyse et Conception (0.5 jour)
 - **3.1.1** Définition des métriques clés
   - **3.1.1.1** Identifier les métriques de performance
+    - **3.1.1.1.1** Définir les métriques de temps d'exécution
+    - **3.1.1.1.2** Identifier les métriques d'utilisation des ressources
+    - **3.1.1.1.3** Établir les métriques de temps de réponse
+    - **3.1.1.1.4** Définir les métriques de débit et capacité
   - **3.1.1.2** Déterminer les métriques de qualité
+    - **3.1.1.2.1** Identifier les métriques de couverture de code
+    - **3.1.1.2.2** Définir les métriques de complexité
+    - **3.1.1.2.3** Établir les métriques de maintenabilité
+    - **3.1.1.2.4** Identifier les métriques de fiabilité
   - **3.1.1.3** Planifier les métriques d'avancement
+    - **3.1.1.3.1** Définir les métriques de progression des tâches
+    - **3.1.1.3.2** Identifier les métriques de vélocité
+    - **3.1.1.3.3** Établir les métriques de prévision
+    - **3.1.1.3.4** Définir les métriques de blocage et risque
 
 - **3.1.2** Conception de l'architecture de collecte
   - **3.1.2.1** Définir les sources de données
+    - **3.1.2.1.1** Identifier les sources de données de code
+    - **3.1.2.1.2** Définir les sources de données d'exécution
+    - **3.1.2.1.3** Établir les sources de données de tests
+    - **3.1.2.1.4** Identifier les sources de données de la roadmap
   - **3.1.2.2** Concevoir les mécanismes de collecte
+    - **3.1.2.2.1** Définir les méthodes de collecte automatique
+    - **3.1.2.2.2** Concevoir les mécanismes de collecte périodique
+    - **3.1.2.2.3** Établir les méthodes de collecte basée sur les événements
+    - **3.1.2.2.4** Définir les stratégies d'échantillonnage
   - **3.1.2.3** Planifier le stockage des métriques
+    - **3.1.2.3.1** Concevoir la structure de la base de données de métriques
+    - **3.1.2.3.2** Définir les stratégies de rétention des données
+    - **3.1.2.3.3** Établir les mécanismes d'agrégation temporelle
+    - **3.1.2.3.4** Concevoir les méthodes d'accès aux données historiques
 
 #### 3.2 Implémentation des Collecteurs de Métriques (1 jour)
 - **3.2.1** Développement des collecteurs de performance
   - **3.2.1.1** Implémenter la mesure des temps d'exécution
+    - **3.2.1.1.1** Développer les instruments de mesure de temps
+    - **3.2.1.1.2** Implémenter les points de mesure automatiques
+    - **3.2.1.1.3** Créer les mécanismes d'agrégation des temps
+    - **3.2.1.1.4** Développer les rapports de performance temporelle
   - **3.2.1.2** Développer la collecte d'utilisation des ressources
+    - **3.2.1.2.1** Implémenter la mesure d'utilisation CPU
+    - **3.2.1.2.2** Développer la mesure d'utilisation mémoire
+    - **3.2.1.2.3** Créer la mesure d'utilisation disque et réseau
+    - **3.2.1.2.4** Implémenter les alertes de seuils de ressources
   - **3.2.1.3** Créer la mesure des temps de réponse
+    - **3.2.1.3.1** Développer les instruments de mesure de latence
+    - **3.2.1.3.2** Implémenter la mesure des temps de réponse des API
+    - **3.2.1.3.3** Créer la mesure des temps de réponse des interfaces
+    - **3.2.1.3.4** Développer les rapports de temps de réponse
 
 - **3.2.2** Développement des collecteurs de qualité
   - **3.2.2.1** Implémenter la collecte de couverture de code
+    - **3.2.2.1.1** Développer l'intégration avec les outils de couverture
+    - **3.2.2.1.2** Implémenter la collecte de couverture de lignes
+    - **3.2.2.1.3** Créer la collecte de couverture de branches
+    - **3.2.2.1.4** Développer les rapports de tendance de couverture
   - **3.2.2.2** Développer la mesure de complexité
+    - **3.2.2.2.1** Implémenter la mesure de complexité cyclomatique
+    - **3.2.2.2.2** Développer la mesure de complexité cognitive
+    - **3.2.2.2.3** Créer la mesure de profondeur d'imbrication
+    - **3.2.2.2.4** Implémenter les rapports de complexité par module
   - **3.2.2.3** Créer la collecte des violations de style
+    - **3.2.2.3.1** Développer l'intégration avec les linters
+    - **3.2.2.3.2** Implémenter la classification des violations
+    - **3.2.2.3.3** Créer les métriques de tendance des violations
+    - **3.2.2.3.4** Développer les rapports de qualité de code
 
 - **3.2.3** Développement des collecteurs d'avancement
   - **3.2.3.1** Implémenter le suivi des tâches terminées
+    - **3.2.3.1.1** Développer la détection des changements de statut
+    - **3.2.3.1.2** Implémenter le calcul de progression par composant
+    - **3.2.3.1.3** Créer le suivi de progression globale
+    - **3.2.3.1.4** Développer les rapports de progression
   - **3.2.3.2** Développer la mesure de vélocité
+    - **3.2.3.2.1** Implémenter le calcul de vélocité par période
+    - **3.2.3.2.2** Développer les métriques de vélocité par type de tâche
+    - **3.2.3.2.3** Créer les graphiques de tendance de vélocité
+    - **3.2.3.2.4** Implémenter les prévisions basées sur la vélocité
   - **3.2.3.3** Créer le suivi des délais
+    - **3.2.3.3.1** Développer la détection des écarts par rapport aux estimations
+    - **3.2.3.3.2** Implémenter le suivi des dates d'échéance
+    - **3.2.3.3.3** Créer les alertes de retard
+    - **3.2.3.3.4** Développer les rapports de tendance des délais
 
 #### 3.3 Implémentation des Dashboards (1 jour)
 - **3.3.1** Développement du dashboard de performance
   - **3.3.1.1** Implémenter les visualisations de performance
+    - **3.3.1.1.1** Développer les graphiques de temps d'exécution
+    - **3.3.1.1.2** Implémenter les visualisations d'utilisation des ressources
+    - **3.3.1.1.3** Créer les graphiques de temps de réponse
+    - **3.3.1.1.4** Développer les visualisations comparatives
   - **3.3.1.2** Développer les tableaux de bord de tendances
+    - **3.3.1.2.1** Implémenter les graphiques d'évolution temporelle
+    - **3.3.1.2.2** Développer les visualisations de tendances par composant
+    - **3.3.1.2.3** Créer les indicateurs de progression des performances
+    - **3.3.1.2.4** Implémenter les prévisions de performance
   - **3.3.1.3** Créer les alertes de performance
+    - **3.3.1.3.1** Développer le système de seuils d'alerte
+    - **3.3.1.3.2** Implémenter les notifications de dégradation
+    - **3.3.1.3.3** Créer les alertes basées sur les tendances
+    - **3.3.1.3.4** Développer les rapports d'incidents de performance
 
 - **3.3.2** Développement du dashboard de qualité
   - **3.3.2.1** Implémenter les visualisations de qualité
+    - **3.3.2.1.1** Développer les graphiques de couverture de code
+    - **3.3.2.1.2** Implémenter les visualisations de complexité
+    - **3.3.2.1.3** Créer les graphiques de violations de style
+    - **3.3.2.1.4** Développer les visualisations de qualité globale
   - **3.3.2.2** Développer les rapports de tendances
+    - **3.3.2.2.1** Implémenter les graphiques d'évolution de la qualité
+    - **3.3.2.2.2** Développer les rapports par composant
+    - **3.3.2.2.3** Créer les comparaisons entre versions
+    - **3.3.2.2.4** Implémenter les rapports de progression
   - **3.3.2.3** Créer les alertes de qualité
+    - **3.3.2.3.1** Développer les alertes de régression de qualité
+    - **3.3.2.3.2** Implémenter les notifications de seuils critiques
+    - **3.3.2.3.3** Créer les alertes de tendances négatives
+    - **3.3.2.3.4** Développer les rapports d'incidents de qualité
 
 - **3.3.3** Développement du dashboard d'avancement
   - **3.3.3.1** Implémenter les visualisations d'avancement
+    - **3.3.3.1.1** Développer les graphiques de progression des tâches
+    - **3.3.3.1.2** Implémenter les visualisations par composant
+    - **3.3.3.1.3** Créer les graphiques de vélocité
+    - **3.3.3.1.4** Développer les visualisations de chemin critique
   - **3.3.3.2** Développer les prévisions de complétion
+    - **3.3.3.2.1** Implémenter les algorithmes de prévision
+    - **3.3.3.2.2** Développer les graphiques de projection
+    - **3.3.3.2.3** Créer les scénarios de complétion
+    - **3.3.3.2.4** Implémenter les indicateurs de confiance
   - **3.3.3.3** Créer les alertes de retard
+    - **3.3.3.3.1** Développer les alertes d'échéances manquées
+    - **3.3.3.3.2** Implémenter les notifications de risque de retard
+    - **3.3.3.3.3** Créer les alertes de blocage
+    - **3.3.3.3.4** Développer les rapports de retard
 
 #### 3.4 Tests et Validation (0.5 jour)
 - **3.4.1** Création des tests unitaires
   - **3.4.1.1** Développer des tests pour les collecteurs
+    - **3.4.1.1.1** Créer des tests pour les collecteurs de performance
+    - **3.4.1.1.2** Développer des tests pour les collecteurs de qualité
+    - **3.4.1.1.3** Implémenter des tests pour les collecteurs d'avancement
+    - **3.4.1.1.4** Créer des tests de robustesse des collecteurs
   - **3.4.1.2** Créer des tests pour les dashboards
+    - **3.4.1.2.1** Développer des tests pour le dashboard de performance
+    - **3.4.1.2.2** Implémenter des tests pour le dashboard de qualité
+    - **3.4.1.2.3** Créer des tests pour le dashboard d'avancement
+    - **3.4.1.2.4** Développer des tests d'interface utilisateur
   - **3.4.1.3** Implémenter des tests pour les alertes
+    - **3.4.1.3.1** Créer des tests pour les alertes de performance
+    - **3.4.1.3.2** Développer des tests pour les alertes de qualité
+    - **3.4.1.3.3** Implémenter des tests pour les alertes de retard
+    - **3.4.1.3.4** Créer des tests de notification et d'escalade
 
 - **3.4.2** Tests d'intégration
   - **3.4.2.1** Tester l'intégration avec les pipelines CI/CD
+    - **3.4.2.1.1** Développer des tests d'intégration avec GitHub Actions
+    - **3.4.2.1.2** Implémenter des tests de flux de données complet
+    - **3.4.2.1.3** Créer des tests de déclenchement automatique
+    - **3.4.2.1.4** Développer des tests de récupération après échec
   - **3.4.2.2** Valider la précision des métriques
+    - **3.4.2.2.1** Tester la précision des métriques de performance
+    - **3.4.2.2.2** Valider la précision des métriques de qualité
+    - **3.4.2.2.3** Tester la précision des métriques d'avancement
+    - **3.4.2.2.4** Valider la cohérence des métriques entre sources
   - **3.4.2.3** Vérifier les performances du système
+    - **3.4.2.3.1** Tester les performances avec de grands volumes de données
+    - **3.4.2.3.2** Valider les temps de réponse des dashboards
+    - **3.4.2.3.3** Tester la scalabilité du système
+    - **3.4.2.3.4** Valider l'utilisation des ressources
 
 ### 4. Système de Rollback Intelligent (3 jours)
 
