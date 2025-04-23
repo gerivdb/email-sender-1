@@ -47,25 +47,25 @@
     Date de création: 2023-05-15
 #>
 
-[CmdletBinding(SupportsShouldProcess=$true)]
+[CmdletBinding(SupportsShouldProcess = $true)]
 param (
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [ValidateSet("server", "client", "module", "doc")]
     [string]$Type,
-    
-    [Parameter(Mandatory=$true)]
+
+    [Parameter(Mandatory = $true)]
     [string]$Name,
-    
-    [Parameter(Mandatory=$false)]
+
+    [Parameter(Mandatory = $false)]
     [string]$Category = "",
-    
-    [Parameter(Mandatory=$false)]
+
+    [Parameter(Mandatory = $false)]
     [string]$Description = "",
-    
-    [Parameter(Mandatory=$false)]
+
+    [Parameter(Mandatory = $false)]
     [string]$Author = "",
-    
-    [Parameter(Mandatory=$false)]
+
+    [Parameter(Mandatory = $false)]
     [string]$OutputFolder = ""
 )
 
@@ -78,46 +78,46 @@ $warningColor = "Yellow"
 # Fonction pour afficher un message de succès
 function Write-Success {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "✓ $Message" -ForegroundColor $successColor
 }
 
 # Fonction pour afficher un message d'erreur
 function Write-Error {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "✗ $Message" -ForegroundColor $errorColor
 }
 
 # Fonction pour afficher un message d'information
 function Write-Info {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "ℹ $Message" -ForegroundColor $infoColor
 }
 
 # Fonction pour afficher un message d'avertissement
 function Write-Warning {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Message
     )
-    
+
     Write-Host "⚠ $Message" -ForegroundColor $warningColor
 }
 
 # Fonction pour obtenir le chemin du projet
 function Get-ProjectPath {
-    $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
+    $scriptPath = $PSScriptRoot
     $projectRoot = (Get-Item $scriptPath).Parent.Parent.Parent.FullName
     return $projectRoot
 }
@@ -125,12 +125,12 @@ function Get-ProjectPath {
 # Fonction pour générer un composant
 function Generate-Component {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$Type
     )
-    
+
     $projectRoot = Get-ProjectPath
-    
+
     # Vérifier si Hygen est installé
     try {
         $hygenVersion = npx hygen --version 2>&1
@@ -138,12 +138,11 @@ function Generate-Component {
             Write-Error "Hygen n'est pas installé. Veuillez l'installer avec 'npm install -g hygen' ou 'npm install --save-dev hygen'."
             return $false
         }
-    }
-    catch {
+    } catch {
         Write-Error "Erreur lors de la vérification de Hygen : $_"
         return $false
     }
-    
+
     # Déterminer le générateur à utiliser
     switch ($Type) {
         "server" {
@@ -167,70 +166,66 @@ function Generate-Component {
             return $false
         }
     }
-    
+
     # Construire la commande Hygen
     $hygenCommand = "npx hygen $generator new"
-    
+
     # Ajouter les paramètres
     $hygenParams = @()
     $hygenParams += "--name `"$Name`""
-    
+
     if (-not [string]::IsNullOrEmpty($Description)) {
         $hygenParams += "--description `"$Description`""
     }
-    
+
     if (-not [string]::IsNullOrEmpty($Author)) {
         $hygenParams += "--author `"$Author`""
     }
-    
+
     if (-not [string]::IsNullOrEmpty($Category)) {
         $hygenParams += "--category `"$Category`""
     }
-    
+
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $hygenParams += "--out-dir `"$OutputFolder`""
     }
-    
+
     # Exécuter la commande Hygen
     $fullCommand = "$hygenCommand $($hygenParams -join ' ')"
-    
+
     if ($PSCmdlet.ShouldProcess("Hygen", $fullCommand)) {
         try {
             Write-Info "Exécution de la commande: $fullCommand"
-            
+
             # Changer le répertoire de travail pour le répertoire du projet
             $currentLocation = Get-Location
             Set-Location -Path $projectRoot
-            
+
             # Exécuter la commande Hygen
             $output = Invoke-Expression $fullCommand
-            
+
             # Restaurer le répertoire de travail
             Set-Location -Path $currentLocation
-            
+
             # Vérifier si la commande a réussi
             if ($LASTEXITCODE -eq 0) {
                 Write-Success "Composant généré avec succès"
                 return $true
-            }
-            else {
+            } else {
                 Write-Error "Erreur lors de la génération du composant"
                 Write-Error $output
                 return $false
             }
-        }
-        catch {
+        } catch {
             Write-Error "Erreur lors de l'exécution de la commande Hygen : $_"
             return $false
-        }
-        finally {
+        } finally {
             # S'assurer que le répertoire de travail est restauré
             if ((Get-Location).Path -ne $currentLocation.Path) {
                 Set-Location -Path $currentLocation
             }
         }
-    }
-    else {
+    } else {
         return $true
     }
 }
@@ -238,14 +233,14 @@ function Generate-Component {
 # Fonction principale
 function Start-ComponentGeneration {
     Write-Info "Génération d'un composant MCP de type '$Type'..."
-    
+
     # Générer le composant
     $result = Generate-Component -Type $Type
-    
+
     # Afficher le résultat
     if ($result) {
         Write-Success "Composant MCP de type '$Type' généré avec succès"
-        
+
         # Afficher le chemin du composant généré
         switch ($Type) {
             "server" {
@@ -261,11 +256,10 @@ function Start-ComponentGeneration {
                 Write-Info "La documentation a été générée dans: mcp/docs/$Category/$Name.md"
             }
         }
-    }
-    else {
+    } else {
         Write-Error "Échec de la génération du composant MCP de type '$Type'"
     }
-    
+
     return $result
 }
 
