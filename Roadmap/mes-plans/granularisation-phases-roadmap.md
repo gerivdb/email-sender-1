@@ -615,122 +615,386 @@
 #### 1.1 Analyse et Conception (1 jour)
 - **1.1.1** Étude des besoins utilisateurs
   - **1.1.1.1** Identifier les cas d'utilisation principaux
+    - **1.1.1.1.1** Recueillir les besoins des utilisateurs finaux
+    - **1.1.1.1.2** Analyser les scénarios de navigation courants
+    - **1.1.1.1.3** Identifier les opérations fréquentes sur la roadmap
+    - **1.1.1.1.4** Prioriser les cas d'utilisation selon leur importance
   - **1.1.1.2** Analyser les patterns de recherche fréquents
+    - **1.1.1.2.1** Étudier les méthodes de recherche actuelles
+    - **1.1.1.2.2** Identifier les termes de recherche les plus utilisés
+    - **1.1.1.2.3** Analyser les stratégies de navigation des utilisateurs
+    - **1.1.1.2.4** Déterminer les patterns de recherche inefficaces à améliorer
   - **1.1.1.3** Déterminer les critères de filtrage nécessaires
+    - **1.1.1.3.1** Identifier les propriétés de tâches pertinentes pour le filtrage
+    - **1.1.1.3.2** Définir les critères de filtrage par statut et priorité
+    - **1.1.1.3.3** Établir les critères de filtrage hiérarchiques
+    - **1.1.1.3.4** Déterminer les critères de filtrage temporels et par assignation
 
 - **1.1.2** Conception de l'interface utilisateur
   - **1.1.2.1** Définir la structure de l'interface
+    - **1.1.2.1.1** Concevoir la disposition générale de l'interface
+    - **1.1.2.1.2** Définir les zones fonctionnelles principales
+    - **1.1.2.1.3** Établir la hiérarchie des éléments d'interface
+    - **1.1.2.1.4** Concevoir les mécanismes de redimensionnement et d'adaptation
   - **1.1.2.2** Concevoir les composants d'affichage hiérarchique
+    - **1.1.2.2.1** Définir la représentation visuelle des niveaux hiérarchiques
+    - **1.1.2.2.2** Concevoir les indicateurs de relation parent-enfant
+    - **1.1.2.2.3** Établir les mécanismes d'expansion et de réduction
+    - **1.1.2.2.4** Définir les indicateurs visuels de statut et de progression
   - **1.1.2.3** Planifier les interactions utilisateur
+    - **1.1.2.3.1** Définir les interactions de sélection et de focus
+    - **1.1.2.3.2** Concevoir les interactions de glisser-déposer
+    - **1.1.2.3.3** Établir les raccourcis clavier et les gestes
+    - **1.1.2.3.4** Définir les interactions de modification rapide
 
 - **1.1.3** Architecture technique
   - **1.1.3.1** Choisir les technologies appropriées (WPF, HTML/JS, etc.)
+    - **1.1.3.1.1** Évaluer les technologies d'interface utilisateur disponibles
+    - **1.1.3.1.2** Analyser les avantages et inconvénients de chaque technologie
+    - **1.1.3.1.3** Évaluer la compatibilité avec l'environnement existant
+    - **1.1.3.1.4** Sélectionner la technologie optimale selon les critères définis
   - **1.1.3.2** Définir l'architecture MVC/MVVM
+    - **1.1.3.2.1** Concevoir la structure des modèles de données
+    - **1.1.3.2.2** Définir les vues et leurs responsabilités
+    - **1.1.3.2.3** Concevoir les contrôleurs ou view-models
+    - **1.1.3.2.4** Établir les mécanismes de liaison de données
   - **1.1.3.3** Planifier l'intégration avec le parser de roadmap
+    - **1.1.3.3.1** Définir les interfaces d'intégration avec le parser
+    - **1.1.3.3.2** Concevoir les mécanismes de synchronisation des données
+    - **1.1.3.3.3** Établir les protocoles de communication entre composants
+    - **1.1.3.3.4** Définir les stratégies de gestion des erreurs d'intégration
 
 #### 1.2 Développement de l'Interface de Base (2 jours)
 - **1.2.1** Création de la structure de l'application
   - **1.2.1.1** Mettre en place le projet et les dépendances
+    - **1.2.1.1.1** Créer la structure de répertoires du projet
+    - **1.2.1.1.2** Initialiser le projet avec les outils appropriés
+    - **1.2.1.1.3** Configurer les dépendances et packages nécessaires
+    - **1.2.1.1.4** Mettre en place les scripts de build et de déploiement
   - **1.2.1.2** Implémenter l'architecture de base
+    - **1.2.1.2.1** Créer les classes de base selon le pattern MVC/MVVM
+    - **1.2.1.2.2** Implémenter les mécanismes de routage et de navigation
+    - **1.2.1.2.3** Développer les services d'infrastructure
+    - **1.2.1.2.4** Mettre en place les mécanismes de gestion d'état
   - **1.2.1.3** Créer les modèles de données
+    - **1.2.1.3.1** Implémenter les classes de modèle pour les tâches
+    - **1.2.1.3.2** Développer les modèles pour la structure hiérarchique
+    - **1.2.1.3.3** Créer les modèles pour les filtres et la recherche
+    - **1.2.1.3.4** Implémenter les convertisseurs entre formats de données
 
 - **1.2.2** Développement de l'affichage hiérarchique
   - **1.2.2.1** Implémenter la vue arborescente des tâches
+    - **1.2.2.1.1** Développer le composant de base de l'arborescence
+    - **1.2.2.1.2** Implémenter le rendu des niveaux hiérarchiques
+    - **1.2.2.1.3** Créer les templates d'affichage des éléments de tâche
+    - **1.2.2.1.4** Implémenter la gestion des sélections multiples
   - **1.2.2.2** Développer les mécanismes d'expansion/réduction
+    - **1.2.2.2.1** Implémenter les contrôles d'expansion/réduction
+    - **1.2.2.2.2** Développer les animations de transition
+    - **1.2.2.2.3** Créer les fonctions d'expansion/réduction en masse
+    - **1.2.2.2.4** Implémenter la mémorisation de l'état d'expansion
   - **1.2.2.3** Créer les indicateurs visuels de statut
+    - **1.2.2.3.1** Développer les icônes et symboles de statut
+    - **1.2.2.3.2** Implémenter le code couleur pour les différents états
+    - **1.2.2.3.3** Créer les indicateurs de progression
+    - **1.2.2.3.4** Implémenter les badges et marqueurs spéciaux
 
 - **1.2.3** Implémentation des fonctionnalités de navigation
   - **1.2.3.1** Développer la navigation par identifiant
+    - **1.2.3.1.1** Implémenter le champ de recherche par identifiant
+    - **1.2.3.1.2** Développer l'algorithme de recherche rapide d'identifiant
+    - **1.2.3.1.3** Créer les mécanismes de mise en évidence de l'élément trouvé
+    - **1.2.3.1.4** Implémenter l'historique des identifiants consultés
   - **1.2.3.2** Implémenter la navigation par niveau hiérarchique
+    - **1.2.3.2.1** Développer les contrôles de navigation par niveau
+    - **1.2.3.2.2** Implémenter les filtres de profondeur d'affichage
+    - **1.2.3.2.3** Créer les vues par niveau de hiérarchie
+    - **1.2.3.2.4** Développer les transitions entre niveaux hiérarchiques
   - **1.2.3.3** Créer les raccourcis de navigation rapide
+    - **1.2.3.3.1** Implémenter les favoris et marque-pages
+    - **1.2.3.3.2** Développer l'historique de navigation
+    - **1.2.3.3.3** Créer les raccourcis clavier de navigation
+    - **1.2.3.3.4** Implémenter les liens directs vers des sections spécifiques
 
 #### 1.3 Implémentation des Fonctionnalités de Recherche et Filtrage (1.5 jour)
 - **1.3.1** Développement du moteur de recherche
   - **1.3.1.1** Implémenter la recherche par texte
+    - **1.3.1.1.1** Développer l'algorithme de recherche textuelle
+    - **1.3.1.1.2** Implémenter la recherche insensible à la casse et aux accents
+    - **1.3.1.1.3** Créer les options de recherche dans différents champs (titre, description)
+    - **1.3.1.1.4** Développer la mise en surbrillance des résultats
   - **1.3.1.2** Développer la recherche par identifiant
+    - **1.3.1.2.1** Implémenter l'algorithme de recherche par identifiant exact
+    - **1.3.1.2.2** Développer la recherche par plage d'identifiants
+    - **1.3.1.2.3** Créer la recherche par pattern d'identifiant
+    - **1.3.1.2.4** Implémenter la recherche par niveau hiérarchique d'identifiant
   - **1.3.1.3** Créer la recherche avancée avec opérateurs booléens
+    - **1.3.1.3.1** Implémenter le parser d'expressions de recherche
+    - **1.3.1.3.2** Développer les opérateurs AND, OR, NOT
+    - **1.3.1.3.3** Créer les opérateurs de proximité et de wildcards
+    - **1.3.1.3.4** Implémenter l'interface utilisateur pour la recherche avancée
 
 - **1.3.2** Implémentation des filtres
   - **1.3.2.1** Développer les filtres par statut
+    - **1.3.2.1.1** Implémenter les filtres pour les statuts standard (terminé, en cours, etc.)
+    - **1.3.2.1.2** Développer les filtres combinés de statuts
+    - **1.3.2.1.3** Créer les filtres de progression (pourcentage d'avancement)
+    - **1.3.2.1.4** Implémenter les filtres de statuts personnalisés
   - **1.3.2.2** Implémenter les filtres par niveau hiérarchique
+    - **1.3.2.2.1** Développer les filtres par profondeur de niveau
+    - **1.3.2.2.2** Implémenter les filtres par position dans la hiérarchie
+    - **1.3.2.2.3** Créer les filtres par type de relation (parent, enfant, etc.)
+    - **1.3.2.2.4** Développer les filtres de dépendances
   - **1.3.2.3** Créer les filtres personnalisés
+    - **1.3.2.3.1** Implémenter l'interface de création de filtres personnalisés
+    - **1.3.2.3.2** Développer le mécanisme de sauvegarde des filtres
+    - **1.3.2.3.3** Créer les options de partage de filtres
+    - **1.3.2.3.4** Implémenter les filtres basés sur des expressions
 
 - **1.3.3** Développement de l'auto-complétion
   - **1.3.3.1** Implémenter les suggestions en temps réel
+    - **1.3.3.1.1** Développer l'algorithme de suggestion basé sur le texte saisi
+    - **1.3.3.1.2** Implémenter l'affichage des suggestions pendant la frappe
+    - **1.3.3.1.3** Créer les mécanismes de sélection des suggestions
+    - **1.3.3.1.4** Développer l'optimisation des performances pour les grandes roadmaps
   - **1.3.3.2** Développer l'historique des recherches
+    - **1.3.3.2.1** Implémenter le stockage des recherches récentes
+    - **1.3.3.2.2** Développer l'interface d'affichage de l'historique
+    - **1.3.3.2.3** Créer les fonctions de réutilisation des recherches précédentes
+    - **1.3.3.2.4** Implémenter les options de gestion de l'historique
   - **1.3.3.3** Créer les raccourcis de recherche fréquente
+    - **1.3.3.3.1** Développer le mécanisme d'identification des recherches fréquentes
+    - **1.3.3.3.2** Implémenter l'interface de gestion des raccourcis
+    - **1.3.3.3.3** Créer les fonctions de création de raccourcis personnalisés
+    - **1.3.3.3.4** Développer l'accès rapide aux raccourcis
 
 #### 1.4 Tests et Validation (0.5 jour)
 - **1.4.1** Création des tests unitaires
   - **1.4.1.1** Développer des tests pour l'affichage hiérarchique
+    - **1.4.1.1.1** Créer des tests pour le rendu de l'arborescence
+    - **1.4.1.1.2** Développer des tests pour les mécanismes d'expansion/réduction
+    - **1.4.1.1.3** Implémenter des tests pour les indicateurs visuels
+    - **1.4.1.1.4** Créer des tests pour les fonctionnalités de navigation
   - **1.4.1.2** Créer des tests pour le moteur de recherche
+    - **1.4.1.2.1** Développer des tests pour la recherche textuelle
+    - **1.4.1.2.2** Implémenter des tests pour la recherche par identifiant
+    - **1.4.1.2.3** Créer des tests pour la recherche avancée
+    - **1.4.1.2.4** Développer des tests de performance du moteur de recherche
   - **1.4.1.3** Implémenter des tests pour les filtres
+    - **1.4.1.3.1** Créer des tests pour les filtres par statut
+    - **1.4.1.3.2** Développer des tests pour les filtres hiérarchiques
+    - **1.4.1.3.3** Implémenter des tests pour les filtres personnalisés
+    - **1.4.1.3.4** Créer des tests pour les combinaisons de filtres
 
 - **1.4.2** Tests d'utilisabilité
   - **1.4.2.1** Conduire des tests avec des utilisateurs
+    - **1.4.2.1.1** Préparer les scénarios de test d'utilisabilité
+    - **1.4.2.1.2** Sélectionner un panel représentatif d'utilisateurs
+    - **1.4.2.1.3** Organiser et conduire les sessions de test
+    - **1.4.2.1.4** Enregistrer les interactions et les commentaires
   - **1.4.2.2** Recueillir et analyser les retours
+    - **1.4.2.2.1** Compiler les résultats des tests d'utilisabilité
+    - **1.4.2.2.2** Analyser les points de friction identifiés
+    - **1.4.2.2.3** Prioriser les problèmes selon leur impact
+    - **1.4.2.2.4** Formuler des recommandations d'amélioration
   - **1.4.2.3** Implémenter les améliorations nécessaires
+    - **1.4.2.3.1** Corriger les problèmes d'utilisabilité critiques
+    - **1.4.2.3.2** Améliorer les éléments d'interface problématiques
+    - **1.4.2.3.3** Optimiser les flux de travail selon les retours
+    - **1.4.2.3.4** Valider les améliorations avec des tests supplémentaires
 
 ### 2. Dashboard Dynamique (5 jours)
 
 #### 2.1 Analyse et Conception (1 jour)
 - **2.1.1** Définition des métriques et indicateurs
   - **2.1.1.1** Identifier les KPIs pertinents
+    - **2.1.1.1.1** Analyser les besoins de suivi de progression
+    - **2.1.1.1.2** Définir les indicateurs de performance clés
+    - **2.1.1.1.3** Établir les métriques de statut et d'avancement
+    - **2.1.1.1.4** Identifier les indicateurs de blocage et de risque
   - **2.1.1.2** Déterminer les visualisations appropriées
+    - **2.1.1.2.1** Évaluer les types de graphiques adaptés à chaque métrique
+    - **2.1.1.2.2** Définir les représentations visuelles pour les tendances
+    - **2.1.1.2.3** Concevoir les visualisations de comparaison
+    - **2.1.1.2.4** Établir les représentations hiérarchiques
   - **2.1.1.3** Planifier les niveaux de granularité des données
+    - **2.1.1.3.1** Définir les vues globales du projet
+    - **2.1.1.3.2** Concevoir les vues par niveau hiérarchique
+    - **2.1.1.3.3** Établir les vues détaillées par tâche
+    - **2.1.1.3.4** Planifier les mécanismes de drill-down et roll-up
 
 - **2.1.2** Conception de l'interface du dashboard
   - **2.1.2.1** Définir la disposition des éléments
+    - **2.1.2.1.1** Concevoir la grille de base du dashboard
+    - **2.1.2.1.2** Définir les zones prioritaires et secondaires
+    - **2.1.2.1.3** Établir les principes de responsive design
+    - **2.1.2.1.4** Concevoir les layouts pour différents formats d'écran
   - **2.1.2.2** Concevoir les widgets interactifs
+    - **2.1.2.2.1** Définir les types de widgets nécessaires
+    - **2.1.2.2.2** Concevoir l'interface utilisateur de chaque widget
+    - **2.1.2.2.3** Établir les interactions entre widgets
+    - **2.1.2.2.4** Définir les mécanismes de mise à jour des widgets
   - **2.1.2.3** Planifier les options de personnalisation
+    - **2.1.2.3.1** Concevoir les mécanismes de sélection de widgets
+    - **2.1.2.3.2** Définir les options de configuration par widget
+    - **2.1.2.3.3** Établir les mécanismes de sauvegarde des configurations
+    - **2.1.2.3.4** Concevoir les templates de dashboard prédéfinis
 
 - **2.1.3** Architecture technique
   - **2.1.3.1** Choisir les bibliothèques de visualisation
+    - **2.1.3.1.1** Évaluer les bibliothèques de visualisation disponibles
+    - **2.1.3.1.2** Comparer les performances et fonctionnalités
+    - **2.1.3.1.3** Tester la compatibilité avec les besoins du projet
+    - **2.1.3.1.4** Sélectionner les bibliothèques optimales
   - **2.1.3.2** Définir l'architecture de données
+    - **2.1.3.2.1** Concevoir le modèle de données pour les métriques
+    - **2.1.3.2.2** Définir les structures de données pour les visualisations
+    - **2.1.3.2.3** Établir les mécanismes de transformation de données
+    - **2.1.3.2.4** Concevoir le système de cache et d'optimisation
   - **2.1.3.3** Planifier les mécanismes de mise à jour en temps réel
+    - **2.1.3.3.1** Évaluer les technologies de mise à jour en temps réel
+    - **2.1.3.3.2** Concevoir le système de notification de changements
+    - **2.1.3.3.3** Définir les stratégies de rafraîchissement des données
+    - **2.1.3.3.4** Planifier la gestion des conflits de mise à jour
 
 #### 2.2 Développement des Visualisations de Base (2 jours)
 - **2.2.1** Implémentation des graphiques d'avancement
   - **2.2.1.1** Développer les graphiques de progression globale
+    - **2.2.1.1.1** Implémenter les graphiques circulaires de progression
+    - **2.2.1.1.2** Développer les barres de progression globale
+    - **2.2.1.1.3** Créer les indicateurs numériques de complétion
+    - **2.2.1.1.4** Implémenter les graphiques de répartition par statut
   - **2.2.1.2** Implémenter les graphiques par niveau hiérarchique
+    - **2.2.1.2.1** Développer les graphiques en cascade par niveau
+    - **2.2.1.2.2** Implémenter les graphiques de comparaison entre niveaux
+    - **2.2.1.2.3** Créer les visualisations de progression par branche
+    - **2.2.1.2.4** Développer les graphiques de répartition par niveau
   - **2.2.1.3** Créer les visualisations de tendances
+    - **2.2.1.3.1** Implémenter les graphiques d'évolution temporelle
+    - **2.2.1.3.2** Développer les courbes de vélocité
+    - **2.2.1.3.3** Créer les projections de complétion
+    - **2.2.1.3.4** Implémenter les indicateurs de tendance
 
 - **2.2.2** Développement des heatmaps
   - **2.2.2.1** Implémenter les heatmaps de densité des tâches
+    - **2.2.2.1.1** Développer l'algorithme de calcul de densité
+    - **2.2.2.1.2** Implémenter le rendu visuel de la heatmap
+    - **2.2.2.1.3** Créer les options de configuration de l'échelle
+    - **2.2.2.1.4** Développer les interactions avec la heatmap de densité
   - **2.2.2.2** Développer les heatmaps de statut
+    - **2.2.2.2.1** Implémenter l'algorithme de répartition des statuts
+    - **2.2.2.2.2** Développer le code couleur des statuts
+    - **2.2.2.2.3** Créer les filtres de statut pour la heatmap
+    - **2.2.2.2.4** Implémenter les interactions avec la heatmap de statut
   - **2.2.2.3** Créer les heatmaps de dépendances
+    - **2.2.2.3.1** Développer l'algorithme d'analyse des dépendances
+    - **2.2.2.3.2** Implémenter la visualisation des dépendances
+    - **2.2.2.3.3** Créer les indicateurs de dépendances critiques
+    - **2.2.2.3.4** Développer les interactions avec la heatmap de dépendances
 
 - **2.2.3** Implémentation des indicateurs de performance
   - **2.2.3.1** Développer les jauges de progression
+    - **2.2.3.1.1** Implémenter les jauges circulaires de progression
+    - **2.2.3.1.2** Développer les jauges linéaires avec seuils
+    - **2.2.3.1.3** Créer les jauges de progression par catégorie
+    - **2.2.3.1.4** Implémenter les animations de transition des jauges
   - **2.2.3.2** Implémenter les compteurs de tâches
+    - **2.2.3.2.1** Développer les compteurs par statut
+    - **2.2.3.2.2** Implémenter les compteurs par niveau hiérarchique
+    - **2.2.3.2.3** Créer les compteurs de tâches bloquées/critiques
+    - **2.2.3.2.4** Développer les compteurs avec tendances
   - **2.2.3.3** Créer les indicateurs de vélocité
+    - **2.2.3.3.1** Implémenter le calcul de vélocité par période
+    - **2.2.3.3.2** Développer les graphiques de vélocité comparative
+    - **2.2.3.3.3** Créer les indicateurs de tendance de vélocité
+    - **2.2.3.3.4** Implémenter les prévisions basées sur la vélocité
 
 #### 2.3 Développement des Fonctionnalités Avancées (1.5 jour)
 - **2.3.1** Implémentation de l'interactivité
   - **2.3.1.1** Développer les fonctionnalités de drill-down
+    - **2.3.1.1.1** Implémenter le mécanisme de navigation hiérarchique
+    - **2.3.1.1.2** Développer les transitions visuelles entre niveaux
+    - **2.3.1.1.3** Créer le système de fil d'Ariane pour la navigation
+    - **2.3.1.1.4** Implémenter la mémorisation du contexte de navigation
   - **2.3.1.2** Implémenter les filtres interactifs
+    - **2.3.1.2.1** Développer les contrôles de filtrage dynamique
+    - **2.3.1.2.2** Implémenter la mise à jour en temps réel des visualisations
+    - **2.3.1.2.3** Créer les présets de filtres courants
+    - **2.3.1.2.4** Développer les filtres combinés et avancés
   - **2.3.1.3** Créer les tooltips détaillés
+    - **2.3.1.3.1** Implémenter le système de tooltips contextuels
+    - **2.3.1.3.2** Développer le contenu dynamique des tooltips
+    - **2.3.1.3.3** Créer les tooltips avec actions rapides
+    - **2.3.1.3.4** Implémenter les tooltips avec données comparées
 
 - **2.3.2** Développement de la personnalisation
   - **2.3.2.1** Implémenter les layouts personnalisables
+    - **2.3.2.1.1** Développer le système de grille flexible
+    - **2.3.2.1.2** Implémenter les fonctionnalités de glisser-déposer
+    - **2.3.2.1.3** Créer les mécanismes de redimensionnement des widgets
+    - **2.3.2.1.4** Développer la sauvegarde des layouts personnalisés
   - **2.3.2.2** Développer les thèmes visuels
+    - **2.3.2.2.1** Implémenter le système de thèmes (clair, sombre, etc.)
+    - **2.3.2.2.2** Développer les palettes de couleurs personnalisables
+    - **2.3.2.2.3** Créer les options de style pour les éléments graphiques
+    - **2.3.2.2.4** Implémenter les thèmes spécifiques aux types de données
   - **2.3.2.3** Créer les préférences utilisateur
+    - **2.3.2.3.1** Développer l'interface de gestion des préférences
+    - **2.3.2.3.2** Implémenter le stockage persistant des préférences
+    - **2.3.2.3.3** Créer les préférences par défaut et les présets
+    - **2.3.2.3.4** Développer le système d'import/export des préférences
 
 - **2.3.3** Implémentation des mises à jour en temps réel
   - **2.3.3.1** Développer le mécanisme de rafraîchissement automatique
+    - **2.3.3.1.1** Implémenter le système de polling configurable
+    - **2.3.3.1.2** Développer le mécanisme de mise à jour basé sur les événements
+    - **2.3.3.1.3** Créer les options de fréquence de rafraîchissement
+    - **2.3.3.1.4** Implémenter l'optimisation des performances de rafraîchissement
   - **2.3.3.2** Implémenter les animations de transition
+    - **2.3.3.2.1** Développer les animations de changement de valeur
+    - **2.3.3.2.2** Implémenter les transitions entre états de visualisation
+    - **2.3.3.2.3** Créer les animations d'apparition/disparition d'éléments
+    - **2.3.3.2.4** Développer les options de personnalisation des animations
   - **2.3.3.3** Créer les indicateurs de mise à jour
+    - **2.3.3.3.1** Implémenter les indicateurs visuels de rafraîchissement
+    - **2.3.3.3.2** Développer les notifications de changements importants
+    - **2.3.3.3.3** Créer les indicateurs de dernière mise à jour
+    - **2.3.3.3.4** Implémenter le suivi des modifications entre mises à jour
 
 #### 2.4 Tests et Validation (0.5 jour)
 - **2.4.1** Création des tests unitaires
   - **2.4.1.1** Développer des tests pour les visualisations
+    - **2.4.1.1.1** Créer des tests pour les graphiques d'avancement
+    - **2.4.1.1.2** Développer des tests pour les heatmaps
+    - **2.4.1.1.3** Implémenter des tests pour les indicateurs de performance
+    - **2.4.1.1.4** Créer des tests de rendu visuel automatisés
   - **2.4.1.2** Créer des tests pour l'interactivité
+    - **2.4.1.2.1** Développer des tests pour les fonctionnalités de drill-down
+    - **2.4.1.2.2** Implémenter des tests pour les filtres interactifs
+    - **2.4.1.2.3** Créer des tests pour les tooltips et interactions
+    - **2.4.1.2.4** Développer des tests pour la personnalisation
   - **2.4.1.3** Implémenter des tests pour les mises à jour en temps réel
+    - **2.4.1.3.1** Créer des tests pour le rafraîchissement automatique
+    - **2.4.1.3.2** Développer des tests pour les animations de transition
+    - **2.4.1.3.3** Implémenter des tests pour les indicateurs de mise à jour
+    - **2.4.1.3.4** Créer des tests de performance pour les mises à jour
 
 - **2.4.2** Tests de performance
   - **2.4.2.1** Évaluer les performances avec de grands volumes de données
+    - **2.4.2.1.1** Générer des jeux de données de test volumineux
+    - **2.4.2.1.2** Mesurer les temps de chargement et de rendu
+    - **2.4.2.1.3** Évaluer l'utilisation de la mémoire
+    - **2.4.2.1.4** Tester les performances sur différentes plateformes
   - **2.4.2.2** Optimiser les goulots d'étranglement
+    - **2.4.2.2.1** Identifier les points de lenteur dans le code
+    - **2.4.2.2.2** Implémenter des optimisations de rendu
+    - **2.4.2.2.3** Optimiser les algorithmes de traitement de données
+    - **2.4.2.2.4** Mettre en place des mécanismes de mise en cache
   - **2.4.2.3** Valider les temps de réponse
+    - **2.4.2.3.1** Définir les seuils de performance acceptables
+    - **2.4.2.3.2** Mesurer les temps de réponse des interactions utilisateur
+    - **2.4.2.3.3** Évaluer la fluidité des animations et transitions
+    - **2.4.2.3.4** Valider les performances après optimisation
 
 ### 3. Système de Notifications (3 jours)
 
