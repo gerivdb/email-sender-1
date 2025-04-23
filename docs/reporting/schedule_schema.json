@@ -1,0 +1,304 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Report Schedule Schema",
+  "description": "Schema for defining report schedules",
+  "type": "object",
+  "required": ["schedules", "recipient_groups", "email_settings", "notification_templates"],
+  "properties": {
+    "schedules": {
+      "type": "array",
+      "description": "Array of report schedules",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "template_id", "enabled", "frequency", "data_range", "output", "recipients", "notification"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the schedule"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the schedule"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the schedule"
+          },
+          "template_id": {
+            "type": "string",
+            "description": "ID of the report template to use"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the schedule is enabled"
+          },
+          "frequency": {
+            "type": "object",
+            "description": "Frequency of report generation",
+            "required": ["type", "time"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Type of frequency",
+                "enum": ["daily", "weekly", "monthly"]
+              },
+              "time": {
+                "type": "string",
+                "description": "Time of day to generate the report (HH:MM)",
+                "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+              },
+              "days": {
+                "type": "array",
+                "description": "Days to generate the report (for weekly and monthly)",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+                    },
+                    {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 31
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "data_range": {
+            "type": "object",
+            "description": "Range of data to include in the report",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Type of date range",
+                "enum": ["relative", "absolute"]
+              },
+              "value": {
+                "type": "integer",
+                "description": "Value for relative range"
+              },
+              "unit": {
+                "type": "string",
+                "description": "Unit for relative range",
+                "enum": ["hour", "day", "week", "month"]
+              },
+              "start_date": {
+                "type": "string",
+                "description": "Start date for absolute range (ISO 8601)",
+                "format": "date-time"
+              },
+              "end_date": {
+                "type": "string",
+                "description": "End date for absolute range (ISO 8601)",
+                "format": "date-time"
+              }
+            }
+          },
+          "output": {
+            "type": "object",
+            "description": "Output configuration",
+            "required": ["formats", "destination"],
+            "properties": {
+              "formats": {
+                "type": "array",
+                "description": "Output formats",
+                "items": {
+                  "type": "string",
+                  "enum": ["html", "pdf", "excel"]
+                }
+              },
+              "destination": {
+                "type": "object",
+                "description": "Destination for the report",
+                "required": ["type"],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Type of destination",
+                    "enum": ["file", "email", "both"]
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "Path for file destination"
+                  }
+                }
+              }
+            }
+          },
+          "recipients": {
+            "type": "array",
+            "description": "Recipients of the report",
+            "items": {
+              "type": "object",
+              "required": ["id", "type"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "ID of the recipient or group"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Type of recipient",
+                  "enum": ["individual", "group"]
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email address for individual recipient",
+                  "format": "email"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name for individual recipient"
+                }
+              }
+            }
+          },
+          "notification": {
+            "type": "object",
+            "description": "Notification configuration",
+            "required": ["on_success", "on_failure"],
+            "properties": {
+              "on_success": {
+                "type": "boolean",
+                "description": "Whether to send notification on success"
+              },
+              "on_failure": {
+                "type": "boolean",
+                "description": "Whether to send notification on failure"
+              },
+              "include_summary": {
+                "type": "boolean",
+                "description": "Whether to include a summary in the notification"
+              }
+            }
+          }
+        }
+      }
+    },
+    "recipient_groups": {
+      "type": "array",
+      "description": "Array of recipient groups",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "members"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the group"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the group"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the group"
+          },
+          "members": {
+            "type": "array",
+            "description": "Members of the group",
+            "items": {
+              "type": "object",
+              "required": ["email"],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "description": "Email address of the member",
+                  "format": "email"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name of the member"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "email_settings": {
+      "type": "object",
+      "description": "Email settings",
+      "required": ["smtp_server", "smtp_port", "sender_email"],
+      "properties": {
+        "smtp_server": {
+          "type": "string",
+          "description": "SMTP server address"
+        },
+        "smtp_port": {
+          "type": "integer",
+          "description": "SMTP server port"
+        },
+        "use_ssl": {
+          "type": "boolean",
+          "description": "Whether to use SSL for SMTP"
+        },
+        "sender_email": {
+          "type": "string",
+          "description": "Sender email address",
+          "format": "email"
+        },
+        "sender_name": {
+          "type": "string",
+          "description": "Sender display name"
+        },
+        "retry_count": {
+          "type": "integer",
+          "description": "Number of retry attempts for failed emails"
+        },
+        "retry_delay_minutes": {
+          "type": "integer",
+          "description": "Delay between retry attempts in minutes"
+        }
+      }
+    },
+    "notification_templates": {
+      "type": "object",
+      "description": "Notification templates",
+      "required": ["success", "failure"],
+      "properties": {
+        "success": {
+          "type": "object",
+          "description": "Template for success notifications",
+          "required": ["subject", "body_html", "body_text"],
+          "properties": {
+            "subject": {
+              "type": "string",
+              "description": "Subject line for success notifications"
+            },
+            "body_html": {
+              "type": "string",
+              "description": "HTML body for success notifications"
+            },
+            "body_text": {
+              "type": "string",
+              "description": "Text body for success notifications"
+            }
+          }
+        },
+        "failure": {
+          "type": "object",
+          "description": "Template for failure notifications",
+          "required": ["subject", "body_html", "body_text"],
+          "properties": {
+            "subject": {
+              "type": "string",
+              "description": "Subject line for failure notifications"
+            },
+            "body_html": {
+              "type": "string",
+              "description": "HTML body for failure notifications"
+            },
+            "body_text": {
+              "type": "string",
+              "description": "Text body for failure notifications"
+            }
+          }
+        }
+      }
+    }
+  }
+}

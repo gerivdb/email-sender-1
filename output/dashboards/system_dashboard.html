@@ -1,0 +1,611 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Tableau de bord systÃ¨me</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0/dist/chartjs-adapter-moment.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .dashboard-header {
+            margin-bottom: 20px;
+        }
+        .dashboard-title {
+            font-size: 24px;
+            margin: 0;
+        }
+        .dashboard-description {
+            color: #666;
+            margin: 5px 0 0 0;
+        }
+        .dashboard-timestamp {
+            color: #999;
+            font-size: 12px;
+            margin: 5px 0 0 0;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(200px, auto);
+            gap: 20px;
+        }
+        .panel {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .panel-header {
+            margin-bottom: 10px;
+        }
+        .panel-title {
+            font-size: 16px;
+            margin: 0;
+        }
+        .panel-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gauge-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .gauge-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .gauge-label {
+            font-size: 12px;
+            color: #666;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Tableau de bord systÃ¨me</h1>
+        <p class="dashboard-description">Tableau de bord pour surveiller les mÃ©triques systÃ¨me</p>
+        <p class="dashboard-timestamp">DerniÃ¨re mise Ã  jour: 2025-04-23 01:31:28</p>
+    </div>
+    
+    <div class="dashboard-grid">        <div class="panel" style="grid-column: 1 / span 1; grid-row: 1 / span 1;">
+            <div class="panel-header">
+                <h2 class="panel-title">Utilisation CPU</h2>
+            </div>
+            <div class="panel-content">                <div class="gauge-container">
+                    <div class="gauge-value">46.5%</div>
+                    <div class="gauge-label">Min: 0% | Max: 100%</div>
+                    <canvas id="gauge-cpu_usage"></canvas>
+                </div>            </div>
+        </div>        <div class="panel" style="grid-column: 2 / span 1; grid-row: 1 / span 1;">
+            <div class="panel-header">
+                <h2 class="panel-title">Utilisation mÃ©moire</h2>
+            </div>
+            <div class="panel-content">                <div class="gauge-container">
+                    <div class="gauge-value">74.2%</div>
+                    <div class="gauge-label">Min: 0% | Max: 100%</div>
+                    <canvas id="gauge-memory_usage"></canvas>
+                </div>            </div>
+        </div>        <div class="panel" style="grid-column: 3 / span 1; grid-row: 1 / span 1;">
+            <div class="panel-header">
+                <h2 class="panel-title">Utilisation disque</h2>
+            </div>
+            <div class="panel-content">                <div class="gauge-container">
+                    <div class="gauge-value">38.9%</div>
+                    <div class="gauge-label">Min: 0% | Max: 100%</div>
+                    <canvas id="gauge-disk_usage"></canvas>
+                </div>            </div>
+        </div>        <div class="panel" style="grid-column: 1 / span 2; grid-row: 2 / span 1;">
+            <div class="panel-header">
+                <h2 class="panel-title">Tendance CPU</h2>
+            </div>
+            <div class="panel-content">                <canvas id="chart-cpu_trend"></canvas>            </div>
+        </div>        <div class="panel" style="grid-column: 3 / span 2; grid-row: 2 / span 1;">
+            <div class="panel-header">
+                <h2 class="panel-title">Tendance mÃ©moire</h2>
+            </div>
+            <div class="panel-content">                <canvas id="chart-memory_trend"></canvas>            </div>
+        </div>        <div class="panel" style="grid-column: 1 / span 2; grid-row: 3 / span 1;">
+            <div class="panel-header">
+                <h2 class="panel-title">Tendance disque</h2>
+            </div>
+            <div class="panel-content">                <canvas id="chart-disk_trend"></canvas>            </div>
+        </div>    </div>
+    
+    <script>
+        // Configuration des graphiques
+        const dashboardConfig = {
+    "id":  "system_dashboard",
+    "name":  "Tableau de bord systÃ¨me",
+    "panels":  [
+                   {
+                       "id":  "cpu_usage",
+                       "unit":  "%",
+                       "title":  "Utilisation CPU",
+                       "type":  "gauge",
+                       "value":  46.5,
+                       "max":  100,
+                       "min":  0,
+                       "thresholds":  [
+                                          {
+                                              "value":  0,
+                                              "color":  "#73BF69"
+                                          },
+                                          {
+                                              "value":  70,
+                                              "color":  "#FADE2A"
+                                          },
+                                          {
+                                              "value":  90,
+                                              "color":  "#F2495C"
+                                          }
+                                      ],
+                       "position":  {
+                                        "row":  0,
+                                        "col":  0,
+                                        "width":  1,
+                                        "height":  1
+                                    }
+                   },
+                   {
+                       "id":  "memory_usage",
+                       "unit":  "%",
+                       "title":  "Utilisation mÃ©moire",
+                       "type":  "gauge",
+                       "value":  74.2,
+                       "max":  100,
+                       "min":  0,
+                       "thresholds":  [
+                                          {
+                                              "value":  0,
+                                              "color":  "#73BF69"
+                                          },
+                                          {
+                                              "value":  70,
+                                              "color":  "#FADE2A"
+                                          },
+                                          {
+                                              "value":  90,
+                                              "color":  "#F2495C"
+                                          }
+                                      ],
+                       "position":  {
+                                        "row":  0,
+                                        "col":  1,
+                                        "width":  1,
+                                        "height":  1
+                                    }
+                   },
+                   {
+                       "id":  "disk_usage",
+                       "unit":  "%",
+                       "title":  "Utilisation disque",
+                       "type":  "gauge",
+                       "value":  38.9,
+                       "max":  100,
+                       "min":  0,
+                       "thresholds":  [
+                                          {
+                                              "value":  0,
+                                              "color":  "#73BF69"
+                                          },
+                                          {
+                                              "value":  70,
+                                              "color":  "#FADE2A"
+                                          },
+                                          {
+                                              "value":  90,
+                                              "color":  "#F2495C"
+                                          }
+                                      ],
+                       "position":  {
+                                        "row":  0,
+                                        "col":  2,
+                                        "width":  1,
+                                        "height":  1
+                                    }
+                   },
+                   {
+                       "series":  {
+                                      "name":  "CPU",
+                                      "data":  [
+                                                   {
+                                                       "y":  45.2,
+                                                       "x":  "2025-04-22 10:00:00"
+                                                   },
+                                                   {
+                                                       "y":  48.7,
+                                                       "x":  "2025-04-22 10:05:00"
+                                                   },
+                                                   {
+                                                       "y":  52.3,
+                                                       "x":  "2025-04-22 10:10:00"
+                                                   },
+                                                   {
+                                                       "y":  49.8,
+                                                       "x":  "2025-04-22 10:15:00"
+                                                   },
+                                                   {
+                                                       "y":  47.5,
+                                                       "x":  "2025-04-22 10:20:00"
+                                                   },
+                                                   {
+                                                       "y":  46.2,
+                                                       "x":  "2025-04-22 10:25:00"
+                                                   },
+                                                   {
+                                                       "y":  44.9,
+                                                       "x":  "2025-04-22 10:30:00"
+                                                   },
+                                                   {
+                                                       "y":  43.7,
+                                                       "x":  "2025-04-22 10:35:00"
+                                                   },
+                                                   {
+                                                       "y":  45.1,
+                                                       "x":  "2025-04-22 10:40:00"
+                                                   },
+                                                   {
+                                                       "y":  46.8,
+                                                       "x":  "2025-04-22 10:45:00"
+                                                   },
+                                                   {
+                                                       "y":  48.2,
+                                                       "x":  "2025-04-22 10:50:00"
+                                                   },
+                                                   {
+                                                       "y":  47.3,
+                                                       "x":  "2025-04-22 10:55:00"
+                                                   },
+                                                   {
+                                                       "y":  46.5,
+                                                       "x":  "2025-04-22 11:00:00"
+                                                   }
+                                               ]
+                                  },
+                       "options":  {
+                                       "tooltip":  true,
+                                       "xAxis":  {
+                                                     "type":  "time",
+                                                     "title":  "Temps"
+                                                 },
+                                       "yAxis":  {
+                                                     "title":  "Valeur"
+                                                 },
+                                       "legend":  true
+                                   },
+                       "type":  "line",
+                       "id":  "cpu_trend",
+                       "position":  {
+                                        "row":  1,
+                                        "col":  0,
+                                        "width":  2,
+                                        "height":  1
+                                    },
+                       "title":  "Tendance CPU"
+                   },
+                   {
+                       "series":  {
+                                      "name":  "Memory",
+                                      "data":  [
+                                                   {
+                                                       "y":  62.8,
+                                                       "x":  "2025-04-22 10:00:00"
+                                                   },
+                                                   {
+                                                       "y":  63.2,
+                                                       "x":  "2025-04-22 10:05:00"
+                                                   },
+                                                   {
+                                                       "y":  64.5,
+                                                       "x":  "2025-04-22 10:10:00"
+                                                   },
+                                                   {
+                                                       "y":  65.7,
+                                                       "x":  "2025-04-22 10:15:00"
+                                                   },
+                                                   {
+                                                       "y":  66.3,
+                                                       "x":  "2025-04-22 10:20:00"
+                                                   },
+                                                   {
+                                                       "y":  67.1,
+                                                       "x":  "2025-04-22 10:25:00"
+                                                   },
+                                                   {
+                                                       "y":  68.4,
+                                                       "x":  "2025-04-22 10:30:00"
+                                                   },
+                                                   {
+                                                       "y":  69.2,
+                                                       "x":  "2025-04-22 10:35:00"
+                                                   },
+                                                   {
+                                                       "y":  70.5,
+                                                       "x":  "2025-04-22 10:40:00"
+                                                   },
+                                                   {
+                                                       "y":  71.8,
+                                                       "x":  "2025-04-22 10:45:00"
+                                                   },
+                                                   {
+                                                       "y":  72.3,
+                                                       "x":  "2025-04-22 10:50:00"
+                                                   },
+                                                   {
+                                                       "y":  73.1,
+                                                       "x":  "2025-04-22 10:55:00"
+                                                   },
+                                                   {
+                                                       "y":  74.2,
+                                                       "x":  "2025-04-22 11:00:00"
+                                                   }
+                                               ]
+                                  },
+                       "options":  {
+                                       "tooltip":  true,
+                                       "xAxis":  {
+                                                     "type":  "time",
+                                                     "title":  "Temps"
+                                                 },
+                                       "yAxis":  {
+                                                     "title":  "Valeur"
+                                                 },
+                                       "legend":  true
+                                   },
+                       "type":  "line",
+                       "id":  "memory_trend",
+                       "position":  {
+                                        "row":  1,
+                                        "col":  2,
+                                        "width":  2,
+                                        "height":  1
+                                    },
+                       "title":  "Tendance mÃ©moire"
+                   },
+                   {
+                       "series":  {
+                                      "name":  "Disk",
+                                      "data":  [
+                                                   {
+                                                       "y":  35.6,
+                                                       "x":  "2025-04-22 10:00:00"
+                                                   },
+                                                   {
+                                                       "y":  35.7,
+                                                       "x":  "2025-04-22 10:05:00"
+                                                   },
+                                                   {
+                                                       "y":  35.9,
+                                                       "x":  "2025-04-22 10:10:00"
+                                                   },
+                                                   {
+                                                       "y":  36.2,
+                                                       "x":  "2025-04-22 10:15:00"
+                                                   },
+                                                   {
+                                                       "y":  36.5,
+                                                       "x":  "2025-04-22 10:20:00"
+                                                   },
+                                                   {
+                                                       "y":  36.8,
+                                                       "x":  "2025-04-22 10:25:00"
+                                                   },
+                                                   {
+                                                       "y":  37.1,
+                                                       "x":  "2025-04-22 10:30:00"
+                                                   },
+                                                   {
+                                                       "y":  37.4,
+                                                       "x":  "2025-04-22 10:35:00"
+                                                   },
+                                                   {
+                                                       "y":  37.7,
+                                                       "x":  "2025-04-22 10:40:00"
+                                                   },
+                                                   {
+                                                       "y":  38,
+                                                       "x":  "2025-04-22 10:45:00"
+                                                   },
+                                                   {
+                                                       "y":  38.3,
+                                                       "x":  "2025-04-22 10:50:00"
+                                                   },
+                                                   {
+                                                       "y":  38.6,
+                                                       "x":  "2025-04-22 10:55:00"
+                                                   },
+                                                   {
+                                                       "y":  38.9,
+                                                       "x":  "2025-04-22 11:00:00"
+                                                   }
+                                               ]
+                                  },
+                       "options":  {
+                                       "tooltip":  true,
+                                       "xAxis":  {
+                                                     "type":  "time",
+                                                     "title":  "Temps"
+                                                 },
+                                       "yAxis":  {
+                                                     "title":  "Valeur"
+                                                 },
+                                       "legend":  true
+                                   },
+                       "type":  "line",
+                       "id":  "disk_trend",
+                       "position":  {
+                                        "row":  2,
+                                        "col":  0,
+                                        "width":  2,
+                                        "height":  1
+                                    },
+                       "title":  "Tendance disque"
+                   }
+               ],
+    "timestamp":  "2025-04-23 01:31:28",
+    "description":  "Tableau de bord pour surveiller les mÃ©triques systÃ¨me",
+    "layout":  {
+                   "rows":  3,
+                   "columns":  4
+               }
+};
+        
+        // Initialiser les graphiques
+        document.addEventListener('DOMContentLoaded', function() {
+            // CrÃ©er chaque graphique
+            dashboardConfig.panels.forEach(panel => {
+                switch (panel.type) {
+                    case 'gauge':
+                        createGauge(panel);
+                        break;
+                    case 'line':
+                        createLineChart(panel);
+                        break;
+                }
+            });
+        });
+        
+        // Fonction pour crÃ©er un gauge
+        function createGauge(panel) {
+            const canvas = document.getElementById(gauge-\);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Trouver la couleur correspondant Ã  la valeur
+            let color = '#73BF69'; // Couleur par dÃ©faut (vert)
+            for (let i = panel.thresholds.length - 1; i >= 0; i--) {
+                if (panel.value >= panel.thresholds[i].value) {
+                    color = panel.thresholds[i].color;
+                    break;
+                }
+            }
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [panel.value, panel.max - panel.value],
+                        backgroundColor: [color, '#eee'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    circumference: 180,
+                    rotation: -90,
+                    cutout: '80%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        animateScale: false
+                    }
+                }
+            });
+        }
+        
+        // Fonction pour crÃ©er un graphique linÃ©aire
+        function createLineChart(panel) {
+            const canvas = document.getElementById(chart-\);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            const datasets = panel.series.map((series, index) => {
+                return {
+                    label: series.name,
+                    data: series.data,
+                    borderColor: getColor(index),
+                    backgroundColor: getColor(index, 0.1),
+                    tension: 0.4,
+                    fill: false
+                };
+            });
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'hour',
+                                displayFormats: {
+                                    hour: 'HH:mm'
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: panel.options.xAxis.title
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: panel.options.yAxis.title
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: panel.options.legend
+                        },
+                        tooltip: {
+                            enabled: panel.options.tooltip
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Fonction pour obtenir une couleur
+        function getColor(index, alpha = 1) {
+            const colors = [
+                gba(31, 119, 180, \),
+                gba(255, 127, 14, \),
+                gba(44, 160, 44, \),
+                gba(214, 39, 40, \),
+                gba(148, 103, 189, \),
+                gba(140, 86, 75, \),
+                gba(227, 119, 194, \),
+                gba(127, 127, 127, \),
+                gba(188, 189, 34, \),
+                gba(23, 190, 207, \)
+            ];
+            return colors[index % colors.length];
+        }
+    </script>
+</body>
+</html>
