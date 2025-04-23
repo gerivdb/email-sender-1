@@ -1637,85 +1637,265 @@
 #### 1.1 Analyse et Conception (1 jour)
 - **1.1.1** Étude des workflows GitHub Actions
   - **1.1.1.1** Analyser les fonctionnalités de GitHub Actions
+    - **1.1.1.1.1** Étudier la syntaxe YAML des workflows GitHub Actions
+    - **1.1.1.1.2** Analyser les runners disponibles et leurs caractéristiques
+    - **1.1.1.1.3** Comprendre le système d'actions et de marketplace
+    - **1.1.1.1.4** Étudier les mécanismes de sécurité et de secrets
   - **1.1.1.2** Identifier les patterns de CI/CD adaptés à la roadmap
+    - **1.1.1.2.1** Analyser les patterns de validation de code
+    - **1.1.1.2.2** Étudier les patterns de test automatisé
+    - **1.1.1.2.3** Comprendre les patterns de déploiement continu
+    - **1.1.1.2.4** Analyser les patterns de notification et reporting
   - **1.1.1.3** Déterminer les déclencheurs optimaux
+    - **1.1.1.3.1** Étudier les déclencheurs basés sur les événements Git
+    - **1.1.1.3.2** Analyser les déclencheurs programmés (cron)
+    - **1.1.1.3.3** Comprendre les déclencheurs manuels et leur paramétrage
+    - **1.1.1.3.4** Étudier les déclencheurs basés sur d'autres workflows
 
 - **1.1.2** Conception de l'architecture des pipelines
   - **1.1.2.1** Définir les étapes des pipelines
+    - **1.1.2.1.1** Identifier les étapes de validation de code
+    - **1.1.2.1.2** Définir les étapes de test et couverture
+    - **1.1.2.1.3** Concevoir les étapes de build et packaging
+    - **1.1.2.1.4** Établir les étapes de déploiement et vérification
   - **1.1.2.2** Concevoir la structure des workflows
+    - **1.1.2.2.1** Définir l'organisation des fichiers de workflow
+    - **1.1.2.2.2** Concevoir la structure des jobs et steps
+    - **1.1.2.2.3** Établir les conventions de nommage
+    - **1.1.2.2.4** Définir les stratégies de réutilisation de code
   - **1.1.2.3** Planifier les dépendances entre jobs
+    - **1.1.2.3.1** Identifier les dépendances séquentielles
+    - **1.1.2.3.2** Définir les opportunités de parallélisation
+    - **1.1.2.3.3** Concevoir les mécanismes de partage de données entre jobs
+    - **1.1.2.3.4** Établir les stratégies de gestion d'échec
 
 - **1.1.3** Définition des stratégies de déploiement
   - **1.1.3.1** Définir les environnements de déploiement
+    - **1.1.3.1.1** Identifier les environnements nécessaires (dev, test, staging, prod)
+    - **1.1.3.1.2** Définir les caractéristiques de chaque environnement
+    - **1.1.3.1.3** Concevoir les mécanismes d'isolation entre environnements
+    - **1.1.3.1.4** Établir les stratégies d'accès et de sécurité
   - **1.1.3.2** Concevoir les stratégies de déploiement progressif
+    - **1.1.3.2.1** Étudier les approches de déploiement blue-green
+    - **1.1.3.2.2** Analyser les stratégies de canary deployment
+    - **1.1.3.2.3** Concevoir les mécanismes de déploiement par étapes
+    - **1.1.3.2.4** Définir les critères de promotion entre environnements
   - **1.1.3.3** Planifier les mécanismes de rollback
+    - **1.1.3.3.1** Concevoir les stratégies de sauvegarde avant déploiement
+    - **1.1.3.3.2** Définir les critères de déclenchement de rollback
+    - **1.1.3.3.3** Établir les procédures de rollback automatique
+    - **1.1.3.3.4** Concevoir les mécanismes de notification et reporting de rollback
 
 #### 1.2 Implémentation des Workflows de Base (1.5 jour)
 - **1.2.1** Développement du workflow de validation
   - **1.2.1.1** Implémenter la validation de syntaxe
+    - **1.2.1.1.1** Développer la validation de syntaxe PowerShell
+    - **1.2.1.1.2** Implémenter la validation de syntaxe des fichiers de configuration
+    - **1.2.1.1.3** Créer la validation de syntaxe des scripts d'automatisation
+    - **1.2.1.1.4** Développer les rapports d'erreurs de syntaxe
   - **1.2.1.2** Développer la validation des conventions de codage
+    - **1.2.1.2.1** Implémenter l'intégration avec PSScriptAnalyzer
+    - **1.2.1.2.2** Configurer les règles de style personnalisées
+    - **1.2.1.2.3** Créer les mécanismes de rapport de violations
+    - **1.2.1.2.4** Développer les options de correction automatique
   - **1.2.1.3** Créer la validation des dépendances
+    - **1.2.1.3.1** Implémenter la vérification des modules requis
+    - **1.2.1.3.2** Développer la validation des versions de dépendances
+    - **1.2.1.3.3** Créer la détection des conflits de dépendances
+    - **1.2.1.3.4** Implémenter les rapports de dépendances
 
 - **1.2.2** Développement du workflow de test
   - **1.2.2.1** Implémenter l'exécution des tests unitaires
+    - **1.2.2.1.1** Développer l'intégration avec Pester
+    - **1.2.2.1.2** Implémenter la découverte automatique des tests
+    - **1.2.2.1.3** Créer les options de parallélisation des tests
+    - **1.2.2.1.4** Développer les rapports de résultats de tests
   - **1.2.2.2** Développer l'exécution des tests d'intégration
+    - **1.2.2.2.1** Implémenter la configuration des environnements de test
+    - **1.2.2.2.2** Développer l'exécution séquentielle des tests d'intégration
+    - **1.2.2.2.3** Créer les mécanismes de gestion des dépendances externes
+    - **1.2.2.2.4** Implémenter les rapports détaillés des tests d'intégration
   - **1.2.2.3** Créer l'analyse de couverture de code
+    - **1.2.2.3.1** Implémenter l'intégration avec les outils de couverture
+    - **1.2.2.3.2** Développer la génération de rapports de couverture
+    - **1.2.2.3.3** Créer les seuils de couverture minimale
+    - **1.2.2.3.4** Implémenter la visualisation de la couverture dans les PRs
 
 - **1.2.3** Développement du workflow de build
   - **1.2.3.1** Implémenter la compilation des modules
+    - **1.2.3.1.1** Développer le processus de compilation des modules PowerShell
+    - **1.2.3.1.2** Implémenter l'optimisation du code compilé
+    - **1.2.3.1.3** Créer les mécanismes de validation post-compilation
+    - **1.2.3.1.4** Développer les rapports de compilation
   - **1.2.3.2** Développer la génération des artefacts
+    - **1.2.3.2.1** Implémenter la création de packages PowerShell
+    - **1.2.3.2.2** Développer la génération de documentation
+    - **1.2.3.2.3** Créer les archives de distribution
+    - **1.2.3.2.4** Implémenter la signature des artefacts
   - **1.2.3.3** Créer le versionnement automatique
+    - **1.2.3.3.1** Développer la génération automatique de numéros de version
+    - **1.2.3.3.2** Implémenter la gestion de versions sémantiques
+    - **1.2.3.3.3** Créer les mécanismes de mise à jour des manifestes
+    - **1.2.3.3.4** Développer la génération de changelogs
 
 #### 1.3 Implémentation des Workflows Avancés (1 jour)
 - **1.3.1** Développement du workflow de déploiement
   - **1.3.1.1** Implémenter le déploiement en environnement de test
+    - **1.3.1.1.1** Développer le script de déploiement en environnement de test
+    - **1.3.1.1.2** Implémenter les vérifications pré-déploiement
+    - **1.3.1.1.3** Créer les tests de validation post-déploiement
+    - **1.3.1.1.4** Développer les mécanismes de notification de déploiement
   - **1.3.1.2** Développer le déploiement en environnement de staging
+    - **1.3.1.2.1** Implémenter le script de déploiement en staging
+    - **1.3.1.2.2** Développer les vérifications de compatibilité
+    - **1.3.1.2.3** Créer les tests de performance en staging
+    - **1.3.1.2.4** Implémenter les mécanismes d'approbation manuelle
   - **1.3.1.3** Créer le déploiement en environnement de production
+    - **1.3.1.3.1** Développer le script de déploiement en production
+    - **1.3.1.3.2** Implémenter le déploiement progressif (canary/blue-green)
+    - **1.3.1.3.3** Créer les mécanismes de surveillance post-déploiement
+    - **1.3.1.3.4** Développer les procédures de rollback d'urgence
 
 - **1.3.2** Développement du workflow de validation de roadmap
   - **1.3.2.1** Implémenter la détection des tâches terminées
+    - **1.3.2.1.1** Développer l'analyse des commits et PRs
+    - **1.3.2.1.2** Implémenter la détection basée sur les tests réussis
+    - **1.3.2.1.3** Créer les mécanismes de validation manuelle
+    - **1.3.2.1.4** Développer l'agrégation des sources de validation
   - **1.3.2.2** Développer la mise à jour automatique de la roadmap
+    - **1.3.2.2.1** Implémenter la mise à jour du statut des tâches
+    - **1.3.2.2.2** Développer la propagation des statuts dans la hiérarchie
+    - **1.3.2.2.3** Créer les mécanismes de gestion des conflits
+    - **1.3.2.2.4** Implémenter la journalisation des mises à jour
   - **1.3.2.3** Créer la génération de rapports d'avancement
+    - **1.3.2.3.1** Développer les rapports de progression globale
+    - **1.3.2.3.2** Implémenter les rapports par composant
+    - **1.3.2.3.3** Créer les rapports de tendances et prévisions
+    - **1.3.2.3.4** Développer l'intégration des rapports avec les notifications
 
 #### 1.4 Tests et Validation (0.5 jour)
 - **1.4.1** Création des tests pour les workflows
   - **1.4.1.1** Développer des tests pour les workflows de base
+    - **1.4.1.1.1** Créer des tests pour le workflow de validation
+    - **1.4.1.1.2** Développer des tests pour le workflow de test
+    - **1.4.1.1.3** Implémenter des tests pour le workflow de build
+    - **1.4.1.1.4** Créer des tests de configuration des workflows
   - **1.4.1.2** Créer des tests pour les workflows avancés
+    - **1.4.1.2.1** Développer des tests pour le workflow de déploiement
+    - **1.4.1.2.2** Implémenter des tests pour la validation de roadmap
+    - **1.4.1.2.3** Créer des tests pour les rapports d'avancement
+    - **1.4.1.2.4** Développer des tests pour les scénarios complexes
   - **1.4.1.3** Implémenter des tests pour les intégrations
+    - **1.4.1.3.1** Créer des tests d'intégration avec GitHub
+    - **1.4.1.3.2** Développer des tests d'intégration avec le parser de roadmap
+    - **1.4.1.3.3** Implémenter des tests d'intégration avec les outils externes
+    - **1.4.1.3.4** Créer des tests de bout en bout du pipeline complet
 
 - **1.4.2** Validation des pipelines
   - **1.4.2.1** Tester les pipelines avec des scénarios réels
+    - **1.4.2.1.1** Exécuter les pipelines sur des projets de test
+    - **1.4.2.1.2** Tester les pipelines avec différentes configurations
+    - **1.4.2.1.3** Valider les pipelines avec des cas limites
+    - **1.4.2.1.4** Tester les pipelines avec des scénarios d'erreur
   - **1.4.2.2** Valider les performances des pipelines
+    - **1.4.2.2.1** Mesurer les temps d'exécution des pipelines
+    - **1.4.2.2.2** Identifier les goulots d'étranglement
+    - **1.4.2.2.3** Optimiser les étapes critiques
+    - **1.4.2.2.4** Valider les améliorations de performance
   - **1.4.2.3** Vérifier la fiabilité des déploiements
+    - **1.4.2.3.1** Tester les déploiements répétés
+    - **1.4.2.3.2** Valider les mécanismes de rollback
+    - **1.4.2.3.3** Tester les scénarios de récupération après échec
+    - **1.4.2.3.4** Vérifier la cohérence des environnements après déploiement
 
 ### 2. Système de Validation Automatique (3 jours)
 
 #### 2.1 Analyse et Conception (0.5 jour)
 - **2.1.1** Définition des règles de validation
   - **2.1.1.1** Identifier les règles spécifiques aux types de tâches
+    - **2.1.1.1.1** Analyser les critères de validation pour les tâches de développement
+    - **2.1.1.1.2** Définir les règles pour les tâches de documentation
+    - **2.1.1.1.3** Établir les critères pour les tâches de test
+    - **2.1.1.1.4** Identifier les règles pour les tâches d'intégration
   - **2.1.1.2** Déterminer les niveaux de sévérité
+    - **2.1.1.2.1** Définir les critères de sévérité critique
+    - **2.1.1.2.2** Établir les critères de sévérité élevée
+    - **2.1.1.2.3** Définir les critères de sévérité moyenne
+    - **2.1.1.2.4** Établir les critères de sévérité faible
   - **2.1.1.3** Planifier les mécanismes de personnalisation
+    - **2.1.1.3.1** Concevoir le système de règles personnalisables
+    - **2.1.1.3.2** Définir les formats de configuration des règles
+    - **2.1.1.3.3** Établir les mécanismes d'héritage et de surcharge
+    - **2.1.1.3.4** Concevoir les interfaces de personnalisation
 
 - **2.1.2** Conception de l'architecture du validateur
   - **2.1.2.1** Définir l'architecture modulaire
+    - **2.1.2.1.1** Concevoir la structure des composants principaux
+    - **2.1.2.1.2** Définir les interfaces entre modules
+    - **2.1.2.1.3** Établir les mécanismes de communication
+    - **2.1.2.1.4** Concevoir les stratégies de découplage
   - **2.1.2.2** Concevoir le système de plugins
+    - **2.1.2.2.1** Définir l'architecture des plugins
+    - **2.1.2.2.2** Concevoir les interfaces de plugin
+    - **2.1.2.2.3** Établir les mécanismes de découverte de plugins
+    - **2.1.2.2.4** Concevoir le système de gestion du cycle de vie des plugins
   - **2.1.2.3** Planifier les mécanismes d'extension
+    - **2.1.2.3.1** Définir les points d'extension du système
+    - **2.1.2.3.2** Concevoir les API d'extension
+    - **2.1.2.3.3** Établir les conventions d'extension
+    - **2.1.2.3.4** Concevoir la documentation des extensions
 
 #### 2.2 Implémentation des Validateurs de Code (1 jour)
 - **2.2.1** Développement du validateur de syntaxe
   - **2.2.1.1** Implémenter l'analyse syntaxique PowerShell
+    - **2.2.1.1.1** Développer l'intégration avec le parser PowerShell
+    - **2.2.1.1.2** Implémenter l'analyse des scripts et modules
+    - **2.2.1.1.3** Créer l'analyse des expressions et commandes
+    - **2.2.1.1.4** Développer l'analyse des structures de contrôle
   - **2.2.1.2** Développer la détection des erreurs de syntaxe
+    - **2.2.1.2.1** Implémenter la détection des erreurs de base
+    - **2.2.1.2.2** Développer la détection des erreurs avancées
+    - **2.2.1.2.3** Créer la détection des erreurs spécifiques à PowerShell
+    - **2.2.1.2.4** Implémenter la classification des erreurs
   - **2.2.1.3** Créer les rapports d'erreurs
+    - **2.2.1.3.1** Développer le format des messages d'erreur
+    - **2.2.1.3.2** Implémenter la localisation des erreurs dans le code
+    - **2.2.1.3.3** Créer les suggestions de correction
+    - **2.2.1.3.4** Développer les formats de rapport (console, fichier, HTML)
 
 - **2.2.2** Développement du validateur de style
   - **2.2.2.1** Implémenter les règles de style PowerShell
+    - **2.2.2.1.1** Développer les règles d'indentation et de formatage
+    - **2.2.2.1.2** Implémenter les règles d'utilisation des espaces et tabulations
+    - **2.2.2.1.3** Créer les règles de longueur de ligne et de bloc
+    - **2.2.2.1.4** Développer les règles de commentaires et documentation
   - **2.2.2.2** Développer la vérification des conventions de nommage
+    - **2.2.2.2.1** Implémenter les règles de nommage des fonctions
+    - **2.2.2.2.2** Développer les règles de nommage des variables
+    - **2.2.2.2.3** Créer les règles de nommage des paramètres
+    - **2.2.2.2.4** Implémenter les règles de nommage des classes et modules
   - **2.2.2.3** Créer les suggestions d'amélioration
+    - **2.2.2.3.1** Développer les suggestions de simplification
+    - **2.2.2.3.2** Implémenter les suggestions de bonnes pratiques
+    - **2.2.2.3.3** Créer les suggestions de performance
+    - **2.2.2.3.4** Développer les suggestions de lisibilité
 
 - **2.2.3** Développement du validateur de qualité
   - **2.2.3.1** Implémenter l'analyse de complexité cyclomatique
+    - **2.2.3.1.1** Développer l'algorithme de calcul de complexité
+    - **2.2.3.1.2** Implémenter l'analyse des structures conditionnelles
+    - **2.2.3.1.3** Créer l'analyse des boucles et itérations
+    - **2.2.3.1.4** Développer les seuils d'alerte et recommandations
   - **2.2.3.2** Développer la détection de code dupliqué
+    - **2.2.3.2.1** Implémenter l'algorithme de détection de similarité
+    - **2.2.3.2.2** Développer l'analyse de blocs de code similaires
+    - **2.2.3.2.3** Créer la détection de fonctions redondantes
+    - **2.2.3.2.4** Implémenter les suggestions de refactorisation
   - **2.2.3.3** Créer l'analyse de maintenabilité
+    - **2.2.3.3.1** Développer le calcul d'indice de maintenabilité
+    - **2.2.3.3.2** Implémenter l'analyse de la modularité
+    - **2.2.3.3.3** Créer l'analyse de la documentation du code
+    - **2.2.3.3.4** Développer les recommandations d'amélioration
 
 #### 2.3 Implémentation des Validateurs de Tâches (1 jour)
 - **2.3.1** Développement du validateur de complétude
