@@ -56,3 +56,9 @@ npm test
 
 ### Structure du projet
 [... contenu existant sur la structure ...]
+
+### Guidelines
+Voir les fichiers dans le répertoire [docs/guides/](docs/guides/) pour les bonnes pratiques de développement, notamment :
+- [User Guidelines](docs/guides/user_guidelines.md) - Directives utilisateur et méthodologie de développement
+- [Python Best Practices](docs/guides/python_best_practices.md) - Bonnes pratiques pour le développement Python
+- [PowerShell Best Practices](docs/guides/powershell_best_practices.md) - Bonnes pratiques pour les scripts PowerShell
