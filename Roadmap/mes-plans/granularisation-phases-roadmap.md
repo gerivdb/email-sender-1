@@ -1159,107 +1159,335 @@
 #### 1.1 Analyse et Conception (1 jour)
 - **1.1.1** Étude de l'architecture Hygen
   - **1.1.1.1** Analyser le fonctionnement des templates Hygen
+    - **1.1.1.1.1** Étudier la structure des templates EJS de Hygen
+    - **1.1.1.1.2** Analyser le système de prompts et d'arguments
+    - **1.1.1.1.3** Comprendre le mécanisme de génération de fichiers
+    - **1.1.1.1.4** Étudier les helpers et fonctions disponibles
   - **1.1.1.2** Identifier les points d'extension
+    - **1.1.1.2.1** Analyser les hooks disponibles dans Hygen
+    - **1.1.1.2.2** Étudier les possibilités de personnalisation des templates
+    - **1.1.1.2.3** Identifier les options de configuration avancées
+    - **1.1.1.2.4** Analyser les mécanismes d'extension via plugins
   - **1.1.1.3** Déterminer les mécanismes d'intégration avec la roadmap
+    - **1.1.1.3.1** Étudier les formats d'entrée acceptés par Hygen
+    - **1.1.1.3.2** Analyser les options de passage de données structurées
+    - **1.1.1.3.3** Identifier les méthodes d'extraction de données de la roadmap
+    - **1.1.1.3.4** Étudier les possibilités d'automatisation des générations
 
 - **1.1.2** Conception des templates spécifiques
   - **1.1.2.1** Définir les types de tâches à supporter
+    - **1.1.2.1.1** Identifier les catégories de tâches dans la roadmap
+    - **1.1.2.1.2** Analyser les besoins spécifiques de chaque type de tâche
+    - **1.1.2.1.3** Définir les attributs et propriétés de chaque type
+    - **1.1.2.1.4** Établir les priorités et l'ordre d'implémentation
   - **1.1.2.2** Concevoir la structure des templates
+    - **1.1.2.2.1** Définir l'organisation des répertoires de templates
+    - **1.1.2.2.2** Concevoir les templates de base pour chaque type
+    - **1.1.2.2.3** Établir les conventions de nommage
+    - **1.1.2.2.4** Définir les mécanismes d'héritage et de composition
   - **1.1.2.3** Planifier les variables et les prompts
+    - **1.1.2.3.1** Identifier les variables nécessaires pour chaque template
+    - **1.1.2.3.2** Concevoir les prompts interactifs pour l'utilisateur
+    - **1.1.2.3.3** Définir les valeurs par défaut et les validations
+    - **1.1.2.3.4** Établir les dépendances entre variables
 
 - **1.1.3** Architecture du système d'extraction de métadonnées
   - **1.1.3.1** Définir les métadonnées à extraire de la roadmap
+    - **1.1.3.1.1** Identifier les informations essentielles des tâches
+    - **1.1.3.1.2** Définir les métadonnées de structure et hiérarchie
+    - **1.1.3.1.3** Établir les métadonnées de dépendances
+    - **1.1.3.1.4** Identifier les métadonnées de statut et progression
   - **1.1.3.2** Concevoir le mécanisme d'extraction
+    - **1.1.3.2.1** Définir l'architecture du parser de métadonnées
+    - **1.1.3.2.2** Concevoir les algorithmes d'extraction
+    - **1.1.3.2.3** Établir les stratégies de gestion des erreurs
+    - **1.1.3.2.4** Définir les mécanismes de mise en cache
   - **1.1.3.3** Planifier le format de stockage des métadonnées
+    - **1.1.3.3.1** Évaluer les formats de stockage possibles (JSON, YAML, etc.)
+    - **1.1.3.3.2** Concevoir la structure du format de stockage
+    - **1.1.3.3.3** Définir les stratégies de versionnement
+    - **1.1.3.3.4** Établir les mécanismes de validation du format
 
 #### 1.2 Développement des Templates de Base (1.5 jour)
 - **1.2.1** Création des templates pour les modules PowerShell
   - **1.2.1.1** Développer le template de module de base
+    - **1.2.1.1.1** Créer le template du fichier .psm1 principal
+    - **1.2.1.1.2** Développer le template du manifeste .psd1
+    - **1.2.1.1.3** Implémenter les templates de structure de répertoires
+    - **1.2.1.1.4** Créer les templates de fichiers de configuration
   - **1.2.1.2** Implémenter les templates de fonctions
+    - **1.2.1.2.1** Développer les templates de fonctions simples
+    - **1.2.1.2.2** Créer les templates de fonctions avancées avec paramètres
+    - **1.2.1.2.3** Implémenter les templates de fonctions avec pipeline
+    - **1.2.1.2.4** Développer les templates de fonctions avec ShouldProcess
   - **1.2.1.3** Créer les templates de classes
+    - **1.2.1.3.1** Développer les templates de classes de base
+    - **1.2.1.3.2** Implémenter les templates de classes avec héritage
+    - **1.2.1.3.3** Créer les templates d'interfaces et classes abstraites
+    - **1.2.1.3.4** Développer les templates de classes avec attributs
 
 - **1.2.2** Création des templates pour les scripts
   - **1.2.2.1** Développer le template de script principal
+    - **1.2.2.1.1** Créer le template de base avec structure standard
+    - **1.2.2.1.2** Développer les sections de paramètres et validation
+    - **1.2.2.1.3** Implémenter les sections de gestion d'erreurs
+    - **1.2.2.1.4** Créer les sections de journalisation et reporting
   - **1.2.2.2** Implémenter les templates de scripts utilitaires
+    - **1.2.2.2.1** Développer les templates de scripts de validation
+    - **1.2.2.2.2** Créer les templates de scripts de conversion
+    - **1.2.2.2.3** Implémenter les templates de scripts d'analyse
+    - **1.2.2.2.4** Développer les templates de scripts de manipulation de données
   - **1.2.2.3** Créer les templates de scripts d'installation
+    - **1.2.2.3.1** Développer les templates d'installation de modules
+    - **1.2.2.3.2** Créer les templates de configuration d'environnement
+    - **1.2.2.3.3** Implémenter les templates de vérification de prérequis
+    - **1.2.2.3.4** Développer les templates de désinstallation
 
 - **1.2.3** Création des templates pour les configurations
   - **1.2.3.1** Développer les templates de fichiers de configuration
+    - **1.2.3.1.1** Créer les templates de configuration JSON
+    - **1.2.3.1.2** Développer les templates de configuration YAML
+    - **1.2.3.1.3** Implémenter les templates de configuration XML
+    - **1.2.3.1.4** Créer les templates de configuration INI/conf
   - **1.2.3.2** Implémenter les templates de paramètres
+    - **1.2.3.2.1** Développer les templates de paramètres d'environnement
+    - **1.2.3.2.2** Créer les templates de paramètres d'application
+    - **1.2.3.2.3** Implémenter les templates de paramètres de sécurité
+    - **1.2.3.2.4** Développer les templates de paramètres de performance
   - **1.2.3.3** Créer les templates de manifestes
+    - **1.2.3.3.1** Développer les templates de manifestes de dépendances
+    - **1.2.3.3.2** Créer les templates de manifestes de déploiement
+    - **1.2.3.3.3** Implémenter les templates de manifestes de version
+    - **1.2.3.3.4** Développer les templates de manifestes de compatibilité
 
 #### 1.3 Implémentation du Système d'Extraction de Métadonnées (1 jour)
 - **1.3.1** Développement du parser de métadonnées
   - **1.3.1.1** Implémenter l'extraction des identifiants de tâches
+    - **1.3.1.1.1** Développer les expressions régulières pour les identifiants
+    - **1.3.1.1.2** Implémenter la détection des formats d'identifiants
+    - **1.3.1.1.3** Créer la logique de normalisation des identifiants
+    - **1.3.1.1.4** Développer la validation des identifiants extraits
   - **1.3.1.2** Développer l'extraction des descriptions
+    - **1.3.1.2.1** Implémenter l'extraction du texte descriptif
+    - **1.3.1.2.2** Développer le nettoyage et la normalisation des descriptions
+    - **1.3.1.2.3** Créer la détection des mots-clés dans les descriptions
+    - **1.3.1.2.4** Implémenter l'extraction des métadonnées incluses dans les descriptions
   - **1.3.1.3** Créer l'extraction des dépendances
+    - **1.3.1.3.1** Développer la détection des références explicites
+    - **1.3.1.3.2** Implémenter l'analyse des dépendances implicites
+    - **1.3.1.3.3** Créer la validation des dépendances extraites
+    - **1.3.1.3.4** Développer la résolution des dépendances circulaires
 
 - **1.3.2** Implémentation du générateur de contexte
   - **1.3.2.1** Développer la génération du contexte pour Hygen
+    - **1.3.2.1.1** Implémenter la structure de base du contexte
+    - **1.3.2.1.2** Développer le mapping des métadonnées vers le contexte
+    - **1.3.2.1.3** Créer les mécanismes d'enrichissement du contexte
+    - **1.3.2.1.4** Implémenter la sérialisation du contexte
   - **1.3.2.2** Implémenter les transformations de données
+    - **1.3.2.2.1** Développer les fonctions de transformation de texte
+    - **1.3.2.2.2** Créer les transformations de format (casing, pluralization, etc.)
+    - **1.3.2.2.3** Implémenter les transformations de structure
+    - **1.3.2.2.4** Développer les transformations spécifiques au domaine
   - **1.3.2.3** Créer les mécanismes de validation du contexte
+    - **1.3.2.3.1** Implémenter la validation des champs obligatoires
+    - **1.3.2.3.2** Développer la validation des formats et types
+    - **1.3.2.3.3** Créer la validation des contraintes métier
+    - **1.3.2.3.4** Implémenter la gestion des erreurs de validation
 
 #### 1.4 Tests et Validation (0.5 jour)
 - **1.4.1** Création des tests unitaires
   - **1.4.1.1** Développer des tests pour les templates
+    - **1.4.1.1.1** Créer des tests pour les templates de modules PowerShell
+    - **1.4.1.1.2** Développer des tests pour les templates de scripts
+    - **1.4.1.1.3** Implémenter des tests pour les templates de configuration
+    - **1.4.1.1.4** Créer des tests de validation de la syntaxe des templates
   - **1.4.1.2** Créer des tests pour l'extraction de métadonnées
+    - **1.4.1.2.1** Développer des tests pour l'extraction des identifiants
+    - **1.4.1.2.2** Implémenter des tests pour l'extraction des descriptions
+    - **1.4.1.2.3** Créer des tests pour l'extraction des dépendances
+    - **1.4.1.2.4** Développer des tests avec des cas limites et exceptions
   - **1.4.1.3** Implémenter des tests pour la génération de contexte
+    - **1.4.1.3.1** Créer des tests pour la génération de contexte de base
+    - **1.4.1.3.2** Développer des tests pour les transformations de données
+    - **1.4.1.3.3** Implémenter des tests pour la validation du contexte
+    - **1.4.1.3.4** Créer des tests d'intégration pour le flux complet
 
 - **1.4.2** Tests d'intégration
   - **1.4.2.1** Tester l'intégration avec la roadmap
+    - **1.4.2.1.1** Développer des tests avec des roadmaps de test
+    - **1.4.2.1.2** Implémenter des tests de bout en bout
+    - **1.4.2.1.3** Créer des tests avec différents formats de roadmap
+    - **1.4.2.1.4** Développer des tests de performance avec de grandes roadmaps
   - **1.4.2.2** Valider la génération de fichiers
+    - **1.4.2.2.1** Tester la génération de modules PowerShell
+    - **1.4.2.2.2** Vérifier la génération de scripts
+    - **1.4.2.2.3** Valider la génération de fichiers de configuration
+    - **1.4.2.2.4** Tester les scénarios de génération complexes
   - **1.4.2.3** Vérifier la cohérence des fichiers générés
+    - **1.4.2.3.1** Valider la syntaxe des fichiers générés
+    - **1.4.2.3.2** Vérifier la cohérence entre fichiers liés
+    - **1.4.2.3.3** Tester l'exécution des fichiers générés
+    - **1.4.2.3.4** Valider la conformité aux standards du projet
 
 ### 2. Générateur de Tests (3 jours)
 
 #### 2.1 Analyse et Conception (0.5 jour)
 - **2.1.1** Étude des frameworks de test
   - **2.1.1.1** Analyser les spécificités de Pester pour PowerShell
+    - **2.1.1.1.1** Étudier la syntaxe et les fonctionnalités de Pester
+    - **2.1.1.1.2** Analyser les bonnes pratiques de test avec Pester
+    - **2.1.1.1.3** Comprendre les mécanismes d'assertion de Pester
+    - **2.1.1.1.4** Étudier les options de configuration de Pester
   - **2.1.1.2** Identifier les patterns de tests courants
+    - **2.1.1.2.1** Analyser les patterns de tests unitaires
+    - **2.1.1.2.2** Étudier les patterns de tests d'intégration
+    - **2.1.1.2.3** Comprendre les patterns de tests paramétrés
+    - **2.1.1.2.4** Analyser les patterns de tests de performance
   - **2.1.1.3** Déterminer les mécanismes de mocking nécessaires
+    - **2.1.1.3.1** Étudier les fonctionnalités de mock de Pester
+    - **2.1.1.3.2** Analyser les stratégies de mocking pour différents scénarios
+    - **2.1.1.3.3** Comprendre les mécanismes de vérification des mocks
+    - **2.1.1.3.4** Étudier les alternatives et extensions de mocking
 
 - **2.1.2** Conception des templates de tests
   - **2.1.2.1** Définir la structure des tests unitaires
+    - **2.1.2.1.1** Concevoir la structure de base des tests unitaires
+    - **2.1.2.1.2** Définir les sections de setup et teardown
+    - **2.1.2.1.3** Établir les conventions de nommage des tests
+    - **2.1.2.1.4** Concevoir les mécanismes de gestion des cas de test
   - **2.1.2.2** Concevoir les templates de tests d'intégration
+    - **2.1.2.2.1** Définir la structure des tests d'intégration
+    - **2.1.2.2.2** Concevoir les mécanismes de setup d'environnement
+    - **2.1.2.2.3** Établir les stratégies de gestion des dépendances
+    - **2.1.2.2.4** Définir les mécanismes de nettoyage après test
   - **2.1.2.3** Planifier les templates de tests de performance
+    - **2.1.2.3.1** Concevoir la structure des tests de performance
+    - **2.1.2.3.2** Définir les métriques de performance à mesurer
+    - **2.1.2.3.3** Établir les seuils et benchmarks
+    - **2.1.2.3.4** Concevoir les mécanismes de reporting de performance
 
 #### 2.2 Implémentation des Générateurs de Tests Unitaires (1 jour)
 - **2.2.1** Développement des templates de tests pour les fonctions
   - **2.2.1.1** Implémenter les templates de tests de validation d'entrées
+    - **2.2.1.1.1** Développer les templates de validation de types
+    - **2.2.1.1.2** Créer les templates de validation de plages de valeurs
+    - **2.2.1.1.3** Implémenter les templates de validation de format
+    - **2.2.1.1.4** Développer les templates de validation de paramètres obligatoires
   - **2.2.1.2** Développer les templates de tests de comportement
+    - **2.2.1.2.1** Créer les templates de tests de résultats attendus
+    - **2.2.1.2.2** Implémenter les templates de tests d'effets de bord
+    - **2.2.1.2.3** Développer les templates de tests de comportement avec mocks
+    - **2.2.1.2.4** Créer les templates de tests paramétrés
   - **2.2.1.3** Créer les templates de tests d'erreurs
+    - **2.2.1.3.1** Développer les templates de tests d'exceptions attendues
+    - **2.2.1.3.2** Implémenter les templates de tests de gestion d'erreurs
+    - **2.2.1.3.3** Créer les templates de tests de récupération après erreur
+    - **2.2.1.3.4** Développer les templates de tests de journalisation d'erreurs
 
 - **2.2.2** Développement des templates de tests pour les classes
   - **2.2.2.1** Implémenter les templates de tests de constructeurs
+    - **2.2.2.1.1** Développer les templates de tests d'initialisation standard
+    - **2.2.2.1.2** Créer les templates de tests avec paramètres
+    - **2.2.2.1.3** Implémenter les templates de tests d'exceptions de constructeur
+    - **2.2.2.1.4** Développer les templates de tests de constructeurs alternatifs
   - **2.2.2.2** Développer les templates de tests de méthodes
+    - **2.2.2.2.1** Créer les templates de tests de méthodes publiques
+    - **2.2.2.2.2** Implémenter les templates de tests de méthodes avec paramètres
+    - **2.2.2.2.3** Développer les templates de tests de méthodes virtuelles/abstraites
+    - **2.2.2.2.4** Créer les templates de tests de méthodes statiques
   - **2.2.2.3** Créer les templates de tests d'état
+    - **2.2.2.3.1** Développer les templates de tests de propriétés
+    - **2.2.2.3.2** Implémenter les templates de tests de changement d'état
+    - **2.2.2.3.3** Créer les templates de tests d'invariants
+    - **2.2.2.3.4** Développer les templates de tests de sérialisation/désérialisation
 
 - **2.2.3** Implémentation des générateurs de mocks
   - **2.2.3.1** Développer les templates de mocks pour les dépendances
+    - **2.2.3.1.1** Créer les templates de mocks pour les fonctions
+    - **2.2.3.1.2** Implémenter les templates de mocks pour les classes
+    - **2.2.3.1.3** Développer les templates de mocks pour les modules
+    - **2.2.3.1.4** Créer les templates de mocks pour les services externes
   - **2.2.3.2** Implémenter les templates de stubs
+    - **2.2.3.2.1** Développer les templates de stubs pour les retours simples
+    - **2.2.3.2.2** Créer les templates de stubs avec logique conditionnelle
+    - **2.2.3.2.3** Implémenter les templates de stubs avec séquence de retours
+    - **2.2.3.2.4** Développer les templates de stubs avec délai et timing
   - **2.2.3.3** Créer les templates de données de test
+    - **2.2.3.3.1** Développer les templates de génération de données aléatoires
+    - **2.2.3.3.2** Implémenter les templates de jeux de données prédéfinis
+    - **2.2.3.3.3** Créer les templates de données de test paramétrables
+    - **2.2.3.3.4** Développer les templates de données de test pour cas limites
 
 #### 2.3 Implémentation des Générateurs de Tests d'Intégration (1 jour)
 - **2.3.1** Développement des templates de tests de flux
   - **2.3.1.1** Implémenter les templates de tests de scénarios
+    - **2.3.1.1.1** Développer les templates de scénarios utilisateur
+    - **2.3.1.1.2** Créer les templates de scénarios de processus métier
+    - **2.3.1.1.3** Implémenter les templates de scénarios multi-étapes
+    - **2.3.1.1.4** Développer les templates de scénarios avec conditions
   - **2.3.1.2** Développer les templates de tests de bout en bout
+    - **2.3.1.2.1** Créer les templates de tests de flux complets
+    - **2.3.1.2.2** Implémenter les templates de tests multi-composants
+    - **2.3.1.2.3** Développer les templates de tests de chaîne de traitement
+    - **2.3.1.2.4** Créer les templates de tests avec chronométrage
   - **2.3.1.3** Créer les templates de tests de compatibilité
+    - **2.3.1.3.1** Développer les templates de tests de compatibilité de versions
+    - **2.3.1.3.2** Implémenter les templates de tests de compatibilité d'API
+    - **2.3.1.3.3** Créer les templates de tests de compatibilité d'environnement
+    - **2.3.1.3.4** Développer les templates de tests de compatibilité de données
 
 - **2.3.2** Implémentation des fixtures et helpers
   - **2.3.2.1** Développer les templates de fixtures
+    - **2.3.2.1.1** Créer les templates de fixtures de données
+    - **2.3.2.1.2** Implémenter les templates de fixtures d'environnement
+    - **2.3.2.1.3** Développer les templates de fixtures de configuration
+    - **2.3.2.1.4** Créer les templates de fixtures partagées
   - **2.3.2.2** Implémenter les templates de helpers
+    - **2.3.2.2.1** Développer les templates de fonctions d'assertion personnalisées
+    - **2.3.2.2.2** Créer les templates de fonctions de préparation
+    - **2.3.2.2.3** Implémenter les templates de fonctions de nettoyage
+    - **2.3.2.2.4** Développer les templates de fonctions utilitaires de test
   - **2.3.2.3** Créer les templates d'environnements de test
+    - **2.3.2.3.1** Développer les templates d'environnement de développement
+    - **2.3.2.3.2** Implémenter les templates d'environnement d'intégration
+    - **2.3.2.3.3** Créer les templates d'environnement isolé
+    - **2.3.2.3.4** Développer les templates de configuration d'environnement
 
 #### 2.4 Tests et Validation (0.5 jour)
 - **2.4.1** Création des tests pour le générateur
   - **2.4.1.1** Développer des tests pour les templates de tests unitaires
+    - **2.4.1.1.1** Créer des tests pour les templates de fonctions
+    - **2.4.1.1.2** Implémenter des tests pour les templates de classes
+    - **2.4.1.1.3** Développer des tests pour les templates de validation d'entrées
+    - **2.4.1.1.4** Créer des tests pour les templates de tests d'erreurs
   - **2.4.1.2** Créer des tests pour les templates de tests d'intégration
+    - **2.4.1.2.1** Implémenter des tests pour les templates de scénarios
+    - **2.4.1.2.2** Développer des tests pour les templates de bout en bout
+    - **2.4.1.2.3** Créer des tests pour les templates de compatibilité
+    - **2.4.1.2.4** Implémenter des tests pour les templates d'environnements
   - **2.4.1.3** Implémenter des tests pour les générateurs de mocks
+    - **2.4.1.3.1** Développer des tests pour les templates de mocks
+    - **2.4.1.3.2** Créer des tests pour les templates de stubs
+    - **2.4.1.3.3** Implémenter des tests pour les templates de données de test
+    - **2.4.1.3.4** Développer des tests pour les fixtures et helpers
 
 - **2.4.2** Validation de la qualité des tests générés
   - **2.4.2.1** Vérifier la couverture de code des tests générés
+    - **2.4.2.1.1** Mesurer la couverture de lignes de code
+    - **2.4.2.1.2** Évaluer la couverture des branches conditionnelles
+    - **2.4.2.1.3** Analyser la couverture des chemins d'exécution
+    - **2.4.2.1.4** Vérifier la couverture des cas limites
   - **2.4.2.2** Valider la robustesse des tests
+    - **2.4.2.2.1** Évaluer la résistance aux changements de code
+    - **2.4.2.2.2** Tester la stabilité des tests sur plusieurs exécutions
+    - **2.4.2.2.3** Vérifier l'indépendance des tests
+    - **2.4.2.2.4** Analyser la clarté des messages d'erreur
   - **2.4.2.3** Tester les performances des tests générés
+    - **2.4.2.3.1** Mesurer le temps d'exécution des tests
+    - **2.4.2.3.2** Évaluer l'utilisation des ressources
+    - **2.4.2.3.3** Analyser le comportement avec de grands volumes de données
+    - **2.4.2.3.4** Optimiser les tests lents ou gourmands en ressources
 
 ### 3. Documentation Automatique (3 jours)
 
