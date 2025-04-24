@@ -2,71 +2,74 @@
 
 Bienvenue dans la section des guides d'utilisation du projet EMAIL_SENDER_1. Cette section contient des guides détaillés pour vous aider à utiliser efficacement les différentes fonctionnalités du projet.
 
-## Guide de démarrage rapide
+## Organisation des guides
 
-Le [Guide de démarrage rapide](getting_started.md) vous fournit les informations essentielles pour commencer à utiliser le projet EMAIL_SENDER_1. Il couvre l'installation, la configuration initiale et les premiers pas avec les modules principaux.
+Les guides sont organisés par thématiques pour faciliter la navigation et la recherche d'informations :
 
-**Contenu principal :**
-- Installation et configuration du projet
-- Structure du projet
-- Premiers pas avec les modules principaux
-- Exemples simples d'utilisation
+### Guides principaux
 
-## Guides des modules principaux
+- [Guides principaux](core/index.md) - Guides principaux et documentation centrale du projet
+  - [Guide utilisateur complet](core/user_guidelines.md) - Guide utilisateur détaillé et complet
 
-### Guide de détection de cycles
+### Installation et démarrage
 
-Le [Guide de détection de cycles](cycle_detection.md) vous explique comment utiliser le module `CycleDetector` pour détecter et résoudre les cycles dans différents types de graphes, notamment les dépendances de scripts et les workflows n8n.
+- [Guides d'installation](installation/index.md) - Guides pour l'installation et la configuration initiale
+  - [Guide d'installation complet](installation/GUIDE_INSTALLATION_COMPLET.md) - Guide complet pour l'installation
+  - [Guide de démarrage rapide](installation/getting_started.md) - Guide de démarrage rapide
 
-**Contenu principal :**
-- Installation et configuration du module CycleDetector
-- Détection de cycles dans des graphes génériques
-- Détection de cycles dans les dépendances de scripts
-- Détection de cycles dans les workflows n8n
-- Visualisation des graphes de dépendances
-- Intégration avec d'autres modules
+### Outils et modules
 
-### Guide de gestion des dépendances
+- [Guides d'outils](tools/index.md) - Guides pour l'utilisation des différents outils du projet
+  - [Détection de cycles](tools/cycle_detection.md) - Module de détection de cycles
+  - [Gestion des dépendances](tools/dependency_management.md) - Module de gestion des dépendances
+  - [Segmentation des entrées](tools/input_segmentation.md) - Module de segmentation des entrées
 
-Le [Guide de gestion des dépendances](dependency_management.md) vous explique comment utiliser le module `DependencyManager` pour gérer les dépendances entre les scripts, les modules et les workflows dans votre projet.
+### Intégrations
 
-**Contenu principal :**
-- Installation et configuration du module DependencyManager
-- Analyse des dépendances de scripts
-- Résolution de l'ordre d'exécution des scripts
-- Test des dépendances de modules
-- Optimisation des dépendances
-- Intégration avec d'autres modules
+- [Guides MCP](mcp/index.md) - Guides sur l'utilisation du protocole MCP et ses intégrations
+  - [Guide MCP Gateway](mcp/GUIDE_MCP_GATEWAY.md) - Utilisation du MCP Gateway
+  - [Guide MCP N8N](mcp/GUIDE_MCP_N8N.md) - Intégration de MCP avec n8n
 
-### Guide d'intégration MCP
-
-Le [Guide d'intégration MCP](mcp_integration.md) vous explique comment utiliser le module `MCPManager` pour gérer les serveurs MCP (Model Context Protocol), détecter les serveurs disponibles et interagir avec eux.
-
-**Contenu principal :**
-- Installation et configuration du module MCPManager
-- Recherche de serveurs MCP
-- Création de configurations MCP
-- Démarrage et arrêt de serveurs MCP
-- Exécution de commandes MCP
-- Intégration avec d'autres modules
-
-### Guide de segmentation des entrées
-
-Le [Guide de segmentation des entrées](input_segmentation.md) vous explique comment utiliser le module `InputSegmenter` pour segmenter automatiquement les entrées volumineuses en morceaux plus petits et gérables.
-
-**Contenu principal :**
-- Installation et configuration du module InputSegmenter
-- Segmentation de texte
-- Segmentation de JSON
-- Segmentation de fichiers
-- Traitement par lots avec segmentation
-- Intégration avec d'autres modules
+- [Guides n8n](n8n/index.md) - Guides sur l'utilisation de n8n
+  - [Démarrer n8n en local](n8n/DEMARRER_N8N_LOCAL.md) - Démarrer n8n en local
+  - [Guide dossier n8n](n8n/GUIDE_DOSSIER_N8N.md) - Organisation des dossiers n8n
 
 ## Comment utiliser ces guides
 
 Chaque guide est conçu pour être autonome, mais ils sont également complémentaires. Nous vous recommandons de commencer par le Guide de démarrage rapide, puis de consulter les guides spécifiques aux modules que vous souhaitez utiliser.
 
 Les guides contiennent de nombreux exemples de code que vous pouvez copier-coller et adapter à vos besoins. Ils incluent également des sections de dépannage et de bonnes pratiques pour vous aider à résoudre les problèmes courants et à optimiser votre utilisation des modules.
+
+### Bonnes pratiques et méthodologies
+
+- [Bonnes pratiques](best-practices/index.md) - Guides sur les bonnes pratiques générales de développement
+  - [Gestion des erreurs et intégrité](best-practices/erreurs_integrite.md) - Gestion des erreurs et principes d'intégrité
+  - [Optimisations](best-practices/optimisations.md) - Stratégies d'optimisation
+
+- [Méthodologies](methodologies/index.md) - Guides sur les méthodologies de développement
+  - [Méthodologies de travail](methodologies/methodologies.md) - Approches et méthodologies
+  - [Modes de fonctionnement](methodologies/modes_fonctionnement.md) - Différents modes de fonctionnement
+  - [Gestion des dialogues Augment](methodologies/augment_dialog_management_combined.md) - Guide complet de gestion des dialogues
+
+### Langages de programmation
+
+- [PowerShell](powershell/index.md) - Guides et bonnes pratiques pour PowerShell
+  - [Bonnes pratiques PowerShell](powershell/powershell_best_practices.md) - Bonnes pratiques
+  - [Exécution PowerShell](powershell/powershell_execution.md) - Directives d'exécution
+
+- [Python](python/index.md) - Guides et bonnes pratiques pour Python
+  - [Bonnes pratiques Python](python/python_best_practices.md) - Bonnes pratiques
+
+### Gestion de code source
+
+- [Git](git/index.md) - Guides et bonnes pratiques pour Git et GitHub
+  - [Bonnes pratiques Git](git/GUIDE_BONNES_PRATIQUES_GIT.md) - Bonnes pratiques
+  - [Guide Git et GitHub](git/GUIDE_GIT_GITHUB.md) - Utilisation de Git et GitHub
+
+### Dépannage
+
+- [Dépannage](troubleshooting/index.md) - Guides pour résoudre les problèmes courants
+  - [Résolution des problèmes MCP](troubleshooting/RESOLUTION_PROBLEMES_MCP.md) - Problèmes MCP
 
 ## Ressources supplémentaires
 
