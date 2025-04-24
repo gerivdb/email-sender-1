@@ -52,20 +52,267 @@
 
 - **1.1.3** Définition de l'architecture du module PowerShell
   - **1.1.3.1** Identifier les fonctions principales nécessaires
-    - **1.1.3.1.1** Définir les fonctions de parsing du markdown
-    - **1.1.3.1.2** Identifier les fonctions de manipulation de l'arbre
-    - **1.1.3.1.3** Concevoir les fonctions d'export et de génération
-    - **1.1.3.1.4** Planifier les fonctions utilitaires et helpers
+    - [ ] **1.1.3.1.1** Définir les fonctions de parsing du markdown
+      - [ ] **1.1.3.1.1.1** Définir la fonction ConvertFrom-MarkdownToRoadmapTree
+        - [ ] **1.1.3.1.1.1.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.1.1.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.1.1.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.1.1.2** Implémenter la validation des paramètres
+          - [ ] **1.1.3.1.1.1.2.1** Vérifier l'existence du fichier
+          - [ ] **1.1.3.1.1.1.2.2** Valider l'encodage
+        - [ ] **1.1.3.1.1.1.3** Implémenter la lecture du fichier
+          - [ ] **1.1.3.1.1.1.3.1** Lire le contenu avec l'encodage spécifié
+          - [ ] **1.1.3.1.1.1.3.2** Gérer les erreurs de lecture
+        - [ ] **1.1.3.1.1.1.4** Implémenter l'extraction du titre et de la description
+          - [ ] **1.1.3.1.1.1.4.1** Extraire le titre avec regex
+          - [ ] **1.1.3.1.1.1.4.2** Extraire la description
+        - [ ] **1.1.3.1.1.1.5** Implémenter la création de l'arbre de roadmap
+          - [ ] **1.1.3.1.1.1.5.1** Créer l'objet RoadmapTree
+          - [ ] **1.1.3.1.1.1.5.2** Initialiser les propriétés
+        - [ ] **1.1.3.1.1.1.6** Implémenter le parsing des tâches
+          - [ ] **1.1.3.1.1.1.6.1** Parcourir les lignes du fichier
+          - [ ] **1.1.3.1.1.1.6.2** Identifier les lignes de tâches
+          - [ ] **1.1.3.1.1.1.6.3** Extraire les informations des tâches
+          - [ ] **1.1.3.1.1.1.6.4** Gérer l'indentation et la hiérarchie
+        - [ ] **1.1.3.1.1.1.7** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.1.1.7.1** Tester avec un fichier valide
+          - [ ] **1.1.3.1.1.1.7.2** Tester avec un fichier invalide
+          - [ ] **1.1.3.1.1.1.7.3** Tester avec différentes structures de tâches
+      - [ ] **1.1.3.1.1.2** Définir la fonction Parse-MarkdownTask
+        - [ ] **1.1.3.1.1.2.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.1.2.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.1.2.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.1.2.2** Implémenter l'expression régulière pour le parsing
+          - [ ] **1.1.3.1.1.2.2.1** Définir le pattern pour les tâches
+          - [ ] **1.1.3.1.1.2.2.2** Tester le pattern avec différents formats
+        - [ ] **1.1.3.1.1.2.3** Implémenter l'extraction des composants
+          - [ ] **1.1.3.1.1.2.3.1** Extraire l'indentation
+          - [ ] **1.1.3.1.1.2.3.2** Extraire le marqueur de statut
+          - [ ] **1.1.3.1.1.2.3.3** Extraire l'ID
+          - [ ] **1.1.3.1.1.2.3.4** Extraire le titre
+        - [ ] **1.1.3.1.1.2.4** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.1.2.4.1** Tester avec différents formats de tâches
+          - [ ] **1.1.3.1.1.2.4.2** Tester avec des cas limites
+      - [ ] **1.1.3.1.1.3** Définir la fonction Get-MarkdownTaskIndentation
+        - [ ] **1.1.3.1.1.3.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.1.3.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.1.3.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.1.3.2** Implémenter le calcul de l'indentation
+          - [ ] **1.1.3.1.1.3.2.1** Compter les espaces au début de la ligne
+          - [ ] **1.1.3.1.1.3.2.2** Convertir en niveau d'indentation
+        - [ ] **1.1.3.1.1.3.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.1.3.3.1** Tester avec différents niveaux d'indentation
+          - [ ] **1.1.3.1.1.3.3.2** Tester avec des cas limites
+      - [ ] **1.1.3.1.1.4** Définir la fonction Extract-MarkdownTaskStatus
+        - [ ] **1.1.3.1.1.4.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.1.4.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.1.4.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.1.4.2** Implémenter la conversion du marqueur en statut
+          - [ ] **1.1.3.1.1.4.2.1** Définir les correspondances de statut
+          - [ ] **1.1.3.1.1.4.2.2** Gérer les cas par défaut
+        - [ ] **1.1.3.1.1.4.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.1.4.3.1** Tester avec différents marqueurs
+          - [ ] **1.1.3.1.1.4.3.2** Tester avec des cas limites
+      - [ ] **1.1.3.1.1.5** Définir la fonction Extract-MarkdownTaskId
+        - [ ] **1.1.3.1.1.5.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.1.5.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.1.5.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.1.5.2** Implémenter l'extraction de l'ID
+          - [ ] **1.1.3.1.1.5.2.1** Définir l'expression régulière
+          - [ ] **1.1.3.1.1.5.2.2** Extraire l'ID entre les marqueurs
+        - [ ] **1.1.3.1.1.5.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.1.5.3.1** Tester avec différents formats d'ID
+          - [ ] **1.1.3.1.1.5.3.2** Tester avec des cas limites
+      - [ ] **1.1.3.1.1.6** Définir la fonction Extract-MarkdownTaskTitle
+        - [ ] **1.1.3.1.1.6.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.1.6.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.1.6.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.1.6.2** Implémenter l'extraction du titre
+          - [ ] **1.1.3.1.1.6.2.1** Définir l'expression régulière
+          - [ ] **1.1.3.1.1.6.2.2** Extraire le titre après l'ID
+        - [ ] **1.1.3.1.1.6.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.1.6.3.1** Tester avec différents formats de titre
+          - [ ] **1.1.3.1.1.6.3.2** Tester avec des cas limites
+      - [ ] **1.1.3.1.1.7** Définir la fonction Extract-MarkdownTaskDescription
+        - [ ] **1.1.3.1.1.7.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.1.7.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.1.7.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.1.7.2** Implémenter l'extraction de la description
+          - [ ] **1.1.3.1.1.7.2.1** Parcourir les lignes suivantes
+          - [ ] **1.1.3.1.1.7.2.2** Identifier les lignes de description
+          - [ ] **1.1.3.1.1.7.2.3** Concaténer les lignes
+        - [ ] **1.1.3.1.1.7.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.1.7.3.1** Tester avec différentes descriptions
+          - [ ] **1.1.3.1.1.7.3.2** Tester avec des cas limites
+    - [ ] **1.1.3.1.2** Identifier les fonctions de manipulation de l'arbre
+      - [ ] **1.1.3.1.2.1** Définir la fonction New-RoadmapTree
+        - [ ] **1.1.3.1.2.1.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.1.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.1.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.1.2** Implémenter la création de l'objet RoadmapTree
+          - [ ] **1.1.3.1.2.1.2.1** Définir les propriétés de base
+          - [ ] **1.1.3.1.2.1.2.2** Initialiser les collections
+          - [ ] **1.1.3.1.2.1.2.3** Créer le nœud racine
+        - [ ] **1.1.3.1.2.1.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.1.3.1** Tester la création avec paramètres minimaux
+          - [ ] **1.1.3.1.2.1.3.2** Tester la création avec tous les paramètres
+      - [ ] **1.1.3.1.2.2** Définir la fonction New-RoadmapTask
+        - [ ] **1.1.3.1.2.2.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.2.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.2.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.2.2** Implémenter la création de l'objet RoadmapTask
+          - [ ] **1.1.3.1.2.2.2.1** Définir les propriétés de base
+          - [ ] **1.1.3.1.2.2.2.2** Initialiser les collections
+        - [ ] **1.1.3.1.2.2.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.2.3.1** Tester la création avec paramètres minimaux
+          - [ ] **1.1.3.1.2.2.3.2** Tester la création avec tous les paramètres
+      - [ ] **1.1.3.1.2.3** Définir la fonction Add-RoadmapTask
+        - [ ] **1.1.3.1.2.3.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.3.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.3.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.3.2** Implémenter l'ajout de la tâche
+          - [ ] **1.1.3.1.2.3.2.1** Gérer le cas du parent null
+          - [ ] **1.1.3.1.2.3.2.2** Établir les relations parent-enfant
+          - [ ] **1.1.3.1.2.3.2.3** Mettre à jour les collections
+          - [ ] **1.1.3.1.2.3.2.4** Calculer le niveau de la tâche
+        - [ ] **1.1.3.1.2.3.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.3.3.1** Tester l'ajout à la racine
+          - [ ] **1.1.3.1.2.3.3.2** Tester l'ajout à un parent spécifique
+      - [ ] **1.1.3.1.2.4** Définir la fonction Remove-RoadmapTask
+        - [ ] **1.1.3.1.2.4.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.4.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.4.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.4.2** Implémenter la suppression de la tâche
+          - [ ] **1.1.3.1.2.4.2.1** Supprimer les relations parent-enfant
+          - [ ] **1.1.3.1.2.4.2.2** Mettre à jour les collections
+          - [ ] **1.1.3.1.2.4.2.3** Gérer les dépendances
+          - [ ] **1.1.3.1.2.4.2.4** Supprimer récursivement les enfants
+        - [ ] **1.1.3.1.2.4.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.4.3.1** Tester la suppression d'une feuille
+          - [ ] **1.1.3.1.2.4.3.2** Tester la suppression d'un nœud avec enfants
+      - [ ] **1.1.3.1.2.5** Définir la fonction Get-RoadmapTask
+        - [ ] **1.1.3.1.2.5.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.5.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.5.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.5.2** Implémenter la récupération de la tâche
+          - [ ] **1.1.3.1.2.5.2.1** Rechercher par ID
+          - [ ] **1.1.3.1.2.5.2.2** Gérer les cas d'erreur
+        - [ ] **1.1.3.1.2.5.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.5.3.1** Tester la récupération d'une tâche existante
+          - [ ] **1.1.3.1.2.5.3.2** Tester la récupération d'une tâche inexistante
+      - [ ] **1.1.3.1.2.6** Définir la fonction Set-RoadmapTaskStatus
+        - [ ] **1.1.3.1.2.6.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.6.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.6.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.6.2** Implémenter la modification du statut
+          - [ ] **1.1.3.1.2.6.2.1** Valider le nouveau statut
+          - [ ] **1.1.3.1.2.6.2.2** Mettre à jour le statut
+        - [ ] **1.1.3.1.2.6.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.6.3.1** Tester le changement de statut
+          - [ ] **1.1.3.1.2.6.3.2** Tester avec différents statuts
+      - [ ] **1.1.3.1.2.7** Définir la fonction Add-RoadmapTaskDependency
+        - [ ] **1.1.3.1.2.7.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.7.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.7.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.7.2** Implémenter l'ajout de dépendance
+          - [ ] **1.1.3.1.2.7.2.1** Établir la relation bidirectionnelle
+          - [ ] **1.1.3.1.2.7.2.2** Vérifier les cycles de dépendance
+        - [ ] **1.1.3.1.2.7.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.7.3.1** Tester l'ajout d'une dépendance simple
+          - [ ] **1.1.3.1.2.7.3.2** Tester la détection de cycles
+      - [ ] **1.1.3.1.2.8** Définir la fonction Remove-RoadmapTaskDependency
+        - [ ] **1.1.3.1.2.8.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.8.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.8.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.8.2** Implémenter la suppression de dépendance
+          - [ ] **1.1.3.1.2.8.2.1** Supprimer la relation bidirectionnelle
+          - [ ] **1.1.3.1.2.8.2.2** Gérer les cas d'erreur
+        - [ ] **1.1.3.1.2.8.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.8.3.1** Tester la suppression d'une dépendance existante
+          - [ ] **1.1.3.1.2.8.3.2** Tester la suppression d'une dépendance inexistante
+      - [ ] **1.1.3.1.2.9** Définir la fonction Get-RoadmapTaskDependencies
+        - [ ] **1.1.3.1.2.9.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.9.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.9.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.9.2** Implémenter la récupération des dépendances
+          - [ ] **1.1.3.1.2.9.2.1** Accéder à la collection de dépendances
+          - [ ] **1.1.3.1.2.9.2.2** Formater le résultat
+        - [ ] **1.1.3.1.2.9.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.9.3.1** Tester avec des dépendances
+          - [ ] **1.1.3.1.2.9.3.2** Tester sans dépendance
+      - [ ] **1.1.3.1.2.10** Définir la fonction Get-RoadmapTaskDependents
+        - [ ] **1.1.3.1.2.10.1** Définir la signature de la fonction
+          - [ ] **1.1.3.1.2.10.1.1** Définir les paramètres d'entrée
+          - [ ] **1.1.3.1.2.10.1.2** Définir le type de retour
+        - [ ] **1.1.3.1.2.10.2** Implémenter la récupération des dépendants
+          - [ ] **1.1.3.1.2.10.2.1** Accéder à la collection de dépendants
+          - [ ] **1.1.3.1.2.10.2.2** Formater le résultat
+        - [ ] **1.1.3.1.2.10.3** Implémenter les tests unitaires
+          - [ ] **1.1.3.1.2.10.3.1** Tester avec des dépendants
+          - [ ] **1.1.3.1.2.10.3.2** Tester sans dépendant
+    - [ ] **1.1.3.1.3** Concevoir les fonctions d'export et de génération
+      - [ ] **1.1.3.1.3.1** Définir la fonction Export-RoadmapTreeToJson
+      - [ ] **1.1.3.1.3.2** Définir la fonction Export-RoadmapTreeToMarkdown
+      - [ ] **1.1.3.1.3.3** Définir la fonction ConvertTo-MarkdownTask
+      - [ ] **1.1.3.1.3.4** Définir la fonction ConvertTo-JsonTask
+      - [ ] **1.1.3.1.3.5** Définir la fonction Import-RoadmapTreeFromJson
+      - [ ] **1.1.3.1.3.6** Définir la fonction Generate-RoadmapReport
+      - [ ] **1.1.3.1.3.7** Définir la fonction Generate-RoadmapStatistics
+      - [ ] **1.1.3.1.3.8** Définir la fonction Generate-RoadmapVisualization
+    - [ ] **1.1.3.1.4** Planifier les fonctions utilitaires et helpers
+      - [ ] **1.1.3.1.4.1** Définir la fonction Test-RoadmapTreeValidity
+      - [ ] **1.1.3.1.4.2** Définir la fonction Test-RoadmapTaskValidity
+      - [ ] **1.1.3.1.4.3** Définir la fonction Find-RoadmapTaskCycles
+      - [ ] **1.1.3.1.4.4** Définir la fonction Get-RoadmapTaskPath
+      - [ ] **1.1.3.1.4.5** Définir la fonction Get-RoadmapTaskLevel
+      - [ ] **1.1.3.1.4.6** Définir la fonction Get-RoadmapTaskChildren
+      - [ ] **1.1.3.1.4.7** Définir la fonction Get-RoadmapTaskParents
+      - [ ] **1.1.3.1.4.8** Définir la fonction Get-RoadmapTasksByStatus
+      - [ ] **1.1.3.1.4.9** Définir la fonction Get-RoadmapTasksByFilter
+      - [ ] **1.1.3.1.4.10** Définir la fonction Get-RoadmapTasksBySearch
   - **1.1.3.2** Déterminer les paramètres et les types de retour
-    - **1.1.3.2.1** Définir les paramètres obligatoires et optionnels
-    - **1.1.3.2.2** Concevoir les types de retour pour chaque fonction
-    - **1.1.3.2.3** Implémenter les validations de paramètres
-    - **1.1.3.2.4** Définir les valeurs par défaut appropriées
+    - [ ] **1.1.3.2.1** Définir les paramètres obligatoires et optionnels
+      - [ ] **1.1.3.2.1.1** Définir les paramètres pour les fonctions de parsing
+      - [ ] **1.1.3.2.1.2** Définir les paramètres pour les fonctions de manipulation
+      - [ ] **1.1.3.2.1.3** Définir les paramètres pour les fonctions d'export
+      - [ ] **1.1.3.2.1.4** Définir les paramètres pour les fonctions utilitaires
+    - [ ] **1.1.3.2.2** Concevoir les types de retour pour chaque fonction
+      - [ ] **1.1.3.2.2.1** Définir les types de retour pour les fonctions de parsing
+      - [ ] **1.1.3.2.2.2** Définir les types de retour pour les fonctions de manipulation
+      - [ ] **1.1.3.2.2.3** Définir les types de retour pour les fonctions d'export
+      - [ ] **1.1.3.2.2.4** Définir les types de retour pour les fonctions utilitaires
+    - [ ] **1.1.3.2.3** Implémenter les validations de paramètres
+      - [ ] **1.1.3.2.3.1** Définir les validations pour les fonctions de parsing
+      - [ ] **1.1.3.2.3.2** Définir les validations pour les fonctions de manipulation
+      - [ ] **1.1.3.2.3.3** Définir les validations pour les fonctions d'export
+      - [ ] **1.1.3.2.3.4** Définir les validations pour les fonctions utilitaires
+    - [ ] **1.1.3.2.4** Définir les valeurs par défaut appropriées
+      - [ ] **1.1.3.2.4.1** Définir les valeurs par défaut pour les fonctions de parsing
+      - [ ] **1.1.3.2.4.2** Définir les valeurs par défaut pour les fonctions de manipulation
+      - [ ] **1.1.3.2.4.3** Définir les valeurs par défaut pour les fonctions d'export
+      - [ ] **1.1.3.2.4.4** Définir les valeurs par défaut pour les fonctions utilitaires
   - **1.1.3.3** Planifier la gestion des erreurs et exceptions
-    - **1.1.3.3.1** Identifier les scénarios d'erreur potentiels
-    - **1.1.3.3.2** Concevoir la hiérarchie des exceptions personnalisées
-    - **1.1.3.3.3** Définir les stratégies de récupération
-    - **1.1.3.3.4** Implémenter les mécanismes de journalisation des erreurs
+    - [ ] **1.1.3.3.1** Identifier les scénarios d'erreur potentiels
+      - [ ] **1.1.3.3.1.1** Identifier les erreurs pour les fonctions de parsing
+      - [ ] **1.1.3.3.1.2** Identifier les erreurs pour les fonctions de manipulation
+      - [ ] **1.1.3.3.1.3** Identifier les erreurs pour les fonctions d'export
+      - [ ] **1.1.3.3.1.4** Identifier les erreurs pour les fonctions utilitaires
+    - [ ] **1.1.3.3.2** Concevoir la hiérarchie des exceptions personnalisées
+      - [ ] **1.1.3.3.2.1** Définir la classe de base RoadmapException
+      - [ ] **1.1.3.3.2.2** Définir les exceptions de validation de paramètres
+      - [ ] **1.1.3.3.2.3** Définir les exceptions d'accès aux fichiers
+      - [ ] **1.1.3.3.2.4** Définir les exceptions de logique métier
+      - [ ] **1.1.3.3.2.5** Définir les exceptions spécifiques
+    - [ ] **1.1.3.3.3** Définir les stratégies de récupération
+      - [ ] **1.1.3.3.3.1** Définir les stratégies pour les erreurs de validation
+      - [ ] **1.1.3.3.3.2** Définir les stratégies pour les erreurs de fichier
+      - [ ] **1.1.3.3.3.3** Définir les stratégies pour les erreurs de parsing
+      - [ ] **1.1.3.3.3.4** Définir les stratégies pour les erreurs de logique métier
+    - [ ] **1.1.3.3.4** Implémenter les mécanismes de journalisation des erreurs
+      - [ ] **1.1.3.3.4.1** Définir les variables de préférence pour la journalisation
+      - [ ] **1.1.3.3.4.2** Définir les fonctions de journalisation principales
+      - [ ] **1.1.3.3.4.3** Définir les fonctions de configuration de la journalisation
+      - [ ] **1.1.3.3.4.4** Définir l'utilisation de la journalisation dans les fonctions
 
 #### 1.2 Implémentation du Parser (1.5 jour)
 - **1.2.1** Création du module PowerShell de base

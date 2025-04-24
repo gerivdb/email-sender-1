@@ -1,4 +1,4 @@
-﻿# Plan Légendaire d'Amélioration du Workflow de Roadmap
+# Plan Légendaire d'Amélioration du Workflow de Roadmap
 
 ## 🔍 Analyse de la Situation Actuelle
 
