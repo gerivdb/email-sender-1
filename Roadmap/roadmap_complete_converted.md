@@ -195,12 +195,12 @@
         - [x] **1.2.1.3.2.1.3** Implémenter la fonction de trace d'étape intermédiaire
         - [x] **1.2.1.3.2.1.4** Créer le mécanisme de gestion de la profondeur d'appel
         - [x] **1.2.1.3.2.1.5** Développer les options de formatage des traces
-      - [ ] **1.2.1.3.2.2** Développer les fonctions de mesure de performance
-        - [ ] **1.2.1.3.2.2.1** Créer la fonction de mesure de temps d'exécution
-        - [ ] **1.2.1.3.2.2.2** Implémenter la fonction de mesure d'utilisation mémoire
-        - [ ] **1.2.1.3.2.2.3** Développer la fonction de comptage d'opérations
-        - [ ] **1.2.1.3.2.2.4** Créer le mécanisme de génération de rapports de performance
-        - [ ] **1.2.1.3.2.2.5** Implémenter les seuils d'alerte de performance
+      - [x] **1.2.1.3.2.2** Développer les fonctions de mesure de performance
+        - [x] **1.2.1.3.2.2.1** Créer la fonction de mesure de temps d'exécution
+        - [x] **1.2.1.3.2.2.2** Implémenter la fonction de mesure d'utilisation mémoire
+        - [x] **1.2.1.3.2.2.3** Développer la fonction de comptage d'opérations
+        - [x] **1.2.1.3.2.2.4** Créer le mécanisme de génération de rapports de performance
+        - [x] **1.2.1.3.2.2.5** Implémenter les seuils d'alerte de performance
       - [ ] **1.2.1.3.2.3** Créer les fonctions d'inspection de variables
         - [ ] **1.2.1.3.2.3.1** Développer la fonction d'affichage formaté des variables
         - [ ] **1.2.1.3.2.3.2** Implémenter la fonction d'inspection d'objets complexes
