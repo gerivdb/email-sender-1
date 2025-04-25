@@ -1,0 +1,24 @@
+﻿{
+    "id":  "4ddf3399-c0fa-43c3-9799-9d65f2df820b",
+    "name":  null,
+    "nodes":  null,
+    "connections":  null,
+    "active":  false,
+    "settings":  {
+                     "saveManualExecutions":  true,
+                     "executionOrder":  "v1",
+                     "callerPolicy":  "workflowsFromSameOwner",
+                     "errorWorkflow":  ""
+                 },
+    "staticData":  null,
+    "versionId":  "b364699a-6657-4a1f-9b2e-215c7693c066",
+    "createdAt":  "2025-04-21T03:13:32.809Z",
+    "updatedAt":  "2025-04-21T03:13:32.820Z",
+    "pinData":  {
+
+                },
+    "triggerCount":  0,
+    "tags":  [
+
+             ]
+}

@@ -1,0 +1,52 @@
+{
+  "executions": {
+    "process": "main",
+    "mode": "regular",
+    "timeout": 3600,
+    "saveDataOnError": true,
+    "saveDataOnSuccess": true,
+    "saveExecutionProgress": true
+  },
+  "security": {
+    "basicAuth": {
+      "active": false
+    },
+    "userManagement": {
+      "disabled": true
+    }
+  },
+  "endpoints": {
+    "rest": "/",
+    "webhook": "/webhook/",
+    "webhookTest": "/webhook-test/"
+  },
+  "nodes": {
+    "communityPackages": {
+      "enabled": true
+    }
+  },
+  "logs": {
+    "level": "info"
+  },
+  "diagnostics": {
+    "enabled": false
+  },
+  "deployment": {
+    "type": "default"
+  },
+  "database": {
+    "type": "sqlite",
+    "sqlite": {
+      "path": "./database.sqlite"
+    }
+  },
+  "credentials": {
+    "overwrite": {
+    }
+  },
+  "path": "./",
+  "host": "localhost",
+  "port": 5678,
+  "protocol": "http",
+  "listen_address": "0.0.0.0"
+}

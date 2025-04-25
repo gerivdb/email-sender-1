@@ -1,0 +1,280 @@
+﻿{
+    "id":  "1f994c63-eefb-489e-bbf9-4b7bf2bad022",
+    "name":  "Email Sender - Phase 1 (Gestion des Disponibilités)",
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "rule":  {
+                                                      "interval":  [
+                                                                       {
+                                                                           "field":  "days",
+                                                                           "daysInterval":  7
+                                                                       }
+                                                                   ]
+                                                  }
+                                     },
+                      "id":  "a0143ff5-d39f-446c-b1f9-dd148ae80ce1",
+                      "name":  "Start Phase 1",
+                      "type":  "n8n-nodes-base.cron",
+                      "typeVersion":  1,
+                      "position":  [
+                                       580,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "8a8459bc-d38a-43ef-92b3-5517ba97a1a1",
+                      "name":  "Set Intention Message",
+                      "type":  "n8n-nodes-base.set",
+                      "typeVersion":  1,
+                      "position":  [
+                                       800,
+                                       200
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "resource":  "event",
+                                         "operation":  "getAll",
+                                         "calendar":  {
+                                                          "__rl":  true,
+                                                          "value":  "f4641f7364224dbdba9151649dca276cce21ac806f327b8c9056b35ba41be559@group.calendar.google.com",
+                                                          "mode":  "list",
+                                                          "cachedResultName":  "BOOKING1"
+                                                      },
+                                         "options":  {
+                                                         "maxResults":  100,
+                                                         "timeMin":  "={{ $now.minus({ days: 1 }).format() }}",
+                                                         "timeMax":  "={{ $now.plus({ months: 3 }).format() }}"
+                                                     }
+                                     },
+                      "id":  "2aef6729-c046-417c-9dfc-8b475b9a1313",
+                      "name":  "Google Calendar",
+                      "type":  "n8n-nodes-base.googleCalendar",
+                      "typeVersion":  1,
+                      "position":  [
+                                       800,
+                                       400
+                                   ],
+                      "credentials":  {
+                                          "googleCalendarOAuth2Api":  {
+                                                                          "id":  "oO79tp1wawPKDEpg",
+                                                                          "name":  "Google Calendar account"
+                                                                      }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "resource":  "databasePage",
+                                         "operation":  "getAll",
+                                         "databaseId":  {
+                                                            "__rl":  true,
+                                                            "value":  "1c581449-f795-8088-b362-d4399dc7d9f3",
+                                                            "mode":  "list",
+                                                            "cachedResultName":  "Disponibilités Membres",
+                                                            "cachedResultUrl":  "https://www.notion.so/1c581449f7958088b362d4399dc7d9f3"
+                                                        },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "fca56be8-017d-4f64-a02a-2db95909701b",
+                      "name":  "Lecture Dispo des Groupes sur Notion",
+                      "type":  "n8n-nodes-base.notion",
+                      "typeVersion":  1,
+                      "position":  [
+                                       800,
+                                       600
+                                   ],
+                      "credentials":  {
+                                          "notionApi":  {
+                                                            "id":  "gFvw0ObPabSVTQIp",
+                                                            "name":  "Notion account"
+                                                        }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Consolider les indisponibilités de Google Calendar et Notion\n\n// Récupération des événements Google Calendar\nconst gcalEvents = $input.item(0).json.items || [];\n\n// Récupération des indisponibilités Notion\nconst notionDispo = $input.item(1).json.results || [];\n\n// Conversion des événements Google Calendar en format standard\nconst gcalIndisponibilites = gcalEvents.map(event =\u003e {\n  // Déterminer la date (pour les événements sur une journée entière)\n  let date = null;\n  if (event.start.date) {\n    date = event.start.date;\n  } else if (event.start.dateTime) {\n    // Pour les événements avec heure, prendre juste la date\n    date = event.start.dateTime.split(\u0027T\u0027)[0];\n  }\n  \n  return {\n    date,\n    source: \u0027gcal\u0027,\n    title: event.summary || \u0027Événement sans titre\u0027,\n    id: event.id\n  };\n}).filter(item =\u003e item.date !== null);\n\n// Conversion des indisponibilités Notion en format standard\nconst notionIndisponibilites = notionDispo.map(page =\u003e {\n  // Extraire les propriétés pertinentes\n  const properties = page.properties;\n  \n  // Récupérer la date\n  let date = null;\n  if (properties.Date \u0026\u0026 properties.Date.date \u0026\u0026 properties.Date.date.start) {\n    date = properties.Date.date.start;\n  }\n  \n  // Récupérer le statut (disponible ou non)\n  let status = \u0027unknown\u0027;\n  if (properties.Dispo \u0026\u0026 properties.Dispo.status \u0026\u0026 properties.Dispo.status.name) {\n    status = properties.Dispo.status.name === \u0027Pas dispo\u0027 ? \u0027unavailable\u0027 : \u0027available\u0027;\n  }\n  \n  // Récupérer le membre concerné\n  let member = \u0027Inconnu\u0027;\n  if (properties.Name \u0026\u0026 properties.Name.title \u0026\u0026 properties.Name.title.length \u003e 0) {\n    const titleText = properties.Name.title[0].text.content;\n    // Extraire le nom du membre (supposant un format comme \"John indisponible\")\n    member = titleText.replace(\u0027 indisponible\u0027, \u0027\u0027).trim();\n  }\n  \n  return {\n    date,\n    source: \u0027notion\u0027,\n    status,\n    member,\n    id: page.id\n  };\n}).filter(item =\u003e item.date !== null \u0026\u0026 item.status === \u0027unavailable\u0027);\n\n// Consolider toutes les indisponibilités\nconst toutesIndisponibilites = [\n  ...gcalIndisponibilites,\n  ...notionIndisponibilites\n];\n\n// Regrouper par date pour faciliter l\u0027utilisation ultérieure\nconst indisponibilitesParDate = {};\n\ntoutesIndisponibilites.forEach(item =\u003e {\n  if (!indisponibilitesParDate[item.date]) {\n    indisponibilitesParDate[item.date] = [];\n  }\n  indisponibilitesParDate[item.date].push(item);\n});\n\n// Retourner les données consolidées\nreturn {\n  json: {\n    data: toutesIndisponibilites,\n    byDate: indisponibilitesParDate\n  }\n};"
+                                     },
+                      "id":  "7369eac8-c3e9-4d33-999e-837400f50cf3",
+                      "name":  "Consolider Indisponibilités",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       1020,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Calculer les plages libres pour les vendredis et samedis\n\n// Récupérer les indisponibilités consolidées\nconst indisponibilites = $json.data || [];\nconst indisponibilitesParDate = $json.byDate || {};\n\n// Définir la période à analyser (3 mois à partir d\u0027aujourd\u0027hui)\nconst dateDebut = new Date();\nconst dateFin = new Date();\ndateFin.setMonth(dateFin.getMonth() + 3);\n\n// Fonction pour formater une date en YYYY-MM-DD\nfunction formatDate(date) {\n  const year = date.getFullYear();\n  const month = String(date.getMonth() + 1).padStart(2, \u00270\u0027);\n  const day = String(date.getDate()).padStart(2, \u00270\u0027);\n  return `${year}-${month}-${day}`;\n}\n\n// Fonction pour vérifier si une date est un vendredi ou un samedi\nfunction estVendrediOuSamedi(date) {\n  const jour = date.getDay();\n  return jour === 5 || jour === 6; // 5 = vendredi, 6 = samedi\n}\n\n// Générer toutes les dates de la période\nconst toutesLesDates = [];\nconst currentDate = new Date(dateDebut);\n\nwhile (currentDate \u003c= dateFin) {\n  if (estVendrediOuSamedi(currentDate)) {\n    toutesLesDates.push(formatDate(currentDate));\n  }\n  currentDate.setDate(currentDate.getDate() + 1);\n}\n\n// Filtrer les dates disponibles (celles qui ne sont pas dans les indisponibilités)\nconst datesDisponibles = toutesLesDates.filter(date =\u003e {\n  // Si la date n\u0027est pas dans les indisponibilités, elle est disponible\n  return !indisponibilitesParDate[date] || indisponibilitesParDate[date].length === 0;\n});\n\n// Formater les résultats\nconst plagesLibres = datesDisponibles.map(date =\u003e {\n  // Convertir la date en objet Date pour extraire le jour de la semaine\n  const dateObj = new Date(date);\n  const jourSemaine = [\u0027Dimanche\u0027, \u0027Lundi\u0027, \u0027Mardi\u0027, \u0027Mercredi\u0027, \u0027Jeudi\u0027, \u0027Vendredi\u0027, \u0027Samedi\u0027][dateObj.getDay()];\n  \n  return {\n    date,\n    jourSemaine,\n    disponible: true\n  };\n});\n\n// Retourner les plages libres\nreturn {\n  json: {\n    data: plagesLibres,\n    count: plagesLibres.length,\n    period: {\n      start: formatDate(dateDebut),\n      end: formatDate(dateFin)\n    }\n  }\n};"
+                                     },
+                      "id":  "520ec725-b015-4e5b-a721-25808d38833d",
+                      "name":  "Calculer Plages Libres",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       1240,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "resource":  "databasePage",
+                                         "operation":  "getAll",
+                                         "databaseId":  {
+                                                            "__rl":  true,
+                                                            "value":  "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+                                                            "mode":  "list",
+                                                            "cachedResultName":  "LOT1",
+                                                            "cachedResultUrl":  "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+                                                        },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "894f9cd2-f4f7-4ecd-a5b1-7fe91fb87260",
+                      "name":  "Get Notion Contacts LOT1",
+                      "type":  "n8n-nodes-base.notion",
+                      "typeVersion":  1,
+                      "position":  [
+                                       800,
+                                       800
+                                   ],
+                      "credentials":  {
+                                          "notionApi":  {
+                                                            "id":  "gFvw0ObPabSVTQIp",
+                                                            "name":  "Notion account"
+                                                        }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "content":  "## ✅ Phase 1: Gestion des Disponibilités\n\nDéclencheur: Start Phase 1 (Cron hebdomadaire)\nObjectif: Consolider les indisponibilités Notion \u0026 Google Calendar",
+                                         "height":  800,
+                                         "width":  1220,
+                                         "color":  3
+                                     },
+                      "type":  "n8n-nodes-base.stickyNote",
+                      "typeVersion":  1,
+                      "position":  [
+                                       560,
+                                       180
+                                   ],
+                      "id":  "3dd5fa33-8615-4f0d-a535-858a1b0b88ca",
+                      "name":  "Sticky Note Phase 1"
+                  },
+                  {
+                      "parameters":  {
+                                         "dataPropertyName":  "phase1_output",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "984d2948-c77e-4500-a49b-3e3cb2ead277",
+                      "name":  "Fin Phase 1",
+                      "type":  "n8n-nodes-base.set",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1460,
+                                       400
+                                   ]
+                  }
+              ],
+    "connections":  {
+                        "a0143ff5-d39f-446c-b1f9-dd148ae80ce1":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "8a8459bc-d38a-43ef-92b3-5517ba97a1a1",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      },
+                                                                                      {
+                                                                                          "node":  "2aef6729-c046-417c-9dfc-8b475b9a1313",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      },
+                                                                                      {
+                                                                                          "node":  "fca56be8-017d-4f64-a02a-2db95909701b",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      },
+                                                                                      {
+                                                                                          "node":  "894f9cd2-f4f7-4ecd-a5b1-7fe91fb87260",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 },
+                        "2aef6729-c046-417c-9dfc-8b475b9a1313":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "7369eac8-c3e9-4d33-999e-837400f50cf3",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 },
+                        "fca56be8-017d-4f64-a02a-2db95909701b":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "7369eac8-c3e9-4d33-999e-837400f50cf3",
+                                                                                          "type":  "main",
+                                                                                          "index":  1
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 },
+                        "7369eac8-c3e9-4d33-999e-837400f50cf3":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "520ec725-b015-4e5b-a721-25808d38833d",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 },
+                        "520ec725-b015-4e5b-a721-25808d38833d":  {
+                                                                     "main":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "984d2948-c77e-4500-a49b-3e3cb2ead277",
+                                                                                          "type":  "main",
+                                                                                          "index":  0
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                                 }
+                    },
+    "active":  false,
+    "settings":  {
+                     "saveManualExecutions":  true,
+                     "executionOrder":  "v1",
+                     "callerPolicy":  "workflowsFromSameOwner",
+                     "errorWorkflow":  ""
+                 },
+    "versionId":  "a9d70f35-534a-4441-b29d-e4efc2c6d762",
+    "createdAt":  "2025-04-21T05:56:18.577Z",
+    "updatedAt":  "2025-04-21T05:56:18.577Z",
+    "pinData":  {
+
+                },
+    "triggerCount":  0,
+    "tags":  [
+
+             ],
+    "staticData":  null
+}

@@ -1,0 +1,22 @@
+{
+  "Email": {
+    "Enabled": false,
+    "SmtpServer": "smtp.example.com",
+    "SmtpPort": 587,
+    "UseSsl": true,
+    "Sender": "n8n@example.com",
+    "Recipients": [
+      "admin@example.com"
+    ],
+    "Username": "",
+    "Password": ""
+  },
+  "Teams": {
+    "Enabled": false,
+    "WebhookUrl": "https://outlook.office.com/webhook/..."
+  },
+  "Slack": {
+    "Enabled": false,
+    "WebhookUrl": "https://hooks.slack.com/services/..."
+  }
+}

@@ -1,0 +1,9 @@
+Implémenter la détection et le traitement des tableaux
+Implémenter la détection et le traitement des hashtables
+Implémenter la détection et le traitement des PSCustomObject
+Gérer les objets .NET standards
+Implémenter l'énumération des propriétés d'un objet
+Implémenter la récupération des valeurs de propriétés
+Gérer les propriétés calculées
+Différencier le traitement des méthodes vs propriétés
+Construire une vue arborescente des objets complexes

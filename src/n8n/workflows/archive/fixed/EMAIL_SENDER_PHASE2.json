@@ -1,0 +1,508 @@
+﻿{
+  "name": "Email Sender - Phase 2 (Génération & Envoi des Emails)",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowId": "1"
+      },
+      "id": "a0143ff5-d39f-446c-b1f9-dd148ae80ce1",
+      "name": "Trigger Phase 2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        580,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Préparation du prompt pour DeepSeek\n\n// Récupérer les dates disponibles de la Phase 1\nconst plagesLibres = $json.data || [];\n\n// Formater les dates pour le prompt\nconst datesFormatees = plagesLibres.map(obj => `- ${obj.date} (${obj.jourSemaine})`).join('\\n');\n\n// Construire le prompt pour l'IA\nconst prompt = `Tu es un assistant spécialisé dans la rédaction d'emails professionnels pour un groupe de musique en tournée. \n\nTu dois rédiger un email pour proposer des dates de concert à des salles et organisateurs. \n\nVoici les dates disponibles pour le groupe :\n${datesFormatees}\n\nRédige un email professionnel, chaleureux mais concis qui :\n1. Présente brièvement le groupe Gribitch (musique électro-acoustique, influences trip-hop et jazz)\n2. Propose les dates ci-dessus pour une potentielle représentation\n3. Mentionne que le groupe peut s'adapter aux contraintes techniques\n4. Demande poliment une réponse, même en cas de refus\n\nL'email doit faire environ 10-15 lignes maximum. N'inclus pas d'objet ni de signature.`;\n\n// Préparer la requête pour OpenRouter (DeepSeek)\nreturn {\n  json: {\n    prompt,\n    model: \"deepseek-ai/deepseek-v3\",\n    messages: [\n      {\n        role: \"system\",\n        content: \"Tu es un assistant spécialisé dans la rédaction d'emails professionnels pour un groupe de musique en tournée.\"\n      },\n      {\n        role: \"user\",\n        content: prompt\n      }\n    ]\n  }\n};"
+      },
+      "id": "b0143ff5-d39f-446c-b1f9-dd148ae80ce2",
+      "name": "Superviseur IA (DeepSeek v3)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Préparation de la requête pour DeepSeek via OpenRouter\n\n// Récupérer le prompt préparé\nconst prompt = $json.prompt;\nconst model = $json.model || \"deepseek-ai/deepseek-v3\";\nconst messages = $json.messages || [];\n\n// Construire la requête pour l'API OpenRouter\nreturn {\n  json: {\n    requestData: {\n      url: \"https://openrouter.ai/api/v1/chat/completions\",\n      method: \"POST\",\n      headers: {\n        \"Content-Type\": \"application/json\",\n        \"Authorization\": \"Bearer \",\n        \"HTTP-Referer\": \"https://n8n.io\",\n        \"X-Title\": \"Email Sender Workflow\"\n      },\n      body: {\n        model: model,\n        messages: messages,\n        temperature: 0.7,\n        max_tokens: 1000\n      }\n    }\n  }\n};"
+      },
+      "id": "c0143ff5-d39f-446c-b1f9-dd148ae80ce3",
+      "name": "Prep DeepSeek Cal",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.requestData.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "method": "POST",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "={{ $json.requestData.headers['Content-Type'] }}"
+            },
+            {
+              "name": "HTTP-Referer",
+              "value": "={{ $json.requestData.headers['HTTP-Referer'] }}"
+            },
+            {
+              "name": "X-Title",
+              "value": "={{ $json.requestData.headers['X-Title'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "={{ $json.requestData.body.model }}"
+            },
+            {
+              "name": "messages",
+              "value": "={{ $json.requestData.body.messages }}"
+            },
+            {
+              "name": "temperature",
+              "value": "={{ $json.requestData.body.temperature }}"
+            },
+            {
+              "name": "max_tokens",
+              "value": "={{ $json.requestData.body.max_tokens }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3faccf85-c7bd-4d20-8ce0-abf8ebedb14c",
+      "name": "Appel API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1240,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GWgrj7r9bN07NdOc",
+          "name": "OpenRouter account gerivonderbitsh@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "={{ $json.choices[0].message.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8c5bdd98-92f0-4b2c-9d8c-d9b9dc76752b",
+      "name": "Set Message Généré IA",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fusion des contacts LOT1 avec les lieux\n\n// Récupérer les contacts de la Phase 1\nconst contacts = $input.item(1).json.results || [];\n\n// Formater les contacts avec les informations nécessaires\nconst contactsFormated = contacts.map(contact => {\n  const properties = contact.properties;\n  \n  // Extraire les informations pertinentes\n  const name = properties.Name?.title[0]?.text?.content || 'Contact sans nom';\n  const email = properties.Email?.email || '';\n  const venue = properties.Venue?.rich_text[0]?.text?.content || 'Salle non spécifiée';\n  const region = properties.Region?.select?.name || 'Région non spécifiée';\n  const status = properties.Status?.status?.name || 'Nouveau';\n  \n  // Ne garder que les contacts avec email et qui n'ont pas déjà été contactés\n  if (!email || status !== 'Nouveau') {\n    return null;\n  }\n  \n  return {\n    id: contact.id,\n    name,\n    email,\n    venue,\n    region,\n    status\n  };\n}).filter(contact => contact !== null);\n\n// Retourner les contacts formatés\nreturn {\n  json: {\n    contacts: contactsFormated,\n    count: contactsFormated.length\n  }\n};"
+      },
+      "id": "84ff84d6-4b23-4169-aae4-2dfd77d22cc8",
+      "name": "Fusion LOT1 + Lieux",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fusion du message IA avec les contacts\n\n// Récupérer le message généré par l'IA\nconst messageIA = $input.item(0).json.message || '';\n\n// Récupérer les contacts formatés\nconst contacts = $input.item(1).json.contacts || [];\n\n// Créer un item pour chaque contact avec le message IA\nreturn contacts.map(contact => ({\n  json: {\n    ...contact,\n    messageIA\n  }\n}));"
+      },
+      "id": "94ff84d6-4b23-4169-aae4-2dfd77d22cc9",
+      "name": "Fusion IA + Contacts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Personnalisation du message pour chaque contact\n\n// Récupérer les données du contact et le message IA\nconst contact = $json;\nconst messageIA = $json.messageIA || '';\nconst name = $json.name || 'Responsable';\nconst venue = $json.venue || 'votre salle';\n\n// Personnaliser le message\nconst messagePersonnalise = `Bonjour ${name},\n\n${messageIA}\n\nAu plaisir d'échanger avec vous,\nL'équipe Gribitch\n`;\n\n// Retourner le message personnalisé avec les informations du contact\nreturn {\n  json: {\n    ...contact,\n    message: messagePersonnalise,\n    to: $json.email,\n    subject: `Proposition – Groupe en tournée (automatisé)`\n  }\n};"
+      },
+      "id": "f8aa20be-3218-4144-9b82-23592378def7",
+      "name": "Personnalisation Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "operation": "get",
+        "messageId": "18c4e4d9c8c9c8c9",
+        "options": {}
+      },
+      "id": "fb17c164-0d0a-42a6-8373-f2402238ae6f",
+      "name": "Get Gmail Template",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2120,
+        400
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xKa629oVYYGTlvnn",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Injection du message dans le template HTML\n\n// Récupérer le template HTML\nconst htmlTemplate = $input.item(0).json.body || '';\n\n// Récupérer le message personnalisé\nconst message = $input.item(1).json.message || '';\n\n// Convertir le message texte en HTML (remplacer les sauts de ligne par des <br>)\nconst messageHtml = message.replace(/\\n/g, '<br>');\n\n// Injecter le message dans le template (remplacer un placeholder)\nconst htmlFinal = htmlTemplate.replace('{{MESSAGE_CONTENT}}', messageHtml);\n\n// Retourner le HTML final avec les autres informations nécessaires\nreturn {\n  json: {\n    ...$input.item(1).json,\n    html: htmlFinal\n  }\n};"
+      },
+      "id": "3f5b2bd1-4485-4c55-8e51-339033be453b",
+      "name": "Inject Message into HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2340,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "operation": "create",
+        "subject": "={{ 'Proposition – Groupe en tournée (automatisé)' }}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "sendTo": "={{ $json.to }}"
+        }
+      },
+      "id": "f0ef9b9c-0eba-4238-b366-3d28a84429d0",
+      "name": "Create Final Gmail Draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2560,
+        400
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xKa629oVYYGTlvnn",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "number": [
+            {
+              "name": "delayMinutes",
+              "value": 5
+            },
+            {
+              "name": "maxDelayMinutes",
+              "value": 15
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2649c986-4f25-4ae5-baef-dbed32b8cc7e",
+      "name": "Set Delay Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        2780,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcul d'un délai aléatoire pour éviter le spam\n\n// Récupérer les paramètres de délai\nconst minDelay = $json.delayMinutes || 5;\nconst maxDelay = $json.maxDelayMinutes || 15;\n\n// Calculer un délai aléatoire entre min et max\nconst randomDelay = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;\n\n// Retourner le délai calculé\nreturn {\n  json: {\n    ...$json,\n    calculatedDelay: randomDelay\n  }\n};"
+      },
+      "id": "df75c3b2-ad3a-477e-9480-c253ec4a0858",
+      "name": "Calc Random Delay",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3000,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "unit": "minutes",
+        "amount": "={{ $json.calculatedDelay }}"
+      },
+      "id": "80570037-507c-4767-a947-c009e69a5e8b",
+      "name": "Wait Anti-Spam",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        3220,
+        400
+      ],
+      "webhookId": "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": "={{ $json.id }}",
+        "properties": {
+          "Status": {
+            "status": {
+              "name": "Email Envoyé"
+            }
+          },
+          "Date Envoi": {
+            "date": {
+              "start": "={{ $now.format('YYYY-MM-DD') }}"
+            }
+          }
+        }
+      },
+      "id": "671105b1-2405-4f83-8f16-3c4ad34a22a6",
+      "name": "Update Notion Status",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        3440,
+        400
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 2: Génération & Envoi des Emails\n\nDéclencheur: Trigger Phase 2 (Exécution de la Phase 1)\nObjectif: Générer des emails personnalisés avec l'IA et les envoyer",
+        "height": 800,
+        "width": 3000,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        180
+      ],
+      "id": "b59a6337-cc99-4396-940b-3f17a585b003",
+      "name": "Sticky Note Phase 2"
+    }
+  ],
+  "connections": {
+    "a0143ff5-d39f-446c-b1f9-dd148ae80ce1": {
+      "main": [
+        [
+          {
+            "node": "b0143ff5-d39f-446c-b1f9-dd148ae80ce2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "84ff84d6-4b23-4169-aae4-2dfd77d22cc8",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "b0143ff5-d39f-446c-b1f9-dd148ae80ce2": {
+      "main": [
+        [
+          {
+            "node": "c0143ff5-d39f-446c-b1f9-dd148ae80ce3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "c0143ff5-d39f-446c-b1f9-dd148ae80ce3": {
+      "main": [
+        [
+          {
+            "node": "3faccf85-c7bd-4d20-8ce0-abf8ebedb14c",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3faccf85-c7bd-4d20-8ce0-abf8ebedb14c": {
+      "main": [
+        [
+          {
+            "node": "8c5bdd98-92f0-4b2c-9d8c-d9b9dc76752b",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "8c5bdd98-92f0-4b2c-9d8c-d9b9dc76752b": {
+      "main": [
+        [
+          {
+            "node": "94ff84d6-4b23-4169-aae4-2dfd77d22cc9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "84ff84d6-4b23-4169-aae4-2dfd77d22cc8": {
+      "main": [
+        [
+          {
+            "node": "94ff84d6-4b23-4169-aae4-2dfd77d22cc9",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "94ff84d6-4b23-4169-aae4-2dfd77d22cc9": {
+      "main": [
+        [
+          {
+            "node": "f8aa20be-3218-4144-9b82-23592378def7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "f8aa20be-3218-4144-9b82-23592378def7": {
+      "main": [
+        [
+          {
+            "node": "fb17c164-0d0a-42a6-8373-f2402238ae6f",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fb17c164-0d0a-42a6-8373-f2402238ae6f": {
+      "main": [
+        [
+          {
+            "node": "3f5b2bd1-4485-4c55-8e51-339033be453b",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3f5b2bd1-4485-4c55-8e51-339033be453b": {
+      "main": [
+        [
+          {
+            "node": "f0ef9b9c-0eba-4238-b366-3d28a84429d0",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "f0ef9b9c-0eba-4238-b366-3d28a84429d0": {
+      "main": [
+        [
+          {
+            "node": "2649c986-4f25-4ae5-baef-dbed32b8cc7e",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2649c986-4f25-4ae5-baef-dbed32b8cc7e": {
+      "main": [
+        [
+          {
+            "node": "df75c3b2-ad3a-477e-9480-c253ec4a0858",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "df75c3b2-ad3a-477e-9480-c253ec4a0858": {
+      "main": [
+        [
+          {
+            "node": "80570037-507c-4767-a947-c009e69a5e8b",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "80570037-507c-4767-a947-c009e69a5e8b": {
+      "main": [
+        [
+          {
+            "node": "671105b1-2405-4f83-8f16-3c4ad34a22a6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "versionId": "5a8b8a8a-8a8a-4a8a-8a8a-8a8a8a8a8a8a",
+  "id": "2",
+  "meta": {
+    "instanceId": "b888bd11d2a9b7f1b279386f140a9b78c55afa0dbe4a6d35f4590595b0503772"
+  },
+  "tags": [
+    {
+      "name": "Phase 2",
+      "color": "#ff9900"
+    }
+  ]
+}

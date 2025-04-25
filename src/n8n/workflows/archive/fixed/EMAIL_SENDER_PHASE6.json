@@ -1,0 +1,196 @@
+﻿{
+  "name": "Email Sender - Phase 6 (Évaluation et Planification)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "19feb474-82f7-4bfe-9588-dd5d70c6b8e9",
+      "name": "Group Vote Review",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        580,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1c481449-f795-8095-a5cf-cc4418e7ddb7",
+          "mode": "list",
+          "cachedResultName": "LOT1",
+          "cachedResultUrl": "https://www.notion.so/1c481449f7958095a5cfcc4418e7ddb7"
+        },
+        "filterType": "manual",
+        "conditions": {
+          "string": [
+            {
+              "value1": "{{ $json.properties.Status.status.name }}",
+              "operation": "equals",
+              "value2": "Terminé"
+            }
+          ],
+          "date": [
+            {
+              "value1": "{{ $json.properties.Date.date.start }}",
+              "operation": "beforeXDays",
+              "value2": 30
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "894f9cd2-f4f7-4ecd-a5b1-7fe91fb87260",
+      "name": "Get Completed Concerts",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        800,
+        300
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "gFvw0ObPabSVTQIp",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Préparation des données pour l'analyse\nconst concertData = [];\n\nfor (const item of items) {\n  try {\n    // Extraction des données de la page Notion\n    const properties = item.json.properties;\n    const name = properties.Name.title[0]?.text.content || 'Concert sans nom';\n    const date = properties.Date?.date?.start;\n    const venue = properties.Venue?.rich_text[0]?.text.content || 'Lieu inconnu';\n    const region = properties.Region?.select?.name || 'Région inconnue';\n    \n    // Ajout des données pour l'analyse\n    concertData.push({\n      json: {\n        name,\n        date,\n        venue,\n        region,\n        pageId: item.json.id,\n        url: item.json.url\n      }\n    });\n  } catch (error) {\n    // Gestion des erreurs\n    console.log(`Erreur lors du traitement de l'élément: ${error.message}`);\n  }\n}\n\nreturn concertData;"
+      },
+      "id": "3802bc6c-c156-479d-81a7-24a1235f0d18",
+      "name": "Préparer Données Analyse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyse des données de concerts\nconst concerts = items.map(item => item.json);\n\n// Statistiques de base\nconst totalConcerts = concerts.length;\nconst regions = {};\nconst venues = {};\nconst monthlyDistribution = {};\n\n// Analyse des données\nconcerts.forEach(concert => {\n  // Analyse par région\n  if (concert.region) {\n    regions[concert.region] = (regions[concert.region] || 0) + 1;\n  }\n  \n  // Analyse par salle\n  if (concert.venue) {\n    venues[concert.venue] = (venues[concert.venue] || 0) + 1;\n  }\n  \n  // Analyse par mois\n  if (concert.date) {\n    const month = concert.date.substring(0, 7); // Format YYYY-MM\n    monthlyDistribution[month] = (monthlyDistribution[month] || 0) + 1;\n  }\n});\n\n// Préparation du rapport\nconst topRegions = Object.entries(regions)\n  .sort((a, b) => b[1] - a[1])\n  .slice(0, 3)\n  .map(([region, count]) => `${region}: ${count} concerts`);\n\nconst topVenues = Object.entries(venues)\n  .sort((a, b) => b[1] - a[1])\n  .slice(0, 3)\n  .map(([venue, count]) => `${venue}: ${count} concerts`);\n\nconst monthlyStats = Object.entries(monthlyDistribution)\n  .sort(([monthA], [monthB]) => monthA.localeCompare(monthB))\n  .map(([month, count]) => `${month}: ${count} concerts`);\n\n// Création du rapport final\nconst report = {\n  totalConcerts,\n  topRegions,\n  topVenues,\n  monthlyStats,\n  concertList: concerts.map(c => `${c.date}: ${c.venue} (${c.region})`)\n};\n\n// Formatage du rapport pour l'email\nconst emailContent = `\n# Rapport d'Évaluation des Concerts\n\n## Statistiques Globales\nTotal des concerts analysés: ${totalConcerts}\n\n## Top Régions\n${topRegions.join('\\n')}\n\n## Top Salles\n${topVenues.join('\\n')}\n\n## Distribution Mensuelle\n${monthlyStats.join('\\n')}\n\n## Liste des Concerts\n${concerts.map(c => `- ${c.date}: ${c.venue} (${c.region})`).join('\\n')}\n\n## Recommandations\n- Concentrer les efforts de prospection sur les régions les plus performantes\n- Maintenir les relations avec les salles récurrentes\n- Planifier les prochaines tournées en fonction de la saisonnalité observée\n`;\n\nreturn [{\n  json: {\n    report,\n    emailContent\n  }\n}];"
+      },
+      "id": "83745350-c37c-4f6d-8397-675f912421db",
+      "name": "Analyser Données Concerts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "subject": "Rapport d'Évaluation des Concerts - Planification Future",
+        "message": "={{ $json.emailContent }}",
+        "options": {
+          "sendTo": "gerivonderbitsh@gmail.com"
+        }
+      },
+      "id": "f0ef9b9c-0eba-4238-b366-3d28a84429d0",
+      "name": "Send Analysis Report",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1460,
+        300
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xKa629oVYYGTlvnn",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Phase 6: Évaluation et Planification Future\n\nDéclencheur: Group Vote Review (Cron hebdomadaire)\nObjectif: Analyser feedback et planifier prochaines actions",
+        "height": 280,
+        "width": 1220,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        180
+      ],
+      "id": "68317e2a-7f6c-4f8f-baa2-86be28d19dad",
+      "name": "Sticky Note Phase 6"
+    }
+  ],
+  "connections": {
+    "19feb474-82f7-4bfe-9588-dd5d70c6b8e9": {
+      "main": [
+        [
+          {
+            "node": "894f9cd2-f4f7-4ecd-a5b1-7fe91fb87260",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "894f9cd2-f4f7-4ecd-a5b1-7fe91fb87260": {
+      "main": [
+        [
+          {
+            "node": "3802bc6c-c156-479d-81a7-24a1235f0d18",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3802bc6c-c156-479d-81a7-24a1235f0d18": {
+      "main": [
+        [
+          {
+            "node": "83745350-c37c-4f6d-8397-675f912421db",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "83745350-c37c-4f6d-8397-675f912421db": {
+      "main": [
+        [
+          {
+            "node": "f0ef9b9c-0eba-4238-b366-3d28a84429d0",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "5a8b8a8a-8a8a-4a8a-8a8a-8a8a8a8a8a8a",
+  "id": "6",
+  "meta": {
+    "instanceId": "b888bd11d2a9b7f1b279386f140a9b78c55afa0dbe4a6d35f4590595b0503772"
+  },
+  "tags": [
+    {
+      "name": "Phase 6",
+      "color": "#3399ff"
+    }
+  ]
+}

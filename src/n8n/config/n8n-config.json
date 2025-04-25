@@ -1,0 +1,63 @@
+﻿{
+    "port":  5678,
+    "protocol":  "http",
+    "host":  "localhost",
+    "baseUrl":  "/",
+    "path":  "/",
+    "userFolder":  "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n/data",
+    "database":  {
+                     "type":  "sqlite",
+                     "sqlite":  {
+                                    "path":  "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n/data/database.sqlite"
+                                }
+                 },
+    "credentials":  {
+                        "overwrite":  {
+                                          "endpoint":  "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n/data/credentials"
+                                      }
+                    },
+    "workflows":  {
+                      "path":  "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n/workflows/local"
+                  },
+    "executions":  {
+                       "process":  "main",
+                       "mode":  "regular",
+                       "timeout":  3600,
+                       "saveDataOnError":  true,
+                       "saveDataOnSuccess":  true,
+                       "saveExecutionProgress":  true
+                   },
+    "security":  {
+                     "basicAuth":  {
+                                       "active":  false
+                                   },
+                     "userManagement":  {
+                                            "disabled":  true
+                                        },
+                     "apiKey":  {
+                                    "value":  "3223548f11274ca48af5c4f84ed6dee7",
+                                    "enabled":  true
+                                }
+                 },
+    "nodes":  {
+                  "communityPackages":  {
+                                            "allowInstall":  true,
+                                            "allowToolUsage":  true
+                                        },
+                  "excludeNodes":  [
+
+                                   ],
+                  "includeNodes":  [
+
+                                   ]
+              },
+    "logs":  {
+                 "level":  "info",
+                 "output":  "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n/data/logs"
+             },
+    "binaryDataManager":  {
+                              "mode":  "filesystem",
+                              "localStoragePath":  "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/n8n/data/storage"
+                          },
+    "instanceId":  "2d5390fe803694d1b1f2e609c2c537452f5e78d552b0615d503ca74743ebe5cd"
+}

@@ -1,64 +1,69 @@
-# Projet Email Sender pour n8n
+# EMAIL_SENDER_1
 
-## Architecture MCP avec Proxy Unifié
+## Structure du projet
 
-### Fonctionnalités
-- Bascule automatique entre Augment et Cline
-- Monitoring temps réel via WebSocket
-- API REST pour le contrôle manuel
+La structure du projet a été réorganisée pour une meilleure organisation et maintenabilité :
 
-### Configuration
-```json
-{
-  "port": 4000,
-  "services": {
-    "augment": {
-      "url": "http://localhost:3000",
-      "healthCheck": "/api/health"
-    },
-    "cline": {
-      "url": "http://localhost:5000",
-      "healthCheck": "/health"
-    }
-  }
-}
-```
+- **src/** - Code source principal
+  - **core/** - Fonctionnalités de base
+  - **modules/** - Modules fonctionnels
+  - **api/** - API et interfaces
+  - **n8n/** - Workflows n8n
+  - **mcp/** - Serveurs MCP
+  - **extensions/** - Extensions VS Code
+  - **format-support/** - Support de formats (XML, HTML)
+  - **error-management/** - Gestion des erreurs
 
-### Tests Automatisés
+- **tools/** - Outils et scripts
+  - **scripts/** - Scripts divers
+  - **templates/** - Templates
+  - **_templates/** - Templates Hygen
+  - **dashboards/** - Tableaux de bord
+  - **reports/** - Rapports
+  - **insights/** - Analyses
+  - **swe-bench/** - Benchmarks
 
-#### Test d'intégration
-```javascript
-const axios = require('axios');
+- **docs/** - Documentation
+  - **guides/** - Guides d'utilisation
+  - **roadmap/** - Roadmap du projet
+  - **journal/** - Journal de développement
+  - **project-management/** - Gestion de projet
 
-async function testProxy() {
-  // 1. Vérifier l'état initial
-  const status = await axios.get('http://localhost:4000/status');
+- **tests/** - Tests
+  - **unit/** - Tests unitaires
+  - **integration/** - Tests d'intégration
+  - **performance/** - Tests de performance
 
-  // 2. Tester la bascule
-  await axios.post('http://localhost:4000/switch', {
-    service: 'augment'
-  });
+- **config/** - Configuration
+  - **settings/** - Paramètres généraux
+  - **environments/** - Configurations d'environnement
 
-  // 3. Vérifier le proxy
-  const health = await axios.get('http://localhost:4000/proxy/api/health');
-  console.log('Health check:', health.data);
-}
+- **assets/** - Ressources statiques
+  - **data/** - Données statiques
+  - **styles/** - Styles CSS
 
-testProxy().catch(console.error);
-```
+- **.build/** - Fichiers de build et CI/CD
+  - **ci/** - Configuration CI
+  - **logs/** - Logs
+  - **output/** - Sortie de build
+  - **archive/** - Archives
 
-#### Lancer les tests
-```bash
-cd scripts/node
-npm install mocha chai
-npm test
-```
+## Installation
 
-### Structure du projet
-[... contenu existant sur la structure ...]
+Consultez le guide d'installation dans `docs/guides/installation/`.
 
-### Guidelines
-Voir les fichiers dans le répertoire [docs/guides/](docs/guides/) pour les bonnes pratiques de développement, notamment :
-- [User Guidelines](docs/guides/user_guidelines.md) - Directives utilisateur et méthodologie de développement
-- [Python Best Practices](docs/guides/python_best_practices.md) - Bonnes pratiques pour le développement Python
-- [PowerShell Best Practices](docs/guides/powershell_best_practices.md) - Bonnes pratiques pour les scripts PowerShell
+## Documentation
+
+La documentation complète est disponible dans le dossier `docs/`.
+
+## Développement
+
+Consultez le guide du développeur dans `docs/guides/developer/`.
+
+## Tests
+
+Les tests sont disponibles dans le dossier `tests/`.
+
+## Licence
+
+Ce projet est sous licence MIT.

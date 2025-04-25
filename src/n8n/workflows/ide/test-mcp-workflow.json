@@ -1,0 +1,120 @@
+﻿{
+    "id":  "f2b699a8-3be6-4ede-91a8-9e0b395c9483",
+    "name":  "Test MCP",
+    "nodes":  [
+                  {
+                      "parameters":  {
+
+                                     },
+                      "name":  "Start",
+                      "type":  "n8n-nodes-base.start",
+                      "typeVersion":  1,
+                      "position":  [
+                                       250,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "listTools",
+                                         "connectionType":  "cmd"
+                                     },
+                      "name":  "MCP Client (Standard)",
+                      "type":  "n8n-nodes-base.mcpClient",
+                      "typeVersion":  1,
+                      "position":  [
+                                       470,
+                                       200
+                                   ],
+                      "credentials":  {
+                                          "mcpClientApi":  {
+                                                               "id":  "1",
+                                                               "name":  "MCP Standard"
+                                                           }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "listTools",
+                                         "connectionType":  "cmd"
+                                     },
+                      "name":  "MCP Client (Notion)",
+                      "type":  "n8n-nodes-base.mcpClient",
+                      "typeVersion":  1,
+                      "position":  [
+                                       470,
+                                       400
+                                   ],
+                      "credentials":  {
+                                          "mcpClientApi":  {
+                                                               "id":  "2",
+                                                               "name":  "MCP Notion"
+                                                           }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "listTools",
+                                         "connectionType":  "cmd"
+                                     },
+                      "name":  "MCP Client (Gateway)",
+                      "type":  "n8n-nodes-base.mcpClient",
+                      "typeVersion":  1,
+                      "position":  [
+                                       470,
+                                       600
+                                   ],
+                      "credentials":  {
+                                          "mcpClientApi":  {
+                                                               "id":  "3",
+                                                               "name":  "MCP Gateway"
+                                                           }
+                                      }
+                  }
+              ],
+    "connections":  {
+                        "Start":  {
+                                      "main":  [
+                                                   [
+                                                       {
+                                                           "node":  "MCP Client (Standard)",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ],
+                                                   [
+                                                       {
+                                                           "node":  "MCP Client (Notion)",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ],
+                                                   [
+                                                       {
+                                                           "node":  "MCP Client (Gateway)",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ]
+                                               ]
+                                  }
+                    },
+    "active":  false,
+    "settings":  {
+                     "saveManualExecutions":  true,
+                     "executionOrder":  "v1",
+                     "callerPolicy":  "workflowsFromSameOwner",
+                     "errorWorkflow":  ""
+                 },
+    "versionId":  "295adbf5-8629-45c9-957b-4a7b1e42bb5e",
+    "createdAt":  "2025-04-21T05:56:18.724Z",
+    "updatedAt":  "2025-04-21T05:56:18.724Z",
+    "pinData":  {
+
+                },
+    "triggerCount":  0,
+    "tags":  [
+
+             ],
+    "staticData":  null
+}

@@ -1,0 +1,8 @@
+Définir les paramètres d'entrée (variable à inspecter, options de formatage)
+Implémenter la détection de type de base
+Créer la structure de sortie standard
+Implémenter le formatage des types simples (string, int, bool, etc.)
+Ajouter le formatage des dates et heures
+Implémenter le formatage des valeurs numériques avec options d'arrondi
+Gérer les valeurs null et empty
+Implémenter les différents formats de sortie (texte, objet, JSON)

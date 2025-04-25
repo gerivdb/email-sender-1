@@ -1,0 +1,9 @@
+Implémenter le paramètre MaxDepth
+Créer la logique de suivi de la profondeur actuelle
+Implémenter la détection des limites de profondeur
+Ajouter des messages d'indication de troncature
+Implémenter l'algorithme récursif avec contrôle de profondeur
+Créer le mécanisme de passage du contexte de profondeur
+Ajouter des points de sortie anticipée pour optimisation
+Optimiser pour éviter la surcharge de la pile d'appels
+Implémenter une représentation visuelle des branches tronquées

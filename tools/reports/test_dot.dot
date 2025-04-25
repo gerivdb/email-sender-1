@@ -1,0 +1,26 @@
+﻿digraph DependencyGraph {
+    rankdir=LR;
+    node [shape=box, style=filled, fillcolor=white];
+    "ScriptF" [fillcolor=white];
+    "ScriptC" [fillcolor="#ffcccc"];
+    "ScriptE" [fillcolor="#ffcccc"];
+    "ScriptA" [fillcolor="#ffcccc"];
+    "ScriptB" [fillcolor=white];
+    "ScriptD" [fillcolor=white];
+    "ScriptC" -> "ScriptE" [color="#ff0000"];
+    "ScriptE" -> "ScriptA" [color="#ff0000"];
+    "ScriptA" -> "ScriptB" [];
+    "ScriptA" -> "ScriptC" [color="#ff0000"];
+    "ScriptB" -> "ScriptD" [];
+    "ScriptD" -> "ScriptF" [];
+
+    // Statistiques
+    // Total des scripts: 6
+    // Scripts impliquÃ©s dans des cycles: 3
+    // Scripts sans cycles: 3
+
+    // Cycles dÃ©tectÃ©s
+    // ScriptA
+    // ScriptC
+    // ScriptE
+}
