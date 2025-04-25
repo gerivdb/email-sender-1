@@ -444,9 +444,57 @@
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.1.4** Développer le mécanisme d'indexation des exceptions
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.1.5** Créer les fonctions d'accès à la taxonomie
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2** Documenter les propriétés communes de System.Exception
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.1** Documenter la propriété Message et ses caractéristiques
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.2** Documenter la propriété StackTrace et son format
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.3** Documenter la propriété InnerException et sa hiérarchie
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.4** Documenter la propriété Source et son utilisation
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.5** Documenter la propriété HResult et ses codes d'erreur
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.6** Documenter les méthodes ToString() et GetBaseException()
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.7** Documenter les propriétés Data et TargetSite
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.8** Créer un tableau récapitulatif des propriétés communes
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3** Recenser les exceptions de base du framework .NET
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1** Identifier et documenter les exceptions du namespace System
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.1** Documenter ArgumentException et ses dérivées
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.2** Documenter InvalidOperationException et ses cas d'usage
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.3** Documenter NullReferenceException et ses causes
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.4** Documenter FormatException et ses scénarios
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.5** Documenter IndexOutOfRangeException et ses contextes
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2** Identifier et documenter les exceptions du namespace System.IO
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.1** Documenter IOException et ses caractéristiques
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.2** Documenter FileNotFoundException et ses détails
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.3** Documenter DirectoryNotFoundException et ses contextes
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.4** Documenter PathTooLongException et ses limites
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5** Documenter UnauthorizedAccessException et ses permissions
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3** Identifier et documenter les exceptions du namespace System.Net
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4** Identifier et documenter les exceptions du namespace System.Security
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5** Créer un tableau de référence des exceptions .NET courantes
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4** Créer la hiérarchie des exceptions de base
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.1** Développer un diagramme de classe des exceptions System
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.1.1** Créer la représentation visuelle de la hiérarchie
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.1.2** Documenter les relations d'héritage
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.1.3** Identifier les classes abstraites et concrètes
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.2** Développer un diagramme de classe des exceptions System.IO
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.3** Développer un diagramme de classe des exceptions System.Net
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.4** Développer un diagramme de classe des exceptions System.Security
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.5** Créer une représentation JSON de la hiérarchie complète
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.5.1** Définir le format de représentation des relations
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.5.2** Implémenter la sérialisation de la hiérarchie
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.5.3** Créer les fonctions de navigation dans la hiérarchie
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5** Développer les mécanismes d'identification des exceptions
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.1** Créer les fonctions d'identification par type
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.1.1** Développer la fonction IsExceptionOfType
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.1.2** Implémenter la détection par héritage
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.1.3** Créer la fonction de recherche dans la hiérarchie
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.2** Implémenter l'identification par message d'erreur
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.2.1** Développer l'analyse de motifs dans les messages
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.2.2** Créer la base de motifs connus par type d'exception
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.2.3** Implémenter l'algorithme de correspondance
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.3** Développer l'identification par contexte d'erreur
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.3.1** Créer la détection basée sur la stack trace
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.3.2** Implémenter l'analyse du contexte d'exécution
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.3.3** Développer la détection par commande exécutée
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.4** Implémenter les tests unitaires pour l'identification
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5.5** Créer la documentation des mécanismes d'identification
                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.2** Recenser les exceptions System.IO pour les opérations de fichiers
                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.3** Documenter les exceptions System.ArgumentException et dérivées
                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.4** Cataloguer les exceptions System.InvalidOperationException et cas d'usage
