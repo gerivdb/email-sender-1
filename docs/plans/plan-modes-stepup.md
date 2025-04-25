@@ -424,6 +424,41 @@
         - [ ] **1.3.1.2.2.1.2** Implémenter la catégorisation des erreurs
           - [ ] **1.3.1.2.2.1.2.1** Développer la classification par type d'exception
             - [ ] **1.3.1.2.2.1.2.1.1** Créer la taxonomie des exceptions PowerShell
+              - [ ] **1.3.1.2.2.1.2.1.1.1** Identifier les exceptions système PowerShell
+                - [ ] **1.3.1.2.2.1.2.1.1.1.1** Recenser les exceptions .NET courantes en PowerShell
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1** Identifier les exceptions System.Exception de base
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.2** Recenser les exceptions System.IO pour les opérations de fichiers
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.3** Documenter les exceptions System.ArgumentException et dérivées
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.4** Cataloguer les exceptions System.InvalidOperationException et cas d'usage
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.5** Recenser les exceptions System.Security pour les problèmes d'autorisation
+                - [ ] **1.3.1.2.2.1.2.1.1.1.2** Identifier les exceptions spécifiques à PowerShell
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.2.1** Recenser les exceptions du namespace System.Management.Automation
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.2.2** Documenter les exceptions liées aux cmdlets et modules
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.2.3** Cataloguer les exceptions de parsing et d'exécution de scripts
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.2.4** Identifier les exceptions liées aux remoting et sessions
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.2.5** Recenser les exceptions liées aux providers PowerShell
+                - [ ] **1.3.1.2.2.1.2.1.1.1.3** Documenter les propriétés et messages d'erreur standards
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.3.1** Créer le catalogue des propriétés communes à toutes les exceptions
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.3.2** Documenter les formats de messages d'erreur par type d'exception
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.3.3** Recenser les codes d'erreur et leur signification
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.3.4** Créer la base de données des messages d'erreur localisés
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.3.5** Développer les outils d'extraction de propriétés pertinentes
+                - [ ] **1.3.1.2.2.1.2.1.1.1.4** Créer la table de correspondance entre exceptions et ErrorCategoryInfo
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.4.1** Recenser toutes les valeurs possibles de ErrorCategory
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.4.2** Documenter les associations par défaut entre exceptions et catégories
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.4.3** Créer la matrice de correspondance exceptions/catégories
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.4.4** Développer l'algorithme de prédiction de catégorie d'erreur
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.4.5** Implémenter la détection des incohérences de catégorisation
+                - [ ] **1.3.1.2.2.1.2.1.1.1.5** Développer la détection des exceptions non documentées
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.5.1** Créer l'algorithme d'analyse heuristique des exceptions
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.5.2** Développer le système d'apprentissage des nouvelles exceptions
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.5.3** Implémenter la détection par analyse de message d'erreur
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.5.4** Créer le mécanisme d'enrichissement de la taxonomie
+                  - [ ] **1.3.1.2.2.1.2.1.1.1.5.5** Développer le système de rapport des exceptions inconnues
+              - [ ] **1.3.1.2.2.1.2.1.1.2** Catégoriser les exceptions par domaine fonctionnel
+              - [ ] **1.3.1.2.2.1.2.1.1.3** Définir les niveaux de sévérité des exceptions
+              - [ ] **1.3.1.2.2.1.2.1.1.4** Créer la structure de métadonnées des exceptions
+              - [ ] **1.3.1.2.2.1.2.1.1.5** Développer le système de codes d'erreur hiérarchiques
             - [ ] **1.3.1.2.2.1.2.1.2** Implémenter la détection des types d'exceptions standards
             - [ ] **1.3.1.2.2.1.2.1.3** Développer la classification des exceptions personnalisées
             - [ ] **1.3.1.2.2.1.2.1.4** Créer les mécanismes de catégorisation hiérarchique
