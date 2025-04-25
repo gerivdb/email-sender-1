@@ -1,0 +1,29 @@
+# N8n
+
+Cette section contient la documentation relative à N8n.
+
+## Contenu
+
+
+### Fichiers
+
+- [N8n Cheat Sheet Guide Restructured](./n8n Cheat Sheet Guide-restructured.doctree)
+- [N8n Cheat Sheet Guide](./n8n Cheat Sheet Guide.doctree)
+- [N8N AI LLM INTEGRATIONS Restructured](./N8N_AI_LLM_INTEGRATIONS-restructured.doctree)
+- [N8N AI LLM INTEGRATIONS](./N8N_AI_LLM_INTEGRATIONS.doctree)
+- [N8N CONFIGURATION JSON USAGE Restructured](./N8N_CONFIGURATION_JSON_USAGE-restructured.doctree)
+- [N8N CONFIGURATION JSON USAGE](./N8N_CONFIGURATION_JSON_USAGE.doctree)
+- [N8N DATA PROCESSING LOGIC NODES Restructured](./N8N_DATA_PROCESSING_LOGIC_NODES-restructured.doctree)
+- [N8N DATA PROCESSING LOGIC NODES](./N8N_DATA_PROCESSING_LOGIC_NODES.doctree)
+- [N8N JSON SNIPPETS GUIDE Restructured](./N8N_JSON_SNIPPETS_GUIDE-restructured.doctree)
+- [N8N JSON SNIPPETS GUIDE](./N8N_JSON_SNIPPETS_GUIDE.doctree)
+- [N8N NOTABLE INTEGRATIONS Restructured](./N8N_NOTABLE_INTEGRATIONS-restructured.doctree)
+- [N8N NOTABLE INTEGRATIONS](./N8N_NOTABLE_INTEGRATIONS.doctree)
+- [N8N PROJECT INSTRUCTIONS Restructured](./N8N_PROJECT_INSTRUCTIONS-restructured.doctree)
+- [N8N PROJECT INSTRUCTIONS](./N8N_PROJECT_INSTRUCTIONS.doctree)
+- [N8N TIPS AND TRICKS Restructured](./N8N_TIPS_AND_TRICKS-restructured.doctree)
+- [N8N TIPS AND TRICKS](./N8N_TIPS_AND_TRICKS.doctree)
+- [N8N WORKFLOW AUTOMATION TRIGGERS Restructured](./N8N_WORKFLOW_AUTOMATION_TRIGGERS-restructured.doctree)
+- [N8N WORKFLOW AUTOMATION TRIGGERS](./N8N_WORKFLOW_AUTOMATION_TRIGGERS.doctree)
+- [N8N WORKFLOW GUIDELINES Restructured](./N8N_WORKFLOW_GUIDELINES-restructured.doctree)
+- [N8N WORKFLOW GUIDELINES](./N8N_WORKFLOW_GUIDELINES.doctree)
