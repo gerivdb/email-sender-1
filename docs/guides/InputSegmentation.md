@@ -13,6 +13,17 @@ La segmentation d'entrées est utile dans plusieurs situations :
 - **Optimisation de la mémoire** : La segmentation permet de réduire l'utilisation de la mémoire.
 - **Reprise sur erreur** : Si une partie échoue, seule cette partie doit être retraitée.
 
+### Limites spécifiques d'Augment Code
+
+Augment Code impose certaines limites sur la taille des inputs :
+
+- **Limite stricte** : 5KB par input
+- **Recommandation pratique** : 4KB par appel d'outil pour éviter les problèmes
+- **Fenêtre de contexte** : 200 000 tokens (bien plus grande que la plupart des concurrents)
+- **Guidelines** : Limitées à 2000 caractères maximum
+
+Ces limitations rendent la segmentation d'entrées particulièrement importante pour travailler efficacement avec Augment Code, surtout pour les tâches complexes ou les modifications impliquant plusieurs fichiers.
+
 ## Installation
 
 Aucune installation spéciale n'est requise. Les scripts de segmentation d'entrées sont inclus dans le projet.
@@ -136,12 +147,12 @@ $state = Get-SegmentationState -Id $id
 if ($state) {
     $currentIndex = $state.CurrentIndex
     $segments = $state.Segments
-    
+
     # Continuer le traitement à partir de l'index actuel
     for ($i = $currentIndex; $i -lt $segments.Count; $i++) {
         # Traiter le segment
         Process-Segment -Segment $segments[$i]
-        
+
         # Mettre à jour l'état
         Save-SegmentationState -Id $id -Segments $segments -CurrentIndex ($i + 1)
     }
@@ -165,7 +176,7 @@ $results = @()
 foreach ($segment in $segments) {
     # Convertir le segment en objet CSV
     $csvData = $segment | ConvertFrom-Csv
-    
+
     # Traiter les données CSV
     foreach ($row in $csvData) {
         # Traitement...
@@ -202,7 +213,7 @@ $responses = @()
 foreach ($segment in $segments) {
     # Convertir le segment en JSON
     $jsonData = $segment | ConvertTo-Json -Compress
-    
+
     # Envoyer à l'API
     $response = Invoke-RestMethod -Uri "https://api.example.com/data" -Method Post -Body $jsonData -ContentType "application/json"
     $responses += $response
@@ -254,6 +265,14 @@ $result = .\scripts\agent-auto\Example-AgentAutoSegmentation.ps1 -Input $largeIn
 ### Problème : Perte de contexte entre les segments
 
 **Solution** : Pour les objets JSON, assurez-vous que les métadonnées importantes sont incluses dans chaque segment.
+
+### Problème : Erreur "Input trop volumineux" dans Augment Code
+
+**Solution** :
+- Divisez votre requête en plusieurs requêtes plus petites et spécifiques
+- Structurez le code de manière claire et utilisez des listes de tâches numérotées
+- Fournissez des exemples concrets pour les modifications souhaitées
+- Utilisez l'approche "une fonction à la fois" pour les modifications complexes
 
 ## Intégration avec d'autres outils
 
