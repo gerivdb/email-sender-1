@@ -411,11 +411,126 @@
     - [x] **1.3.1.1.2** Implémenter les fonctions spécifiques au mode ARCHI
     - [x] **1.3.1.1.3** Développer les mécanismes de génération de diagrammes
     - [x] **1.3.1.1.4** Créer les tests unitaires
-  - [x] **1.3.1.2** Implémenter debug-mode.ps1
+  - [ ] **1.3.1.2** Implémenter debug-mode.ps1
     - [x] **1.3.1.2.1** Créer la structure de base du script
-    - [x] **1.3.1.2.2** Implémenter les fonctions de diagnostic
-    - [x] **1.3.1.2.3** Développer les mécanismes de simulation de contexte
-    - [x] **1.3.1.2.4** Créer les tests unitaires
+    - [ ] **1.3.1.2.2** Implémenter les fonctions de diagnostic
+      - [ ] **1.3.1.2.2.1** Développer les fonctions d'analyse d'erreurs
+        - [x] **1.3.1.2.2.1.1** Créer la fonction d'analyse de stack trace
+          - [x] **1.3.1.2.2.1.1.1** Développer le parseur de stack trace PowerShell
+          - [x] **1.3.1.2.2.1.1.2** Implémenter l'extraction des informations de ligne et fichier
+          - [x] **1.3.1.2.2.1.1.3** Créer la résolution des chemins de fichiers
+          - [x] **1.3.1.2.2.1.1.4** Développer l'analyse de la séquence d'appels
+          - [x] **1.3.1.2.2.1.1.5** Implémenter la visualisation hiérarchique de la stack
+        - [ ] **1.3.1.2.2.1.2** Implémenter la catégorisation des erreurs
+          - [ ] **1.3.1.2.2.1.2.1** Développer la classification par type d'exception
+          - [ ] **1.3.1.2.2.1.2.2** Créer la détection de patterns d'erreurs connus
+          - [ ] **1.3.1.2.2.1.2.3** Implémenter la priorisation des erreurs
+          - [ ] **1.3.1.2.2.1.2.4** Développer la corrélation entre erreurs similaires
+          - [ ] **1.3.1.2.2.1.2.5** Créer la base de connaissances d'erreurs
+        - [ ] **1.3.1.2.2.1.3** Développer la détection des causes racines
+          - [ ] **1.3.1.2.2.1.3.1** Implémenter l'analyse contextuelle des variables
+          - [ ] **1.3.1.2.2.1.3.2** Créer la détection de conditions préalables non remplies
+          - [ ] **1.3.1.2.2.1.3.3** Développer l'analyse des dépendances défaillantes
+          - [ ] **1.3.1.2.2.1.3.4** Implémenter la détection de problèmes de configuration
+          - [ ] **1.3.1.2.2.1.3.5** Créer l'analyse de séquence d'événements
+        - [ ] **1.3.1.2.2.1.4** Créer les mécanismes de suggestion de correction
+          - [ ] **1.3.1.2.2.1.4.1** Développer la génération de correctifs automatiques
+          - [ ] **1.3.1.2.2.1.4.2** Implémenter les suggestions basées sur la base de connaissances
+          - [ ] **1.3.1.2.2.1.4.3** Créer les recommandations contextuelles
+          - [ ] **1.3.1.2.2.1.4.4** Développer les suggestions de vérification
+          - [ ] **1.3.1.2.2.1.4.5** Implémenter les alternatives de contournement
+        - [ ] **1.3.1.2.2.1.5** Implémenter la génération de rapports d'erreur
+          - [ ] **1.3.1.2.2.1.5.1** Développer les templates de rapports
+          - [ ] **1.3.1.2.2.1.5.2** Créer les formats de sortie multiples (texte, HTML, JSON)
+          - [ ] **1.3.1.2.2.1.5.3** Implémenter les niveaux de détail configurables
+          - [ ] **1.3.1.2.2.1.5.4** Développer l'intégration avec les systèmes de suivi de bugs
+          - [ ] **1.3.1.2.2.1.5.5** Créer les mécanismes de partage de rapports
+      - [ ] **1.3.1.2.2.2** Développer les fonctions d'inspection de variables
+        - [ ] **1.3.1.2.2.2.1** Créer la fonction d'inspection détaillée
+        - [ ] **1.3.1.2.2.2.2** Implémenter l'analyse de structure d'objets
+        - [ ] **1.3.1.2.2.2.3** Développer la comparaison d'états de variables
+        - [ ] **1.3.1.2.2.2.4** Créer les mécanismes de visualisation d'objets complexes
+        - [ ] **1.3.1.2.2.2.5** Implémenter la détection de modifications
+      - [ ] **1.3.1.2.2.3** Implémenter les fonctions de traçage d'exécution
+        - [ ] **1.3.1.2.2.3.1** Développer le traçage de flux d'exécution
+        - [ ] **1.3.1.2.2.3.2** Créer les points de trace configurables
+        - [ ] **1.3.1.2.2.3.3** Implémenter la mesure de temps d'exécution
+        - [ ] **1.3.1.2.2.3.4** Développer la visualisation du flux d'exécution
+        - [ ] **1.3.1.2.2.3.5** Créer les mécanismes de filtrage de trace
+      - [ ] **1.3.1.2.2.4** Développer les fonctions de diagnostic de performance
+        - [ ] **1.3.1.2.2.4.1** Créer les profils d'exécution
+        - [ ] **1.3.1.2.2.4.2** Implémenter la détection de goulots d'étranglement
+        - [ ] **1.3.1.2.2.4.3** Développer l'analyse de consommation mémoire
+        - [ ] **1.3.1.2.2.4.4** Créer les rapports de performance
+        - [ ] **1.3.1.2.2.4.5** Implémenter les suggestions d'optimisation
+      - [ ] **1.3.1.2.2.5** Créer les fonctions de diagnostic d'environnement
+        - [ ] **1.3.1.2.2.5.1** Développer l'analyse de configuration système
+        - [ ] **1.3.1.2.2.5.2** Implémenter la vérification des dépendances
+        - [ ] **1.3.1.2.2.5.3** Créer la détection de conflits de versions
+        - [ ] **1.3.1.2.2.5.4** Développer l'analyse des permissions
+        - [ ] **1.3.1.2.2.5.5** Implémenter la vérification de connectivité
+    - [ ] **1.3.1.2.3** Développer les mécanismes de simulation de contexte
+      - [ ] **1.3.1.2.3.1** Implémenter la création d'environnements virtuels
+        - [ ] **1.3.1.2.3.1.1** Développer la virtualisation de système de fichiers
+        - [ ] **1.3.1.2.3.1.2** Créer la simulation de registre Windows
+        - [ ] **1.3.1.2.3.1.3** Implémenter la virtualisation de variables d'environnement
+        - [ ] **1.3.1.2.3.1.4** Développer la simulation de configuration utilisateur
+        - [ ] **1.3.1.2.3.1.5** Créer les mécanismes d'isolation d'environnement
+      - [ ] **1.3.1.2.3.2** Développer la simulation d'entrées/sorties
+        - [ ] **1.3.1.2.3.2.1** Créer la simulation d'entrées utilisateur
+        - [ ] **1.3.1.2.3.2.2** Implémenter la simulation de sorties console
+        - [ ] **1.3.1.2.3.2.3** Développer la simulation d'E/S fichier
+        - [ ] **1.3.1.2.3.2.4** Créer la simulation d'E/S réseau
+        - [ ] **1.3.1.2.3.2.5** Implémenter la simulation de pipes et flux
+      - [ ] **1.3.1.2.3.3** Implémenter la simulation d'erreurs et exceptions
+        - [ ] **1.3.1.2.3.3.1** Développer l'injection d'erreurs contrôlée
+        - [ ] **1.3.1.2.3.3.2** Créer la simulation de conditions de course
+        - [ ] **1.3.1.2.3.3.3** Implémenter la simulation de timeouts
+        - [ ] **1.3.1.2.3.3.4** Développer la simulation de corruptions de données
+        - [ ] **1.3.1.2.3.3.5** Créer les scénarios d'erreurs complexes
+      - [ ] **1.3.1.2.3.4** Développer la simulation de charge et stress
+        - [ ] **1.3.1.2.3.4.1** Créer la simulation de charge CPU
+        - [ ] **1.3.1.2.3.4.2** Implémenter la simulation de pression mémoire
+        - [ ] **1.3.1.2.3.4.3** Développer la simulation de latence réseau
+        - [ ] **1.3.1.2.3.4.4** Créer la simulation de contention de ressources
+        - [ ] **1.3.1.2.3.4.5** Implémenter les scénarios de charge variables
+      - [ ] **1.3.1.2.3.5** Créer les mécanismes de reproduction de bugs
+        - [ ] **1.3.1.2.3.5.1** Développer l'enregistrement d'états système
+        - [ ] **1.3.1.2.3.5.2** Implémenter la reproduction déterministe
+        - [ ] **1.3.1.2.3.5.3** Créer les scénarios de test automatisés
+        - [ ] **1.3.1.2.3.5.4** Développer la minimisation de cas de test
+        - [ ] **1.3.1.2.3.5.5** Implémenter la génération de cas de test
+    - [ ] **1.3.1.2.4** Créer les tests unitaires
+      - [ ] **1.3.1.2.4.1** Développer les tests pour les fonctions de diagnostic
+        - [ ] **1.3.1.2.4.1.1** Créer les tests pour l'analyse d'erreurs
+        - [ ] **1.3.1.2.4.1.2** Implémenter les tests pour l'inspection de variables
+        - [ ] **1.3.1.2.4.1.3** Développer les tests pour le traçage d'exécution
+        - [ ] **1.3.1.2.4.1.4** Créer les tests pour le diagnostic de performance
+        - [ ] **1.3.1.2.4.1.5** Implémenter les tests pour le diagnostic d'environnement
+      - [ ] **1.3.1.2.4.2** Implémenter les tests pour la simulation de contexte
+        - [ ] **1.3.1.2.4.2.1** Développer les tests pour les environnements virtuels
+        - [ ] **1.3.1.2.4.2.2** Créer les tests pour la simulation d'E/S
+        - [ ] **1.3.1.2.4.2.3** Implémenter les tests pour la simulation d'erreurs
+        - [ ] **1.3.1.2.4.2.4** Développer les tests pour la simulation de charge
+        - [ ] **1.3.1.2.4.2.5** Créer les tests pour la reproduction de bugs
+      - [ ] **1.3.1.2.4.3** Développer les tests d'intégration
+        - [ ] **1.3.1.2.4.3.1** Créer les tests de bout en bout
+        - [ ] **1.3.1.2.4.3.2** Implémenter les tests avec différents scénarios
+        - [ ] **1.3.1.2.4.3.3** Développer les tests de compatibilité
+        - [ ] **1.3.1.2.4.3.4** Créer les tests de régression
+        - [ ] **1.3.1.2.4.3.5** Implémenter les tests de performance
+      - [ ] **1.3.1.2.4.4** Créer les tests de cas limites
+        - [ ] **1.3.1.2.4.4.1** Développer les tests pour les entrées invalides
+        - [ ] **1.3.1.2.4.4.2** Implémenter les tests pour les conditions extrêmes
+        - [ ] **1.3.1.2.4.4.3** Créer les tests pour les ressources limitées
+        - [ ] **1.3.1.2.4.4.4** Développer les tests pour les timeouts
+        - [ ] **1.3.1.2.4.4.5** Implémenter les tests pour les interruptions
+      - [ ] **1.3.1.2.4.5** Développer les tests de documentation
+        - [ ] **1.3.1.2.4.5.1** Créer les tests de validation des exemples
+        - [ ] **1.3.1.2.4.5.2** Implémenter les tests de cohérence de documentation
+        - [ ] **1.3.1.2.4.5.3** Développer les tests d'exhaustivité de documentation
+        - [ ] **1.3.1.2.4.5.4** Créer les tests de lisibilité
+        - [ ] **1.3.1.2.4.5.5** Implémenter les tests de mise à jour automatique
   - [x] **1.3.1.3** Implémenter c-break-mode.ps1
     - [x] **1.3.1.3.1** Créer la structure de base du script
       - [x] **1.3.1.3.1.1** Définir les paramètres et options du script

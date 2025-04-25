@@ -272,9 +272,54 @@ $fixCode
 
                     if ($stackTraceMatch.Success) {
                         $stackTrace = $stackTraceMatch.Groups[1].Value
-                        $stackTraceLines = $stackTrace -split "`r`n" | Select-Object -First $MaxStackTraceDepth
 
-                        $debugReport += @"
+                        # Utiliser les nouvelles fonctions d'analyse de stack trace
+                        try {
+                            # Importer les fonctions d'analyse de stack trace
+                            $stackTraceAnalysisPath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Private\Debugging\StackTraceAnalysisFunctions.ps1"
+                            if (Test-Path -Path $stackTraceAnalysisPath) {
+                                . $stackTraceAnalysisPath
+
+                                # Analyser la stack trace
+                                $stackTraceInfo = Get-StackTraceInfo -StackTrace $stackTrace
+
+                                # Résoudre les chemins de fichiers
+                                $resolvedStackTrace = Resolve-StackTracePaths -StackTrace $stackTraceInfo -BasePath $ModulePath
+
+                                # Extraire les informations de ligne
+                                $stackTraceLineInfo = Get-StackTraceLineInfo -StackTrace $resolvedStackTrace -ContextLines 2
+
+                                # Analyser la séquence d'appels
+                                $callSequence = Get-StackTraceCallSequence -StackTrace $resolvedStackTrace
+
+                                # Générer une visualisation hiérarchique
+                                $stackTraceVisualization = Show-StackTraceHierarchy -StackTrace $stackTraceLineInfo -Format "Markdown" -IncludeLineContent $true -IncludeContext $true
+
+                                $debugReport += @"
+**Analyse de la trace de pile :**
+
+$stackTraceVisualization
+
+**Séquence d'appels :**
+
+Chemin d'appel : `$($callSequence.CallPath)`
+
+Profondeur : $($callSequence.CallDepth)
+
+$( if ($callSequence.RecursionDetected) { "**Récursion détectée !**" } )
+
+**Graphe d'appels :**
+
+```dot
+$($callSequence.CallGraph)
+```
+
+"@
+                            } else {
+                                # Fallback si les fonctions d'analyse ne sont pas disponibles
+                                $stackTraceLines = $stackTrace -split "`r`n" | Select-Object -First $MaxStackTraceDepth
+
+                                $debugReport += @"
 **Trace de pile :**
 
 ```
@@ -282,6 +327,21 @@ $($stackTraceLines -join "`n")
 ```
 
 "@
+                            }
+                        } catch {
+                            # En cas d'erreur, utiliser l'affichage simple
+                            Write-LogWarning "Erreur lors de l'analyse de la stack trace : $_"
+                            $stackTraceLines = $stackTrace -split "`r`n" | Select-Object -First $MaxStackTraceDepth
+
+                            $debugReport += @"
+**Trace de pile :**
+
+```
+$($stackTraceLines -join "`n")
+```
+
+"@
+                        }
                     }
                 }
             } else {
