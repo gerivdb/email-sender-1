@@ -427,6 +427,26 @@
               - [ ] **1.3.1.2.2.1.2.1.1.1** Identifier les exceptions système PowerShell
                 - [ ] **1.3.1.2.2.1.2.1.1.1.1** Recenser les exceptions .NET courantes en PowerShell
                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1** Identifier les exceptions System.Exception de base
+                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1** Créer la structure de base de la taxonomie des exceptions
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1** Définir le format de stockage des informations d'exceptions
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.1** Analyser les besoins en stockage pour la taxonomie
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.1** Identifier les informations essentielles à stocker
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.2** Définir les relations entre les différentes exceptions
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.3** Évaluer les besoins en performance et taille
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.4** Déterminer les exigences de mise à jour et maintenance
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.5** Créer le document de spécifications de stockage
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.2** Comparer les formats JSON, XML et PowerShell Data
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.3** Définir le schéma de données pour les exceptions
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.4** Créer les fonctions de sérialisation/désérialisation
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.1.5** Implémenter la validation du format de données
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.2** Créer les classes/structures pour représenter les exceptions
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.3** Implémenter le système de métadonnées des exceptions
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.4** Développer le mécanisme d'indexation des exceptions
+                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.1.5** Créer les fonctions d'accès à la taxonomie
+                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2** Documenter les propriétés communes de System.Exception
+                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3** Recenser les exceptions de base du framework .NET
+                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4** Créer la hiérarchie des exceptions de base
+                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.5** Développer les mécanismes d'identification des exceptions
                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.2** Recenser les exceptions System.IO pour les opérations de fichiers
                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.3** Documenter les exceptions System.ArgumentException et dérivées
                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.4** Cataloguer les exceptions System.InvalidOperationException et cas d'usage
