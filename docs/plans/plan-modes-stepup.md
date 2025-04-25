@@ -444,7 +444,7 @@
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.1.4** Développer le mécanisme d'indexation des exceptions
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.1.5** Créer les fonctions d'accès à la taxonomie
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2** Documenter les propriétés communes de System.Exception
-                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.1** Documenter la propriété Message et ses caractéristiques
+                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.1** Documenter la propriété Message et ses caractéristiques
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.2** Documenter la propriété StackTrace et son format
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.3** Documenter la propriété InnerException et sa hiérarchie
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.4** Documenter la propriété Source et son utilisation
