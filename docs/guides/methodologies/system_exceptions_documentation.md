@@ -748,3 +748,351 @@ Test-OperationHandling
 `InvalidOperationException` est une exception fondamentale dans le framework .NET qui permet de signaler des problèmes liés à l'état des objets et à la séquence des opérations. Elle est particulièrement utile pour implémenter des machines à états, des cycles de vie d'objets, et pour garantir que les méthodes sont appelées dans le bon ordre et dans le bon contexte.
 
 En utilisant cette exception de manière appropriée, vous pouvez créer des APIs plus robustes et plus faciles à utiliser, car les erreurs liées à une utilisation incorrecte sont clairement identifiées et expliquées.
+
+## NullReferenceException et ses causes
+
+### Vue d'ensemble
+
+`NullReferenceException` est l'une des exceptions les plus courantes dans le développement .NET. Elle se produit lorsque vous tentez d'accéder à un membre (propriété, méthode, champ) d'une référence d'objet qui est `null`. Cette exception est souvent le signe d'un bug dans le code, car elle indique généralement un oubli de vérification de nullité.
+
+### Hiérarchie
+
+```
+System.Exception
+└── System.SystemException
+    └── System.NullReferenceException
+```
+
+### Description
+
+`NullReferenceException` est levée automatiquement par le runtime .NET lorsqu'une tentative est faite pour déréférencer une référence nulle. Contrairement à d'autres exceptions comme `ArgumentNullException` ou `InvalidOperationException`, elle n'est généralement pas levée explicitement par le code, mais plutôt par le runtime lui-même.
+
+### Propriétés spécifiques
+
+`NullReferenceException` n'ajoute pas de propriétés spécifiques à celles héritées de `System.Exception`.
+
+### Constructeurs principaux
+
+```csharp
+NullReferenceException()
+NullReferenceException(string message)
+NullReferenceException(string message, Exception innerException)
+```
+
+### Causes courantes
+
+1. **Référence non initialisée** : Utilisation d'une variable qui n'a jamais été initialisée.
+
+2. **Valeur nulle inattendue** : Une méthode ou une propriété retourne `null` de manière inattendue.
+
+3. **Chaînage d'appels sans vérification** : Appel en chaîne de méthodes ou propriétés sans vérifier les valeurs intermédiaires (`obj.Property1.Property2.Method()`).
+
+4. **Tableau ou collection avec éléments nuls** : Accès à un élément nul dans un tableau ou une collection.
+
+5. **Erreur de logique** : Erreurs de logique qui conduisent à des références nulles dans certaines conditions.
+
+### Exemples en PowerShell
+
+```powershell
+# Exemple 1: Référence non initialisée
+function Test-NullReference1 {
+    [PSCustomObject]$user = $null
+
+    # Ceci va générer une NullReferenceException
+    return $user.Name
+}
+
+try {
+    Test-NullReference1
+} catch {
+    Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+    Write-Host "Message: $($_.Exception.Message)"
+}
+
+# Sortie:
+# Erreur: System.NullReferenceException
+# Message: Object reference not set to an instance of an object.
+
+# Exemple 2: Chaînage d'appels sans vérification
+function Test-NullReference2 {
+    param (
+        [PSCustomObject]$user
+    )
+
+    # Ceci va générer une NullReferenceException si $user.Address est null
+    return $user.Address.City
+}
+
+$user = [PSCustomObject]@{
+    Name = "John Doe"
+    Address = $null
+}
+
+try {
+    Test-NullReference2 -User $user
+} catch {
+    Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+    Write-Host "Message: $($_.Exception.Message)"
+}
+
+# Sortie:
+# Erreur: System.NullReferenceException
+# Message: Object reference not set to an instance of an object.
+
+# Exemple 3: Tableau avec éléments nuls
+function Test-NullReference3 {
+    $array = @("Item1", $null, "Item3")
+
+    # Ceci va générer une NullReferenceException
+    return $array[1].Length
+}
+
+try {
+    Test-NullReference3
+} catch {
+    Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+    Write-Host "Message: $($_.Exception.Message)"
+}
+
+# Sortie:
+# Erreur: System.NullReferenceException
+# Message: Object reference not set to an instance of an object.
+
+# Exemple 4: Erreur de logique conditionnelle
+function Test-NullReference4 {
+    param (
+        [int]$id
+    )
+
+    $user = if ($id -eq 1) {
+        [PSCustomObject]@{
+            Id = 1
+            Name = "John Doe"
+        }
+    } else {
+        $null  # Retourne null pour les autres IDs
+    }
+
+    # Oubli de vérifier si $user est null
+    return $user.Name
+}
+
+try {
+    Test-NullReference4 -Id 2  # ID qui retourne null
+} catch {
+    Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+    Write-Host "Message: $($_.Exception.Message)"
+}
+
+# Sortie:
+# Erreur: System.NullReferenceException
+# Message: Object reference not set to an instance of an object.
+```
+
+### Prévention des NullReferenceException
+
+La meilleure façon de gérer les `NullReferenceException` est de les prévenir. Voici plusieurs techniques pour éviter ces exceptions :
+
+#### 1. Vérification de nullité explicite
+
+```powershell
+function Get-UserCity {
+    param (
+        [PSCustomObject]$User
+    )
+
+    if ($null -eq $User) {
+        return $null
+    }
+
+    if ($null -eq $User.Address) {
+        return $null
+    }
+
+    return $User.Address.City
+}
+```
+
+#### 2. Opérateur de coalescence nulle (en C#, simulé en PowerShell)
+
+```powershell
+function Get-UserCity {
+    param (
+        [PSCustomObject]$User
+    )
+
+    $address = if ($null -ne $User) { $User.Address } else { $null }
+    $city = if ($null -ne $address) { $address.City } else { "Inconnu" }
+
+    return $city
+}
+```
+
+#### 3. Utilisation de Try-Catch pour la gestion des erreurs
+
+```powershell
+function Get-UserCity {
+    param (
+        [PSCustomObject]$User
+    )
+
+    try {
+        return $User.Address.City
+    } catch [System.NullReferenceException] {
+        return "Inconnu"
+    }
+}
+```
+
+#### 4. Initialisation par défaut
+
+```powershell
+function Initialize-User {
+    param (
+        [string]$Name
+    )
+
+    return [PSCustomObject]@{
+        Name = $Name
+        Address = [PSCustomObject]@{
+            Street = ""
+            City = ""
+            ZipCode = ""
+        }
+    }
+}
+
+$user = Initialize-User -Name "John Doe"
+# Maintenant $user.Address ne sera jamais null
+```
+
+#### 5. Utilisation de l'opérateur d'accès sécurisé (en PowerShell 7+)
+
+```powershell
+function Get-UserCity {
+    param (
+        [PSCustomObject]$User
+    )
+
+    # L'opérateur ?. retourne null si l'objet est null au lieu de générer une exception
+    return $User?.Address?.City
+}
+```
+
+### Débogage des NullReferenceException
+
+Lorsque vous rencontrez une `NullReferenceException`, voici quelques étapes pour la déboguer efficacement :
+
+1. **Examiner la stack trace** : La stack trace indique où l'exception s'est produite.
+
+2. **Inspecter les variables** : Vérifiez l'état des variables au moment de l'exception.
+
+3. **Ajouter des points d'arrêt** : Placez des points d'arrêt avant la ligne qui génère l'exception.
+
+4. **Ajouter des assertions** : Ajoutez des assertions pour vérifier les hypothèses sur l'état des variables.
+
+5. **Journalisation** : Ajoutez des instructions de journalisation pour suivre le flux d'exécution.
+
+```powershell
+function Debug-NullReference {
+    param (
+        [PSCustomObject]$User
+    )
+
+    Write-Host "User: $($null -eq $User ? 'null' : 'not null')"
+
+    if ($null -ne $User) {
+        Write-Host "User.Address: $($null -eq $User.Address ? 'null' : 'not null')"
+    }
+
+    try {
+        $city = $User.Address.City
+        Write-Host "City: $city"
+        return $city
+    } catch {
+        Write-Host "Exception: $($_.Exception.GetType().FullName)"
+        Write-Host "Message: $($_.Exception.Message)"
+        Write-Host "Stack Trace: $($_.Exception.StackTrace)"
+        throw
+    }
+}
+```
+
+### Différence entre NullReferenceException et ArgumentNullException
+
+Il est important de comprendre la différence entre `NullReferenceException` et `ArgumentNullException` :
+
+- **NullReferenceException** : Levée par le runtime lorsqu'une référence nulle est déréférencée. Indique généralement un bug dans le code.
+
+- **ArgumentNullException** : Levée explicitement par le code lorsqu'un argument null est passé à une méthode qui ne l'accepte pas. Fait partie de la validation des entrées.
+
+```powershell
+function Compare-NullExceptions {
+    # Ceci génère une ArgumentNullException (validation explicite)
+    function Process-Data {
+        param (
+            [object]$Data
+        )
+
+        if ($null -eq $Data) {
+            throw [System.ArgumentNullException]::new("Data")
+        }
+
+        return $Data.ToString()
+    }
+
+    # Ceci génère une NullReferenceException (erreur de runtime)
+    function Process-DataUnsafe {
+        param (
+            [object]$Data
+        )
+
+        # Pas de vérification de nullité
+        return $Data.ToString()
+    }
+
+    try {
+        Process-Data -Data $null
+    } catch {
+        Write-Host "Exception 1: $($_.Exception.GetType().FullName)"
+        Write-Host "Message 1: $($_.Exception.Message)"
+    }
+
+    try {
+        Process-DataUnsafe -Data $null
+    } catch {
+        Write-Host "Exception 2: $($_.Exception.GetType().FullName)"
+        Write-Host "Message 2: $($_.Exception.Message)"
+    }
+}
+
+Compare-NullExceptions
+
+# Sortie:
+# Exception 1: System.ArgumentNullException
+# Message 1: Value cannot be null. Parameter name: Data
+# Exception 2: System.NullReferenceException
+# Message 2: Object reference not set to an instance of an object.
+```
+
+### Bonnes pratiques pour éviter les NullReferenceException
+
+1. **Validation des entrées** : Validez toujours les paramètres d'entrée au début des méthodes.
+
+2. **Initialisation par défaut** : Initialisez les objets avec des valeurs par défaut plutôt que null.
+
+3. **Conception défensive** : Concevez vos APIs pour minimiser les possibilités de références nulles.
+
+4. **Documentation** : Documentez clairement quelles méthodes peuvent retourner null et dans quelles conditions.
+
+5. **Tests unitaires** : Écrivez des tests qui vérifient le comportement avec des entrées nulles.
+
+6. **Analyse statique** : Utilisez des outils d'analyse statique pour détecter les déréférencements potentiels de null.
+
+7. **Utilisation de types non nullables** : En C#, utilisez les types de référence non nullables (C# 8.0+).
+
+### Résumé
+
+`NullReferenceException` est l'une des exceptions les plus courantes et les plus frustrantes dans le développement .NET. Elle indique généralement un bug dans le code plutôt qu'une condition d'erreur attendue. La meilleure approche est de prévenir ces exceptions par une validation appropriée des entrées, une initialisation par défaut et une conception défensive.
+
+En comprenant les causes courantes de `NullReferenceException` et en appliquant les bonnes pratiques pour les éviter, vous pouvez écrire un code plus robuste et plus fiable.
