@@ -10,19 +10,29 @@ L'objectif principal du mode CHECK est d'automatiser la vérification de l'état
 - Vérification automatique de l'implémentation des tâches
 - Vérification automatique des tests associés aux tâches
 - Marquage automatique des tâches complètes dans la roadmap
+- Mise à jour automatique des cases à cocher dans le document actif
 - Génération de rapports d'avancement
 
 ## Utilisation
 
 ```powershell
 # Vérifier l'état d'avancement d'une tâche spécifique
-.\check-mode.ps1 -RoadmapPath "docs/roadmap/roadmap.md" -TaskId "1.2.3"
-
-# Vérifier l'état d'avancement de toutes les tâches
-.\check-mode.ps1 -RoadmapPath "docs/roadmap/roadmap.md" -All
+.\check-mode.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3"
 
 # Vérifier l'état d'avancement et mettre à jour la roadmap
-.\check-mode.ps1 -RoadmapPath "docs/roadmap/roadmap.md" -All -UpdateRoadmap
+.\check-mode.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -UpdateRoadmap
+
+# Vérifier l'état d'avancement et simuler la mise à jour des cases à cocher dans le document actif
+.\check-mode.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -CheckActiveDocument
+
+# Vérifier l'état d'avancement et mettre à jour les cases à cocher dans le document actif spécifié
+.\check-mode.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -ActiveDocumentPath "document_actif.md" -CheckActiveDocument -Force
+
+# Vérifier l'état d'avancement, mettre à jour la roadmap et le document actif
+.\check-mode.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -UpdateRoadmap -CheckActiveDocument -Force
+
+# Détecter automatiquement le document actif et mettre à jour les cases à cocher
+.\check-mode.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -CheckActiveDocument -Force
 ```
 
 ## Critères de validation
@@ -55,3 +65,41 @@ Rapport d'avancement :
 - Vérifier manuellement les tâches marquées comme complètes
 - Utiliser le mode CHECK avant de présenter l'avancement du projet
 - Configurer des seuils de validation personnalisés si nécessaire
+- Utiliser le paramètre `-ActiveDocumentPath` pour mettre à jour automatiquement les cases à cocher dans le document actif
+- Vérifier que les tâches sont correctement identifiées dans le document actif (format des cases à cocher)
+
+## Mise à jour des cases à cocher dans le document actif
+Le mode CHECK peut automatiquement mettre à jour les cases à cocher dans le document actif lorsque les tâches sont implémentées et testées à 100%. Pour cela, il recherche les lignes qui contiennent des cases à cocher non cochées (`- [ ]`) et les remplace par des cases à cocher cochées (`- [x]`) si la tâche correspondante est complète.
+
+### Détection du document actif
+Le mode CHECK peut détecter automatiquement le document actif de plusieurs façons :
+1. Via la variable d'environnement `VSCODE_ACTIVE_DOCUMENT` (si disponible)
+2. En recherchant les fichiers Markdown récemment modifiés dans le répertoire courant
+3. Via le paramètre `-ActiveDocumentPath` spécifié par l'utilisateur
+
+### Formats de cases à cocher reconnus
+Le script reconnaît plusieurs formats de cases à cocher :
+```markdown
+- [ ] **1.2.3** Nom de la tâche
+- [ ] 1.2.3 Nom de la tâche
+- [ ] Nom de la tâche
+- [ ] [1.2.3] Nom de la tâche
+- [ ] (1.2.3) Nom de la tâche
+```
+
+Le script prend également en charge les identifiants de tâches longs et complexes :
+```markdown
+- [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.1** Nom de la tâche
+```
+
+### Mode simulation et mode force
+Par défaut, le mode CHECK fonctionne en mode simulation (`-Force` non spécifié) :
+- Il affiche les modifications qui seraient apportées sans les appliquer
+- Il indique le nombre de cases à cocher qui seraient mises à jour
+
+Pour appliquer réellement les modifications, utilisez le paramètre `-Force` :
+```powershell
+.\check-mode.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -CheckActiveDocument -Force
+```
+
+Pour que la mise à jour fonctionne correctement, assurez-vous que les cases à cocher dans le document actif suivent l'un des formats reconnus et que les tâches sont implémentées et testées à 100%.

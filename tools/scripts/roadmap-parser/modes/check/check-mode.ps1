@@ -62,11 +62,14 @@ param (
     [Parameter(Mandatory = $false)]
     [switch]$GenerateReport = $true,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers le document actif à vérifier et mettre à jour.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers le document actif à vérifier et mettre à jour. Si non spécifié, le document actif sera détecté automatiquement.")]
     [string]$ActiveDocumentPath,
 
     [Parameter(Mandatory = $false, HelpMessage = "Indique si les cases à cocher dans le document actif doivent être mises à jour.")]
-    [switch]$CheckActiveDocument = $true
+    [switch]$CheckActiveDocument = $true,
+
+    [Parameter(Mandatory = $false, HelpMessage = "Force la mise à jour des cases à cocher dans le document actif sans demander de confirmation.")]
+    [switch]$Force = $false
 )
 
 # Importer les fonctions nécessaires
@@ -74,6 +77,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Join-Path -Path $scriptPath -ChildPath "roadmap-parser\module\Functions\Public"
 $invokeCheckPath = Join-Path -Path $modulePath -ChildPath "Invoke-RoadmapCheck.ps1"
 $updateTaskPath = Join-Path -Path $modulePath -ChildPath "Update-RoadmapTaskStatus.ps1"
+$updateCheckboxesPath = Join-Path -Path $modulePath -ChildPath "Update-ActiveDocumentCheckboxes.ps1"
 
 if (Test-Path -Path $invokeCheckPath) {
     . $invokeCheckPath
@@ -89,14 +93,44 @@ if (Test-Path -Path $updateTaskPath) {
     throw "La fonction Update-RoadmapTaskStatus est introuvable à l'emplacement : $updateTaskPath"
 }
 
+if (Test-Path -Path $updateCheckboxesPath) {
+    . $updateCheckboxesPath
+    Write-Host "Fonction Update-ActiveDocumentCheckboxes importée." -ForegroundColor Green
+} else {
+    Write-Warning "La fonction Update-ActiveDocumentCheckboxes est introuvable à l'emplacement : $updateCheckboxesPath. La mise à jour automatique des cases à cocher dans le document actif ne sera pas disponible."
+}
+
 # Vérifier que le fichier de roadmap existe
 if (-not (Test-Path -Path $FilePath)) {
     throw "Le fichier de roadmap spécifié n'existe pas : $FilePath"
 }
 
-# Vérifier si le document actif existe
-if ($CheckActiveDocument -and $ActiveDocumentPath) {
-    if (-not (Test-Path -Path $ActiveDocumentPath)) {
+# Vérifier si le document actif existe ou le détecter automatiquement
+if ($CheckActiveDocument) {
+    # Si le chemin du document actif n'est pas spécifié, essayer de le détecter automatiquement
+    if (-not $ActiveDocumentPath) {
+        # Essayer de détecter le document actif via l'environnement
+        if ($env:VSCODE_ACTIVE_DOCUMENT) {
+            $ActiveDocumentPath = $env:VSCODE_ACTIVE_DOCUMENT
+            Write-Host "Document actif détecté automatiquement : $ActiveDocumentPath" -ForegroundColor Green
+        } else {
+            # Essayer de trouver un document récemment modifié dans le répertoire courant
+            $recentFiles = Get-ChildItem -Path (Get-Location) -File -Recurse -Include "*.md" |
+                Sort-Object LastWriteTime -Descending |
+                Select-Object -First 5
+
+            if ($recentFiles.Count -gt 0) {
+                $ActiveDocumentPath = $recentFiles[0].FullName
+                Write-Host "Document actif détecté automatiquement (fichier récemment modifié) : $ActiveDocumentPath" -ForegroundColor Green
+            } else {
+                Write-Warning "Impossible de détecter automatiquement le document actif. Veuillez spécifier le chemin du document actif avec le paramètre -ActiveDocumentPath."
+                $CheckActiveDocument = $false
+            }
+        }
+    }
+
+    # Vérifier si le document actif existe
+    if ($ActiveDocumentPath -and (-not (Test-Path -Path $ActiveDocumentPath))) {
         Write-Warning "Le document actif spécifié n'existe pas : $ActiveDocumentPath. La vérification du document actif sera désactivée."
         $CheckActiveDocument = $false
     }
@@ -109,38 +143,81 @@ $result = Invoke-RoadmapCheck -FilePath $FilePath -TaskIdentifier $TaskIdentifie
 if ($CheckActiveDocument -and $ActiveDocumentPath) {
     Write-Host "`nVérification et mise à jour des cases à cocher dans le document actif : $ActiveDocumentPath" -ForegroundColor Cyan
 
-    # Lire le contenu du document actif
-    $activeDocumentContent = Get-Content -Path $ActiveDocumentPath -Encoding UTF8
-    $tasksUpdated = 0
+    # Extraire les résultats d'implémentation et de tests
+    $implementationResults = @{}
+    $testResults = @{}
 
-    # Pour chaque tâche vérifiée
     foreach ($task in $result.Tasks) {
-        # Si la tâche est implémentée à 100% et testée avec succès à 100%
-        if ($task.Implementation.ImplementationComplete -and $task.Tests.TestsComplete -and $task.Tests.TestsSuccessful) {
-            # Rechercher la tâche dans le document actif
-            $taskPattern = "- \[ \] \*\*$($task.Id)\*\*"
-            $taskReplacement = "- [x] **$($task.Id)**"
-
-            # Mettre à jour la case à cocher
-            $newContent = $activeDocumentContent -replace $taskPattern, $taskReplacement
-
-            # Si le contenu a changé, c'est que la tâche a été trouvée et mise à jour
-            if ($newContent -ne $activeDocumentContent) {
-                $activeDocumentContent = $newContent
-                $tasksUpdated++
-                Write-Host "  Tâche $($task.Id) - $($task.Title) : Case à cocher mise à jour" -ForegroundColor Green
-            }
-        }
+        $implementationResults[$task.Id] = $task.Implementation
+        $testResults[$task.Id] = $task.Tests
     }
 
-    # Si des tâches ont été mises à jour, enregistrer le document
-    if ($tasksUpdated -gt 0) {
-        if ($PSCmdlet.ShouldProcess($ActiveDocumentPath, "Mettre à jour les cases à cocher dans le document actif")) {
-            $activeDocumentContent | Set-Content -Path $ActiveDocumentPath -Encoding UTF8
-            Write-Host "  $tasksUpdated tâches ont été mises à jour dans le document actif." -ForegroundColor Green
+    # Utiliser la fonction Update-ActiveDocumentCheckboxes si disponible
+    if (Get-Command -Name Update-ActiveDocumentCheckboxes -ErrorAction SilentlyContinue) {
+        # Préparer les paramètres pour la fonction
+        $updateParams = @{
+            DocumentPath = $ActiveDocumentPath
+            ImplementationResults = $implementationResults
+            TestResults = $testResults
         }
+
+        # Ajouter le paramètre WhatIf si Force n'est pas spécifié
+        if (-not $Force) {
+            $updateParams.Add('WhatIf', $true)
+            Write-Host "  Mode simulation activé. Utilisez -Force pour appliquer les modifications." -ForegroundColor Yellow
+        }
+
+        # Appeler la fonction avec les paramètres
+        $updateResult = Update-ActiveDocumentCheckboxes @updateParams
+        $tasksUpdated = $updateResult
     } else {
-        Write-Host "  Aucune tâche à mettre à jour dans le document actif." -ForegroundColor Yellow
+        # Méthode alternative si la fonction n'est pas disponible
+        # Lire le contenu du document actif
+        $activeDocumentContent = Get-Content -Path $ActiveDocumentPath -Encoding UTF8
+        $tasksUpdated = 0
+
+        # Pour chaque tâche vérifiée
+        foreach ($task in $result.Tasks) {
+            # Si la tâche est implémentée à 100% et testée avec succès à 100%
+            if ($task.Implementation.ImplementationComplete -and $task.Tests.TestsComplete -and $task.Tests.TestsSuccessful) {
+                # Rechercher la tâche dans le document actif (différents formats possibles)
+                $taskPatterns = @(
+                    "- \[ \] \*\*$($task.Id)\*\*",
+                    "- \[ \] $($task.Id)",
+                    "- \[ \] $($task.Title)"
+                )
+
+                foreach ($taskPattern in $taskPatterns) {
+                    $taskReplacement = $taskPattern -replace "\[ \]", "[x]"
+
+                    # Mettre à jour la case à cocher
+                    $newContent = $activeDocumentContent -replace [regex]::Escape($taskPattern), $taskReplacement
+
+                    # Si le contenu a changé, c'est que la tâche a été trouvée et mise à jour
+                    if ($newContent -ne $activeDocumentContent) {
+                        $activeDocumentContent = $newContent
+                        $tasksUpdated++
+                        Write-Host "  Tâche $($task.Id) - $($task.Title) : Case à cocher mise à jour" -ForegroundColor Green
+                        break  # Sortir de la boucle des patterns une fois la tâche trouvée
+                    }
+                }
+            }
+        }
+
+        # Si des tâches ont été mises à jour, enregistrer le document
+        if ($tasksUpdated -gt 0) {
+            if ($Force) {
+                # Mode force, appliquer les modifications sans confirmation
+                $activeDocumentContent | Set-Content -Path $ActiveDocumentPath -Encoding UTF8
+                Write-Host "  $tasksUpdated tâches ont été mises à jour dans le document actif." -ForegroundColor Green
+            } else {
+                # Mode simulation, afficher les modifications sans les appliquer
+                Write-Host "  $tasksUpdated tâches seraient mises à jour dans le document actif (mode simulation)." -ForegroundColor Yellow
+                Write-Host "  Utilisez -Force pour appliquer les modifications." -ForegroundColor Yellow
+            }
+        } else {
+            Write-Host "  Aucune tâche à mettre à jour dans le document actif." -ForegroundColor Yellow
+        }
     }
 }
 
@@ -177,6 +254,15 @@ if ($GenerateReport) {
 }
 
 # Afficher un message de confirmation pour le document actif
-if ($CheckActiveDocument -and $ActiveDocumentPath -and $tasksUpdated -gt 0) {
-    Write-Host "`nLes cases à cocher dans le document actif ont été mises à jour : $ActiveDocumentPath" -ForegroundColor Green
+if ($CheckActiveDocument -and $ActiveDocumentPath) {
+    if ($tasksUpdated -gt 0) {
+        if ($Force) {
+            Write-Host "`nLes cases à cocher dans le document actif ont été mises à jour : $ActiveDocumentPath" -ForegroundColor Green
+        } else {
+            Write-Host "`nLes cases à cocher dans le document actif seraient mises à jour (mode simulation) : $ActiveDocumentPath" -ForegroundColor Yellow
+            Write-Host "Utilisez -Force pour appliquer les modifications." -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "`nAucune case à cocher n'a été mise à jour dans le document actif : $ActiveDocumentPath" -ForegroundColor Gray
+    }
 }
