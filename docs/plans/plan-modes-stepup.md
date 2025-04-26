@@ -443,7 +443,7 @@
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.1.3** Implémenter le système de métadonnées des exceptions
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.1.4** Développer le mécanisme d'indexation des exceptions
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.1.5** Créer les fonctions d'accès à la taxonomie
-                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2** Documenter les propriétés communes de System.Exception
+                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2** Documenter les propriétés communes de System.Exception
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.1** Documenter la propriété Message et ses caractéristiques
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.2** Documenter la propriété StackTrace et son format
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.3** Documenter la propriété InnerException et sa hiérarchie
