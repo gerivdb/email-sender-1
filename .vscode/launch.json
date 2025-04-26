@@ -1,0 +1,68 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "PowerShell: Launch Current File",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "args": [],
+            "cwd": "${file}"
+        },
+        {
+            "name": "PowerShell: Launch Script with Args",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "args": ["${input:scriptArgs}"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Module",
+            "type": "python",
+            "request": "launch",
+            "module": "${input:moduleName}",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Debug Tests",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "purpose": ["debug-test"],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "JavaScript: Node.js",
+            "type": "node",
+            "request": "launch",
+            "program": "${file}",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "scriptArgs",
+            "description": "Arguments pour le script",
+            "default": "-Verbose",
+            "type": "promptString"
+        },
+        {
+            "id": "moduleName",
+            "description": "Nom du module Python à exécuter",
+            "default": "journal.journal_vscode",
+            "type": "promptString"
+        }
+    ]
+}

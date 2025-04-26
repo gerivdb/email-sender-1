@@ -1,18 +1,18 @@
-﻿[
+[
   {
     "key": "ctrl+alt+j d",
     "command": "workbench.action.tasks.runTask",
-    "args": "Journal: EntrÃ©e quotidienne"
+    "args": "Journal: Entrée quotidienne"
   },
   {
     "key": "ctrl+alt+j w",
     "command": "workbench.action.tasks.runTask",
-    "args": "Journal: EntrÃ©e hebdomadaire"
+    "args": "Journal: Entrée hebdomadaire"
   },
   {
     "key": "ctrl+alt+j n",
     "command": "workbench.action.tasks.runTask",
-    "args": "Journal: Nouvelle entrÃ©e"
+    "args": "Journal: Nouvelle entrée"
   },
   {
     "key": "ctrl+alt+j s",
@@ -32,6 +32,6 @@
   {
     "key": "ctrl+alt+j m",
     "command": "workbench.action.tasks.runTask",
-    "args": "Journal: DÃ©marrer la surveillance"
+    "args": "Journal: Démarrer la surveillance"
   }
 ]
