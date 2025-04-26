@@ -451,7 +451,7 @@
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.5** Documenter la propriété HResult et ses codes d'erreur
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.6** Documenter les méthodes ToString() et GetBaseException()
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.7** Documenter les propriétés Data et TargetSite
-                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.8** Créer un tableau récapitulatif des propriétés communes
+                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.8** Créer un tableau récapitulatif des propriétés communes
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3** Recenser les exceptions de base du framework .NET
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1** Identifier et documenter les exceptions du namespace System
                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.1** Documenter ArgumentException et ses dérivées

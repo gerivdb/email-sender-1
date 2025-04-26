@@ -1848,6 +1848,118 @@ Dans notre taxonomie des exceptions PowerShell, les propriétés `Data` et `Targ
 
 5. **Classification dynamique** : Utiliser les informations de ces propriétés pour classifier dynamiquement les exceptions.
 
+## Tableau récapitulatif des propriétés et méthodes communes
+
+Le tableau suivant résume les propriétés et méthodes communes de la classe `System.Exception` que nous avons documentées en détail dans ce document. Il fournit une vue d'ensemble rapide de leurs caractéristiques, utilisations typiques et particularités.
+
+| Propriété/Méthode | Type | Modifiable | Description | Utilisation typique | Particularités |
+|-------------------|------|------------|-------------|-------------------|----------------|
+| **Message** | `string` | Non | Message décrivant l'erreur | Affichage d'informations sur l'erreur | - Défini lors de la création<br>- Peut être localisé<br>- Devrait être compréhensible |
+| **StackTrace** | `string` | Non | Trace de la pile d'appels | Débogage et diagnostic | - Généré automatiquement<br>- Peut être null<br>- Format dépendant de la plateforme |
+| **InnerException** | `Exception` | Non | Exception interne encapsulée | Propagation d'exceptions | - Permet de créer des chaînes d'exceptions<br>- Utile avec GetBaseException() |
+| **Source** | `string` | Oui | Nom de l'application ou de l'objet qui a causé l'erreur | Identification de l'origine | - Souvent le nom de l'assembly<br>- Peut être personnalisé |
+| **HResult** | `int` | Oui | Code d'erreur numérique | Interopérabilité COM/native | - Format standardisé<br>- Contient sévérité, facilité, code |
+| **Data** | `IDictionary` | Oui (contenu) | Collection de paires clé/valeur | Informations contextuelles | - Extensible<br>- Préservé lors de la propagation |
+| **TargetSite** | `MethodBase` | Non | Méthode qui a généré l'exception | Analyse précise de l'origine | - Peut être null<br>- Utilise la réflexion |
+| **ToString()** | Méthode | N/A | Représentation textuelle complète | Journalisation, débogage | - Inclut type, message, pile<br>- Format standardisé |
+| **GetBaseException()** | Méthode | N/A | Exception racine dans une chaîne | Diagnostic de la cause fondamentale | - Parcourt récursivement InnerException<br>- Comportement spécial pour AggregateException |
+
+### Comparaison des propriétés et méthodes
+
+Le tableau suivant compare les différentes propriétés et méthodes en fonction de critères spécifiques :
+
+| Propriété/Méthode | Disponibilité | Niveau de détail | Modifiable | Persistance | Utilité en PowerShell |
+|-------------------|--------------|-----------------|------------|------------|---------------------|
+| **Message** | Toujours | Basique | Non | Oui | Élevée (affichage direct) |
+| **StackTrace** | Après levée | Détaillé | Non | Oui | Moyenne (format verbeux) |
+| **InnerException** | Si définie | Variable | Non | Oui | Moyenne (nécessite parcours) |
+| **Source** | Variable | Basique | Oui | Oui | Moyenne (souvent générique) |
+| **HResult** | Toujours | Technique | Oui | Oui | Faible (sauf interop) |
+| **Data** | Toujours | Personnalisable | Oui | Oui | Élevée (extensible) |
+| **TargetSite** | Variable | Détaillé | Non | Non (sérialisation) | Moyenne (technique) |
+| **ToString()** | Toujours | Complet | N/A | Oui | Élevée (journalisation) |
+| **GetBaseException()** | Toujours | Ciblé | N/A | Oui | Moyenne (diagnostic) |
+
+### Scénarios d'utilisation recommandés
+
+Le tableau suivant indique les scénarios d'utilisation recommandés pour chaque propriété ou méthode :
+
+| Scénario | Propriétés/Méthodes recommandées |
+|----------|--------------------------------|
+| **Affichage à l'utilisateur** | Message (formaté), parfois Source |
+| **Journalisation** | ToString(), Message, StackTrace, Source, Data (contexte) |
+| **Débogage** | ToString(), StackTrace, TargetSite, InnerException |
+| **Diagnostic avancé** | GetBaseException(), TargetSite, HResult, Data |
+| **Interopérabilité** | HResult, Source |
+| **Enrichissement contextuel** | Data |
+| **Analyse de la cause racine** | GetBaseException(), InnerException (chaîne) |
+| **Classification des erreurs** | Type d'exception, HResult, Source |
+
+### Bonnes pratiques générales
+
+1. **Hiérarchie d'informations** : Utilisez une approche hiérarchique pour accéder aux informations d'exception :
+   - Niveau 1 (basique) : Message, Type d'exception
+   - Niveau 2 (standard) : Source, InnerException, Data
+   - Niveau 3 (avancé) : StackTrace, TargetSite, HResult
+
+2. **Journalisation structurée** : Pour une journalisation efficace, structurez les informations d'exception :
+   ```powershell
+   $exceptionInfo = [PSCustomObject]@{
+       Type = $_.Exception.GetType().FullName
+       Message = $_.Exception.Message
+       Source = $_.Exception.Source
+       StackTrace = $_.Exception.StackTrace
+       HResult = "0x$($_.Exception.HResult.ToString('X8'))"
+       TargetSite = $_.Exception.TargetSite?.Name
+       InnerException = $_.Exception.InnerException?.GetType().FullName
+       Data = @{}
+   }
+
+   foreach ($key in $_.Exception.Data.Keys) {
+       $exceptionInfo.Data[$key] = $_.Exception.Data[$key]
+   }
+   ```
+
+3. **Enrichissement contextuel** : Utilisez systématiquement la propriété Data pour enrichir les exceptions avec des informations contextuelles :
+   ```powershell
+   try {
+       # Code qui peut générer une exception
+   }
+   catch {
+       $_.Exception.Data["Timestamp"] = Get-Date
+       $_.Exception.Data["Operation"] = "NomOpération"
+       $_.Exception.Data["Parameters"] = $parameters
+       throw  # Relancer l'exception enrichie
+   }
+   ```
+
+4. **Analyse de la cause racine** : Combinez GetBaseException() avec d'autres propriétés pour une analyse complète :
+   ```powershell
+   $rootCause = $_.Exception.GetBaseException()
+   $rootType = $rootCause.GetType().FullName
+   $rootMessage = $rootCause.Message
+   $rootStack = $rootCause.StackTrace
+   ```
+
+5. **Traitement conditionnel** : Utilisez le type d'exception et HResult pour un traitement conditionnel :
+   ```powershell
+   catch {
+       $ex = $_.Exception
+       switch ($ex.GetBaseException().GetType().FullName) {
+           "System.IO.FileNotFoundException" { # Traitement spécifique }
+           "System.UnauthorizedAccessException" { # Traitement spécifique }
+           default {
+               # Traitement par défaut basé sur HResult
+               switch ($ex.HResult) {
+                   0x80070002 { # Traitement spécifique pour ERROR_FILE_NOT_FOUND }
+                   0x80070005 { # Traitement spécifique pour ERROR_ACCESS_DENIED }
+                   default { # Traitement par défaut }
+               }
+           }
+       }
+   }
+   ```
+
 ### Références
 
 - [Documentation Microsoft sur System.Exception.Data](https://docs.microsoft.com/en-us/dotnet/api/system.exception.data)
