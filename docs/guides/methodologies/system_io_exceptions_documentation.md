@@ -1924,3 +1924,1372 @@ Debug-PathTooLongException -Path $longPath
 `PathTooLongException` est une exception qui est levée lorsqu'un chemin de fichier ou de répertoire dépasse la longueur maximale autorisée par le système d'exploitation. Cette exception est une sous-classe de `IOException` et est spécifiquement utilisée pour signaler des problèmes liés à la longueur des chemins.
 
 En comprenant les limites de longueur des chemins sur différentes plateformes et en appliquant les bonnes pratiques pour la prévention et le débogage, vous pouvez développer des applications plus robustes qui gèrent efficacement les erreurs liées aux chemins trop longs.
+
+## UnauthorizedAccessException et ses permissions
+
+### Vue d'ensemble
+
+`UnauthorizedAccessException` est une exception qui est levée lorsqu'une opération n'est pas autorisée par le système d'exploitation, généralement en raison de restrictions de permissions. Cette exception peut être levée lors de tentatives d'accès à des fichiers, des répertoires, des registres ou d'autres ressources protégées sans les autorisations nécessaires.
+
+### Hiérarchie
+
+```
+System.Exception
+└── System.SystemException
+    └── System.UnauthorizedAccessException
+```
+
+Contrairement aux exceptions précédentes, `UnauthorizedAccessException` n'est pas une sous-classe de `IOException`, mais plutôt une sous-classe directe de `SystemException`. Cela reflète le fait que les problèmes d'accès non autorisé peuvent survenir dans divers contextes, pas seulement dans les opérations d'entrée/sortie.
+
+### Description
+
+`UnauthorizedAccessException` est levée dans plusieurs contextes liés aux permissions et aux droits d'accès :
+
+1. **Opérations sur les fichiers et répertoires** : Tentatives de lecture, d'écriture, de création ou de suppression de fichiers ou de répertoires sans les permissions nécessaires.
+
+2. **Accès au registre** : Tentatives d'accès ou de modification des clés de registre sans les permissions appropriées.
+
+3. **Opérations réseau** : Tentatives d'accès à des ressources réseau sans les autorisations requises.
+
+4. **Opérations de sécurité** : Tentatives d'exécution d'opérations nécessitant des privilèges élevés.
+
+### Propriétés spécifiques
+
+`UnauthorizedAccessException` n'ajoute pas de propriétés spécifiques à celles héritées de `Exception`, mais elle fournit des informations détaillées dans sa propriété `Message`. Voici les propriétés héritées les plus pertinentes pour le diagnostic des problèmes d'accès non autorisé :
+
+| Propriété | Type | Description |
+|-----------|------|-------------|
+| Message | string | Message décrivant l'erreur, incluant souvent le chemin d'accès et le type d'opération qui a échoué |
+| StackTrace | string | Trace de la pile d'appels au moment où l'exception a été levée |
+| Source | string | Nom de l'application ou de l'objet qui a causé l'erreur |
+| HResult | int | Code d'erreur numérique associé à l'exception (généralement 0x80070005 pour les erreurs d'accès) |
+| InnerException | Exception | Exception interne qui a causé l'exception actuelle (si applicable) |
+
+### Codes HResult courants
+
+Le code HResult pour `UnauthorizedAccessException` est généralement `0x80070005`, qui correspond à `E_ACCESSDENIED` (Accès refusé) dans les codes d'erreur Windows.
+
+### Constructeurs principaux
+
+```csharp
+UnauthorizedAccessException()
+// Initialise une nouvelle instance avec un message par défaut
+
+UnauthorizedAccessException(string message)
+// Initialise une nouvelle instance avec un message d'erreur spécifié
+
+UnauthorizedAccessException(string message, Exception innerException)
+// Initialise une nouvelle instance avec un message d'erreur spécifié et une référence à l'exception interne
+```
+
+### Différence avec SecurityException
+
+Il est important de distinguer `UnauthorizedAccessException` de `SecurityException` :
+
+- **UnauthorizedAccessException** : Levée par le système d'exploitation lorsqu'une opération n'est pas autorisée en raison des permissions du système de fichiers ou d'autres restrictions d'accès au niveau du système d'exploitation.
+
+- **SecurityException** : Levée par le Common Language Runtime (CLR) lorsqu'une opération n'est pas autorisée en raison des restrictions de la politique de sécurité .NET, comme les restrictions de Code Access Security (CAS).
+
+### Scénarios courants d'accès non autorisé
+
+#### 1. Accès aux fichiers et répertoires
+
+Les scénarios les plus courants impliquent des opérations sur les fichiers et les répertoires :
+
+- **Lecture d'un fichier protégé** : Tentative de lecture d'un fichier pour lequel l'utilisateur n'a pas de permissions de lecture.
+
+```powershell
+try {
+    $content = [System.IO.File]::ReadAllText("C:\Windows\System32\config\SAM")
+    Write-Host "Contenu lu avec succès"
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour lire ce fichier"
+}
+```
+
+- **Écriture dans un fichier en lecture seule** : Tentative de modification d'un fichier en lecture seule ou pour lequel l'utilisateur n'a pas de permissions d'écriture.
+
+```powershell
+try {
+    [System.IO.File]::WriteAllText("C:\Windows\System32\drivers\etc\hosts", "127.0.0.1 localhost")
+    Write-Host "Fichier modifié avec succès"
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour modifier ce fichier"
+}
+```
+
+- **Suppression d'un fichier verrouillé** : Tentative de suppression d'un fichier qui est en cours d'utilisation par un autre processus ou pour lequel l'utilisateur n'a pas de permissions de suppression.
+
+```powershell
+try {
+    [System.IO.File]::Delete("C:\Windows\System32\ntoskrnl.exe")
+    Write-Host "Fichier supprimé avec succès"
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour supprimer ce fichier"
+} catch [System.IO.IOException] {
+    Write-Host "Le fichier est en cours d'utilisation par un autre processus"
+}
+```
+
+- **Accès à un répertoire restreint** : Tentative d'accès à un répertoire pour lequel l'utilisateur n'a pas de permissions d'accès.
+
+```powershell
+try {
+    $files = [System.IO.Directory]::GetFiles("C:\Windows\System32\config")
+    Write-Host "Nombre de fichiers : $($files.Count)"
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour accéder à ce répertoire"
+}
+```
+
+- **Création d'un fichier dans un répertoire protégé** : Tentative de création d'un fichier dans un répertoire pour lequel l'utilisateur n'a pas de permissions d'écriture.
+
+```powershell
+try {
+    [System.IO.File]::WriteAllText("C:\Windows\System32\test.txt", "Test")
+    Write-Host "Fichier créé avec succès"
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour créer un fichier dans ce répertoire"
+}
+```
+
+#### 2. Accès au registre
+
+Les opérations sur le registre Windows peuvent également générer des `UnauthorizedAccessException` :
+
+- **Lecture d'une clé de registre protégée** : Tentative de lecture d'une clé de registre pour laquelle l'utilisateur n'a pas de permissions de lecture.
+
+```powershell
+try {
+    $key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey("SAM")
+    if ($key -ne $null) {
+        $valueNames = $key.GetValueNames()
+        Write-Host "Valeurs : $valueNames"
+        $key.Close()
+    }
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour lire cette clé de registre"
+}
+```
+
+- **Écriture dans une clé de registre protégée** : Tentative de modification d'une clé de registre pour laquelle l'utilisateur n'a pas de permissions d'écriture.
+
+```powershell
+try {
+    $key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey("SOFTWARE\Microsoft\Windows NT\CurrentVersion", $true)
+    if ($key -ne $null) {
+        $key.SetValue("TestValue", "TestData")
+        $key.Close()
+        Write-Host "Valeur de registre créée avec succès"
+    }
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour modifier cette clé de registre"
+}
+```
+
+#### 3. Opérations réseau
+
+Les opérations réseau peuvent également générer des `UnauthorizedAccessException` :
+
+- **Accès à un partage réseau protégé** : Tentative d'accès à un partage réseau pour lequel l'utilisateur n'a pas de permissions d'accès.
+
+```powershell
+try {
+    $files = [System.IO.Directory]::GetFiles("\\Server\ProtectedShare")
+    Write-Host "Nombre de fichiers : $($files.Count)"
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour accéder à ce partage réseau"
+} catch [System.IO.IOException] {
+    Write-Host "Erreur d'E/S lors de l'accès au partage réseau"
+}
+```
+
+- **Liaison à un port réseau réservé** : Tentative de liaison à un port réseau inférieur à 1024 sans privilèges administratifs.
+
+```powershell
+try {
+    $listener = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Any, 80)
+    $listener.Start()
+    Write-Host "Écoute sur le port 80"
+    # ... autres opérations ...
+    $listener.Stop()
+} catch [System.Net.Sockets.SocketException] {
+    # Sur Windows, cela génère généralement une SocketException plutôt qu'une UnauthorizedAccessException
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour écouter sur le port 80"
+}
+```
+
+#### 4. Opérations de sécurité
+
+Les opérations liées à la sécurité peuvent également générer des `UnauthorizedAccessException` :
+
+- **Accès à des informations d'identification protégées** : Tentative d'accès à des informations d'identification ou à des secrets protégés.
+
+```powershell
+try {
+    # Tentative d'accès à des informations d'identification protégées
+    $credential = [System.Security.Cryptography.ProtectedData]::Unprotect($protectedData, $null, [System.Security.Cryptography.DataProtectionScope]::LocalMachine)
+    Write-Host "Informations d'identification déchiffrées avec succès"
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour déchiffrer ces données"
+} catch [System.Security.Cryptography.CryptographicException] {
+    Write-Host "Erreur de déchiffrement"
+}
+```
+
+- **Modification des paramètres de sécurité** : Tentative de modification des paramètres de sécurité du système sans privilèges administratifs.
+
+```powershell
+try {
+    # Tentative de modification des paramètres de sécurité
+    $securityPolicy = [System.Security.SecurityManager]::GetStandardSandbox($null)
+    # ... opérations de modification ...
+    Write-Host "Paramètres de sécurité modifiés avec succès"
+} catch [System.UnauthorizedAccessException] {
+    Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour modifier les paramètres de sécurité"
+} catch [System.Security.SecurityException] {
+    Write-Host "Violation de la politique de sécurité"
+}
+```
+
+### Types de permissions et leurs implications
+
+Les `UnauthorizedAccessException` sont souvent liées à des problèmes de permissions. Comprendre les différents types de permissions est essentiel pour diagnostiquer et résoudre ces problèmes.
+
+#### Permissions du système de fichiers Windows
+
+Dans Windows, les permissions du système de fichiers sont gérées par les listes de contrôle d'accès (ACL) et peuvent être visualisées et modifiées via l'interface graphique ou via PowerShell.
+
+##### Permissions de base
+
+| Permission | Description | Opérations typiques | Exception si refusée |
+|------------|-------------|---------------------|----------------------|
+| **Lecture** | Permet de lire le contenu d'un fichier ou de lister le contenu d'un répertoire | `Get-Content`, `Get-ChildItem`, `[System.IO.File]::ReadAllText()` | `UnauthorizedAccessException` lors de la lecture |
+| **Écriture** | Permet de modifier le contenu d'un fichier ou de créer des fichiers dans un répertoire | `Set-Content`, `New-Item`, `[System.IO.File]::WriteAllText()` | `UnauthorizedAccessException` lors de l'écriture |
+| **Exécution** | Permet d'exécuter un fichier ou d'accéder à un répertoire | `Invoke-Expression`, `Start-Process` | `UnauthorizedAccessException` lors de l'exécution |
+| **Suppression** | Permet de supprimer un fichier ou un répertoire | `Remove-Item`, `[System.IO.File]::Delete()` | `UnauthorizedAccessException` lors de la suppression |
+| **Modification** | Combine les permissions de lecture, d'écriture et d'exécution | Diverses opérations | `UnauthorizedAccessException` selon l'opération |
+| **Contrôle total** | Permet toutes les opérations, y compris la modification des permissions | Toutes les opérations | Rarement une `UnauthorizedAccessException` |
+
+##### Permissions spéciales
+
+| Permission | Description | Opérations typiques | Exception si refusée |
+|------------|-------------|---------------------|----------------------|
+| **Traverse Folder / Execute File** | Permet de traverser des répertoires ou d'exécuter des fichiers | Navigation dans les répertoires, exécution de fichiers | `UnauthorizedAccessException` lors de la navigation ou de l'exécution |
+| **List Folder / Read Data** | Permet de lister le contenu d'un répertoire ou de lire les données d'un fichier | Listage de répertoires, lecture de fichiers | `UnauthorizedAccessException` lors du listage ou de la lecture |
+| **Read Attributes** | Permet de lire les attributs d'un fichier ou d'un répertoire | Lecture des attributs | `UnauthorizedAccessException` lors de la lecture des attributs |
+| **Read Extended Attributes** | Permet de lire les attributs étendus d'un fichier ou d'un répertoire | Lecture des attributs étendus | `UnauthorizedAccessException` lors de la lecture des attributs étendus |
+| **Create Files / Write Data** | Permet de créer des fichiers dans un répertoire ou d'écrire des données dans un fichier | Création de fichiers, écriture de données | `UnauthorizedAccessException` lors de la création ou de l'écriture |
+| **Create Folders / Append Data** | Permet de créer des sous-répertoires ou d'ajouter des données à un fichier | Création de répertoires, ajout de données | `UnauthorizedAccessException` lors de la création ou de l'ajout |
+| **Write Attributes** | Permet de modifier les attributs d'un fichier ou d'un répertoire | Modification des attributs | `UnauthorizedAccessException` lors de la modification des attributs |
+| **Write Extended Attributes** | Permet de modifier les attributs étendus d'un fichier ou d'un répertoire | Modification des attributs étendus | `UnauthorizedAccessException` lors de la modification des attributs étendus |
+| **Delete Subfolders and Files** | Permet de supprimer des sous-répertoires et des fichiers | Suppression récursive | `UnauthorizedAccessException` lors de la suppression |
+| **Delete** | Permet de supprimer un fichier ou un répertoire | Suppression | `UnauthorizedAccessException` lors de la suppression |
+| **Read Permissions** | Permet de lire les permissions d'un fichier ou d'un répertoire | Lecture des permissions | `UnauthorizedAccessException` lors de la lecture des permissions |
+| **Change Permissions** | Permet de modifier les permissions d'un fichier ou d'un répertoire | Modification des permissions | `UnauthorizedAccessException` lors de la modification des permissions |
+| **Take Ownership** | Permet de prendre possession d'un fichier ou d'un répertoire | Prise de possession | `UnauthorizedAccessException` lors de la prise de possession |
+
+#### Vérification et modification des permissions avec PowerShell
+
+PowerShell offre plusieurs cmdlets pour vérifier et modifier les permissions :
+
+```powershell
+# Vérifier les permissions d'un fichier
+function Get-FilePermissions {
+    param (
+        [string]$Path
+    )
+
+    try {
+        $acl = Get-Acl -Path $Path
+        Write-Host "Propriétaire : $($acl.Owner)"
+        Write-Host "Accès :"
+
+        foreach ($access in $acl.Access) {
+            Write-Host "  - Identité : $($access.IdentityReference)"
+            Write-Host "    Type : $($access.AccessControlType)"
+            Write-Host "    Droits : $($access.FileSystemRights)"
+            Write-Host "    Hérité : $($access.IsInherited)"
+            Write-Host ""
+        }
+    } catch [System.UnauthorizedAccessException] {
+        Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour lire les permissions de ce fichier"
+    } catch {
+        Write-Host "Erreur : $($_.Exception.Message)"
+    }
+}
+
+# Ajouter une permission à un fichier
+function Add-FilePermission {
+    param (
+        [string]$Path,
+        [string]$Identity,
+        [System.Security.AccessControl.FileSystemRights]$Rights,
+        [System.Security.AccessControl.AccessControlType]$AccessType = "Allow"
+    )
+
+    try {
+        $acl = Get-Acl -Path $Path
+        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule($Identity, $Rights, $AccessType)
+        $acl.AddAccessRule($rule)
+        Set-Acl -Path $Path -AclObject $acl
+        Write-Host "Permission ajoutée avec succès"
+    } catch [System.UnauthorizedAccessException] {
+        Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour modifier les permissions de ce fichier"
+    } catch {
+        Write-Host "Erreur : $($_.Exception.Message)"
+    }
+}
+
+# Supprimer une permission d'un fichier
+function Remove-FilePermission {
+    param (
+        [string]$Path,
+        [string]$Identity,
+        [System.Security.AccessControl.FileSystemRights]$Rights,
+        [System.Security.AccessControl.AccessControlType]$AccessType = "Allow"
+    )
+
+    try {
+        $acl = Get-Acl -Path $Path
+        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule($Identity, $Rights, $AccessType)
+        $acl.RemoveAccessRule($rule)
+        Set-Acl -Path $Path -AclObject $acl
+        Write-Host "Permission supprimée avec succès"
+    } catch [System.UnauthorizedAccessException] {
+        Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour modifier les permissions de ce fichier"
+    } catch {
+        Write-Host "Erreur : $($_.Exception.Message)"
+    }
+}
+
+# Exemple d'utilisation
+$filePath = "C:\Temp\test.txt"
+if (-not (Test-Path -Path $filePath)) {
+    Set-Content -Path $filePath -Value "Test content"
+}
+
+# Vérifier les permissions actuelles
+Get-FilePermissions -Path $filePath
+
+# Ajouter une permission de lecture pour tous les utilisateurs
+Add-FilePermission -Path $filePath -Identity "Everyone" -Rights "Read"
+
+# Vérifier les permissions après modification
+Get-FilePermissions -Path $filePath
+
+# Supprimer la permission de lecture pour tous les utilisateurs
+Remove-FilePermission -Path $filePath -Identity "Everyone" -Rights "Read"
+
+# Vérifier les permissions après suppression
+Get-FilePermissions -Path $filePath
+```
+
+#### Permissions du registre Windows
+
+Les permissions du registre Windows sont similaires à celles du système de fichiers, mais s'appliquent aux clés de registre :
+
+| Permission | Description | Opérations typiques | Exception si refusée |
+|------------|-------------|---------------------|----------------------|
+| **Lecture** | Permet de lire les valeurs d'une clé de registre | `Get-ItemProperty`, `[Microsoft.Win32.Registry]::GetValue()` | `UnauthorizedAccessException` lors de la lecture |
+| **Écriture** | Permet de modifier les valeurs d'une clé de registre | `Set-ItemProperty`, `[Microsoft.Win32.Registry]::SetValue()` | `UnauthorizedAccessException` lors de l'écriture |
+| **Création de sous-clés** | Permet de créer des sous-clés | `New-Item`, `[Microsoft.Win32.Registry]::CreateSubKey()` | `UnauthorizedAccessException` lors de la création |
+| **Énumération de sous-clés** | Permet de lister les sous-clés | `Get-ChildItem`, `[Microsoft.Win32.Registry]::GetSubKeyNames()` | `UnauthorizedAccessException` lors de l'énumération |
+| **Notification** | Permet de recevoir des notifications de changement | Surveillance des changements | `UnauthorizedAccessException` lors de la configuration de la surveillance |
+| **Contrôle total** | Permet toutes les opérations | Toutes les opérations | Rarement une `UnauthorizedAccessException` |
+
+#### Permissions réseau
+
+Les permissions réseau dépendent du type de ressource réseau :
+
+| Type de ressource | Permissions courantes | Opérations typiques | Exception si refusée |
+|-------------------|----------------------|---------------------|----------------------|
+| **Partages réseau** | Lecture, Écriture, Modification, Contrôle total | Accès aux fichiers et répertoires partagés | `UnauthorizedAccessException` lors de l'accès |
+| **Ports réseau** | Liaison, Écoute, Connexion | Création de serveurs, connexion à des services | `SocketException` (généralement) lors de la liaison ou de la connexion |
+| **Services réseau** | Démarrage, Arrêt, Modification | Gestion des services | `UnauthorizedAccessException` lors de la gestion |
+
+#### Permissions de sécurité
+
+Les permissions de sécurité concernent les opérations liées à la sécurité du système :
+
+| Type d'opération | Permissions requises | Opérations typiques | Exception si refusée |
+|------------------|---------------------|---------------------|----------------------|
+| **Gestion des utilisateurs** | Administrateur local ou de domaine | Création, modification, suppression d'utilisateurs | `UnauthorizedAccessException` lors de la gestion |
+| **Gestion des certificats** | Administrateur ou permissions spécifiques | Installation, suppression de certificats | `UnauthorizedAccessException` lors de la gestion |
+| **Accès aux données protégées** | Propriétaire des données ou permissions spécifiques | Déchiffrement, accès aux secrets | `UnauthorizedAccessException` lors de l'accès |
+| **Modification des politiques de sécurité** | Administrateur | Modification des politiques | `UnauthorizedAccessException` lors de la modification |
+
+### Exemples PowerShell pour illustrer les problèmes d'accès
+
+Voici des exemples PowerShell plus complets pour illustrer les problèmes d'accès et la gestion des `UnauthorizedAccessException` :
+
+#### Exemple 1 : Création d'un fichier de test et manipulation des permissions
+
+```powershell
+function Test-FilePermissions {
+    param (
+        [string]$TestDirectory = "$env:TEMP\PermissionTest"
+    )
+
+    # Créer un répertoire de test
+    if (-not (Test-Path -Path $TestDirectory)) {
+        New-Item -Path $TestDirectory -ItemType Directory | Out-Null
+        Write-Host "Répertoire de test créé : $TestDirectory" -ForegroundColor Green
+    }
+
+    # Créer un fichier de test
+    $testFile = Join-Path -Path $TestDirectory -ChildPath "test_file.txt"
+    Set-Content -Path $testFile -Value "Contenu de test" -Force
+    Write-Host "Fichier de test créé : $testFile" -ForegroundColor Green
+
+    # Obtenir l'utilisateur actuel
+    $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+    Write-Host "Utilisateur actuel : $currentUser" -ForegroundColor Yellow
+
+    # Afficher les permissions initiales
+    Write-Host "`nPermissions initiales :" -ForegroundColor Yellow
+    $acl = Get-Acl -Path $testFile
+    foreach ($access in $acl.Access) {
+        Write-Host "  - $($access.IdentityReference) : $($access.FileSystemRights)" -ForegroundColor Gray
+    }
+
+    # Retirer toutes les permissions pour l'utilisateur actuel
+    Write-Host "`nRetrait des permissions pour l'utilisateur actuel..." -ForegroundColor Yellow
+    $acl = Get-Acl -Path $testFile
+    $accessRulesToRemove = $acl.Access | Where-Object { $_.IdentityReference.Value -eq $currentUser }
+    foreach ($rule in $accessRulesToRemove) {
+        $acl.RemoveAccessRule($rule) | Out-Null
+    }
+    Set-Acl -Path $testFile -AclObject $acl
+
+    # Tenter de lire le fichier sans permissions
+    Write-Host "`nTentative de lecture du fichier sans permissions :" -ForegroundColor Yellow
+    try {
+        $content = Get-Content -Path $testFile -ErrorAction Stop
+        Write-Host "Contenu lu avec succès : $content" -ForegroundColor Green
+    } catch [System.UnauthorizedAccessException] {
+        Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Type d'exception : $($_.Exception.GetType().FullName)" -ForegroundColor Red
+    } catch {
+        Write-Host "Autre erreur : $($_.Exception.Message)" -ForegroundColor Red
+    }
+
+    # Restaurer les permissions
+    Write-Host "`nRestauration des permissions..." -ForegroundColor Yellow
+    $acl = Get-Acl -Path $TestDirectory
+    Set-Acl -Path $testFile -AclObject $acl
+
+    # Tenter de lire le fichier avec les permissions restaurées
+    Write-Host "`nTentative de lecture du fichier avec permissions restaurées :" -ForegroundColor Yellow
+    try {
+        $content = Get-Content -Path $testFile -ErrorAction Stop
+        Write-Host "Contenu lu avec succès : $content" -ForegroundColor Green
+    } catch {
+        Write-Host "Erreur : $($_.Exception.Message)" -ForegroundColor Red
+    }
+
+    # Nettoyage
+    Write-Host "`nNettoyage..." -ForegroundColor Yellow
+    Remove-Item -Path $TestDirectory -Recurse -Force -ErrorAction SilentlyContinue
+    if (-not (Test-Path -Path $TestDirectory)) {
+        Write-Host "Répertoire de test supprimé" -ForegroundColor Green
+    } else {
+        Write-Host "Impossible de supprimer le répertoire de test" -ForegroundColor Red
+    }
+}
+
+# Exécuter le test
+Test-FilePermissions
+```
+
+#### Exemple 2 : Tentative d'accès à des fichiers système protégés
+
+```powershell
+function Test-SystemFileAccess {
+    # Liste de fichiers système protégés
+    $protectedFiles = @(
+        "$env:windir\System32\config\SAM",
+        "$env:windir\System32\config\SECURITY",
+        "$env:windir\System32\config\SOFTWARE",
+        "$env:windir\System32\config\SYSTEM",
+        "$env:windir\System32\ntoskrnl.exe"
+    )
+
+    foreach ($file in $protectedFiles) {
+        Write-Host "`nTest d'accès au fichier : $file" -ForegroundColor Yellow
+
+        # Vérifier si le fichier existe
+        if (-not (Test-Path -Path $file)) {
+            Write-Host "Le fichier n'existe pas" -ForegroundColor Red
+            continue
+        }
+
+        # Tenter de lire le fichier
+        Write-Host "Tentative de lecture..." -ForegroundColor Yellow
+        try {
+            $content = Get-Content -Path $file -TotalCount 1 -ErrorAction Stop
+            Write-Host "Lecture réussie (inattendu)" -ForegroundColor Green
+        } catch [System.UnauthorizedAccessException] {
+            Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
+
+            # Afficher les détails de l'exception
+            Write-Host "  - Type d'exception : $($_.Exception.GetType().FullName)" -ForegroundColor Gray
+            Write-Host "  - Message : $($_.Exception.Message)" -ForegroundColor Gray
+            Write-Host "  - HResult : 0x$($_.Exception.HResult.ToString("X8"))" -ForegroundColor Gray
+
+            # Afficher les permissions actuelles
+            try {
+                $acl = Get-Acl -Path $file -ErrorAction Stop
+                Write-Host "  - Propriétaire : $($acl.Owner)" -ForegroundColor Gray
+                Write-Host "  - Groupe : $($acl.Group)" -ForegroundColor Gray
+                Write-Host "  - Accès :" -ForegroundColor Gray
+                foreach ($access in $acl.Access) {
+                    Write-Host "    * $($access.IdentityReference) : $($access.FileSystemRights)" -ForegroundColor Gray
+                }
+            } catch {
+                Write-Host "  - Impossible de lire les permissions : $($_.Exception.Message)" -ForegroundColor Gray
+            }
+        } catch {
+            Write-Host "Autre erreur : $($_.Exception.Message)" -ForegroundColor Red
+        }
+
+        # Tenter de modifier le fichier
+        Write-Host "Tentative d'écriture..." -ForegroundColor Yellow
+        try {
+            Set-Content -Path $file -Value "Test" -ErrorAction Stop
+            Write-Host "Écriture réussie (inattendu)" -ForegroundColor Green
+        } catch [System.UnauthorizedAccessException] {
+            Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
+        } catch {
+            Write-Host "Autre erreur : $($_.Exception.Message)" -ForegroundColor Red
+        }
+    }
+}
+
+# Exécuter le test
+Test-SystemFileAccess
+```
+
+#### Exemple 3 : Tentative d'accès au registre protégé
+
+```powershell
+function Test-RegistryAccess {
+    # Liste de clés de registre protégées
+    $protectedKeys = @(
+        "HKLM:\SAM",
+        "HKLM:\SECURITY",
+        "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon",
+        "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa"
+    )
+
+    foreach ($key in $protectedKeys) {
+        Write-Host "`nTest d'accès à la clé de registre : $key" -ForegroundColor Yellow
+
+        # Vérifier si la clé existe
+        if (-not (Test-Path -Path $key)) {
+            Write-Host "La clé n'existe pas" -ForegroundColor Red
+            continue
+        }
+
+        # Tenter de lire la clé
+        Write-Host "Tentative de lecture..." -ForegroundColor Yellow
+        try {
+            $values = Get-ItemProperty -Path $key -ErrorAction Stop
+            Write-Host "Lecture réussie" -ForegroundColor Green
+            Write-Host "Nombre de valeurs : $($values.PSObject.Properties.Count)" -ForegroundColor Gray
+        } catch [System.UnauthorizedAccessException] {
+            Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
+        } catch {
+            Write-Host "Autre erreur : $($_.Exception.Message)" -ForegroundColor Red
+        }
+
+        # Tenter de créer une nouvelle valeur
+        Write-Host "Tentative d'écriture..." -ForegroundColor Yellow
+        try {
+            Set-ItemProperty -Path $key -Name "TestValue" -Value "Test" -ErrorAction Stop
+            Write-Host "Écriture réussie" -ForegroundColor Green
+
+            # Supprimer la valeur de test si elle a été créée
+            Remove-ItemProperty -Path $key -Name "TestValue" -ErrorAction SilentlyContinue
+        } catch [System.UnauthorizedAccessException] {
+            Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
+        } catch {
+            Write-Host "Autre erreur : $($_.Exception.Message)" -ForegroundColor Red
+        }
+    }
+}
+
+# Exécuter le test
+Test-RegistryAccess
+```
+
+#### Exemple 4 : Élévation de privilèges et contournement des restrictions d'accès
+
+```powershell
+function Test-PrivilegeElevation {
+    # Vérifier si le script s'exécute avec des privilèges administratifs
+    $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    Write-Host "Exécution avec privilèges administratifs : $isAdmin" -ForegroundColor Yellow
+
+    # Fichier de test dans un emplacement protégé
+    $protectedFile = "$env:windir\System32\test_admin.txt"
+
+    # Tenter d'accéder au fichier sans élévation
+    Write-Host "`nTentative d'accès sans élévation :" -ForegroundColor Yellow
+    try {
+        Set-Content -Path $protectedFile -Value "Test" -ErrorAction Stop
+        Write-Host "Écriture réussie" -ForegroundColor Green
+
+        # Nettoyer
+        Remove-Item -Path $protectedFile -ErrorAction SilentlyContinue
+    } catch [System.UnauthorizedAccessException] {
+        Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
+    } catch {
+        Write-Host "Autre erreur : $($_.Exception.Message)" -ForegroundColor Red
+    }
+
+    # Si nous ne sommes pas administrateur, suggérer une élévation
+    if (-not $isAdmin) {
+        Write-Host "`nPour contourner cette restriction, vous pouvez exécuter PowerShell en tant qu'administrateur :" -ForegroundColor Yellow
+        Write-Host "Start-Process PowerShell -Verb RunAs" -ForegroundColor Gray
+    } else {
+        Write-Host "`nVous êtes déjà administrateur, vous devriez pouvoir accéder à la plupart des fichiers système" -ForegroundColor Green
+    }
+
+    # Démontrer l'utilisation de l'impersonation (nécessite des privilèges élevés)
+    Write-Host "`nDémonstration d'impersonation (nécessite des privilèges élevés) :" -ForegroundColor Yellow
+    try {
+        Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
+
+public class Impersonation {
+    [DllImport("advapi32.dll", SetLastError = true)]
+    public static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
+        int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern bool CloseHandle(IntPtr hObject);
+}
+"@
+
+        Write-Host "Type d'impersonation ajouté avec succès" -ForegroundColor Green
+        Write-Host "Cette fonctionnalité permettrait d'exécuter du code sous l'identité d'un autre utilisateur" -ForegroundColor Gray
+    } catch {
+        Write-Host "Erreur lors de l'ajout du type d'impersonation : $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
+# Exécuter le test
+Test-PrivilegeElevation
+```
+
+#### Exemple 5 : Utilisation de l'API Windows pour obtenir des informations détaillées sur les erreurs d'accès
+
+```powershell
+function Get-DetailedAccessError {
+    param (
+        [string]$Path
+    )
+
+    # Ajouter les types nécessaires
+    Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+
+public class NativeMethods {
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern uint GetLastError();
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern uint FormatMessage(
+        uint dwFlags,
+        IntPtr lpSource,
+        uint dwMessageId,
+        uint dwLanguageId,
+        StringBuilder lpBuffer,
+        uint nSize,
+        IntPtr Arguments
+    );
+
+    public const uint FORMAT_MESSAGE_FROM_SYSTEM = 0x00001000;
+    public const uint FORMAT_MESSAGE_IGNORE_INSERTS = 0x00000200;
+}
+"@
+
+    try {
+        # Tenter d'accéder au fichier
+        $content = [System.IO.File]::ReadAllText($Path)
+        Write-Host "Accès réussi au fichier : $Path" -ForegroundColor Green
+        return $true
+    } catch [System.UnauthorizedAccessException] {
+        Write-Host "Erreur d'accès non autorisé au fichier : $Path" -ForegroundColor Red
+
+        # Obtenir le code d'erreur Windows
+        $errorCode = [System.Runtime.InteropServices.Marshal]::GetHRForException($_.Exception)
+        Write-Host "Code d'erreur HRESULT : 0x$($errorCode.ToString("X8"))" -ForegroundColor Gray
+
+        # Obtenir le message d'erreur Windows détaillé
+        $errorCode = [NativeMethods]::GetLastError()
+        if ($errorCode -ne 0) {
+            $buffer = New-Object System.Text.StringBuilder 1024
+            $flags = [NativeMethods]::FORMAT_MESSAGE_FROM_SYSTEM -bor [NativeMethods]::FORMAT_MESSAGE_IGNORE_INSERTS
+            $result = [NativeMethods]::FormatMessage($flags, [IntPtr]::Zero, $errorCode, 0, $buffer, $buffer.Capacity, [IntPtr]::Zero)
+
+            if ($result -ne 0) {
+                Write-Host "Message d'erreur Windows : $($buffer.ToString().Trim())" -ForegroundColor Gray
+            }
+        }
+
+        # Afficher les détails de l'exception
+        Write-Host "Type d'exception : $($_.Exception.GetType().FullName)" -ForegroundColor Gray
+        Write-Host "Message : $($_.Exception.Message)" -ForegroundColor Gray
+        if ($_.Exception.InnerException) {
+            Write-Host "Exception interne : $($_.Exception.InnerException.Message)" -ForegroundColor Gray
+        }
+
+        return $false
+    } catch {
+        Write-Host "Autre erreur lors de l'accès au fichier : $Path" -ForegroundColor Red
+        Write-Host "Type d'exception : $($_.Exception.GetType().FullName)" -ForegroundColor Gray
+        Write-Host "Message : $($_.Exception.Message)" -ForegroundColor Gray
+
+        return $false
+    }
+}
+
+# Tester avec un fichier protégé
+Get-DetailedAccessError -Path "$env:windir\System32\config\SAM"
+```
+
+### Techniques de prévention des UnauthorizedAccessException
+
+Pour éviter les `UnauthorizedAccessException`, vous pouvez mettre en œuvre plusieurs techniques préventives :
+
+#### 1. Vérification préalable des permissions
+
+Avant d'effectuer une opération qui pourrait générer une `UnauthorizedAccessException`, vérifiez si vous avez les permissions nécessaires :
+
+```powershell
+function Test-FileAccess {
+    param (
+        [string]$Path,
+        [System.Security.AccessControl.FileSystemRights]$Rights = [System.Security.AccessControl.FileSystemRights]::Read
+    )
+
+    try {
+        # Vérifier si le fichier existe
+        if (-not (Test-Path -Path $Path)) {
+            return @{
+                HasAccess = $false
+                Reason = "FileNotFound"
+                Message = "Le fichier n'existe pas"
+            }
+        }
+
+        # Obtenir l'utilisateur actuel
+        $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+
+        # Obtenir les ACL du fichier
+        $acl = Get-Acl -Path $Path
+
+        # Vérifier si l'utilisateur a les droits demandés
+        $hasAccess = $false
+        foreach ($access in $acl.Access) {
+            if ($access.IdentityReference.Value -eq $currentUser -or
+                $access.IdentityReference.Value -eq "Everyone" -or
+                $access.IdentityReference.Value -eq "BUILTIN\Users") {
+
+                if (($access.FileSystemRights -band $Rights) -eq $Rights) {
+                    $hasAccess = $true
+                    break
+                }
+            }
+        }
+
+        if ($hasAccess) {
+            return @{
+                HasAccess = $true
+                Reason = "PermissionGranted"
+                Message = "L'utilisateur a les permissions nécessaires"
+            }
+        } else {
+            return @{
+                HasAccess = $false
+                Reason = "PermissionDenied"
+                Message = "L'utilisateur n'a pas les permissions nécessaires"
+            }
+        }
+    } catch {
+        return @{
+            HasAccess = $false
+            Reason = "Error"
+            Message = $_.Exception.Message
+        }
+    }
+}
+
+# Exemple d'utilisation
+$filePath = "C:\Windows\System32\drivers\etc\hosts"
+$readAccess = Test-FileAccess -Path $filePath -Rights ([System.Security.AccessControl.FileSystemRights]::Read)
+$writeAccess = Test-FileAccess -Path $filePath -Rights ([System.Security.AccessControl.FileSystemRights]::Write)
+
+Write-Host "Accès en lecture : $($readAccess.HasAccess) - $($readAccess.Message)"
+Write-Host "Accès en écriture : $($writeAccess.HasAccess) - $($writeAccess.Message)"
+```
+
+#### 2. Utilisation de blocs try-catch spécifiques
+
+Utilisez des blocs try-catch spécifiques pour gérer les `UnauthorizedAccessException` de manière appropriée :
+
+```powershell
+function Safe-FileOperation {
+    param (
+        [string]$Path,
+        [string]$Operation = "Read", # Read, Write, Delete
+        [string]$Content = $null
+    )
+
+    try {
+        switch ($Operation) {
+            "Read" {
+                $result = Get-Content -Path $Path -ErrorAction Stop
+                return @{
+                    Success = $true
+                    Result = $result
+                    Message = "Lecture réussie"
+                }
+            }
+            "Write" {
+                if ($null -eq $Content) {
+                    return @{
+                        Success = $false
+                        Result = $null
+                        Message = "Contenu non spécifié pour l'écriture"
+                    }
+                }
+                Set-Content -Path $Path -Value $Content -ErrorAction Stop
+                return @{
+                    Success = $true
+                    Result = $null
+                    Message = "Écriture réussie"
+                }
+            }
+            "Delete" {
+                Remove-Item -Path $Path -ErrorAction Stop
+                return @{
+                    Success = $true
+                    Result = $null
+                    Message = "Suppression réussie"
+                }
+            }
+            default {
+                return @{
+                    Success = $false
+                    Result = $null
+                    Message = "Opération non reconnue"
+                }
+            }
+        }
+    } catch [System.UnauthorizedAccessException] {
+        return @{
+            Success = $false
+            Result = $null
+            Message = "Accès non autorisé : $($_.Exception.Message)"
+            Exception = $_
+        }
+    } catch [System.IO.FileNotFoundException] {
+        return @{
+            Success = $false
+            Result = $null
+            Message = "Fichier non trouvé : $($_.Exception.Message)"
+            Exception = $_
+        }
+    } catch {
+        return @{
+            Success = $false
+            Result = $null
+            Message = "Erreur : $($_.Exception.Message)"
+            Exception = $_
+        }
+    }
+}
+
+# Exemple d'utilisation
+$result = Safe-FileOperation -Path "C:\Windows\System32\drivers\etc\hosts" -Operation "Read"
+if ($result.Success) {
+    Write-Host "Opération réussie : $($result.Message)"
+    # Traiter $result.Result
+} else {
+    Write-Host "Échec de l'opération : $($result.Message)"
+    # Gérer l'erreur
+}
+```
+
+#### 3. Élévation de privilèges contrôlée
+
+Pour les opérations nécessitant des privilèges élevés, utilisez une élévation de privilèges contrôlée :
+
+```powershell
+function Invoke-ElevatedOperation {
+    param (
+        [scriptblock]$ScriptBlock,
+        [switch]$NoExit
+    )
+
+    # Vérifier si nous sommes déjà en mode administrateur
+    $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    if ($isAdmin) {
+        # Exécuter directement le script block
+        Write-Host "Exécution avec privilèges administratifs existants" -ForegroundColor Green
+        return & $ScriptBlock
+    } else {
+        # Préparer le script à exécuter
+        $scriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
+        $ScriptBlock.ToString() | Out-File -FilePath $scriptPath -Encoding UTF8
+
+        Write-Host "Élévation des privilèges requise. Lancement d'un nouveau processus PowerShell..." -ForegroundColor Yellow
+
+        # Construire les arguments
+        $arguments = "-File `"$scriptPath`""
+        if ($NoExit) {
+            $arguments = "-NoExit " + $arguments
+        }
+
+        # Lancer PowerShell en tant qu'administrateur
+        try {
+            $process = Start-Process PowerShell -ArgumentList $arguments -Verb RunAs -PassThru -Wait
+
+            # Nettoyer
+            Remove-Item -Path $scriptPath -Force -ErrorAction SilentlyContinue
+
+            return @{
+                Success = $true
+                ExitCode = $process.ExitCode
+                Message = "Opération élevée terminée avec le code de sortie $($process.ExitCode)"
+            }
+        } catch {
+            # Nettoyer
+            Remove-Item -Path $scriptPath -Force -ErrorAction SilentlyContinue
+
+            return @{
+                Success = $false
+                ExitCode = -1
+                Message = "Échec de l'élévation : $($_.Exception.Message)"
+            }
+        }
+    }
+}
+
+# Exemple d'utilisation
+$result = Invoke-ElevatedOperation -ScriptBlock {
+    # Code nécessitant des privilèges administratifs
+    Set-Content -Path "C:\Windows\System32\test_admin.txt" -Value "Test administrateur"
+    return "Opération administrative réussie"
+}
+
+Write-Host "Résultat : $($result | ConvertTo-Json)"
+```
+
+#### 4. Utilisation de chemins alternatifs
+
+Pour les fichiers système protégés, utilisez des chemins alternatifs ou des copies temporaires :
+
+```powershell
+function Edit-ProtectedFile {
+    param (
+        [string]$ProtectedPath,
+        [scriptblock]$EditOperation
+    )
+
+    # Créer un répertoire temporaire
+    $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
+    New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
+
+    try {
+        # Obtenir le nom du fichier
+        $fileName = [System.IO.Path]::GetFileName($ProtectedPath)
+        $tempPath = Join-Path -Path $tempDir -ChildPath $fileName
+
+        # Vérifier si le fichier protégé existe
+        if (-not (Test-Path -Path $ProtectedPath)) {
+            return @{
+                Success = $false
+                Message = "Le fichier protégé n'existe pas"
+            }
+        }
+
+        # Copier le fichier protégé vers le répertoire temporaire
+        try {
+            Copy-Item -Path $ProtectedPath -Destination $tempPath -ErrorAction Stop
+        } catch [System.UnauthorizedAccessException] {
+            return @{
+                Success = $false
+                Message = "Accès non autorisé lors de la copie du fichier protégé"
+            }
+        } catch {
+            return @{
+                Success = $false
+                Message = "Erreur lors de la copie du fichier protégé : $($_.Exception.Message)"
+            }
+        }
+
+        # Appliquer l'opération d'édition sur la copie temporaire
+        try {
+            & $EditOperation $tempPath
+        } catch {
+            return @{
+                Success = $false
+                Message = "Erreur lors de l'édition du fichier temporaire : $($_.Exception.Message)"
+            }
+        }
+
+        # Remplacer le fichier protégé par la copie modifiée (nécessite des privilèges élevés)
+        $replaceResult = Invoke-ElevatedOperation -ScriptBlock {
+            param($Source, $Destination)
+
+            try {
+                Copy-Item -Path $Source -Destination $Destination -Force -ErrorAction Stop
+                return @{
+                    Success = $true
+                    Message = "Fichier protégé mis à jour avec succès"
+                }
+            } catch {
+                return @{
+                    Success = $false
+                    Message = "Erreur lors du remplacement du fichier protégé : $($_.Exception.Message)"
+                }
+            }
+        } -ArgumentList $tempPath, $ProtectedPath
+
+        return $replaceResult
+    } finally {
+        # Nettoyer
+        Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
+# Exemple d'utilisation
+$result = Edit-ProtectedFile -ProtectedPath "C:\Windows\System32\drivers\etc\hosts" -EditOperation {
+    param($TempPath)
+
+    # Lire le contenu actuel
+    $content = Get-Content -Path $TempPath
+
+    # Ajouter une ligne
+    $content += "# Ligne ajoutée par Edit-ProtectedFile"
+
+    # Écrire le contenu modifié
+    Set-Content -Path $TempPath -Value $content
+}
+
+Write-Host "Résultat : $($result.Message)"
+```
+
+#### 5. Utilisation de l'impersonation
+
+Pour les opérations nécessitant des permissions spécifiques, utilisez l'impersonation pour exécuter le code sous une autre identité :
+
+```powershell
+function Invoke-AsUser {
+    param (
+        [string]$Username,
+        [securestring]$Password,
+        [string]$Domain = ".",
+        [scriptblock]$ScriptBlock
+    )
+
+    Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
+
+public class Impersonation : IDisposable {
+    private IntPtr _token;
+    private WindowsImpersonationContext _context;
+
+    [DllImport("advapi32.dll", SetLastError = true)]
+    public static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
+        int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern bool CloseHandle(IntPtr hObject);
+
+    public Impersonation(string username, string domain, string password) {
+        _token = IntPtr.Zero;
+
+        bool logonSuccess = LogonUser(
+            username,
+            domain,
+            password,
+            9, // LOGON32_LOGON_NEW_CREDENTIALS
+            3, // LOGON32_PROVIDER_WINNT50
+            ref _token);
+
+        if (!logonSuccess) {
+            int error = Marshal.GetLastWin32Error();
+            throw new System.ComponentModel.Win32Exception(error);
+        }
+
+        WindowsIdentity identity = new WindowsIdentity(_token);
+        _context = identity.Impersonate();
+    }
+
+    public void Dispose() {
+        if (_context != null) {
+            _context.Dispose();
+            _context = null;
+        }
+
+        if (_token != IntPtr.Zero) {
+            CloseHandle(_token);
+            _token = IntPtr.Zero;
+        }
+    }
+}
+"@
+
+    try {
+        # Convertir le mot de passe sécurisé en chaîne
+        $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
+        $PlainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+
+        # Créer l'objet d'impersonation
+        $impersonation = New-Object Impersonation -ArgumentList $Username, $Domain, $PlainPassword
+
+        try {
+            # Exécuter le script block sous l'identité de l'utilisateur spécifié
+            Write-Host "Exécution sous l'identité de $Domain\$Username" -ForegroundColor Yellow
+            $result = & $ScriptBlock
+            return @{
+                Success = $true
+                Result = $result
+                Message = "Opération réussie sous l'identité de $Domain\$Username"
+            }
+        } finally {
+            # Libérer l'impersonation
+            $impersonation.Dispose()
+        }
+    } catch {
+        return @{
+            Success = $false
+            Result = $null
+            Message = "Erreur d'impersonation : $($_.Exception.Message)"
+        }
+    } finally {
+        # Nettoyer le mot de passe en mémoire
+        if ($BSTR -ne [IntPtr]::Zero) {
+            [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)
+        }
+    }
+}
+
+# Exemple d'utilisation (nécessite des informations d'identification valides)
+$securePassword = ConvertTo-SecureString "MotDePasse" -AsPlainText -Force
+$result = Invoke-AsUser -Username "UtilisateurAvecPermissions" -Password $securePassword -ScriptBlock {
+    # Code à exécuter sous l'identité de l'utilisateur spécifié
+    Get-Content -Path "\\Server\PartageProtégé\fichier.txt"
+}
+
+if ($result.Success) {
+    Write-Host "Opération réussie : $($result.Message)"
+    # Traiter $result.Result
+} else {
+    Write-Host "Échec de l'opération : $($result.Message)"
+}
+```
+
+#### 6. Utilisation de services Windows
+
+Pour les opérations nécessitant des privilèges élevés de manière permanente, utilisez un service Windows :
+
+```powershell
+function Register-PrivilegedService {
+    param (
+        [string]$ServiceName = "PrivilegedOperationService",
+        [string]$DisplayName = "Service pour opérations privilégiées",
+        [string]$Description = "Service permettant d'exécuter des opérations nécessitant des privilèges élevés",
+        [string]$BinaryPath
+    )
+
+    # Vérifier si nous sommes en mode administrateur
+    $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    if (-not $isAdmin) {
+        return @{
+            Success = $false
+            Message = "Cette opération nécessite des privilèges administratifs"
+        }
+    }
+
+    # Vérifier si le service existe déjà
+    $service = Get-Service -Name $ServiceName -ErrorAction SilentlyContinue
+
+    if ($service) {
+        return @{
+            Success = $false
+            Message = "Le service '$ServiceName' existe déjà"
+        }
+    }
+
+    # Créer le service
+    try {
+        $service = New-Service -Name $ServiceName -DisplayName $DisplayName -Description $Description -BinaryPathName $BinaryPath -StartupType Manual
+
+        return @{
+            Success = $true
+            Service = $service
+            Message = "Service '$ServiceName' créé avec succès"
+        }
+    } catch {
+        return @{
+            Success = $false
+            Message = "Erreur lors de la création du service : $($_.Exception.Message)"
+        }
+    }
+}
+
+# Exemple d'utilisation (nécessite un exécutable de service valide)
+$servicePath = "C:\Path\To\PrivilegedService.exe"
+$result = Register-PrivilegedService -BinaryPath $servicePath
+
+if ($result.Success) {
+    Write-Host "Service créé avec succès : $($result.Message)"
+} else {
+    Write-Host "Échec de la création du service : $($result.Message)"
+}
+```
+
+#### 7. Utilisation de tâches planifiées
+
+Pour les opérations nécessitant des privilèges élevés de manière ponctuelle, utilisez une tâche planifiée :
+
+```powershell
+function Invoke-AsScheduledTask {
+    param (
+        [string]$TaskName = "PrivilegedOperation",
+        [scriptblock]$ScriptBlock,
+        [switch]$DeleteTaskWhenDone = $true
+    )
+
+    # Créer un fichier temporaire pour le script
+    $scriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
+    $outputPath = [System.IO.Path]::GetTempFileName() + ".txt"
+
+    try {
+        # Écrire le script dans le fichier temporaire
+        $scriptContent = @"
+`$ErrorActionPreference = 'Stop'
+try {
+    `$result = {
+$($ScriptBlock.ToString())
+    }
+    `$resultJson = ConvertTo-Json -InputObject `$result -Depth 10 -Compress
+    Set-Content -Path "$outputPath" -Value `$resultJson -Encoding UTF8
+    exit 0
+} catch {
+    `$errorJson = ConvertTo-Json -InputObject @{
+        Error = `$_.Exception.Message
+        Type = `$_.Exception.GetType().FullName
+        StackTrace = `$_.ScriptStackTrace
+    } -Depth 10 -Compress
+    Set-Content -Path "$outputPath" -Value `$errorJson -Encoding UTF8
+    exit 1
+}
+"@
+        Set-Content -Path $scriptPath -Value $scriptContent -Encoding UTF8
+
+        # Créer une action pour exécuter PowerShell avec le script
+        $action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-ExecutionPolicy Bypass -File `"$scriptPath`""
+
+        # Créer un déclencheur pour exécuter la tâche immédiatement
+        $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date)
+
+        # Créer un principal pour exécuter la tâche avec les privilèges les plus élevés
+        $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+
+        # Créer la tâche
+        $task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal
+
+        # Enregistrer la tâche
+        Register-ScheduledTask -TaskName $TaskName -InputObject $task | Out-Null
+
+        # Démarrer la tâche
+        Start-ScheduledTask -TaskName $TaskName
+
+        # Attendre que la tâche soit terminée
+        $timeout = 60 # secondes
+        $elapsed = 0
+        $interval = 1 # secondes
+
+        do {
+            Start-Sleep -Seconds $interval
+            $elapsed += $interval
+            $taskInfo = Get-ScheduledTaskInfo -TaskName $TaskName
+        } while ($taskInfo.LastTaskResult -eq 267009 -and $elapsed -lt $timeout) # 267009 = tâche en cours d'exécution
+
+        # Lire le résultat
+        if (Test-Path -Path $outputPath) {
+            $resultJson = Get-Content -Path $outputPath -Raw
+            try {
+                $result = ConvertFrom-Json -InputObject $resultJson
+
+                if ($result.Error) {
+                    return @{
+                        Success = $false
+                        Message = "Erreur lors de l'exécution de la tâche : $($result.Error)"
+                        Error = $result
+                    }
+                } else {
+                    return @{
+                        Success = $true
+                        Result = $result
+                        Message = "Tâche exécutée avec succès"
+                    }
+                }
+            } catch {
+                return @{
+                    Success = $false
+                    Message = "Erreur lors de la lecture du résultat : $($_.Exception.Message)"
+                }
+            }
+        } else {
+            return @{
+                Success = $false
+                Message = "Aucun résultat n'a été généré par la tâche"
+            }
+        }
+    } catch {
+        return @{
+            Success = $false
+            Message = "Erreur lors de l'exécution de la tâche planifiée : $($_.Exception.Message)"
+        }
+    } finally {
+        # Nettoyer
+        if ($DeleteTaskWhenDone) {
+            Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
+        }
+
+        Remove-Item -Path $scriptPath -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path $outputPath -Force -ErrorAction SilentlyContinue
+    }
+}
+
+# Exemple d'utilisation
+$result = Invoke-AsScheduledTask -ScriptBlock {
+    # Code nécessitant des privilèges SYSTEM
+    Set-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.0.0.1 localhost"
+    return "Fichier hosts modifié avec succès"
+}
+
+if ($result.Success) {
+    Write-Host "Opération réussie : $($result.Message)"
+    Write-Host "Résultat : $($result.Result)"
+} else {
+    Write-Host "Échec de l'opération : $($result.Message)"
+}
+```

@@ -471,13 +471,175 @@
                           - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.4** Documenter les différents types de permissions (lecture, écriture, exécution)
                           - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.5** Créer des exemples PowerShell pour illustrer les problèmes d'accès
                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6** Documenter les techniques de prévention et de débogage
-                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.1** Documenter les techniques de prévention des UnauthorizedAccessException
+                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.1** Documenter les techniques de prévention des UnauthorizedAccessException
                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2** Documenter les techniques de débogage des problèmes d'accès
+                              - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.1** Créer une fonction de diagnostic des permissions de fichiers et dossiers
+                              - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.2** Implémenter la détection et l'analyse des erreurs UnauthorizedAccessException
+                              - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.3** Développer des outils de vérification préalable des permissions
+                              - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.4** Documenter les techniques d'élévation de privilèges temporaires
+                              - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.5** Créer des exemples de débogage pour les scénarios courants d'accès refusé
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.5.1** Exemple pour les fichiers système protégés
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.5.2** Exemple pour les clés de registre protégées
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.5.3** Exemple pour les problèmes d'accès réseau
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.5.4** Exemple pour les problèmes d'accès aux bases de données
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6** Développer un outil d'analyse des ACL (Access Control Lists)
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1** Créer une fonction d'analyse des ACL de fichiers et dossiers
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.1** Implémenter l'analyse des permissions NTFS
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.2** Implémenter la détection des héritages de permissions
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.3** Implémenter l'analyse des propriétaires et groupes
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.4** Implémenter la détection des anomalies de permissions
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.5** Implémenter la génération de rapports de permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2** Créer une fonction d'analyse des ACL de clés de registre
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.1** Implémenter l'analyse des permissions de registre
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.2** Implémenter la détection des héritages de permissions de registre
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.3** Implémenter l'analyse des propriétaires de clés de registre
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.4** Implémenter la détection des anomalies de permissions de registre
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.5** Implémenter la génération de rapports de permissions de registre
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3** Créer une fonction d'analyse des ACL de partages réseau
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.1** Implémenter l'analyse des permissions de partage SMB
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.2** Implémenter l'analyse des permissions NTFS sous-jacentes
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.3** Implémenter la détection des conflits entre permissions de partage et NTFS
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.4** Implémenter l'analyse des permissions effectives résultantes
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.5** Implémenter la génération de rapports de permissions réseau
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4** Créer une fonction d'analyse des permissions SQL Server
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.1** Implémenter l'analyse des permissions au niveau serveur
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2** Implémenter l'analyse des permissions au niveau base de données
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3** Implémenter l'analyse des permissions au niveau objet (tables, vues, etc.)
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4** Implémenter la détection des anomalies de permissions SQL
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5** Implémenter la génération de rapports de permissions SQL
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5** Implémenter la comparaison des ACL avec des modèles de référence
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1** Développer un système de modèles de permissions de référence
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2** Implémenter la comparaison des permissions actuelles avec les modèles
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3** Implémenter la détection des écarts de permissions
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4** Implémenter la génération de rapports de conformité
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5** Développer des modèles prédéfinis pour différents scénarios de sécurité
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6** Développer un rapport visuel des ACL avec mise en évidence des anomalies
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.1** Implémenter la génération de rapports HTML interactifs
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.2** Implémenter la visualisation hiérarchique des permissions
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.3** Implémenter le code couleur pour les niveaux de risque
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.4** Implémenter des filtres interactifs pour l'analyse des permissions
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.5** Implémenter l'exportation des rapports en différents formats
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7** Créer une fonction de correction automatique des ACL problématiques
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.1** Implémenter la correction des permissions de fichiers et dossiers
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.2** Implémenter la correction des permissions de registre
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.3** Implémenter la correction des permissions de partages réseau
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.4** Implémenter la correction des permissions SQL Server
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.5** Implémenter un mode simulation pour tester les corrections
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.6** Implémenter la sauvegarde des ACL avant correction
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7** Documenter les codes d'erreur HResult spécifiques aux problèmes d'accès
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.1** Compiler une liste des codes HResult liés aux permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.2** Créer une fonction de traduction des codes HResult en messages explicatifs
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.3** Documenter les solutions spécifiques pour chaque code d'erreur
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.3.1** Documenter les solutions pour les erreurs d'accès aux fichiers (0x80070005, 0x80070020, etc.)
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.3.2** Documenter les solutions pour les erreurs d'accès au registre (0x80070005, 0x80070542, etc.)
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.3.3** Documenter les solutions pour les erreurs d'accès réseau (0x80070035, 0x800704CF, etc.)
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.3.4** Documenter les solutions pour les erreurs d'accès aux bases de données (0x80040E14, 0x80040E4D, etc.)
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.3.5** Documenter les solutions pour les erreurs de privilèges (0x80070522, 0x8007054F, etc.)
+                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.3.6** Documenter les solutions pour les erreurs de verrouillage (0x80070020, 0x80070021, etc.)
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.4** Intégrer la gestion des codes HResult dans les fonctions de débogage existantes
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.8** Créer un guide de résolution des problèmes d'accès par étapes
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.8.1** Développer un arbre de décision pour le diagnostic des problèmes d'accès
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.8.2** Créer un guide étape par étape pour les fichiers et dossiers
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.8.3** Créer un guide étape par étape pour le registre
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.8.4** Créer un guide étape par étape pour les ressources réseau
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.8.5** Créer un guide étape par étape pour les bases de données
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.8.6** Développer un outil interactif de diagnostic guidé
                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3** Documenter les bonnes pratiques pour la gestion des permissions
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.1** Établir les principes du moindre privilège
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.1.1** Définir les niveaux d'accès minimaux par type de ressource
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.1.2** Documenter les risques de sécurité liés aux privilèges excessifs
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.1.3** Créer des exemples de scénarios d'application du moindre privilège
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.2** Documenter les techniques de gestion des ACL avec PowerShell
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.2.1** Créer un guide d'utilisation des cmdlets Get-Acl et Set-Acl
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.2.2** Documenter la création et modification des règles d'accès
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.2.3** Créer des exemples de scripts pour la gestion en masse des ACL
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.2.4** Documenter les techniques de sauvegarde et restauration des ACL
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.3** Créer des modèles de permissions pour différents scénarios
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.3.1** Développer des modèles pour les serveurs web
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.3.2** Développer des modèles pour les serveurs de fichiers
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.3.3** Développer des modèles pour les serveurs de bases de données
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.3.4** Développer des modèles pour les environnements de développement
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.4** Documenter les stratégies d'audit des permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.4.1** Créer des scripts d'audit périodique des permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.4.2** Documenter les techniques de détection des dérives de permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.4.3** Développer des rapports d'audit de permissions
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.5** Développer des stratégies de gestion des permissions temporaires
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.5.1** Créer des fonctions d'élévation temporaire de privilèges
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.5.2** Documenter les techniques de révocation automatique des permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.5.3** Développer un système de demande et approbation de privilèges
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.6** Documenter les techniques de résolution des conflits de permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.6.1** Identifier les causes courantes de conflits de permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.6.2** Créer des outils de détection des conflits
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.6.3** Documenter les stratégies de résolution par type de conflit
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.7** Développer des stratégies de sauvegarde et restauration des permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.7.1** Créer des fonctions de sauvegarde des ACL dans différents formats
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.7.2** Développer des outils de restauration des permissions
+                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3.7.3** Documenter les stratégies de gestion des versions des ACL
                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7** Créer des tests unitaires pour valider les exemples
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.1** Développer des tests pour les fonctions de diagnostic de permissions
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.1.1** Créer des tests pour Test-PathPermissions
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.1.2** Créer des tests pour Debug-UnauthorizedAccessException
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.1.3** Créer des tests pour les fonctions d'élévation de privilèges
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.2** Créer des tests pour les outils d'analyse des ACL
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.2.1** Développer des tests pour l'analyse des ACL de fichiers
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.2.2** Développer des tests pour l'analyse des ACL de registre
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.2.3** Développer des tests pour l'analyse des ACL réseau
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.2.4** Développer des tests pour l'analyse des permissions SQL
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.3** Implémenter des tests pour les scénarios d'accès refusé
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.3.1** Créer des tests pour Debug-SystemFileAccess
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.3.2** Créer des tests pour Debug-RegistryKeyAccess
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.3.3** Créer des tests pour Debug-NetworkAccess
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.3.4** Créer des tests pour Debug-DatabaseAccess
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.4** Développer des tests d'intégration pour les scénarios complexes
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.4.1** Créer des tests pour les scénarios multi-ressources
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.4.2** Créer des tests pour les scénarios de migration de permissions
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.4.3** Créer des tests pour les scénarios de récupération après erreur
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.5** Développer des tests pour les techniques d'élévation de privilèges
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.5.1** Créer des tests pour Enable-Privilege
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.5.2** Créer des tests pour Start-ElevatedProcess
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.5.3** Créer des tests pour Invoke-WithImpersonation
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.6** Créer des tests pour les scripts de vérification de conformité
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.6.1** Développer des tests pour la vérification des ACL de fichiers
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.6.2** Développer des tests pour la vérification des ACL de registre
+                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7.6.3** Développer des tests pour la vérification des permissions SQL
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3** Identifier et documenter les exceptions du namespace System.Net
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.1** Documenter les exceptions liées aux connexions réseau
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.1.1** Documenter WebException et ses scénarios
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.1.2** Documenter SocketException et ses codes d'erreur
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.1.3** Documenter HttpRequestException et ses cas d'usage
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.2** Documenter les exceptions liées à l'authentification réseau
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.2.1** Documenter AuthenticationException et ses scénarios
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.2.2** Documenter les exceptions de certificats SSL/TLS
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.3** Créer des exemples de débogage pour les erreurs réseau courantes
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.3.1** Exemple pour les erreurs de connexion
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.3.2** Exemple pour les erreurs d'authentification
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.3.3** Exemple pour les erreurs de certificats
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3.3.4** Exemple pour les timeouts et problèmes de performance
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4** Identifier et documenter les exceptions du namespace System.Security
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.1** Documenter les exceptions liées aux permissions et accès
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.1.1** Documenter SecurityException et ses scénarios
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.1.2** Documenter VerificationException et ses cas d'usage
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.1.3** Documenter PolicyException et ses contextes
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.2** Documenter les exceptions liées à la cryptographie
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.2.1** Documenter CryptographicException et ses scénarios
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.2.2** Documenter les exceptions liées aux certificats
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.3** Créer des exemples de débogage pour les erreurs de sécurité courantes
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.3.1** Exemple pour les erreurs de permissions de code
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.3.2** Exemple pour les erreurs cryptographiques
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4.3.3** Exemple pour les erreurs de politique de sécurité
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5** Créer un tableau de référence des exceptions .NET courantes
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.1** Définir la structure du tableau de référence
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.1.1** Identifier les colonnes pertinentes (type, namespace, description, HResult, etc.)
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.1.2** Créer le format de présentation du tableau
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.2** Compiler les données pour les exceptions courantes
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.2.1** Recueillir les données pour les exceptions System
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.2.2** Recueillir les données pour les exceptions System.IO
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.2.3** Recueillir les données pour les exceptions System.Net
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.2.4** Recueillir les données pour les exceptions System.Security
+                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.3** Créer des mécanismes de recherche et filtrage
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.3.1** Développer une fonction de recherche par type d'exception
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.3.2** Implémenter un filtre par namespace
+                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.5.3.3** Créer une recherche par code HResult
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4** Créer la hiérarchie des exceptions de base
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.1** Développer un diagramme de classe des exceptions System
                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.4.1.1** Créer la représentation visuelle de la hiérarchie
@@ -752,12 +914,12 @@
         - [x] **1.3.1.3.1.1.3** Développer les options d'algorithme de détection
         - [x] **1.3.1.3.1.1.4** Implémenter les paramètres de profondeur d'analyse
         - [x] **1.3.1.3.1.1.5** Créer les options de correction automatique
-      - [ ] **1.3.1.3.1.2** Implémenter la gestion des erreurs
-        - [ ] **1.3.1.3.1.2.1** Développer la validation des entrées
-        - [ ] **1.3.1.3.1.2.2** Créer les mécanismes de capture d'exceptions
-        - [ ] **1.3.1.3.1.2.3** Implémenter la journalisation des erreurs
-        - [ ] **1.3.1.3.1.2.4** Développer les stratégies de récupération
-        - [ ] **1.3.1.3.1.2.5** Créer les messages d'erreur utilisateur
+      - [x] **1.3.1.3.1.2** Implémenter la gestion des erreurs
+        - [x] **1.3.1.3.1.2.1** Développer la validation des entrées
+        - [x] **1.3.1.3.1.2.2** Créer les mécanismes de capture d'exceptions
+        - [x] **1.3.1.3.1.2.3** Implémenter la journalisation des erreurs
+        - [x] **1.3.1.3.1.2.4** Développer les stratégies de récupération
+        - [x] **1.3.1.3.1.2.5** Créer les messages d'erreur utilisateur
       - [ ] **1.3.1.3.1.3** Créer les fonctions d'aide et utilitaires
         - [ ] **1.3.1.3.1.3.1** Développer les fonctions de manipulation de chemins
         - [ ] **1.3.1.3.1.3.2** Implémenter les utilitaires de filtrage de fichiers
