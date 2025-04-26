@@ -59,32 +59,32 @@ param(
     [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Chemin vers le fichier de roadmap à traiter.")]
     [ValidateNotNullOrEmpty()]
     [string]$FilePath,
-    
+
     [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Identifiant de la tâche à traiter (optionnel).")]
     [string]$TaskIdentifier,
-    
+
     [Parameter(Mandatory = $false, HelpMessage = "Chemin où seront générés les fichiers de sortie.")]
     [string]$OutputPath = (Get-Location).Path,
-    
+
     [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier de configuration personnalisé.")]
     [string]$ConfigFile,
-    
+
     [Parameter(Mandatory = $false, HelpMessage = "Niveau de journalisation à utiliser.")]
     [ValidateSet("ERROR", "WARNING", "INFO", "VERBOSE", "DEBUG")]
     [string]$LogLevel = "INFO",
-    
+
     [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le répertoire du projet.")]
     [string]$ProjectPath,
-    
+
     [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le répertoire des tests.")]
     [string]$TestsPath,
-    
+
     [Parameter(Mandatory = $false, HelpMessage = "Indique si les changements doivent être automatiquement commités.")]
     [bool]$AutoCommit = $false,
-    
+
     [Parameter(Mandatory = $false, HelpMessage = "Indique si la roadmap doit être mise à jour automatiquement.")]
     [bool]$UpdateRoadmap = $true,
-    
+
     [Parameter(Mandatory = $false, HelpMessage = "Indique si des tests doivent être générés automatiquement.")]
     [bool]$GenerateTests = $true
 )
@@ -105,7 +105,6 @@ if (-not (Test-Path -Path $modulePath)) {
 $commonFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\CommonFunctions.ps1"
 if (Test-Path -Path $commonFunctionsPath) {
     . $commonFunctionsPath
-    Write-Host "Fonctions communes importées." -ForegroundColor Green
 } else {
     Write-Error "Le fichier de fonctions communes est introuvable à l'emplacement : $commonFunctionsPath"
     exit 1
@@ -115,7 +114,6 @@ if (Test-Path -Path $commonFunctionsPath) {
 $loggingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\LoggingFunctions.ps1"
 if (Test-Path -Path $loggingFunctionsPath) {
     . $loggingFunctionsPath
-    Write-Host "Fonctions de journalisation importées." -ForegroundColor Green
 } else {
     Write-Error "Le fichier de fonctions de journalisation est introuvable à l'emplacement : $loggingFunctionsPath"
     exit 1
@@ -128,7 +126,6 @@ Set-LoggingLevel -Level $LogLevel
 $validationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ValidationFunctions.ps1"
 if (Test-Path -Path $validationFunctionsPath) {
     . $validationFunctionsPath
-    Write-Host "Fonctions de validation importées." -ForegroundColor Green
 } else {
     Write-Error "Le fichier de fonctions de validation est introuvable à l'emplacement : $validationFunctionsPath"
     exit 1
@@ -138,7 +135,6 @@ if (Test-Path -Path $validationFunctionsPath) {
 $errorHandlingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ErrorHandlingFunctions.ps1"
 if (Test-Path -Path $errorHandlingFunctionsPath) {
     . $errorHandlingFunctionsPath
-    Write-Host "Fonctions de gestion des erreurs importées." -ForegroundColor Green
 } else {
     Write-Error "Le fichier de fonctions de gestion des erreurs est introuvable à l'emplacement : $errorHandlingFunctionsPath"
     exit 1
@@ -148,7 +144,6 @@ if (Test-Path -Path $errorHandlingFunctionsPath) {
 $configurationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ConfigurationFunctions.ps1"
 if (Test-Path -Path $configurationFunctionsPath) {
     . $configurationFunctionsPath
-    Write-Host "Fonctions de configuration importées." -ForegroundColor Green
 } else {
     Write-Error "Le fichier de fonctions de configuration est introuvable à l'emplacement : $configurationFunctionsPath"
     exit 1
@@ -158,7 +153,6 @@ if (Test-Path -Path $configurationFunctionsPath) {
 $modeFunctionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapDevelopment.ps1"
 if (Test-Path -Path $modeFunctionPath) {
     . $modeFunctionPath
-    Write-Host "Fonction Invoke-RoadmapDevelopment importée." -ForegroundColor Green
 } else {
     Write-Error "Le fichier de fonction du mode est introuvable à l'emplacement : $modeFunctionPath"
     exit 1
@@ -169,9 +163,9 @@ $config = Get-DefaultConfiguration
 if ($ConfigFile -and (Test-Path -Path $ConfigFile)) {
     $customConfig = Get-Configuration -ConfigFile $ConfigFile
     $config = Merge-Configuration -DefaultConfig $config -CustomConfig $customConfig
-    Write-LogInfo "Configuration personnalisée chargée depuis : $ConfigFile"
+    Write-LogDebug "Configuration personnalisée chargée depuis : $ConfigFile"
 } else {
-    Write-LogInfo "Configuration par défaut utilisée."
+    Write-LogDebug "Configuration par défaut utilisée."
 }
 
 #endregion
@@ -208,18 +202,21 @@ if ($TaskIdentifier) {
 #region Traitement principal
 
 Write-LogInfo "Début du traitement du mode DEV-R."
-Write-LogInfo "Fichier de roadmap : $FilePath"
-if ($TaskIdentifier) {
-    Write-LogInfo "Tâche à traiter : $TaskIdentifier"
-} else {
-    Write-LogInfo "Toutes les tâches seront traitées."
+# Logs minimaux pour le débogage uniquement
+if ($LogLevel -eq "DEBUG") {
+    Write-LogDebug "Fichier de roadmap : $FilePath"
+    if ($TaskIdentifier) {
+        Write-LogDebug "Tâche à traiter : $TaskIdentifier"
+    } else {
+        Write-LogDebug "Toutes les tâches seront traitées."
+    }
+    Write-LogDebug "Répertoire du projet : $ProjectPath"
+    Write-LogDebug "Répertoire des tests : $TestsPath"
+    Write-LogDebug "Répertoire de sortie : $OutputPath"
+    Write-LogDebug "Auto-commit : $AutoCommit"
+    Write-LogDebug "Mise à jour de la roadmap : $UpdateRoadmap"
+    Write-LogDebug "Génération de tests : $GenerateTests"
 }
-Write-LogInfo "Répertoire du projet : $ProjectPath"
-Write-LogInfo "Répertoire des tests : $TestsPath"
-Write-LogInfo "Répertoire de sortie : $OutputPath"
-Write-LogInfo "Auto-commit : $AutoCommit"
-Write-LogInfo "Mise à jour de la roadmap : $UpdateRoadmap"
-Write-LogInfo "Génération de tests : $GenerateTests"
 
 # Appeler la fonction principale du mode
 try {
@@ -232,51 +229,31 @@ try {
         UpdateRoadmap = $UpdateRoadmap
         GenerateTests = $GenerateTests
     }
-    
+
     if ($TaskIdentifier) {
         $params.TaskIdentifier = $TaskIdentifier
     }
-    
+
     if ($PSCmdlet.ShouldProcess("Invoke-RoadmapDevelopment", "Exécuter avec les paramètres spécifiés")) {
         $result = Invoke-WithErrorHandling -Action {
             Invoke-RoadmapDevelopment @params
         } -ErrorMessage "Une erreur s'est produite lors de l'exécution du mode DEV-R." -ExitOnError $false
-        
+
         # Traiter les résultats
         if ($result) {
-            Write-LogInfo "Traitement terminé avec succès."
-            
-            # Afficher un résumé des résultats
-            Write-Host "`nRésumé des résultats :" -ForegroundColor Yellow
-            Write-Host "  - Nombre de tâches traitées : $($result.TaskCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tâches complétées : $($result.CompletedCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tâches échouées : $($result.FailedCount)" -ForegroundColor $(if ($result.FailedCount -eq 0) { "Green" } else { "Red" })
-            Write-Host "  - Nombre de tests générés : $($result.TestCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tests réussis : $($result.PassedTestCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tests échoués : $($result.FailedTestCount)" -ForegroundColor $(if ($result.FailedTestCount -eq 0) { "Green" } else { "Red" })
-            
-            # Afficher les tâches échouées
-            if ($result.FailedTasks -and $result.FailedTasks.Count -gt 0) {
-                Write-Host "`nTâches échouées :" -ForegroundColor Red
-                foreach ($task in $result.FailedTasks) {
-                    Write-Host "  - $($task.Identifier) : $($task.Title)" -ForegroundColor Red
-                    Write-Host "    Raison : $($task.FailureReason)" -ForegroundColor Gray
-                }
-            }
-            
-            # Indiquer les fichiers générés
-            if ($result.OutputFiles -and $result.OutputFiles.Count -gt 0) {
-                Write-Host "`nFichiers générés :" -ForegroundColor Yellow
-                foreach ($file in $result.OutputFiles) {
-                    Write-Host "  - $file" -ForegroundColor Gray
-                }
-            }
-            
-            # Afficher les prochaines étapes
+            # Afficher uniquement les prochaines étapes
             if ($result.NextSteps -and $result.NextSteps.Count -gt 0) {
                 Write-Host "`nProchaines étapes :" -ForegroundColor Yellow
                 foreach ($step in $result.NextSteps) {
                     Write-Host "  - $step" -ForegroundColor Gray
+                }
+            }
+
+            # Afficher les tâches échouées (information critique)
+            if ($result.FailedTasks -and $result.FailedTasks.Count -gt 0) {
+                Write-Host "`nTâches échouées :" -ForegroundColor Red
+                foreach ($task in $result.FailedTasks) {
+                    Write-Host "  - $($task.Identifier) : $($task.Title)" -ForegroundColor Red
                 }
             }
         } else {
@@ -289,7 +266,10 @@ try {
     Handle-Error -ErrorRecord $_ -ErrorMessage "Une erreur s'est produite lors du traitement du mode DEV-R." -ExitOnError $true
 }
 
-Write-LogInfo "Fin du traitement du mode DEV-R."
+# Fin silencieuse pour éviter les verboses inutiles
+if ($LogLevel -eq "DEBUG") {
+    Write-LogDebug "Fin du traitement du mode DEV-R."
+}
 
 #endregion
 
