@@ -106,7 +106,32 @@
         'Write-RoadmapInformation',
         'Write-RoadmapWarning',
         'Write-RoadmapError',
-        'Write-RoadmapCritical'
+        'Write-RoadmapCritical',
+        'Inspect-Variable',
+        # Points d'arrêt conditionnels
+        'Set-RoadmapBreakpoint',
+        'Test-RoadmapBreakpointCondition',
+        'Invoke-RoadmapBreakpointAction',
+        'Write-RoadmapBreakpointLog',
+        'Set-RoadmapTimedBreakpoint',
+        # Fonctions de gestion d'erreurs
+        'Handle-Error',
+        'Invoke-WithRetry',
+        'Get-ExceptionInfo',
+        'Get-ExceptionCategory',
+        'Get-ExceptionSeverity',
+        # Fonctions de journalisation
+        'Set-LoggingConfiguration',
+        'Write-LogDebug',
+        'Write-LogInfo',
+        'Write-LogWarning',
+        'Write-LogError',
+        'Get-LoggingConfiguration',
+        'New-LogFile',
+        # Fonctions de rotation des logs
+        'Invoke-LogRotation',
+        'Clear-OldLogFiles',
+        'Compress-LogFile'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
