@@ -445,12 +445,12 @@
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.1.5** Créer les fonctions d'accès à la taxonomie
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2** Documenter les propriétés communes de System.Exception
                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.1** Documenter la propriété Message et ses caractéristiques
-                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.2** Documenter la propriété StackTrace et son format
-                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.3** Documenter la propriété InnerException et sa hiérarchie
-                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.4** Documenter la propriété Source et son utilisation
-                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.5** Documenter la propriété HResult et ses codes d'erreur
-                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.6** Documenter les méthodes ToString() et GetBaseException()
-                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.7** Documenter les propriétés Data et TargetSite
+                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.2** Documenter la propriété StackTrace et son format
+                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.3** Documenter la propriété InnerException et sa hiérarchie
+                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.4** Documenter la propriété Source et son utilisation
+                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.5** Documenter la propriété HResult et ses codes d'erreur
+                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.6** Documenter les méthodes ToString() et GetBaseException()
+                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.2.7** Documenter les propriétés Data et TargetSite
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.2.8** Créer un tableau récapitulatif des propriétés communes
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3** Recenser les exceptions de base du framework .NET
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1** Identifier et documenter les exceptions du namespace System
