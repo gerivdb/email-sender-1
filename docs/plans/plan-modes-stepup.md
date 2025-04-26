@@ -463,7 +463,7 @@
                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.1** Documenter IOException et ses caractéristiques
                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.2** Documenter FileNotFoundException et ses détails
                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.3** Documenter DirectoryNotFoundException et ses contextes
-                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.4** Documenter PathTooLongException et ses limites
+                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.4** Documenter PathTooLongException et ses limites
                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5** Documenter UnauthorizedAccessException et ses permissions
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3** Identifier et documenter les exceptions du namespace System.Net
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4** Identifier et documenter les exceptions du namespace System.Security
