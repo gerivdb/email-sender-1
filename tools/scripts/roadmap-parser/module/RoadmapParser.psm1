@@ -88,9 +88,24 @@ if (Test-Path -Path $script:ExceptionsPath) {
     }
 }
 
+# Import common functions
+$script:CommonFunctionsPath = Join-Path -Path $script:FunctionsPath -ChildPath "Common"
+if (Test-Path -Path $script:CommonFunctionsPath) {
+    $commonFiles = Get-ChildItem -Path $script:CommonFunctionsPath -Filter "*.ps1" -File -Recurse
+
+    foreach ($file in $commonFiles) {
+        try {
+            . $file.FullName
+            Write-Verbose "Imported common function: $($file.Name)"
+        } catch {
+            Write-Warning "Failed to import common function file '$($file.Name)': $_"
+        }
+    }
+}
+
 # Import private functions
 if (Test-Path -Path $script:PrivateFunctionsPath) {
-    $privateFiles = Get-ChildItem -Path $script:PrivateFunctionsPath -Filter "*.ps1" -File
+    $privateFiles = Get-ChildItem -Path $script:PrivateFunctionsPath -Filter "*.ps1" -File -Recurse
 
     foreach ($file in $privateFiles) {
         try {
@@ -104,7 +119,7 @@ if (Test-Path -Path $script:PrivateFunctionsPath) {
 
 # Import public functions
 if (Test-Path -Path $script:PublicFunctionsPath) {
-    $publicFiles = Get-ChildItem -Path $script:PublicFunctionsPath -Filter "*.ps1" -File
+    $publicFiles = Get-ChildItem -Path $script:PublicFunctionsPath -Filter "*.ps1" -File -Recurse
 
     foreach ($file in $publicFiles) {
         try {
@@ -161,7 +176,25 @@ $publicFunctions = @(
     'Test-RoadmapBreakpointCondition',
     'Invoke-RoadmapBreakpointAction',
     'Write-RoadmapBreakpointLog',
-    'Set-RoadmapTimedBreakpoint'
+    'Set-RoadmapTimedBreakpoint',
+    # Fonctions de gestion d'erreurs
+    'Handle-Error',
+    'Invoke-WithRetry',
+    'Get-ExceptionInfo',
+    'Get-ExceptionCategory',
+    'Get-ExceptionSeverity',
+    # Fonctions de journalisation
+    'Set-LoggingConfiguration',
+    'Write-LogDebug',
+    'Write-LogInfo',
+    'Write-LogWarning',
+    'Write-LogError',
+    'Get-LoggingConfiguration',
+    'New-LogFile',
+    # Fonctions de rotation des logs
+    'Invoke-LogRotation',
+    'Clear-OldLogFiles',
+    'Compress-LogFile'
 )
 
 Export-ModuleMember -Function $publicFunctions
