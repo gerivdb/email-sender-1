@@ -1507,3 +1507,443 @@ Compare-ConversionExceptions -TestCase "ArgumentNull"
 `FormatException` est une exception courante qui survient lors de la conversion de données d'un format à un autre, particulièrement lors de la conversion de chaînes de caractères en types numériques, dates, ou autres types structurés. Elle indique que le format de l'entrée ne correspond pas au format attendu par la méthode de conversion.
 
 En comprenant les scénarios courants qui génèrent des `FormatException` et en appliquant les techniques de prévention appropriées, vous pouvez créer des applications plus robustes qui gèrent élégamment les erreurs de format et fournissent des retours utiles aux utilisateurs.
+
+## IndexOutOfRangeException et ses contextes
+
+### Vue d'ensemble
+
+`IndexOutOfRangeException` est une exception qui est levée lorsqu'un programme tente d'accéder à un élément d'un tableau ou d'une collection à l'aide d'un index qui est en dehors des limites valides. Cette exception est l'une des plus courantes dans le développement .NET et indique généralement une erreur de logique dans le code.
+
+### Hiérarchie
+
+```
+System.Exception
+└── System.SystemException
+    └── System.IndexOutOfRangeException
+```
+
+### Description
+
+`IndexOutOfRangeException` est levée automatiquement par le runtime .NET lorsqu'un code tente d'accéder à un élément d'un tableau ou d'une collection en utilisant un index négatif ou un index supérieur ou égal à la longueur du tableau. Comme `NullReferenceException`, elle est généralement levée par le runtime lui-même plutôt que par le code utilisateur.
+
+### Propriétés spécifiques
+
+`IndexOutOfRangeException` n'ajoute pas de propriétés spécifiques à celles héritées de `System.Exception`.
+
+### Constructeurs principaux
+
+```csharp
+IndexOutOfRangeException()
+IndexOutOfRangeException(string message)
+IndexOutOfRangeException(string message, Exception innerException)
+```
+
+### Contextes courants
+
+1. **Accès à un index négatif** : Tentative d'accéder à un élément d'un tableau avec un index négatif.
+
+2. **Accès à un index trop grand** : Tentative d'accéder à un élément d'un tableau avec un index supérieur ou égal à la longueur du tableau.
+
+3. **Erreur de calcul d'index** : Erreur dans le calcul d'un index, conduisant à une valeur en dehors des limites.
+
+4. **Boucle mal bornée** : Boucle `for` ou `while` qui ne vérifie pas correctement les limites du tableau.
+
+5. **Confusion entre longueur et index maximal** : Confusion entre la longueur d'un tableau (n) et l'index maximal valide (n-1).
+
+### Exemples en PowerShell
+
+```powershell
+# Exemple 1: Accès à un index négatif
+function Access-NegativeIndex {
+    $array = @(1, 2, 3, 4, 5)
+
+    try {
+        # Ceci va générer une IndexOutOfRangeException
+        return $array[-1]  # En PowerShell, cela fonctionne en fait (retourne le dernier élément)
+                           # Mais en C#, cela générerait une IndexOutOfRangeException
+    } catch {
+        Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+        Write-Host "Message: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+# Note: Pour simuler le comportement C# en PowerShell
+function Access-NegativeIndexCSharpStyle {
+    $array = [array]@(1, 2, 3, 4, 5)
+
+    try {
+        # Simuler l'accès à un index négatif comme en C#
+        $index = -1
+        if ($index -lt 0 -or $index -ge $array.Length) {
+            throw [System.IndexOutOfRangeException]::new("Index was outside the bounds of the array.")
+        }
+        return $array[$index]
+    } catch {
+        Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+        Write-Host "Message: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+Access-NegativeIndexCSharpStyle
+
+# Sortie:
+# Erreur: System.IndexOutOfRangeException
+# Message: Index was outside the bounds of the array.
+
+# Exemple 2: Accès à un index trop grand
+function Access-TooLargeIndex {
+    $array = @(1, 2, 3, 4, 5)
+
+    try {
+        # Ceci va générer une IndexOutOfRangeException
+        return $array[10]
+    } catch {
+        Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+        Write-Host "Message: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+Access-TooLargeIndex
+
+# Sortie:
+# Erreur: System.IndexOutOfRangeException
+# Message: Index was outside the bounds of the array.
+
+# Exemple 3: Erreur de calcul d'index
+function Calculate-InvalidIndex {
+    param (
+        [array]$Array,
+        [int]$Position
+    )
+
+    try {
+        # Calcul d'index incorrect qui peut générer une IndexOutOfRangeException
+        $index = $Position * 2 - $Array.Length
+        return $Array[$index]
+    } catch [System.IndexOutOfRangeException] {
+        Write-Host "Erreur d'index: L'index calculé ($index) est en dehors des limites du tableau (0..$($Array.Length - 1))"
+        return $null
+    }
+}
+
+$array = @(1, 2, 3, 4, 5)
+Calculate-InvalidIndex -Array $array -Position 4  # Génère un index de 3, valide
+Calculate-InvalidIndex -Array $array -Position 5  # Génère un index de 5, invalide
+
+# Sortie:
+# 4
+# Erreur d'index: L'index calculé (5) est en dehors des limites du tableau (0..4)
+
+# Exemple 4: Boucle mal bornée
+function Iterate-WithInvalidBounds {
+    $array = @(1, 2, 3, 4, 5)
+
+    try {
+        # Boucle mal bornée qui va générer une IndexOutOfRangeException
+        for ($i = 0; $i <= $array.Length; $i++) {
+            Write-Host "Élément à l'index $i : $($array[$i])"
+        }
+    } catch {
+        Write-Host "Erreur à l'itération $i : $($_.Exception.GetType().FullName)"
+        Write-Host "Message: $($_.Exception.Message)"
+    }
+}
+
+Iterate-WithInvalidBounds
+
+# Sortie:
+# Élément à l'index 0 : 1
+# Élément à l'index 1 : 2
+# Élément à l'index 2 : 3
+# Élément à l'index 3 : 4
+# Élément à l'index 4 : 5
+# Erreur à l'itération 5 : System.IndexOutOfRangeException
+# Message: Index was outside the bounds of the array.
+
+# Exemple 5: Confusion entre longueur et index maximal
+function Demonstrate-LengthVsMaxIndex {
+    $array = @(1, 2, 3, 4, 5)
+    $length = $array.Length
+    $maxIndex = $length - 1
+
+    Write-Host "Longueur du tableau: $length"
+    Write-Host "Index maximal valide: $maxIndex"
+
+    try {
+        # Erreur courante: utiliser la longueur comme index
+        Write-Host "Tentative d'accès à l'index $length..."
+        $value = $array[$length]
+        Write-Host "Valeur: $value"  # Cette ligne ne sera jamais exécutée
+    } catch {
+        Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+        Write-Host "Message: $($_.Exception.Message)"
+    }
+
+    # Accès correct à l'index maximal
+    Write-Host "Tentative d'accès à l'index $maxIndex..."
+    $value = $array[$maxIndex]
+    Write-Host "Valeur: $value"
+}
+
+Demonstrate-LengthVsMaxIndex
+
+# Sortie:
+# Longueur du tableau: 5
+# Index maximal valide: 4
+# Tentative d'accès à l'index 5...
+# Erreur: System.IndexOutOfRangeException
+# Message: Index was outside the bounds of the array.
+# Tentative d'accès à l'index 4...
+# Valeur: 5
+```
+
+### Prévention des IndexOutOfRangeException
+
+Voici plusieurs techniques pour éviter les `IndexOutOfRangeException` :
+
+#### 1. Vérification des limites avant l'accès
+
+```powershell
+function Access-ArraySafely {
+    param (
+        [array]$Array,
+        [int]$Index
+    )
+
+    if ($Index -lt 0 -or $Index -ge $Array.Length) {
+        Write-Host "Index $Index hors limites (0..$($Array.Length - 1))"
+        return $null
+    }
+
+    return $Array[$Index]
+}
+
+$array = @(1, 2, 3, 4, 5)
+Access-ArraySafely -Array $array -Index 2   # Retourne 3
+Access-ArraySafely -Array $array -Index 10  # Retourne null avec message d'erreur
+```
+
+#### 2. Utilisation de méthodes sécurisées pour les collections
+
+```powershell
+function Get-ElementSafely {
+    param (
+        [System.Collections.ArrayList]$List,
+        [int]$Index
+    )
+
+    # ArrayList a une méthode Count au lieu de Length
+    if ($Index -ge 0 -and $Index -lt $List.Count) {
+        return $List[$Index]
+    } else {
+        Write-Host "Index $Index hors limites (0..$($List.Count - 1))"
+        return $null
+    }
+}
+
+$list = [System.Collections.ArrayList]::new()
+$list.AddRange(@(1, 2, 3, 4, 5))
+
+Get-ElementSafely -List $list -Index 2   # Retourne 3
+Get-ElementSafely -List $list -Index 10  # Retourne null avec message d'erreur
+```
+
+#### 3. Utilisation de l'opérateur d'indexation sécurisée (en PowerShell)
+
+```powershell
+function Access-ArrayWithSafeOperator {
+    param (
+        [array]$Array,
+        [int]$Index
+    )
+
+    # En PowerShell, si l'index est hors limites, $null est retourné au lieu de lever une exception
+    $result = $Array[$Index]
+
+    if ($null -eq $result -and ($Index -lt 0 -or $Index -ge $Array.Length)) {
+        Write-Host "Index $Index hors limites (0..$($Array.Length - 1))"
+    }
+
+    return $result
+}
+
+$array = @(1, 2, 3, 4, 5)
+Access-ArrayWithSafeOperator -Array $array -Index 2   # Retourne 3
+Access-ArrayWithSafeOperator -Array $array -Index 10  # Retourne null avec message d'erreur
+```
+
+#### 4. Utilisation de boucles foreach au lieu de for
+
+```powershell
+function Iterate-Safely {
+    param (
+        [array]$Array
+    )
+
+    # Utiliser foreach au lieu de for pour éviter les problèmes d'index
+    foreach ($item in $Array) {
+        Write-Host "Élément: $item"
+    }
+}
+
+$array = @(1, 2, 3, 4, 5)
+Iterate-Safely -Array $array
+```
+
+#### 5. Utilisation de méthodes d'extension LINQ (en C#) ou équivalent en PowerShell
+
+```powershell
+function Get-ElementWithLinq {
+    param (
+        [array]$Array,
+        [int]$Index
+    )
+
+    # Équivalent de LINQ FirstOrDefault en PowerShell
+    if ($Index -ge 0 -and $Index -lt $Array.Length) {
+        return $Array[$Index]
+    } else {
+        return $null  # Valeur par défaut
+    }
+}
+
+$array = @(1, 2, 3, 4, 5)
+Get-ElementWithLinq -Array $array -Index 2   # Retourne 3
+Get-ElementWithLinq -Array $array -Index 10  # Retourne null sans erreur
+```
+
+### Débogage des IndexOutOfRangeException
+
+Lorsque vous rencontrez une `IndexOutOfRangeException`, voici quelques étapes pour la déboguer efficacement :
+
+1. **Identifier l'index problématique** : Déterminez quelle valeur d'index a causé l'exception.
+
+2. **Vérifier les limites du tableau** : Vérifiez la longueur du tableau et les limites valides.
+
+3. **Examiner la logique de calcul d'index** : Si l'index est calculé, vérifiez la logique de calcul.
+
+4. **Vérifier les boucles** : Assurez-vous que les conditions de boucle sont correctes.
+
+5. **Utiliser des points d'arrêt** : Placez des points d'arrêt avant l'accès au tableau pour inspecter les valeurs.
+
+```powershell
+function Debug-IndexOutOfRange {
+    param (
+        [array]$Array,
+        [int]$Index
+    )
+
+    Write-Host "Débogage d'accès au tableau:"
+    Write-Host "- Tableau: $Array"
+    Write-Host "- Longueur du tableau: $($Array.Length)"
+    Write-Host "- Index demandé: $Index"
+    Write-Host "- Limites valides: 0..$($Array.Length - 1)"
+
+    if ($Index -lt 0) {
+        Write-Host "ERREUR: Index négatif"
+        return $null
+    }
+
+    if ($Index -ge $Array.Length) {
+        Write-Host "ERREUR: Index supérieur ou égal à la longueur du tableau"
+        return $null
+    }
+
+    Write-Host "Accès valide"
+    return $Array[$Index]
+}
+
+$array = @(1, 2, 3, 4, 5)
+Debug-IndexOutOfRange -Array $array -Index 2
+Debug-IndexOutOfRange -Array $array -Index 5
+Debug-IndexOutOfRange -Array $array -Index -1
+```
+
+### Différence entre IndexOutOfRangeException et ArgumentOutOfRangeException
+
+Il est important de comprendre la différence entre `IndexOutOfRangeException` et `ArgumentOutOfRangeException` :
+
+- **IndexOutOfRangeException** : Levée par le runtime lorsqu'un code tente d'accéder à un élément d'un tableau avec un index en dehors des limites valides. Généralement, cette exception n'est pas levée explicitement par le code utilisateur.
+
+- **ArgumentOutOfRangeException** : Levée explicitement par le code lorsqu'un argument est en dehors de la plage de valeurs valides pour ce paramètre. Cette exception est utilisée pour la validation des entrées.
+
+```powershell
+function Compare-OutOfRangeExceptions {
+    # Ceci génère une IndexOutOfRangeException (erreur de runtime)
+    function Access-ArrayUnsafely {
+        param (
+            [array]$Array,
+            [int]$Index
+        )
+
+        # Pas de vérification des limites
+        return $Array[$Index]
+    }
+
+    # Ceci génère une ArgumentOutOfRangeException (validation explicite)
+    function Access-ArrayWithValidation {
+        param (
+            [array]$Array,
+            [int]$Index
+        )
+
+        if ($Index -lt 0 -or $Index -ge $Array.Length) {
+            throw [System.ArgumentOutOfRangeException]::new("Index", $Index,
+                "L'index doit être compris entre 0 et $($Array.Length - 1)")
+        }
+
+        return $Array[$Index]
+    }
+
+    $array = @(1, 2, 3, 4, 5)
+
+    try {
+        Access-ArrayUnsafely -Array $array -Index 10
+    } catch {
+        Write-Host "Exception 1: $($_.Exception.GetType().FullName)"
+        Write-Host "Message 1: $($_.Exception.Message)"
+    }
+
+    try {
+        Access-ArrayWithValidation -Array $array -Index 10
+    } catch {
+        Write-Host "Exception 2: $($_.Exception.GetType().FullName)"
+        Write-Host "Message 2: $($_.Exception.Message)"
+    }
+}
+
+Compare-OutOfRangeExceptions
+
+# Sortie:
+# Exception 1: System.IndexOutOfRangeException
+# Message 1: Index was outside the bounds of the array.
+# Exception 2: System.ArgumentOutOfRangeException
+# Message 2: L'index doit être compris entre 0 et 4
+# Parameter name: Index
+# Actual value was 10.
+```
+
+### Bonnes pratiques pour éviter les IndexOutOfRangeException
+
+1. **Vérifier les limites** : Toujours vérifier que l'index est dans les limites valides avant d'accéder à un élément d'un tableau.
+
+2. **Utiliser foreach** : Préférer les boucles `foreach` aux boucles `for` lorsque possible pour éviter les problèmes d'index.
+
+3. **Faire attention aux boucles** : S'assurer que les conditions de boucle sont correctes, en particulier pour les boucles `for`.
+
+4. **Utiliser des méthodes sécurisées** : Utiliser des méthodes qui gèrent automatiquement les limites, comme `ElementAtOrDefault` en LINQ (C#).
+
+5. **Valider les entrées** : Valider les index fournis par l'utilisateur ou calculés à partir de données externes.
+
+6. **Comprendre la différence entre longueur et index maximal** : Se rappeler que l'index maximal est toujours la longueur du tableau moins un.
+
+7. **Utiliser des collections plus sûres** : Considérer l'utilisation de collections qui offrent des méthodes d'accès plus sûres, comme `Dictionary<TKey, TValue>` en C# ou `[hashtable]` en PowerShell.
+
+### Résumé
+
+`IndexOutOfRangeException` est une exception courante qui survient lorsqu'un code tente d'accéder à un élément d'un tableau ou d'une collection avec un index en dehors des limites valides. Elle indique généralement une erreur de logique dans le code, comme une boucle mal bornée ou un calcul d'index incorrect.
+
+En comprenant les contextes courants qui génèrent des `IndexOutOfRangeException` et en appliquant les techniques de prévention appropriées, vous pouvez écrire un code plus robuste qui évite ces erreurs courantes et améliore la fiabilité de vos applications.
