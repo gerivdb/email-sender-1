@@ -1096,3 +1096,414 @@ Compare-NullExceptions
 `NullReferenceException` est l'une des exceptions les plus courantes et les plus frustrantes dans le développement .NET. Elle indique généralement un bug dans le code plutôt qu'une condition d'erreur attendue. La meilleure approche est de prévenir ces exceptions par une validation appropriée des entrées, une initialisation par défaut et une conception défensive.
 
 En comprenant les causes courantes de `NullReferenceException` et en appliquant les bonnes pratiques pour les éviter, vous pouvez écrire un code plus robuste et plus fiable.
+
+## FormatException et ses scénarios
+
+### Vue d'ensemble
+
+`FormatException` est une exception qui est levée lorsqu'une opération de formatage ou de conversion échoue en raison d'un format incorrect dans les données d'entrée. Cette exception est couramment rencontrée lors de la conversion de chaînes de caractères en types numériques, dates, ou autres types structurés.
+
+### Hiérarchie
+
+```
+System.Exception
+└── System.SystemException
+    └── System.FormatException
+```
+
+### Description
+
+`FormatException` est levée lorsqu'une méthode de conversion ou de formatage ne peut pas interpréter correctement les données d'entrée selon le format attendu. Elle est souvent générée par les méthodes de conversion comme `Int32.Parse()`, `DateTime.Parse()`, ou les méthodes `Convert.To*()`.
+
+### Propriétés spécifiques
+
+`FormatException` n'ajoute pas de propriétés spécifiques à celles héritées de `System.Exception`.
+
+### Constructeurs principaux
+
+```csharp
+FormatException()
+FormatException(string message)
+FormatException(string message, Exception innerException)
+```
+
+### Scénarios courants
+
+1. **Conversion de chaîne en nombre** : Tentative de convertir une chaîne qui ne représente pas un nombre valide en type numérique.
+
+2. **Conversion de chaîne en date** : Tentative de convertir une chaîne qui ne représente pas une date valide en type DateTime.
+
+3. **Conversion de chaîne en GUID** : Tentative de convertir une chaîne qui ne respecte pas le format GUID.
+
+4. **Formatage de chaîne avec placeholders** : Utilisation incorrecte des placeholders dans une opération de formatage de chaîne.
+
+5. **Conversion de base64** : Tentative de décoder une chaîne base64 mal formée.
+
+### Exemples en PowerShell
+
+```powershell
+# Exemple 1: Conversion de chaîne en nombre
+function Convert-ToNumber {
+    param (
+        [string]$InputString
+    )
+
+    try {
+        return [int]::Parse($InputString)
+    } catch [System.FormatException] {
+        Write-Host "Erreur de format: '$InputString' n'est pas un nombre valide"
+        return $null
+    }
+}
+
+Convert-ToNumber -InputString "123"    # Fonctionne
+Convert-ToNumber -InputString "abc"    # Génère FormatException
+Convert-ToNumber -InputString "123.45" # Génère FormatException (pour Int32)
+
+# Sortie:
+# 123
+# Erreur de format: 'abc' n'est pas un nombre valide
+# Erreur de format: '123.45' n'est pas un nombre valide
+
+# Exemple 2: Conversion de chaîne en date
+function Convert-ToDate {
+    param (
+        [string]$DateString
+    )
+
+    try {
+        return [DateTime]::Parse($DateString)
+    } catch [System.FormatException] {
+        Write-Host "Erreur de format: '$DateString' n'est pas une date valide"
+        return $null
+    }
+}
+
+Convert-ToDate -DateString "2023-06-17"          # Fonctionne
+Convert-ToDate -DateString "17/06/2023"          # Fonctionne (selon la culture)
+Convert-ToDate -DateString "Pas une date"        # Génère FormatException
+Convert-ToDate -DateString "2023-13-45"          # Génère FormatException (mois 13 invalide)
+
+# Sortie:
+# 17/06/2023 00:00:00
+# 17/06/2023 00:00:00
+# Erreur de format: 'Pas une date' n'est pas une date valide
+# Erreur de format: '2023-13-45' n'est pas une date valide
+
+# Exemple 3: Conversion de chaîne en GUID
+function Convert-ToGuid {
+    param (
+        [string]$GuidString
+    )
+
+    try {
+        return [Guid]::Parse($GuidString)
+    } catch [System.FormatException] {
+        Write-Host "Erreur de format: '$GuidString' n'est pas un GUID valide"
+        return $null
+    }
+}
+
+Convert-ToGuid -GuidString "12345678-1234-1234-1234-123456789012" # Fonctionne
+Convert-ToGuid -GuidString "Pas un GUID"                          # Génère FormatException
+Convert-ToGuid -GuidString "12345678-1234-1234-1234-12345678901"  # Génère FormatException (trop court)
+
+# Sortie:
+# 12345678-1234-1234-1234-123456789012
+# Erreur de format: 'Pas un GUID' n'est pas un GUID valide
+# Erreur de format: '12345678-1234-1234-1234-12345678901' n'est pas un GUID valide
+
+# Exemple 4: Formatage de chaîne avec placeholders
+function Format-Message {
+    param (
+        [string]$Template,
+        [object[]]$Args
+    )
+
+    try {
+        return [string]::Format($Template, $Args)
+    } catch [System.FormatException] {
+        Write-Host "Erreur de format: Le template '$Template' est invalide avec les arguments fournis"
+        return $null
+    }
+}
+
+Format-Message -Template "Bonjour {0}, vous avez {1} messages" -Args @("John", 5)  # Fonctionne
+Format-Message -Template "Bonjour {0}, vous avez {1} messages" -Args @("John")     # Génère FormatException (argument manquant)
+Format-Message -Template "Bonjour {0}, vous avez {2} messages" -Args @("John", 5)  # Génère FormatException (index hors limites)
+
+# Sortie:
+# Bonjour John, vous avez 5 messages
+# Erreur de format: Le template 'Bonjour {0}, vous avez {1} messages' est invalide avec les arguments fournis
+# Erreur de format: Le template 'Bonjour {0}, vous avez {2} messages' est invalide avec les arguments fournis
+
+# Exemple 5: Conversion de base64
+function Convert-FromBase64 {
+    param (
+        [string]$Base64String
+    )
+
+    try {
+        $bytes = [Convert]::FromBase64String($Base64String)
+        return [System.Text.Encoding]::UTF8.GetString($bytes)
+    } catch [System.FormatException] {
+        Write-Host "Erreur de format: '$Base64String' n'est pas une chaîne base64 valide"
+        return $null
+    }
+}
+
+$validBase64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("Hello World"))
+Convert-FromBase64 -Base64String $validBase64        # Fonctionne
+Convert-FromBase64 -Base64String "Pas du base64"     # Génère FormatException
+Convert-FromBase64 -Base64String "SGVsbG8gV29ybGQ="  # Fonctionne (équivalent à "Hello World")
+Convert-FromBase64 -Base64String "SGVsbG8gV29ybGQ"   # Peut générer FormatException (longueur incorrecte)
+
+# Sortie:
+# Hello World
+# Erreur de format: 'Pas du base64' n'est pas une chaîne base64 valide
+# Hello World
+# Erreur de format: 'SGVsbG8gV29ybGQ' n'est pas une chaîne base64 valide
+```
+
+### Prévention des FormatException
+
+Voici plusieurs techniques pour éviter les `FormatException` :
+
+#### 1. Utilisation de méthodes TryParse
+
+Les méthodes `TryParse` sont disponibles pour la plupart des types qui supportent la conversion depuis une chaîne. Elles retournent un booléen indiquant si la conversion a réussi, plutôt que de lever une exception.
+
+```powershell
+function Convert-ToNumberSafely {
+    param (
+        [string]$InputString
+    )
+
+    $number = 0
+    $success = [int]::TryParse($InputString, [ref]$number)
+
+    if ($success) {
+        return $number
+    } else {
+        Write-Host "La conversion a échoué: '$InputString' n'est pas un nombre valide"
+        return $null
+    }
+}
+
+Convert-ToNumberSafely -InputString "123"    # Retourne 123
+Convert-ToNumberSafely -InputString "abc"    # Retourne null sans exception
+```
+
+#### 2. Validation préalable avec des expressions régulières
+
+Vous pouvez utiliser des expressions régulières pour valider le format avant de tenter la conversion.
+
+```powershell
+function Convert-ToDateSafely {
+    param (
+        [string]$DateString
+    )
+
+    # Expression régulière simple pour une date au format YYYY-MM-DD
+    if ($DateString -match '^\d{4}-\d{2}-\d{2}$') {
+        try {
+            return [DateTime]::Parse($DateString)
+        } catch {
+            Write-Host "La date est au bon format mais invalide: $DateString"
+            return $null
+        }
+    } else {
+        Write-Host "Format de date incorrect: $DateString"
+        return $null
+    }
+}
+
+Convert-ToDateSafely -DateString "2023-06-17"  # Fonctionne
+Convert-ToDateSafely -DateString "06-17-2023"  # Format incorrect
+Convert-ToDateSafely -DateString "2023-13-45"  # Format correct mais date invalide
+```
+
+#### 3. Utilisation de valeurs par défaut
+
+Fournir une valeur par défaut en cas d'échec de conversion.
+
+```powershell
+function Get-NumberWithDefault {
+    param (
+        [string]$InputString,
+        [int]$DefaultValue = 0
+    )
+
+    $number = 0
+    if ([int]::TryParse($InputString, [ref]$number)) {
+        return $number
+    } else {
+        return $DefaultValue
+    }
+}
+
+Get-NumberWithDefault -InputString "123"     # Retourne 123
+Get-NumberWithDefault -InputString "abc"     # Retourne 0 (défaut)
+Get-NumberWithDefault -InputString "xyz" -DefaultValue 42  # Retourne 42
+```
+
+#### 4. Utilisation de cultures spécifiques
+
+Pour les conversions sensibles à la culture (comme les dates et les nombres), spécifier explicitement la culture à utiliser.
+
+```powershell
+function Convert-ToDateWithCulture {
+    param (
+        [string]$DateString,
+        [string]$CultureName = "fr-FR"
+    )
+
+    try {
+        $culture = [System.Globalization.CultureInfo]::GetCultureInfo($CultureName)
+        return [DateTime]::Parse($DateString, $culture)
+    } catch [System.FormatException] {
+        Write-Host "Erreur de format: '$DateString' n'est pas une date valide dans la culture $CultureName"
+        return $null
+    }
+}
+
+Convert-ToDateWithCulture -DateString "17/06/2023" -CultureName "fr-FR"  # Fonctionne
+Convert-ToDateWithCulture -DateString "06/17/2023" -CultureName "en-US"  # Fonctionne
+Convert-ToDateWithCulture -DateString "17/06/2023" -CultureName "en-US"  # Peut échouer (selon la culture)
+```
+
+### Débogage des FormatException
+
+Lorsque vous rencontrez une `FormatException`, voici quelques étapes pour la déboguer efficacement :
+
+1. **Examiner la valeur d'entrée** : Vérifiez que la valeur d'entrée est celle que vous attendez.
+
+2. **Vérifier le format attendu** : Assurez-vous de comprendre le format exact attendu par la méthode de conversion.
+
+3. **Considérer les problèmes de culture** : Les formats de date et de nombre peuvent varier selon la culture.
+
+4. **Utiliser des méthodes de débogage** : Affichez la valeur d'entrée et le format attendu.
+
+```powershell
+function Debug-FormatException {
+    param (
+        [string]$InputValue,
+        [string]$TargetType
+    )
+
+    Write-Host "Tentative de conversion de: '$InputValue' en $TargetType"
+    Write-Host "Type actuel: $($InputValue.GetType().FullName)"
+    Write-Host "Longueur: $($InputValue.Length)"
+
+    # Afficher les caractères individuels (utile pour détecter les caractères invisibles)
+    Write-Host "Caractères individuels:"
+    for ($i = 0; $i -lt $InputValue.Length; $i++) {
+        $char = $InputValue[$i]
+        $code = [int][char]$char
+        Write-Host "  Position $i : '$char' (code: $code)"
+    }
+
+    # Tentative de conversion avec gestion d'erreur
+    try {
+        $result = switch ($TargetType) {
+            "Int32" { [int]::Parse($InputValue) }
+            "Double" { [double]::Parse($InputValue) }
+            "DateTime" { [DateTime]::Parse($InputValue) }
+            "Guid" { [Guid]::Parse($InputValue) }
+            default { throw "Type cible non supporté: $TargetType" }
+        }
+
+        Write-Host "Conversion réussie: $result"
+        return $result
+    } catch {
+        Write-Host "Erreur: $($_.Exception.GetType().FullName)"
+        Write-Host "Message: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+Debug-FormatException -InputValue "123" -TargetType "Int32"
+Debug-FormatException -InputValue "123.45" -TargetType "Int32"
+Debug-FormatException -InputValue "123,45" -TargetType "Double"  # Peut échouer selon la culture
+```
+
+### Différence entre FormatException et autres exceptions de conversion
+
+Il est important de comprendre la différence entre `FormatException` et d'autres exceptions qui peuvent survenir lors de conversions :
+
+- **FormatException** : Le format de l'entrée est incorrect (par exemple, des lettres dans une chaîne numérique).
+
+- **OverflowException** : Le format est correct, mais la valeur est trop grande ou trop petite pour le type cible.
+
+- **ArgumentNullException** : L'entrée est null alors qu'une valeur non nulle est attendue.
+
+- **ArgumentException** : L'argument est invalide pour une raison autre que le format.
+
+```powershell
+function Compare-ConversionExceptions {
+    param (
+        [string]$TestCase
+    )
+
+    try {
+        switch ($TestCase) {
+            "Format" {
+                # Génère FormatException
+                return [int]::Parse("abc")
+            }
+            "Overflow" {
+                # Génère OverflowException
+                return [byte]::Parse("1000")
+            }
+            "ArgumentNull" {
+                # Génère ArgumentNullException
+                return [int]::Parse($null)
+            }
+            default {
+                throw "Cas de test inconnu: $TestCase"
+            }
+        }
+    } catch {
+        return @{
+            ExceptionType = $_.Exception.GetType().FullName
+            Message = $_.Exception.Message
+        }
+    }
+}
+
+Compare-ConversionExceptions -TestCase "Format"
+Compare-ConversionExceptions -TestCase "Overflow"
+Compare-ConversionExceptions -TestCase "ArgumentNull"
+
+# Sortie:
+# ExceptionType : System.FormatException
+# Message      : Input string was not in a correct format.
+#
+# ExceptionType : System.OverflowException
+# Message      : Value was either too large or too small for a Byte.
+#
+# ExceptionType : System.ArgumentNullException
+# Message      : Value cannot be null. Parameter name: String
+```
+
+### Bonnes pratiques pour éviter les FormatException
+
+1. **Utiliser TryParse** : Préférez les méthodes `TryParse` aux méthodes `Parse` pour éviter les exceptions.
+
+2. **Valider les entrées** : Validez le format des entrées avant de tenter la conversion.
+
+3. **Spécifier la culture** : Pour les conversions sensibles à la culture, spécifiez explicitement la culture à utiliser.
+
+4. **Fournir des exemples** : Dans les messages d'erreur, fournissez des exemples de formats valides.
+
+5. **Documenter les formats attendus** : Documentez clairement les formats attendus pour les entrées.
+
+6. **Gérer les cas limites** : Prévoyez des cas pour les entrées vides, null, ou contenant des caractères spéciaux.
+
+7. **Utiliser des types appropriés** : Utilisez le type le plus approprié pour la conversion (par exemple, `decimal` pour les valeurs monétaires).
+
+### Résumé
+
+`FormatException` est une exception courante qui survient lors de la conversion de données d'un format à un autre, particulièrement lors de la conversion de chaînes de caractères en types numériques, dates, ou autres types structurés. Elle indique que le format de l'entrée ne correspond pas au format attendu par la méthode de conversion.
+
+En comprenant les scénarios courants qui génèrent des `FormatException` et en appliquant les techniques de prévention appropriées, vous pouvez créer des applications plus robustes qui gèrent élégamment les erreurs de format et fournissent des retours utiles aux utilisateurs.
