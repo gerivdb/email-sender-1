@@ -952,3 +952,498 @@ Debug-FileNotFoundException -FilePath "C:\Dossier_Inexistant\fichier.txt"  # Ré
 `FileNotFoundException` est une exception qui est levée lorsqu'une tentative d'accès à un fichier échoue parce que le fichier n'existe pas. Cette exception est une sous-classe de `IOException` et est spécifiquement utilisée pour signaler l'absence d'un fichier requis.
 
 En comprenant les détails de `FileNotFoundException`, ses cas d'utilisation typiques, et en appliquant les bonnes pratiques pour la prévention et le débogage, vous pouvez développer des applications plus robustes qui gèrent efficacement les erreurs liées à l'absence de fichiers.
+
+## DirectoryNotFoundException et ses contextes
+
+### Vue d'ensemble
+
+`DirectoryNotFoundException` est une exception qui est levée lorsqu'une partie d'un chemin de fichier ou de répertoire n'existe pas. Cette exception est une sous-classe de `IOException` et est spécifiquement utilisée pour signaler l'absence d'un répertoire requis dans un chemin.
+
+### Hiérarchie
+
+```
+System.Exception
+└── System.SystemException
+    └── System.IO.IOException
+        └── System.IO.DirectoryNotFoundException
+```
+
+### Description
+
+`DirectoryNotFoundException` est levée lorsqu'une méthode qui nécessite l'accès à un répertoire ne peut pas trouver le répertoire à l'emplacement spécifié. Cette exception est couramment rencontrée lors de l'accès à des fichiers ou des répertoires dont le chemin parent n'existe pas.
+
+### Propriétés spécifiques
+
+`DirectoryNotFoundException` n'ajoute pas de propriétés spécifiques à celles héritées de `IOException`.
+
+### Constructeurs principaux
+
+```csharp
+DirectoryNotFoundException()
+DirectoryNotFoundException(string message)
+DirectoryNotFoundException(string message, Exception innerException)
+```
+
+### Contextes courants
+
+1. **Répertoire parent inexistant** : Tentative d'accès à un fichier dont le répertoire parent n'existe pas.
+
+2. **Chemin de répertoire incorrect** : Spécification d'un chemin incorrect pour un répertoire.
+
+3. **Répertoire supprimé** : Tentative d'accès à un répertoire qui a été supprimé.
+
+4. **Lecteur ou partage réseau inexistant** : Tentative d'accès à un répertoire sur un lecteur ou un partage réseau qui n'existe pas ou n'est pas accessible.
+
+5. **Problèmes de permissions** : Tentative d'accès à un répertoire pour lequel l'utilisateur n'a pas les permissions nécessaires (bien que cela puisse également générer `UnauthorizedAccessException`).
+
+### Exemples en PowerShell
+
+```powershell
+# Exemple 1: Accès à un fichier dans un répertoire inexistant
+function Access-FileInNonExistentDirectory {
+    param (
+        [string]$FilePath
+    )
+
+    try {
+        $content = [System.IO.File]::ReadAllText($FilePath)
+        return $content
+    } catch [System.IO.DirectoryNotFoundException] {
+        Write-Host "Erreur: Le répertoire parent du fichier '$FilePath' n'existe pas"
+        Write-Host "Détails: $($_.Exception.Message)"
+        return $null
+    } catch [System.IO.FileNotFoundException] {
+        Write-Host "Erreur: Le fichier '$FilePath' n'existe pas, mais le répertoire parent existe"
+        return $null
+    } catch {
+        Write-Host "Autre erreur: $($_.Exception.GetType().FullName)"
+        return $null
+    }
+}
+
+Access-FileInNonExistentDirectory -FilePath "C:\Dossier_Inexistant\fichier.txt"
+
+# Sortie:
+# Erreur: Le répertoire parent du fichier 'C:\Dossier_Inexistant\fichier.txt' n'existe pas
+# Détails: Could not find a part of the path 'C:\Dossier_Inexistant\fichier.txt'.
+
+# Exemple 2: Création d'un répertoire s'il n'existe pas
+function Create-DirectoryIfNotExists {
+    param (
+        [string]$DirectoryPath
+    )
+
+    try {
+        # Tenter d'obtenir les informations sur le répertoire
+        $dirInfo = [System.IO.DirectoryInfo]::new($DirectoryPath)
+        $files = $dirInfo.GetFiles()
+        Write-Host "Le répertoire '$DirectoryPath' existe déjà et contient $($files.Count) fichiers"
+        return $true
+    } catch [System.IO.DirectoryNotFoundException] {
+        Write-Host "Le répertoire '$DirectoryPath' n'existe pas. Création du répertoire..."
+        try {
+            [System.IO.Directory]::CreateDirectory($DirectoryPath) | Out-Null
+            Write-Host "Répertoire créé avec succès"
+            return $true
+        } catch {
+            Write-Host "Erreur lors de la création du répertoire: $($_.Exception.Message)"
+            return $false
+        }
+    } catch {
+        Write-Host "Autre erreur: $($_.Exception.Message)"
+        return $false
+    }
+}
+
+# Test avec un répertoire inexistant
+$tempDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "test_dir_" + [Guid]::NewGuid().ToString())
+Create-DirectoryIfNotExists -DirectoryPath $tempDir
+
+# Test avec un répertoire existant
+Create-DirectoryIfNotExists -DirectoryPath $tempDir
+
+# Nettoyer
+Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+
+# Sortie:
+# Le répertoire '...\test_dir_...' n'existe pas. Création du répertoire...
+# Répertoire créé avec succès
+# Le répertoire '...\test_dir_...' existe déjà et contient 0 fichiers
+
+# Exemple 3: Accès à un lecteur ou partage réseau inexistant
+function Access-NonExistentDrive {
+    param (
+        [string]$DrivePath
+    )
+
+    try {
+        $files = [System.IO.Directory]::GetFiles($DrivePath)
+        Write-Host "Le lecteur '$DrivePath' existe et contient $($files.Count) fichiers"
+        return $files
+    } catch [System.IO.DirectoryNotFoundException] {
+        Write-Host "Erreur: Le lecteur ou répertoire '$DrivePath' n'existe pas"
+        Write-Host "Détails: $($_.Exception.Message)"
+        return $null
+    } catch {
+        Write-Host "Autre erreur: $($_.Exception.GetType().FullName) - $($_.Exception.Message)"
+        return $null
+    }
+}
+
+# Test avec un lecteur inexistant (ajustez la lettre de lecteur selon votre système)
+Access-NonExistentDrive -DrivePath "Z:\Documents"
+
+# Sortie:
+# Erreur: Le lecteur ou répertoire 'Z:\Documents' n'existe pas
+# Détails: Could not find a part of the path 'Z:\Documents'.
+
+# Exemple 4: Vérification récursive de l'existence des répertoires parents
+function Verify-DirectoryPath {
+    param (
+        [string]$Path
+    )
+
+    $result = @{
+        Exists = $false
+        MissingParts = @()
+        FullPath = [System.IO.Path]::GetFullPath($Path)
+    }
+
+    # Vérifier si le chemin existe déjà
+    if ([System.IO.Directory]::Exists($Path)) {
+        $result.Exists = $true
+        return $result
+    }
+
+    # Décomposer le chemin et vérifier chaque partie
+    $parts = $result.FullPath.Split([System.IO.Path]::DirectorySeparatorChar)
+    $currentPath = ""
+
+    # Construire le chemin progressivement et vérifier chaque partie
+    for ($i = 0; $i -lt $parts.Length; $i++) {
+        $part = $parts[$i]
+
+        # Ignorer les parties vides (comme après le séparateur de lecteur)
+        if ([string]::IsNullOrEmpty($part)) {
+            continue
+        }
+
+        # Ajouter le séparateur de lecteur pour le premier élément sous Windows
+        if ($i -eq 0 -and $part.EndsWith(":")) {
+            $currentPath = $part + [System.IO.Path]::DirectorySeparatorChar
+        } else {
+            # Pour les autres parties, ajouter le séparateur et la partie
+            if (-not [string]::IsNullOrEmpty($currentPath)) {
+                $currentPath = [System.IO.Path]::Combine($currentPath, $part)
+            } else {
+                $currentPath = $part
+            }
+        }
+
+        # Vérifier si cette partie du chemin existe
+        if (-not [System.IO.Directory]::Exists($currentPath)) {
+            $result.MissingParts += $currentPath
+        }
+    }
+
+    return $result
+}
+
+# Test avec un chemin à plusieurs niveaux
+$deepPath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "level1", "level2", "level3")
+$verificationResult = Verify-DirectoryPath -Path $deepPath
+
+Write-Host "Chemin complet: $($verificationResult.FullPath)"
+Write-Host "Existe: $($verificationResult.Exists)"
+Write-Host "Parties manquantes:"
+foreach ($part in $verificationResult.MissingParts) {
+    Write-Host "  - $part"
+}
+
+# Sortie:
+# Chemin complet: ...\Temp\level1\level2\level3
+# Existe: False
+# Parties manquantes:
+#   - ...\Temp\level1
+#   - ...\Temp\level1\level2
+#   - ...\Temp\level1\level2\level3
+
+# Exemple 5: Création récursive de répertoires
+function Create-DirectoryRecursively {
+    param (
+        [string]$Path
+    )
+
+    try {
+        # CreateDirectory crée automatiquement tous les répertoires parents nécessaires
+        $dirInfo = [System.IO.Directory]::CreateDirectory($Path)
+        Write-Host "Répertoire '$Path' créé avec succès"
+        return $dirInfo
+    } catch {
+        Write-Host "Erreur lors de la création du répertoire: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+# Test avec un chemin à plusieurs niveaux
+$deepPath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "level1", "level2", "level3")
+Create-DirectoryRecursively -Path $deepPath
+
+# Vérifier que tous les répertoires ont été créés
+$level1 = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "level1")
+$level2 = [System.IO.Path]::Combine($level1, "level2")
+$level3 = [System.IO.Path]::Combine($level2, "level3")
+
+Write-Host "level1 existe: $([System.IO.Directory]::Exists($level1))"
+Write-Host "level2 existe: $([System.IO.Directory]::Exists($level2))"
+Write-Host "level3 existe: $([System.IO.Directory]::Exists($level3))"
+
+# Nettoyer
+Remove-Item -Path $level1 -Recurse -Force -ErrorAction SilentlyContinue
+
+# Sortie:
+# Répertoire '...\Temp\level1\level2\level3' créé avec succès
+# level1 existe: True
+# level2 existe: True
+# level3 existe: True
+```
+
+### Différence entre DirectoryNotFoundException et FileNotFoundException
+
+Comme nous l'avons vu dans la section sur `FileNotFoundException`, il est important de comprendre la différence entre ces deux exceptions :
+
+- **DirectoryNotFoundException** : Levée lorsqu'une partie du chemin (généralement un répertoire parent) n'existe pas.
+
+- **FileNotFoundException** : Levée lorsque le fichier spécifié n'existe pas, mais le répertoire parent existe.
+
+Cette distinction est importante pour déterminer la cause exacte de l'erreur et pour implémenter la solution appropriée.
+
+### Prévention des DirectoryNotFoundException
+
+Voici plusieurs techniques pour éviter les `DirectoryNotFoundException` :
+
+#### 1. Vérification préalable de l'existence du répertoire
+
+```powershell
+function Ensure-DirectoryExists {
+    param (
+        [string]$DirectoryPath
+    )
+
+    if (-not [System.IO.Directory]::Exists($DirectoryPath)) {
+        Write-Host "Le répertoire '$DirectoryPath' n'existe pas"
+        return $false
+    }
+
+    return $true
+}
+```
+
+#### 2. Création du répertoire s'il n'existe pas
+
+```powershell
+function Create-DirectoryIfNotExists {
+    param (
+        [string]$DirectoryPath
+    )
+
+    if (-not [System.IO.Directory]::Exists($DirectoryPath)) {
+        try {
+            [System.IO.Directory]::CreateDirectory($DirectoryPath) | Out-Null
+            Write-Host "Répertoire '$DirectoryPath' créé avec succès"
+        } catch {
+            Write-Host "Erreur lors de la création du répertoire: $($_.Exception.Message)"
+            return $false
+        }
+    }
+
+    return $true
+}
+```
+
+#### 3. Utilisation de chemins absolus
+
+```powershell
+function Get-AbsoluteDirectoryPath {
+    param (
+        [string]$RelativePath
+    )
+
+    # Convertir le chemin relatif en chemin absolu
+    $absolutePath = [System.IO.Path]::GetFullPath($RelativePath)
+
+    Write-Host "Chemin relatif: $RelativePath"
+    Write-Host "Chemin absolu: $absolutePath"
+
+    return $absolutePath
+}
+```
+
+#### 4. Vérification de la disponibilité des lecteurs et partages réseau
+
+```powershell
+function Check-DriveAvailability {
+    param (
+        [string]$DrivePath
+    )
+
+    # Extraire la lettre de lecteur ou le nom de partage réseau
+    $root = [System.IO.Path]::GetPathRoot($DrivePath)
+
+    if ([string]::IsNullOrEmpty($root)) {
+        Write-Host "Chemin invalide: $DrivePath"
+        return $false
+    }
+
+    # Vérifier si le lecteur ou le partage réseau existe
+    if (-not [System.IO.Directory]::Exists($root)) {
+        Write-Host "Le lecteur ou partage réseau '$root' n'existe pas ou n'est pas accessible"
+        return $false
+    }
+
+    Write-Host "Le lecteur ou partage réseau '$root' est disponible"
+    return $true
+}
+```
+
+#### 5. Utilisation de méthodes qui créent automatiquement les répertoires parents
+
+```powershell
+function Write-FileWithDirectoryCreation {
+    param (
+        [string]$FilePath,
+        [string]$Content
+    )
+
+    try {
+        # Extraire le répertoire parent
+        $directory = [System.IO.Path]::GetDirectoryName($FilePath)
+
+        # Créer le répertoire parent s'il n'existe pas
+        if (-not [string]::IsNullOrEmpty($directory) -and -not [System.IO.Directory]::Exists($directory)) {
+            [System.IO.Directory]::CreateDirectory($directory) | Out-Null
+            Write-Host "Répertoire '$directory' créé avec succès"
+        }
+
+        # Écrire le fichier
+        [System.IO.File]::WriteAllText($FilePath, $Content)
+        Write-Host "Fichier '$FilePath' écrit avec succès"
+
+        return $true
+    } catch {
+        Write-Host "Erreur: $($_.Exception.Message)"
+        return $false
+    }
+}
+```
+
+### Débogage des DirectoryNotFoundException
+
+Lorsque vous rencontrez une `DirectoryNotFoundException`, voici quelques étapes pour la déboguer efficacement :
+
+1. **Vérifier le chemin complet** : Assurez-vous que le chemin complet est correct et bien formé.
+
+2. **Vérifier les répertoires parents** : Vérifiez que tous les répertoires parents existent.
+
+3. **Vérifier les permissions** : Assurez-vous que l'application a les permissions nécessaires pour accéder au répertoire.
+
+4. **Vérifier les lecteurs et partages réseau** : Si le chemin inclut un lecteur ou un partage réseau, vérifiez qu'il est disponible et accessible.
+
+5. **Utiliser des outils de débogage** : Utilisez des outils comme Process Monitor pour suivre les tentatives d'accès aux répertoires.
+
+```powershell
+function Debug-DirectoryNotFoundException {
+    param (
+        [string]$Path
+    )
+
+    Write-Host "Débogage de DirectoryNotFoundException pour le chemin: $Path"
+
+    # Vérifier si le chemin est absolu ou relatif
+    $isAbsolute = [System.IO.Path]::IsPathRooted($Path)
+    Write-Host "Chemin absolu: $isAbsolute"
+
+    if (-not $isAbsolute) {
+        $absolutePath = [System.IO.Path]::GetFullPath($Path)
+        Write-Host "Chemin absolu résolu: $absolutePath"
+        $Path = $absolutePath
+    }
+
+    # Vérifier si le chemin existe
+    $pathExists = [System.IO.Directory]::Exists($Path)
+    Write-Host "Le chemin existe: $pathExists"
+
+    if (-not $pathExists) {
+        # Décomposer le chemin et vérifier chaque partie
+        $parts = $Path.Split([System.IO.Path]::DirectorySeparatorChar)
+        $currentPath = ""
+
+        Write-Host "Analyse des parties du chemin:"
+
+        for ($i = 0; $i -lt $parts.Length; $i++) {
+            $part = $parts[$i]
+
+            # Ignorer les parties vides
+            if ([string]::IsNullOrEmpty($part)) {
+                continue
+            }
+
+            # Construire le chemin progressivement
+            if ($i -eq 0 -and $part.EndsWith(":")) {
+                $currentPath = $part + [System.IO.Path]::DirectorySeparatorChar
+            } else {
+                if (-not [string]::IsNullOrEmpty($currentPath)) {
+                    $currentPath = [System.IO.Path]::Combine($currentPath, $part)
+                } else {
+                    $currentPath = $part
+                }
+            }
+
+            # Vérifier si cette partie du chemin existe
+            $exists = [System.IO.Directory]::Exists($currentPath)
+            Write-Host "  $currentPath - Existe: $exists"
+
+            if (-not $exists) {
+                Write-Host "  => Première partie manquante du chemin"
+                break
+            }
+        }
+
+        # Vérifier si le lecteur ou partage réseau existe
+        $root = [System.IO.Path]::GetPathRoot($Path)
+        $rootExists = [System.IO.Directory]::Exists($root)
+        Write-Host "Racine du chemin: $root - Existe: $rootExists"
+
+        if (-not $rootExists) {
+            Write-Host "Le problème est que le lecteur ou partage réseau n'existe pas ou n'est pas accessible"
+        }
+    }
+}
+
+# Exemple d'utilisation
+Debug-DirectoryNotFoundException -Path "C:\Windows\System32"  # Devrait exister
+Debug-DirectoryNotFoundException -Path "C:\Dossier_Inexistant"  # Ne devrait pas exister
+Debug-DirectoryNotFoundException -Path "Z:\Documents"  # Lecteur inexistant
+```
+
+### Bonnes pratiques pour gérer les DirectoryNotFoundException
+
+1. **Vérifier l'existence du répertoire** : Utilisez `Directory.Exists()` pour vérifier si un répertoire existe avant de tenter d'y accéder.
+
+2. **Créer les répertoires manquants** : Utilisez `Directory.CreateDirectory()` pour créer les répertoires manquants avant d'y accéder.
+
+3. **Utiliser des chemins absolus** : Utilisez des chemins absolus plutôt que des chemins relatifs pour éviter les ambiguïtés.
+
+4. **Vérifier la disponibilité des lecteurs et partages réseau** : Vérifiez que les lecteurs et partages réseau sont disponibles avant d'y accéder.
+
+5. **Fournir des messages d'erreur clairs** : Lorsqu'une `DirectoryNotFoundException` est capturée, fournissez des messages d'erreur clairs qui incluent le chemin complet.
+
+6. **Implémenter des mécanismes de récupération** : Implémentez des mécanismes pour récupérer après une `DirectoryNotFoundException`, comme la création automatique des répertoires manquants.
+
+7. **Journaliser les détails de l'exception** : Journalisez le message et le chemin complet pour faciliter le débogage.
+
+### Résumé
+
+`DirectoryNotFoundException` est une exception qui est levée lorsqu'une partie d'un chemin de fichier ou de répertoire n'existe pas. Cette exception est une sous-classe de `IOException` et est spécifiquement utilisée pour signaler l'absence d'un répertoire requis dans un chemin.
+
+En comprenant les contextes dans lesquels `DirectoryNotFoundException` peut être levée, et en appliquant les bonnes pratiques pour la prévention et le débogage, vous pouvez développer des applications plus robustes qui gèrent efficacement les erreurs liées à l'absence de répertoires.
