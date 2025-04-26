@@ -455,7 +455,7 @@
                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3** Recenser les exceptions de base du framework .NET
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1** Identifier et documenter les exceptions du namespace System
                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.1** Documenter ArgumentException et ses dérivées
-                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.2** Documenter InvalidOperationException et ses cas d'usage
+                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.2** Documenter InvalidOperationException et ses cas d'usage
                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.3** Documenter NullReferenceException et ses causes
                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.4** Documenter FormatException et ses scénarios
                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.1.5** Documenter IndexOutOfRangeException et ses contextes
