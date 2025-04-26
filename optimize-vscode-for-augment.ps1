@@ -1,14 +1,13 @@
 # Script pour optimiser VS Code pour Augment Code
 param(
     [switch]$Force,
-    [switch]$Backup = $true
+    [switch]$Backup
 )
 
 # Chemins des fichiers
 $userSettingsPath = "$env:APPDATA\Code\User\settings.json"
 $workspaceSettingsPath = ".vscode\settings.json"
 $optimizedSettingsPath = "augment-optimized-settings.json"
-$backupPath = "$env:APPDATA\Code\User\settings.json.backup"
 
 # Fonction pour fusionner les configurations
 function Merge-JsonConfigs {
@@ -70,7 +69,7 @@ function Merge-JsonConfigs {
 }
 
 # Fonction pour appliquer les optimisations
-function Apply-Optimizations {
+function Set-VSCodeOptimizations {
     param (
         [string]$configPath
     )
@@ -95,8 +94,7 @@ function Apply-Optimizations {
         $mergedConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $configPath -Encoding UTF8
         Write-Host "Configuration optimisée appliquée à: $configPath" -ForegroundColor Green
         return $true
-    }
-    catch {
+    } catch {
         Write-Host "Erreur lors de l'application des optimisations: $_" -ForegroundColor Red
         return $false
     }
@@ -111,21 +109,20 @@ if (-not (Test-Path $optimizedSettingsPath)) {
 # Appliquer les optimisations au fichier de configuration utilisateur
 if (Test-Path $userSettingsPath) {
     Write-Host "Application des optimisations au fichier de configuration utilisateur..." -ForegroundColor Cyan
-    $success = Apply-Optimizations -configPath $userSettingsPath
+    $success = Set-VSCodeOptimizations -configPath $userSettingsPath
     if (-not $success) {
         Write-Host "Échec de l'application des optimisations au fichier de configuration utilisateur." -ForegroundColor Red
     }
-}
-else {
+} else {
     Write-Host "Le fichier de configuration utilisateur n'existe pas: $userSettingsPath" -ForegroundColor Yellow
     Write-Host "Création d'un nouveau fichier de configuration utilisateur..." -ForegroundColor Cyan
-    
+
     # Créer le dossier parent s'il n'existe pas
     $userSettingsDir = Split-Path -Path $userSettingsPath -Parent
     if (-not (Test-Path $userSettingsDir)) {
         New-Item -Path $userSettingsDir -ItemType Directory -Force | Out-Null
     }
-    
+
     # Copier le fichier de configuration optimisée
     Copy-Item -Path $optimizedSettingsPath -Destination $userSettingsPath -Force
     Write-Host "Nouveau fichier de configuration utilisateur créé: $userSettingsPath" -ForegroundColor Green
@@ -134,27 +131,25 @@ else {
 # Appliquer les optimisations au fichier de configuration de l'espace de travail
 if (Test-Path $workspaceSettingsPath) {
     Write-Host "Application des optimisations au fichier de configuration de l'espace de travail..." -ForegroundColor Cyan
-    $success = Apply-Optimizations -configPath $workspaceSettingsPath
+    $success = Set-VSCodeOptimizations -configPath $workspaceSettingsPath
     if (-not $success) {
         Write-Host "Échec de l'application des optimisations au fichier de configuration de l'espace de travail." -ForegroundColor Red
     }
-}
-else {
+} else {
     Write-Host "Le fichier de configuration de l'espace de travail n'existe pas: $workspaceSettingsPath" -ForegroundColor Yellow
     if ($Force) {
         Write-Host "Création d'un nouveau fichier de configuration de l'espace de travail..." -ForegroundColor Cyan
-        
+
         # Créer le dossier parent s'il n'existe pas
         $workspaceSettingsDir = Split-Path -Path $workspaceSettingsPath -Parent
         if (-not (Test-Path $workspaceSettingsDir)) {
             New-Item -Path $workspaceSettingsDir -ItemType Directory -Force | Out-Null
         }
-        
+
         # Copier le fichier de configuration optimisée
         Copy-Item -Path $optimizedSettingsPath -Destination $workspaceSettingsPath -Force
         Write-Host "Nouveau fichier de configuration de l'espace de travail créé: $workspaceSettingsPath" -ForegroundColor Green
-    }
-    else {
+    } else {
         Write-Host "Utilisez le paramètre -Force pour créer un nouveau fichier de configuration de l'espace de travail." -ForegroundColor Yellow
     }
 }
