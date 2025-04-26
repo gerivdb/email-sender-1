@@ -465,12 +465,15 @@
                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.3** Documenter DirectoryNotFoundException et ses contextes
                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.4** Documenter PathTooLongException et ses limites
                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5** Documenter UnauthorizedAccessException et ses permissions
-                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.1** Créer la structure de documentation pour UnauthorizedAccessException
-                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.2** Documenter la hiérarchie et les propriétés de UnauthorizedAccessException
-                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.3** Documenter les scénarios courants d'accès non autorisé
-                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.4** Documenter les différents types de permissions (lecture, écriture, exécution)
-                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.5** Créer des exemples PowerShell pour illustrer les problèmes d'accès
+                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.1** Créer la structure de documentation pour UnauthorizedAccessException
+                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.2** Documenter la hiérarchie et les propriétés de UnauthorizedAccessException
+                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.3** Documenter les scénarios courants d'accès non autorisé
+                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.4** Documenter les différents types de permissions (lecture, écriture, exécution)
+                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.5** Créer des exemples PowerShell pour illustrer les problèmes d'accès
                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6** Documenter les techniques de prévention et de débogage
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.1** Documenter les techniques de prévention des UnauthorizedAccessException
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2** Documenter les techniques de débogage des problèmes d'accès
+                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.3** Documenter les bonnes pratiques pour la gestion des permissions
                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.7** Créer des tests unitaires pour valider les exemples
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.3** Identifier et documenter les exceptions du namespace System.Net
                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.4** Identifier et documenter les exceptions du namespace System.Security
