@@ -197,7 +197,8 @@ $publicFunctions = @(
     'Compress-LogFile',
     # Fonctions d'analyse SQL Server
     'Analyze-SqlServerPermission',
-    'Get-SqlPermissionRules'
+    'Get-SqlPermissionRules',
+    'Find-SqlServerContradictoryPermission'
 )
 
 Export-ModuleMember -Function $publicFunctions
