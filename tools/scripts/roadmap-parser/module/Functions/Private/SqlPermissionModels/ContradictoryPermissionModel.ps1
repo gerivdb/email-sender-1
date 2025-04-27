@@ -174,5 +174,180 @@ function New-SqlServerContradictoryPermission {
     return $permission
 }
 
+# Classe pour représenter une permission contradictoire au niveau base de données
+class SqlDatabaseContradictoryPermission {
+    [string]$PermissionName      # Nom de la permission contradictoire (ex: SELECT, INSERT, UPDATE)
+    [string]$UserName            # Nom de l'utilisateur de base de données qui a cette permission contradictoire
+    [string]$DatabaseName        # Nom de la base de données concernée
+    [string]$GrantPermissionState # État de la permission accordée (GRANT)
+    [string]$DenyPermissionState # État de la permission refusée (DENY)
+    [string]$SecurableType       # Type d'élément sécurisable (DATABASE)
+    [string]$SecurableName       # Nom de l'élément sécurisable (généralement le nom de la base de données)
+    [string]$ModelName           # Nom du modèle de référence utilisé pour la comparaison
+    [string]$ContradictionType   # Type de contradiction (GRANT/DENY, Héritage, Rôle/Utilisateur)
+    [string]$RiskLevel           # Niveau de risque (Critique, Élevé, Moyen, Faible)
+    [string]$Impact              # Description de l'impact potentiel de cette contradiction
+    [string]$RecommendedAction   # Action recommandée pour corriger la contradiction
+    [string]$ScriptTemplate      # Template de script SQL pour résoudre la contradiction
+    [string]$LoginName           # Nom du login associé à l'utilisateur de base de données (si applicable)
+
+    # Constructeur par défaut
+    SqlDatabaseContradictoryPermission() {
+        $this.SecurableType = "DATABASE"
+        $this.GrantPermissionState = "GRANT"
+        $this.DenyPermissionState = "DENY"
+        $this.ContradictionType = "GRANT/DENY"
+        $this.RiskLevel = "Moyen"
+    }
+
+    # Constructeur avec paramètres de base
+    SqlDatabaseContradictoryPermission([string]$permissionName, [string]$userName, [string]$databaseName) {
+        $this.PermissionName = $permissionName
+        $this.UserName = $userName
+        $this.DatabaseName = $databaseName
+        $this.SecurableType = "DATABASE"
+        $this.SecurableName = $databaseName
+        $this.GrantPermissionState = "GRANT"
+        $this.DenyPermissionState = "DENY"
+        $this.ContradictionType = "GRANT/DENY"
+        $this.RiskLevel = "Moyen"
+    }
+
+    # Constructeur complet
+    SqlDatabaseContradictoryPermission(
+        [string]$permissionName,
+        [string]$userName,
+        [string]$databaseName,
+        [string]$contradictionType,
+        [string]$modelName,
+        [string]$riskLevel,
+        [string]$loginName
+    ) {
+        $this.PermissionName = $permissionName
+        $this.UserName = $userName
+        $this.DatabaseName = $databaseName
+        $this.SecurableType = "DATABASE"
+        $this.SecurableName = $databaseName
+        $this.ContradictionType = $contradictionType
+        $this.ModelName = $modelName
+        $this.RiskLevel = $riskLevel
+        $this.GrantPermissionState = "GRANT"
+        $this.DenyPermissionState = "DENY"
+        $this.LoginName = $loginName
+    }
+
+    # Méthode pour générer un script de résolution
+    [string] GenerateFixScript() {
+        $script = "-- Script pour résoudre la contradiction de permission au niveau base de données`n"
+        $script += "-- Base de données: $($this.DatabaseName), Utilisateur: $($this.UserName), Permission: $($this.PermissionName)`n"
+        $script += "USE [$($this.DatabaseName)];`n"
+
+        if ($this.ContradictionType -eq "GRANT/DENY") {
+            $script += "-- Option 1: Supprimer la permission DENY (conserver GRANT)`n"
+            $script += "REVOKE $($this.PermissionName) FROM [$($this.UserName)];`n"
+            $script += "GRANT $($this.PermissionName) TO [$($this.UserName)];`n`n"
+
+            $script += "-- Option 2: Supprimer la permission GRANT (conserver DENY)`n"
+            $script += "REVOKE $($this.PermissionName) FROM [$($this.UserName)];`n"
+            $script += "DENY $($this.PermissionName) TO [$($this.UserName)];`n"
+        } elseif ($this.ContradictionType -eq "Héritage") {
+            $script += "-- Résoudre la contradiction d'héritage`n"
+            $script += "-- Vérifier les rôles de l'utilisateur et ajuster les permissions`n"
+            $script += "-- Exemple: REVOKE $($this.PermissionName) FROM [$($this.UserName)];`n"
+        } elseif ($this.ContradictionType -eq "Rôle/Utilisateur") {
+            $script += "-- Résoudre la contradiction entre rôle et utilisateur`n"
+            $script += "-- Vérifier les rôles de l'utilisateur et ajuster les permissions`n"
+            $script += "-- Exemple: ALTER ROLE [role_name] DROP MEMBER [$($this.UserName)];`n"
+        }
+
+        return $script
+    }
+
+    # Méthode pour obtenir une représentation textuelle
+    [string] ToString() {
+        return "Contradiction de permission: $($this.PermissionName) pour l'utilisateur [$($this.UserName)] dans la base de données [$($this.DatabaseName)] (Type: $($this.ContradictionType))"
+    }
+
+    # Méthode pour obtenir une description détaillée
+    [string] GetDetailedDescription() {
+        $description = "Contradiction de permission détectée:`n"
+        $description += "- Permission: $($this.PermissionName)`n"
+        $description += "- Base de données: $($this.DatabaseName)`n"
+        $description += "- Utilisateur: $($this.UserName)`n"
+
+        if ($this.LoginName) {
+            $description += "- Login associé: $($this.LoginName)`n"
+        }
+
+        $description += "- Type de contradiction: $($this.ContradictionType)`n"
+        $description += "- Niveau de risque: $($this.RiskLevel)`n"
+
+        if ($this.Impact) {
+            $description += "- Impact potentiel: $($this.Impact)`n"
+        }
+
+        if ($this.RecommendedAction) {
+            $description += "- Action recommandée: $($this.RecommendedAction)`n"
+        }
+
+        return $description
+    }
+}
+
+# Fonction pour créer une nouvelle permission contradictoire au niveau base de données
+function New-SqlDatabaseContradictoryPermission {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$PermissionName,
+
+        [Parameter(Mandatory = $true)]
+        [string]$UserName,
+
+        [Parameter(Mandatory = $true)]
+        [string]$DatabaseName,
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("GRANT/DENY", "Héritage", "Rôle/Utilisateur")]
+        [string]$ContradictionType = "GRANT/DENY",
+
+        [Parameter(Mandatory = $false)]
+        [string]$ModelName,
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("Critique", "Élevé", "Moyen", "Faible")]
+        [string]$RiskLevel = "Moyen",
+
+        [Parameter(Mandatory = $false)]
+        [string]$LoginName,
+
+        [Parameter(Mandatory = $false)]
+        [string]$Impact,
+
+        [Parameter(Mandatory = $false)]
+        [string]$RecommendedAction
+    )
+
+    $permission = [SqlDatabaseContradictoryPermission]::new(
+        $PermissionName,
+        $UserName,
+        $DatabaseName,
+        $ContradictionType,
+        $ModelName,
+        $RiskLevel,
+        $LoginName
+    )
+
+    if ($Impact) {
+        $permission.Impact = $Impact
+    }
+
+    if ($RecommendedAction) {
+        $permission.RecommendedAction = $RecommendedAction
+    }
+
+    return $permission
+}
+
 # Note: Les fonctions seront exportées par le module principal
-# Export-ModuleMember -Function New-SqlServerContradictoryPermission
+# Export-ModuleMember -Function New-SqlServerContradictoryPermission, New-SqlDatabaseContradictoryPermission
