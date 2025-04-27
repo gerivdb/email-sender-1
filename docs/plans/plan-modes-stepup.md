@@ -567,17 +567,17 @@
                                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4.1** Créer les paramètres de tolérance pour les différences mineures
                                       - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4.2** Implémenter les seuils d'alerte configurables
                                     - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.5** Implémenter les tests unitaires pour les fonctions de comparaison
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3** Implémenter la détection des écarts de permissions
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1** Développer les algorithmes de détection d'écarts
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1** Créer l'algorithme de détection des permissions manquantes
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3** Implémenter la détection des écarts de permissions
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1** Développer les algorithmes de détection d'écarts
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1** Créer l'algorithme de détection des permissions manquantes
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.1** Définir la structure de données pour représenter les permissions manquantes
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.2** Implémenter la fonction de comparaison ensembliste pour identifier les permissions absentes
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.3** Développer l'algorithme de détection des permissions manquantes au niveau serveur
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.4** Développer l'algorithme de détection des permissions manquantes au niveau base de données
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.5** Développer l'algorithme de détection des permissions manquantes au niveau objet
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.6** Implémenter la classification des permissions manquantes par criticité
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.7** Créer la fonction d'agrégation des résultats de détection
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.8** Développer les tests unitaires pour valider la détection des permissions manquantes
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.4** Développer l'algorithme de détection des permissions manquantes au niveau base de données
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.5** Développer l'algorithme de détection des permissions manquantes au niveau objet
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.6** Implémenter la classification des permissions manquantes par criticité
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.7** Créer la fonction d'agrégation des résultats de détection
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.8** Développer les tests unitaires pour valider la détection des permissions manquantes
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2** Implémenter l'algorithme de détection des permissions excédentaires
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.1** Définir la structure de données pour représenter les permissions excédentaires
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.2** Implémenter la fonction de comparaison ensembliste pour identifier les permissions en trop
