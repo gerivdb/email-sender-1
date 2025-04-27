@@ -121,4 +121,85 @@ Write-Host "LoginName: $($newDbPermission.LoginName)"
 Write-Host "Impact: $($newDbPermission.Impact)"
 Write-Host "RecommendedAction: $($newDbPermission.RecommendedAction)"
 
+Write-Host "`n=== Tests de la classe SqlObjectContradictoryPermission ==="
+Write-Host "======================================================="
+
+# Créer une instance de SqlObjectContradictoryPermission
+Write-Host "Création d'une instance de SqlObjectContradictoryPermission..."
+$objPermission = [SqlObjectContradictoryPermission]::new("SELECT", "TestUser", "TestDB", "TestTable")
+
+# Vérifier que l'instance a été créée correctement
+Write-Host "Vérification des propriétés de l'instance..."
+Write-Host "PermissionName: $($objPermission.PermissionName)"
+Write-Host "UserName: $($objPermission.UserName)"
+Write-Host "DatabaseName: $($objPermission.DatabaseName)"
+Write-Host "ObjectName: $($objPermission.ObjectName)"
+Write-Host "SecurableType: $($objPermission.SecurableType)"
+Write-Host "SecurableName: $($objPermission.SecurableName)"
+Write-Host "ContradictionType: $($objPermission.ContradictionType)"
+Write-Host "RiskLevel: $($objPermission.RiskLevel)"
+
+# Tester la méthode ToString
+Write-Host "`nTest de la méthode ToString()..."
+$objPermission.SchemaName = "dbo"
+$toString = $objPermission.ToString()
+Write-Host "ToString(): $toString"
+
+# Tester la méthode GenerateFixScript
+Write-Host "`nTest de la méthode GenerateFixScript()..."
+$script = $objPermission.GenerateFixScript()
+Write-Host "Script de résolution généré:"
+Write-Host $script
+
+# Tester la méthode GenerateFixScript avec colonne
+Write-Host "`nTest de la méthode GenerateFixScript() avec colonne..."
+$objPermission.ColumnName = "ID"
+$script = $objPermission.GenerateFixScript()
+Write-Host "Script de résolution généré avec colonne:"
+Write-Host $script
+
+# Tester la méthode GetDetailedDescription
+Write-Host "`nTest de la méthode GetDetailedDescription()..."
+$objPermission.ObjectType = "TABLE"
+$objPermission.LoginName = "TestLogin"
+$objPermission.Impact = "Accès incohérent aux données de la table"
+$objPermission.RecommendedAction = "Supprimer la permission DENY"
+$description = $objPermission.GetDetailedDescription()
+Write-Host "Description détaillée:"
+Write-Host $description
+
+# Tester la fonction New-SqlObjectContradictoryPermission
+Write-Host "`nTest de la fonction New-SqlObjectContradictoryPermission..."
+$newObjPermission = New-SqlObjectContradictoryPermission `
+    -PermissionName "UPDATE" `
+    -UserName "AppUser" `
+    -DatabaseName "AppDB" `
+    -SchemaName "Sales" `
+    -ObjectName "Customers" `
+    -ObjectType "TABLE" `
+    -ColumnName "CustomerID" `
+    -ContradictionType "Héritage" `
+    -ModelName "SecurityModel" `
+    -RiskLevel "Critique" `
+    -LoginName "AppLogin" `
+    -Impact "Risque de sécurité élevé" `
+    -RecommendedAction "Vérifier les rôles de l'utilisateur"
+
+# Vérifier que l'instance a été créée correctement
+Write-Host "Vérification des propriétés de l'instance créée avec New-SqlObjectContradictoryPermission..."
+Write-Host "PermissionName: $($newObjPermission.PermissionName)"
+Write-Host "UserName: $($newObjPermission.UserName)"
+Write-Host "DatabaseName: $($newObjPermission.DatabaseName)"
+Write-Host "SchemaName: $($newObjPermission.SchemaName)"
+Write-Host "ObjectName: $($newObjPermission.ObjectName)"
+Write-Host "ObjectType: $($newObjPermission.ObjectType)"
+Write-Host "ColumnName: $($newObjPermission.ColumnName)"
+Write-Host "SecurableName: $($newObjPermission.SecurableName)"
+Write-Host "ContradictionType: $($newObjPermission.ContradictionType)"
+Write-Host "ModelName: $($newObjPermission.ModelName)"
+Write-Host "RiskLevel: $($newObjPermission.RiskLevel)"
+Write-Host "LoginName: $($newObjPermission.LoginName)"
+Write-Host "Impact: $($newObjPermission.Impact)"
+Write-Host "RecommendedAction: $($newObjPermission.RecommendedAction)"
+
 Write-Host "`nTous les tests terminés avec succès!"

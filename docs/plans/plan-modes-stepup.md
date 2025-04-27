@@ -603,14 +603,14 @@
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.4** Créer les méthodes pour générer des scripts de résolution
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.5** Implémenter les méthodes de représentation textuelle
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.6** Développer les constructeurs avec différentes signatures
-                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3** Implémenter les classes pour représenter les permissions contradictoires au niveau objet
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.1** Définir la classe SqlObjectContradictoryPermission
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.2** Implémenter les propriétés pour identifier l'objet et l'utilisateur
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.3** Développer les propriétés pour décrire le type de contradiction
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.4** Créer les propriétés pour le schéma, le type d'objet et la colonne
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.5** Implémenter les méthodes pour générer des scripts de résolution
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.6** Développer les méthodes de représentation textuelle
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.7** Créer les constructeurs avec différentes signatures
+                                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3** Implémenter les classes pour représenter les permissions contradictoires au niveau objet
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.1** Définir la classe SqlObjectContradictoryPermission
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.2** Implémenter les propriétés pour identifier l'objet et l'utilisateur
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.3** Développer les propriétés pour décrire le type de contradiction
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.4** Créer les propriétés pour le schéma, le type d'objet et la colonne
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.5** Implémenter les méthodes pour générer des scripts de résolution
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.6** Développer les méthodes de représentation textuelle
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.7** Créer les constructeurs avec différentes signatures
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4** Créer la classe pour représenter un ensemble de permissions contradictoires
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.1** Définir la classe SqlContradictoryPermissionsSet
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.2** Implémenter les collections pour les différents niveaux de contradictions
@@ -634,13 +634,13 @@
                                           - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7** Créer les fonctions d'aide pour faciliter la création d'instances
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.1** Implémenter la fonction New-SqlServerContradictoryPermission
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.2** Développer la fonction New-SqlDatabaseContradictoryPermission
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.3** Créer la fonction New-SqlObjectContradictoryPermission
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.3** Créer la fonction New-SqlObjectContradictoryPermission
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.4** Implémenter la fonction New-SqlContradictoryPermissionsSet
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.5** Développer les fonctions d'aide pour les cas d'usage courants
                                           - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8** Développer les tests unitaires pour valider la structure de données
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.1** Créer les tests pour SqlServerContradictoryPermission
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.2** Implémenter les tests pour SqlDatabaseContradictoryPermission
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.3** Développer les tests pour SqlObjectContradictoryPermission
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.3** Développer les tests pour SqlObjectContradictoryPermission
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.4** Créer les tests pour SqlContradictoryPermissionsSet
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.5** Implémenter les tests pour les méthodes de génération de scripts
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.6** Développer les tests pour les fonctions d'aide
