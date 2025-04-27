@@ -699,12 +699,50 @@
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7.7** Développer les tests d'intégration pour la fonction complète
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2** Développer la fonction Measure-SqlPermissionCompliance pour mesurer la conformité
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1** Définir les métriques de conformité à mesurer
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1.1** Définir les métriques de conformité au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1.2** Définir les métriques de conformité au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1.3** Définir les métriques de conformité au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1.4** Définir les métriques de conformité par type de permission
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1.5** Définir les métriques de conformité par niveau de risque
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1.6** Définir les métriques de conformité temporelles
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1.7** Créer la structure de données pour stocker les métriques
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.2** Implémenter l'algorithme de calcul du score de conformité global
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.2.1** Développer la formule de calcul du score global
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.2.2** Implémenter la pondération des différents types d'écarts
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.2.3** Créer l'algorithme de normalisation des scores
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.2.4** Développer les mécanismes de calcul incrémental
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.2.5** Implémenter la gestion des cas particuliers
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.3** Développer l'algorithme de calcul des scores par catégorie de permission
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.3.1** Implémenter le calcul pour les permissions de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.3.2** Développer le calcul pour les permissions administratives
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.3.3** Créer le calcul pour les permissions de sécurité
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.3.4** Implémenter le calcul pour les permissions de DDL
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.3.5** Développer le calcul pour les permissions de DML
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.4** Implémenter l'algorithme de calcul des scores par niveau (serveur, base de données, objet)
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.4.1** Développer le calcul du score au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.4.2** Implémenter le calcul du score au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.4.3** Créer le calcul du score au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.4.4** Développer l'agrégation des scores par niveau
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.4.5** Implémenter la pondération des niveaux
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.5** Développer les seuils de conformité configurables
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.5.1** Créer les seuils de conformité par défaut
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.5.2** Implémenter les seuils configurables par niveau
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.5.3** Développer les seuils configurables par catégorie
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.5.4** Créer les seuils configurables par type de permission
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.5.5** Implémenter la persistance des configurations de seuils
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.6** Implémenter la génération de rapports de conformité
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.6.1** Développer le rapport de conformité global
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.6.2** Créer le rapport de conformité par niveau
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.6.3** Implémenter le rapport de conformité par catégorie
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.6.4** Développer le rapport de tendances temporelles
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.6.5** Créer le rapport de recommandations d'amélioration
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7** Créer les tests unitaires pour valider la fonction
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7.1** Développer les tests pour les métriques de conformité
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7.2** Implémenter les tests pour le calcul du score global
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7.3** Créer les tests pour le calcul par catégorie
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7.4** Développer les tests pour le calcul par niveau
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7.5** Implémenter les tests pour les seuils configurables
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7.6** Créer les tests pour la génération de rapports
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3** Implémenter la classification des écarts par sévérité
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1** Créer les règles de classification des écarts critiques
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2** Développer les règles de classification des écarts importants
