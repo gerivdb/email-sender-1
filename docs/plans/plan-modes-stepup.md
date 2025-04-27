@@ -572,7 +572,7 @@
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1** Créer l'algorithme de détection des permissions manquantes
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.1** Définir la structure de données pour représenter les permissions manquantes
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.2** Implémenter la fonction de comparaison ensembliste pour identifier les permissions absentes
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.3** Développer l'algorithme de détection des permissions manquantes au niveau serveur
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.3** Développer l'algorithme de détection des permissions manquantes au niveau serveur
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.4** Développer l'algorithme de détection des permissions manquantes au niveau base de données
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.5** Développer l'algorithme de détection des permissions manquantes au niveau objet
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.6** Implémenter la classification des permissions manquantes par criticité
